@@ -55,7 +55,7 @@ Remotes:
     nowosad/spData,
     jannes-m/RQGIS
 Additional_repositories: https://nowosad.github.io/drat
-URL: https://github.com/Robinlovelace/geocompr
+URL: https://github.com/geocompr/geocompkg
 BugReports: https://github.com/Robinlovelace/geocompr/issues
 LazyData: TRUE
 RoxygenNote: 6.1.0
