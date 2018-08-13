@@ -1,25 +1,14 @@
 ---
 title: "Geocomputation with R: workshop at eRum"
 author: "Robin Lovelace, Jakub Nowosad and Jannes Muenchow"
-date: 2018-05-29
-categories: ["R, Geocomputation with R, eRum"]
-bibliography: [../refs.bib, ../packages.bib]
-biblio-style: apalike
-link-citations: true
-output: md_document
-# tags: ["R Markdown", "plot", "regression"]
+ate: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{geocompr-solutions}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+bibliography: [refs.bib, packages.bib]
 ---
-
-<!-- For r-spatial site: -->
-<!-- --- -->
-<!-- author: "Robin Lovelace, Jakub Nowosad and Jannes Muenchow" -->
-<!-- categories: r -->
-<!-- comments: True -->
-<!-- date: 22 May, 2018 -->
-<!-- layout: post -->
-<!-- meta-json: {"layout":"post","categories":"r","date":"22 May, 2018","author":"Robin Lovelace, Jakub Nowosad and Jannes Muenchow","comments":true,"title":"Geocomputation with R: workshop at eRum"} -->
-<!-- title: "Geocomputation with R: workshop at eRum" -->
-<!-- --- -->
 
 This is a guest post by Robin Lovelace, Jakub Nowosad and Jannes Muenchow.
 Together we're writing an open source book called *Geocomputation with R*.
@@ -29,7 +18,7 @@ We recently presented some contents of the in-progress book at the eRum conferen
 In this article we share teaching materials from eRum for the benefit of those who couldn't be there in person and provide a 'heads-up' to the R-Spatial community about plans for the book.
 We'll start with an overview of 'geocomputation' (and define what we mean by the term) and finish by describing how R can be used as a bridge to access dedicated GIS software.
 
-# Gecomp 'base' ics
+## Gecomp 'base' ics
 
 The first thing many people will be asking is "what is geocomputation anyway"?
 As Jannes mentioned in his talk, the choice of name was influenced by the fact that the term seems to have originated in Leeds, where one of the authors (Robin) is based.
@@ -74,7 +63,7 @@ A more detailed account of the history of R-spatial is provided in section [1.5]
 
 The slides outlining the basics of Geocomputation with R (which is roughly a synonym for r-spatial) can be found here: https://geocompr.github.io/workshops/erum2018/01_basics.html
 
-# Vector data
+## Vector data
 
 Spatial vector data are best used for objects that represent discrete borders such as bus stops (points), streets (lines) and houses (polygons). 
 For instance, we can represent 'Budapest' (the city where eRum 2018 was held) as a spatial point with the help of the `sf` package [@pebesma_simple_2018] as follows:
@@ -111,7 +100,7 @@ The slides describing vector data in R can be found [here](https://geocompr.gith
   <p>Your browser does not support iframes.</p>
 </iframe>
 
-# Raster data
+## Raster data
 
 On the other hand, a raster data represents continuous surfaces in form of a regular grid.
 You can think about a raster as a matrix object containing information about its spatial location.
@@ -150,7 +139,7 @@ The slides associated with the raster data part of the workshop can be found [he
   <p>Your browser does not support iframes.</p>
 </iframe>
 
-# Visualizing spatial data
+## Visualizing spatial data
 
 The spatial powers mentioned previously have numerous advantages.
 One of the most attractive is that geographic data in an appropriate class can be visualized on a map, the topic of [Chapter 9](http://geocompr.robinlovelace.net/adv-map.html) of the book.
@@ -210,7 +199,7 @@ The slides forming the basis of the visualization part of the tutorial can be fo
   <p>Your browser does not support iframes.</p>
 </iframe>
 
-# Last but not least was a section on GIS bridges
+## Last but not least was a section on GIS bridges
 
 Defining a **G**eographic **I**nformation **S**ystem as a system for the analysis, manipulation and visualization of geographic data [@longley_geographic_2015], we can safely claim that R already has become a GIS.
 However, R has also its shortcomings when it comes to spatial data analysis.
@@ -234,7 +223,7 @@ The corresponding slides can be found [here](https://geocompr.github.io/workshop
 
 In the book we additionally demonstrate how to use **RSAGA** and **rgrass7** in Chapter  [10](https://geocompr.robinlovelace.net/gis.html).
 
-# Background on the book
+## Background on the book
 
 *Geocomputation with R* is a collaborative project.
 We joined forces because each of us has been been teaching and contributing to R's spatial ecosystem for years and we all had a similar vision of a book to disseminate R's impressive geographic capabilities more widely.
@@ -253,4 +242,4 @@ We would like to thanks the anonymous peer reviewers who have provided feedback 
 We're still working on changes to respond to their excellent comments.
 If you're interested in getting involved in this project, please see the project's GitHub repo at [github.com/Robinlovelace/geocompr](https://github.com/Robinlovelace/geocompr) and check-out the in-progress chapters at [geocompr.robinlovelace.net](https://geocompr.robinlovelace.net/).
 
-# References
+## References
