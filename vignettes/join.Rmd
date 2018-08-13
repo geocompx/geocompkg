@@ -1,6 +1,6 @@
 ---
 title: "Spatial Joins Extended"
-author: "Robin Lovelace"
+author: "Robin Lovelace, Jakub Nowosad"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
@@ -87,17 +87,17 @@ left_join4 = wb_north_america %>%
 class(left_join4)
 ```
 
-<!-- On the other hand, it is also possible to remove the geometry column of `left_join4` using base R functions or `dplyr`. -->
-<!-- Here, this is this simple because the geometry column is just another `data.frame` column and no longer the sticky geometry column of an `sf` object (see also Chapter \@ref(spatial-class)): -->
+On the other hand, it is also possible to remove the geometry column of `left_join4` using base R functions or `dplyr`.
+Here, this is this simple because the geometry column is just another `data.frame` column and no longer the sticky geometry column of an `sf` object (see also Chapter \@ref(spatial-class)):
 
-<!-- ```{r} -->
-<!-- # base R -->
-<!-- left_join4_df = subset(left_join4, select = -geom) -->
-<!-- # or dplyr -->
-<!-- left_join4_df = left_join4 %>% dplyr::select(-geom) -->
-<!-- left_join4_df -->
-<!-- class(left_join4_df) -->
-<!-- ``` -->
+```{r}
+# base R
+left_join4_df = subset(left_join4, select = -geom)
+# or dplyr
+left_join4_df = left_join4 %>% dplyr::select(-geom)
+left_join4_df
+class(left_join4_df)
+```
 
 In contrast to `left_join()`, `inner_join()` keeps only observations from the left object (`north_america`) where there are matching observations in the right object (`wb_north_america`). 
 All columns from the left and right object are still kept:
