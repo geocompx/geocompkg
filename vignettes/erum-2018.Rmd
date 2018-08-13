@@ -4,10 +4,10 @@ author: "Robin Lovelace, Jakub Nowosad and Jannes Muenchow"
 ate: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{geocompr-solutions}
+  %\VignetteIndexEntry{geocompr-erum}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
-bibliography: [refs.bib, packages.bib]
+bibliography: refs.bib
 ---
 
 This is a guest post by Robin Lovelace, Jakub Nowosad and Jannes Muenchow.
