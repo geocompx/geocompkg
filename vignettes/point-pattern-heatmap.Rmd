@@ -150,17 +150,17 @@ Find the average density of cycle hire points per zone in London.
 - Plot the result in an attractive map (e.g. as shown below).
 - Find which zone has the highest density of cycle hire points.
 
-<!-- ```{r zonedense} -->
-<!-- lnd_areas = area(lnd) / 1e6 -->
-<!-- lnd$`cycle_hire_density` = cycle_hire_ag$id / lnd_areas -->
-<!-- library(tmap) -->
-<!-- bb = tmaptools::bb(cycle_hire, 2) -->
-<!-- ft = "Cycle hire density\n(per square km)" -->
-<!-- # tmap_mode("view") -->
-<!-- (m = qtm(lnd, "cycle_hire_density", fill.title = ft, bbox = bb)) -->
-<!-- # tmap_save(tm = m, filename = "figure/cyle-hire-lnd.png", width = 600) -->
-<!-- lnd$NAME[which.max(lnd$cycle_hire_density)] -->
-<!-- ``` -->
+```{r zonedense, eval=FALSE, echo=FALSE}
+lnd_areas = area(lnd) / 1e6
+lnd$`cycle_hire_density` = cycle_hire_ag$id / lnd_areas
+library(tmap)
+bb = tmaptools::bb(cycle_hire, 2)
+ft = "Cycle hire density\n(per square km)"
+# tmap_mode("view")
+(m = qtm(lnd, "cycle_hire_density", fill.title = ft, bbox = bb))
+# tmap_save(tm = m, filename = "figure/cyle-hire-lnd.png", width = 600)
+lnd$NAME[which.max(lnd$cycle_hire_density)]
+```
 
 ![](https://github.com/Robinlovelace/Creating-maps-in-R/raw/master/vignettes/point-pattern_files/figure-markdown_github/zonedense-1.png)
 
@@ -223,8 +223,8 @@ To find the minimum distance of each point to every other, we can use the `apply
 diag(dm) = NA
 dmin = apply(X = dm, MARGIN = 1, FUN = min, na.rm = TRUE)
 sel_isolated = order(dmin, decreasing = TRUE)[1:5]
-qtm(cycle_hire, col = "grey", main = "Isolated points") +
-qtm(cycle_hire[sel_isolated, ], symbols.col = "red", symbols.size = 2) + tm_scale_bar()
+# qtm(cycle_hire, col = "grey", main = "Isolated points") +
+# qtm(cycle_hire[sel_isolated, ], symbols.col = "red", symbols.size = 2) + tm_scale_bar()
 ```
 
 Another plot that is useful is that of the 'G function' for exploring the extent to which points cluster or separate compared with what would be expected from a random distribution [@bivand_applied_2013]:
@@ -245,8 +245,8 @@ Thus spatial interpolation requires a dependent variable, which is summarised nu
 
 ```{r}
 summary(cycle_hire$nbikes)
-tm_shape(cycle_hire) +
-  tm_symbols(col = "nbikes", palette = "YlOrRd", alpha = 0.6, style = "quantile")
+# tm_shape(cycle_hire) +
+#   tm_symbols(col = "nbikes", palette = "YlOrRd", alpha = 0.6, style = "quantile")
 ```
 
 There is a clear spatial pattern to this: there are more bikes parked in the outer docking stations. We can say that verbally, but how to we represent that on the map?
@@ -283,9 +283,9 @@ The next simplest solution is to break the area up into pieces using the **dismo
 library(dismo)
 v = voronoi(cycle_hire)
 v = intersect(v, r)
-tm_shape(v) +
-  tm_fill("nbikes", palette = "YlOrRd", style = "quantile") +
-  qtm(cycle_hire, symbols.size = 0.2)
+# tm_shape(v) +
+#   tm_fill("nbikes", palette = "YlOrRd", style = "quantile") +
+#   qtm(cycle_hire, symbols.size = 0.2)
 ```
 
 ### Exercises
@@ -297,9 +297,9 @@ tm_shape(v) +
 ## Interpolation with the gstat package
 
 **gstat** provides a number of functions for spatial prediction and interpolation using a range of models [@R-gstat].
-The most basic of these, and a workhorse for spatial interpolation is Inverse Distance Weighting (IDW):
+The most basic of these, and a workhorse for spatial interpolation is Inverse Distance Weighting (IDW) (results not shown):
 
-```{r}
+```{r, eval=FALSE}
 library(gstat)
 gs = gstat(formula = nbikes~1, locations = cycle_hire)
 crs(r) = crs(lnd)
