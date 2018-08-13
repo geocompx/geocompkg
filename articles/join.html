@@ -54,6 +54,9 @@
 <li>
       <a href="../articles/join.html">Spatial Joins Extended</a>
     </li>
+    <li>
+      <a href="../articles/solutions.html">Geocomputation with R - Exercises and Solutions</a>
+    </li>
   </ul>
 </li>
       </ul>
@@ -79,7 +82,7 @@
       <h1>Spatial Joins Extended</h1>
                         <h4 class="author">Robin Lovelace</h4>
             
-            <h4 class="date">2018-08-12</h4>
+            <h4 class="date">2018-08-13</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/Robinlovelace/geocompr/blob/master/vignettes/join.Rmd"><code>vignettes/join.Rmd</code></a></small>
       <div class="hidden name"><code>join.Rmd</code></div>
@@ -92,12 +95,12 @@
 <pre><code>## Linking to GEOS 3.5.1, GDAL 2.2.2, proj.4 4.9.2</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(spData)
 <span class="kw">library</span>(tidyverse)</code></pre></div>
-<pre><code>## ── Attaching packages ───────────────────────────── tidyverse 1.2.1 ──</code></pre>
+<pre><code>## ── Attaching packages ────────────────────────────────────────────────────────────────────────── tidyverse 1.2.1 ──</code></pre>
 <pre><code>## ✔ ggplot2 3.0.0     ✔ purrr   0.2.5
 ## ✔ tibble  1.4.2     ✔ dplyr   0.7.6
 ## ✔ tidyr   0.8.1     ✔ stringr 1.3.1
 ## ✔ readr   1.1.1     ✔ forcats 0.3.0</code></pre>
-<pre><code>## ── Conflicts ──────────────────────────────── tidyverse_conflicts() ──
+<pre><code>## ── Conflicts ───────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
 ## ✖ dplyr::filter() masks stats::filter()
 ## ✖ dplyr::lag()    masks stats::lag()</code></pre>
 <p>We will use an <code>sf</code> object <code>north_america</code> with country codes (<code>iso_a2</code>), names and geometries, as well as a <code>data.frame</code> object <code>wb_north_america</code> containing information about urban population and unemployment for three countries. Note that <code>north_america</code> contains data about Canada, Greenland and the United States but the World Bank dataset (<code>wb_north_america</code>) contains information about Canada, Mexico and the United States:</p>

@@ -18,7 +18,7 @@
 <![endif]-->
 </head>
 <body>
-    <div class="container template-home">
+    <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
@@ -54,6 +54,9 @@
 <li>
       <a href="articles/join.html">Spatial Joins Extended</a>
     </li>
+    <li>
+      <a href="articles/solutions.html">Geocomputation with R - Exercises and Solutions</a>
+    </li>
   </ul>
 </li>
       </ul>
@@ -74,15 +77,26 @@
 
       
       </header><div class="row">
-  <div class="contents col-md-9">
-    <div id="geocompkg" class="section level1">
+  <div class="col-md-9 contents">
+    
+
+    
+    
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+<div id="geocompkg" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#geocompkg" class="anchor"></a>geocompkg</h1></div>
-<p>A metapackage containing vignettes used in the book Geocomputation with R</p>
+<p>This is a metapackage that will install all packages used in the book <a href="https://geocompr.robinlovelace.net/">Gecomputation with R</a>, the source code of which can be found at <a href="https://github.com/Robinlovelace/geocompr">github.com/Robinlovelace/geocompr</a>. It is used to keep up-to-date solutions additional materials to supplement the book. See <a href="https://github.com/geocompr/geocompkg/tree/master/vignettes">github.com/geocompr/geocompkg</a> for the source code or to contribute to these.</p>
+<div id="installation" class="section level2">
+<h2 class="hasAnchor">
+<a href="#installation" class="anchor"></a>Installation</h2>
+<p>You can install the released version of geocompkg from <a href="https://github.com/geocompr/geocompkg">github.com/geocompr/geocompkg</a> with:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"geocompr/geocompkg"</span>)</code></pre></div>
+</div>
 </div>
   </div>
 
-  <div class="col-md-3" id="sidebar">
+  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <div class="links">
 <h2>Links</h2>
 <ul class="list-unstyled">
@@ -108,7 +122,8 @@
 </ul>
 </div>
 
-  </div>
+      </div>
+
 </div>
 
 
