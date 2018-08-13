@@ -305,7 +305,8 @@ all.equal(ndvi, ndvi_rstoolbox)
 Extract Spain, calculate a distance raster and weight it with elevation.
 Finally, compute the difference between the raster using the euclidean distance and the raster weighted by elevation.
 (Hint: Have a look at `getData()` to retrieve a digital elevation model for Spain.)
-```{r}
+
+```{r, eval=FALSE}
 library(raster)
 # find out the ISO_3 code of Spain
 dplyr::filter(ccodes(), NAME %in% "Spain")
@@ -352,7 +353,7 @@ This takes 30 seconds on my machine (16 GB RAM)
 Use `as.tibble()` to convert it into a tibble.
 Build an inhabitant raster, aggregate it to a cell resolution of 1 km, and compare the difference with the inhabitant raster (`inh`) we have created using class mean values.
 
-```{r, eval = FALSE}
+```{r, eval=FALSE}
 library(tidyverse)
 library(raster)
 library(sp)
@@ -688,7 +689,7 @@ lsl[, names(ta)] = raster::extract(ta, lsl[, c("x", "y")])
 
 2. Make a spatial prediction map similar with the derived model results and terrain attribute rasters.
 
-```{r, eval = FALSE}
+```{r, eval=FALSE}
 # attach packages
 library(raster)
 library(sf)
@@ -731,7 +732,7 @@ tm_shape(hs, bbox = bbx) +
 Hint: You need to specify a non-spatial task and a non-spatial resampling strategy.
 Before running the spatial cross-validation for both tasks set a seed to make sure that both use the same partitions which in turn guarantees comparability.
 
-```{r, eval = FALSE}
+```{r, eval=FALSE}
 # attach packages
 library(mlr)
 # attach data (in case you have not computed the terrain attributes before)
@@ -790,7 +791,7 @@ Assess the predictive performance of the QDA.
 What is the a difference between the spatially cross-validated mean AUROC value of the QDA and the GLM?
 Hint: Before running the spatial cross-validation for both learners set a seed to make sure that both use the same partitions which in turn guarantees comparability.
 
-```{r, eval = FALSE}
+```{r, eval=FALSE}
 # attach packages
 library(mlr)
 # attach data (in case you have not computed the terrain attributes before)
