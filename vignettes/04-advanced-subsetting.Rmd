@@ -1,4 +1,13 @@
-# Advanced spatial subsetting
+---
+title: "Spatial Subsetting Extended"
+author: "Robin Lovelace, Jakub Nowosad, Jannes Muenchow"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{subsetting}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
 
 This vignette demonstrates some subtleties of spatial subsetting of `sf` objects using base R and **tidyvers** methods.
 
