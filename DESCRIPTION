@@ -1,0 +1,65 @@
+Package: geocompkg
+Title: Geocomputation with R solutions and extensions
+Version: 0.0.66
+Authors@R: c(person("Robin", "Lovelace", role = c("aut")), 
+    person("Jakub", "Nowosad", email = "nowosad.jakub@gmail.com",
+    role = c("aut", "cre")),
+    person("Jannes", "Muenchow", role = c("aut")))
+Description: Vignettes and solutions to supplement the book Geocomputation with R.
+Imports:
+    bookdown,
+    cartogram,
+    dismo,
+    geosphere,
+    ggmap,
+    ggplot2,
+    gstat,
+    historydata,
+    htmlwidgets,
+    kableExtra,
+    kernlab,
+    latticeExtra,
+    leaflet,
+    link2GI,
+    lwgeom,
+    mapview,    
+    microbenchmark,
+    mlr,
+    osmdata,
+    pROC,
+    ranger,
+    raster,
+    rcartocolor,
+    rmapshaper,
+    rgdal,
+    rgeos,
+    rgrass7,
+    rnaturalearth,
+    rnaturalearthdata,
+    RPostgreSQL,
+    RQGIS,
+    RSAGA,
+    sf,
+    sp,
+    spData,
+    spDataLarge,
+    stplanr,
+    tabularaster,
+    tree,
+    tidyverse,
+    tmap,
+    tmaptools,
+    vegan
+Remotes:
+    nowosad/spData,
+    jannes-m/RQGIS
+Additional_repositories: https://nowosad.github.io/drat
+URL: https://github.com/Robinlovelace/geocompr
+BugReports: https://github.com/Robinlovelace/geocompr/issues
+LazyData: TRUE
+RoxygenNote: 6.1.0
+Suggests: knitr,
+    rmarkdown
+VignetteBuilder: knitr
+Encoding: UTF-8
+License: CC BY-NC-ND 4.0
