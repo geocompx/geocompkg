@@ -52,7 +52,19 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
+      <a href="../articles/algorithm.html">Algorithms Extended</a>
+    </li>
+    <li>
+      <a href="../articles/erum-2018.html">Geocomputation with R: workshop at eRum</a>
+    </li>
+    <li>
       <a href="../articles/join.html">Spatial Joins Extended</a>
+    </li>
+    <li>
+      <a href="../articles/linevia.html">Desire Lines Extended</a>
+    </li>
+    <li>
+      <a href="../articles/sea-level-rise.html">Extended Exercise: Sea Level Rise</a>
     </li>
     <li>
       <a href="../articles/solutions.html">Geocomputation with R - Exercises and Solutions</a>
@@ -598,10 +610,10 @@ r =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.
            <span class="dt">ymn =</span> <span class="dv">0</span>, <span class="dt">ymx =</span> <span class="fl">4.5</span>, <span class="dt">vals =</span> <span class="kw">rnorm</span>(<span class="dv">81</span>))
 <span class="co"># using cell IDs</span>
 r[<span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">9</span>, <span class="dv">81</span> <span class="op">-</span><span class="st"> </span><span class="dv">9</span>, <span class="dv">81</span>)]
-<span class="co">#&gt; [1] -0.7275977 -1.2722493  1.1188654 -1.1453849</span>
+<span class="co">#&gt; [1] -0.5749813 -1.4142496 -0.5329899  0.6908083</span>
 <span class="co"># using indexing</span>
 r[<span class="kw">c</span>(<span class="dv">1</span>, <span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/ncell">nrow</a></span>(r)), <span class="kw">c</span>(<span class="dv">1</span>, <span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/ncell">ncol</a></span>(r))]
-<span class="co">#&gt; [1] -0.7275977 -1.2722493 -1.2898390 -1.1453849</span>
+<span class="co">#&gt; [1] -0.5749813 -1.4142496  0.3789361  0.6908083</span>
 <span class="co"># corresponds to [1, 1], [1, 9], [9, 1], [9, 9]</span></code></pre></div>
 <ol start="15" style="list-style-type: decimal">
 <li>What is the most common class of our example raster <code>grain</code> (hint: <code><a href="http://www.rdocumentation.org/packages/raster/topics/modal">modal()</a></code>)?</li>
@@ -699,34 +711,25 @@ ndvi_rstoolbox =<span class="st"> </span><span class="kw"><a href="http://www.rd
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(raster)
 <span class="co"># find out the ISO_3 code of Spain</span>
 dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/getData">ccodes</a></span>(), NAME <span class="op">%in%</span><span class="st"> "Spain"</span>)
-<span class="co">#&gt;    NAME ISO3 ISO2 NAME_ISO NAME_FAO NAME_LOCAL SOVEREIGN       UNREGION1</span>
-<span class="co">#&gt; 1 Spain  ESP   ES    SPAIN    Spain     España    España Southern Europe</span>
-<span class="co">#&gt;   UNREGION2 CONTINENT</span>
-<span class="co">#&gt; 1    Europe    Europe</span>
 <span class="co"># retrieve a dem of Spain</span>
 dem =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/getData">getData</a></span>(<span class="st">"alt"</span>, <span class="dt">country =</span> <span class="st">"ESP"</span>, <span class="dt">mask =</span> <span class="ot">FALSE</span>)
 <span class="co"># change the resolution to decrease computing time</span>
 agg =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/aggregate">aggregate</a></span>(dem, <span class="dt">fact =</span> <span class="dv">5</span>)
 poly =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/getData">getData</a></span>(<span class="st">"GADM"</span>, <span class="dt">country =</span> <span class="st">"ESP"</span>, <span class="dt">level =</span> <span class="dv">1</span>)
 <span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(dem)
-<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(poly, <span class="dt">add =</span> <span class="ot">TRUE</span>)</code></pre></div>
-<p><img src="solutions_files/figure-html/unnamed-chunk-26-1.png" width="700"></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># visualize NAs</span>
-<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(<span class="kw">is.na</span>(agg))</code></pre></div>
-<p><img src="solutions_files/figure-html/unnamed-chunk-26-2.png" width="700"></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># construct a distance input raster</span>
+<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(poly, <span class="dt">add =</span> <span class="ot">TRUE</span>)
+<span class="co"># visualize NAs</span>
+<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(<span class="kw">is.na</span>(agg))
+<span class="co"># construct a distance input raster</span>
 <span class="co"># we have to set the land cells to NA and the sea cells to an arbitrary value since </span>
 <span class="co"># raster::distance computes the distance to the nearest non-NA cell</span>
 dist =<span class="st"> </span><span class="kw">is.na</span>(agg)
 <span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/cellStats">cellStats</a></span>(dist, summary)
-<span class="co">#&gt;    Mode   FALSE    TRUE </span>
-<span class="co">#&gt; logical   44595   24793</span>
 <span class="co"># convert land cells into NAs and sea cells into 1s</span>
 dist[dist <span class="op">==</span><span class="st"> </span><span class="ot">FALSE</span>] =<span class="st"> </span><span class="ot">NA</span>
 dist[dist <span class="op">==</span><span class="st"> </span><span class="ot">TRUE</span>] =<span class="st"> </span><span class="dv">1</span>
-<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(dist)</code></pre></div>
-<p><img src="solutions_files/figure-html/unnamed-chunk-26-3.png" width="700"></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># compute distance to nearest non-NA cell</span>
+<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(dist)
+<span class="co"># compute distance to nearest non-NA cell</span>
 dist =<span class="st"> </span>raster<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/distance">distance</a></span>(dist)
 <span class="co"># just keep Spain</span>
 dist =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/mask">mask</a></span>(dist, poly)
@@ -737,7 +740,6 @@ agg =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentatio
 agg[agg <span class="op">&lt;</span><span class="st"> </span><span class="dv">0</span>] =<span class="st"> </span><span class="dv">0</span>
 weight =<span class="st"> </span>dist <span class="op">+</span><span class="st"> </span>agg <span class="op">/</span><span class="st"> </span><span class="dv">100</span> <span class="op">*</span><span class="st"> </span><span class="dv">10</span>
 <span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(weight <span class="op">-</span><span class="st"> </span>dist)</code></pre></div>
-<p><img src="solutions_files/figure-html/unnamed-chunk-26-4.png" width="700"></p>
 </div>
 <div id="chapter-5" class="section level1">
 <h1 class="hasAnchor">

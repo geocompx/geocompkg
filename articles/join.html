@@ -52,7 +52,19 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
+      <a href="../articles/algorithm.html">Algorithms Extended</a>
+    </li>
+    <li>
+      <a href="../articles/erum-2018.html">Geocomputation with R: workshop at eRum</a>
+    </li>
+    <li>
       <a href="../articles/join.html">Spatial Joins Extended</a>
+    </li>
+    <li>
+      <a href="../articles/linevia.html">Desire Lines Extended</a>
+    </li>
+    <li>
+      <a href="../articles/sea-level-rise.html">Extended Exercise: Sea Level Rise</a>
     </li>
     <li>
       <a href="../articles/solutions.html">Geocomputation with R - Exercises and Solutions</a>
@@ -80,7 +92,7 @@
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1>Spatial Joins Extended</h1>
-                        <h4 class="author">Robin Lovelace</h4>
+                        <h4 class="author">Robin Lovelace, Jakub Nowosad</h4>
             
             <h4 class="date">2018-08-13</h4>
       
@@ -95,12 +107,12 @@
 <pre><code>## Linking to GEOS 3.5.1, GDAL 2.2.2, proj.4 4.9.2</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(spData)
 <span class="kw">library</span>(tidyverse)</code></pre></div>
-<pre><code>## ── Attaching packages ────────────────────────────────────────────────────────────────────────── tidyverse 1.2.1 ──</code></pre>
+<pre><code>## ── Attaching packages ────────────────────────────────── tidyverse 1.2.1 ──</code></pre>
 <pre><code>## ✔ ggplot2 3.0.0     ✔ purrr   0.2.5
 ## ✔ tibble  1.4.2     ✔ dplyr   0.7.6
 ## ✔ tidyr   0.8.1     ✔ stringr 1.3.1
 ## ✔ readr   1.1.1     ✔ forcats 0.3.0</code></pre>
-<pre><code>## ── Conflicts ───────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
+<pre><code>## ── Conflicts ───────────────────────────────────── tidyverse_conflicts() ──
 ## ✖ dplyr::filter() masks stats::filter()
 ## ✖ dplyr::lag()    masks stats::lag()</code></pre>
 <p>We will use an <code>sf</code> object <code>north_america</code> with country codes (<code>iso_a2</code>), names and geometries, as well as a <code>data.frame</code> object <code>wb_north_america</code> containing information about urban population and unemployment for three countries. Note that <code>north_america</code> contains data about Canada, Greenland and the United States but the World Bank dataset (<code>wb_north_america</code>) contains information about Canada, Mexico and the United States:</p>
@@ -147,16 +159,20 @@ left_join4 =<span class="st"> </span>wb_north_america <span class="op">%&gt;%</s
 ## character vector</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(left_join4)</code></pre></div>
 <pre><code>## [1] "tbl_df"     "tbl"        "data.frame"</code></pre>
-<!-- On the other hand, it is also possible to remove the geometry column of `left_join4` using base R functions or `dplyr`. -->
-<!-- Here, this is this simple because the geometry column is just another `data.frame` column and no longer the sticky geometry column of an `sf` object (see also Chapter \@ref(spatial-class)): -->
-<!-- ```{r} -->
-<!-- # base R -->
-<!-- left_join4_df = subset(left_join4, select = -geom) -->
-<!-- # or dplyr -->
-<!-- left_join4_df = left_join4 %>% dplyr::select(-geom) -->
-<!-- left_join4_df -->
-<!-- class(left_join4_df) -->
-<!-- ``` -->
+<p>On the other hand, it is also possible to remove the geometry column of <code>left_join4</code> using base R functions or <code>dplyr</code>. Here, this is this simple because the geometry column is just another <code>data.frame</code> column and no longer the sticky geometry column of an <code>sf</code> object (see also Chapter @ref(spatial-class)):</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># base R</span>
+left_join4_df =<span class="st"> </span><span class="kw">subset</span>(left_join4, <span class="dt">select =</span> <span class="op">-</span>geom)
+<span class="co"># or dplyr</span>
+left_join4_df =<span class="st"> </span>left_join4 <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(<span class="op">-</span>geom)
+left_join4_df</code></pre></div>
+<pre><code>## # A tibble: 3 x 5
+##   name          iso_a2 urban_pop unemploy name_long    
+##   &lt;chr&gt;         &lt;chr&gt;      &lt;dbl&gt;    &lt;dbl&gt; &lt;fct&gt;        
+## 1 Canada        CA      29014612     6.91 Canada       
+## 2 Mexico        MX      98099040     4.81 &lt;NA&gt;         
+## 3 United States US     259460378     6.17 United States</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(left_join4_df)</code></pre></div>
+<pre><code>## [1] "tbl_df"     "tbl"        "data.frame"</code></pre>
 <p>In contrast to <code>left_join()</code>, <code>inner_join()</code> keeps only observations from the left object (<code>north_america</code>) where there are matching observations in the right object (<code>wb_north_america</code>). All columns from the left and right object are still kept:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">inner_join1 =<span class="st"> </span>north_america <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">inner_join</span>(wb_north_america, <span class="dt">by =</span> <span class="kw">c</span>(<span class="st">"iso_a2"</span>, <span class="st">"name_long"</span> =<span class="st"> "name"</span>))</code></pre></div>

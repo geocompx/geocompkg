@@ -2,6 +2,10 @@ pandoc: 1.19.2.1
 pkgdown: 1.1.0
 pkgdown_sha: ~
 articles:
+  algorithm: algorithm.html
+  erum-2018: erum-2018.html
   join: join.html
+  linevia: linevia.html
+  sea-level-rise: sea-level-rise.html
   solutions: solutions.html
 
