@@ -55,6 +55,12 @@
       <a href="../articles/algorithm.html">Algorithms Extended</a>
     </li>
     <li>
+      <a href="../articles/benchmark.html">Geocomputation with R - Benchmark</a>
+    </li>
+    <li>
+      <a href="../articles/cast.html">Casting Geometries Extended</a>
+    </li>
+    <li>
       <a href="../articles/erum-2018.html">Geocomputation with R: workshop at eRum</a>
     </li>
     <li>
@@ -62,9 +68,6 @@
     </li>
     <li>
       <a href="../articles/linevia.html">Desire Lines Extended</a>
-    </li>
-    <li>
-      <a href="../articles/sea-level-rise.html">Extended Exercise: Sea Level Rise</a>
     </li>
     <li>
       <a href="../articles/solutions.html">Geocomputation with R - Exercises and Solutions</a>
@@ -226,171 +229,36 @@ Map of Nigeria in context illustrating sf’s plotting capabilities
 </li>
 </ol>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">us_states_name =<span class="st"> </span>us_states <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(NAME)
-<span class="kw">class</span>(us_states_name)
-<span class="co">#&gt; [1] "sf"         "data.frame"</span></code></pre></div>
+<span class="kw">class</span>(us_states_name)</code></pre></div>
 <ol start="2" style="list-style-type: decimal">
 <li>Select columns which contain information about a total population. Think about as many ways as possible to do it. Hint: try to use helper functions, such as <code>contains</code> or <code>starts_with</code>.</li>
 </ol>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">us_states <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">select</span>(total_pop_<span class="dv">10</span>, total_pop_<span class="dv">15</span>)
-<span class="co">#&gt; Simple feature collection with 49 features and 2 fields</span>
-<span class="co">#&gt; geometry type:  MULTIPOLYGON</span>
-<span class="co">#&gt; dimension:      XY</span>
-<span class="co">#&gt; bbox:           xmin: -124.7042 ymin: 24.55868 xmax: -66.9824 ymax: 49.38436</span>
-<span class="co">#&gt; epsg (SRID):    4269</span>
-<span class="co">#&gt; proj4string:    +proj=longlat +datum=NAD83 +no_defs</span>
-<span class="co">#&gt; First 10 features:</span>
-<span class="co">#&gt;    total_pop_10 total_pop_15                       geometry</span>
-<span class="co">#&gt; 1       4712651      4830620 MULTIPOLYGON (((-88.20006 3...</span>
-<span class="co">#&gt; 2       6246816      6641928 MULTIPOLYGON (((-114.7196 3...</span>
-<span class="co">#&gt; 3       4887061      5278906 MULTIPOLYGON (((-109.0501 4...</span>
-<span class="co">#&gt; 4       3545837      3593222 MULTIPOLYGON (((-73.48731 4...</span>
-<span class="co">#&gt; 5      18511620     19645772 MULTIPOLYGON (((-81.81169 2...</span>
-<span class="co">#&gt; 6       9468815     10006693 MULTIPOLYGON (((-85.60516 3...</span>
-<span class="co">#&gt; 7       1526797      1616547 MULTIPOLYGON (((-116.916 45...</span>
-<span class="co">#&gt; 8       6417398      6568645 MULTIPOLYGON (((-87.52404 4...</span>
-<span class="co">#&gt; 9       2809329      2892987 MULTIPOLYGON (((-102.0517 4...</span>
-<span class="co">#&gt; 10      4429940      4625253 MULTIPOLYGON (((-92.01783 2...</span></code></pre></div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">us_states <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">select</span>(<span class="kw">starts_with</span>(<span class="st">"total_pop"</span>))
-<span class="co">#&gt; Simple feature collection with 49 features and 2 fields</span>
-<span class="co">#&gt; geometry type:  MULTIPOLYGON</span>
-<span class="co">#&gt; dimension:      XY</span>
-<span class="co">#&gt; bbox:           xmin: -124.7042 ymin: 24.55868 xmax: -66.9824 ymax: 49.38436</span>
-<span class="co">#&gt; epsg (SRID):    4269</span>
-<span class="co">#&gt; proj4string:    +proj=longlat +datum=NAD83 +no_defs</span>
-<span class="co">#&gt; First 10 features:</span>
-<span class="co">#&gt;    total_pop_10 total_pop_15                       geometry</span>
-<span class="co">#&gt; 1       4712651      4830620 MULTIPOLYGON (((-88.20006 3...</span>
-<span class="co">#&gt; 2       6246816      6641928 MULTIPOLYGON (((-114.7196 3...</span>
-<span class="co">#&gt; 3       4887061      5278906 MULTIPOLYGON (((-109.0501 4...</span>
-<span class="co">#&gt; 4       3545837      3593222 MULTIPOLYGON (((-73.48731 4...</span>
-<span class="co">#&gt; 5      18511620     19645772 MULTIPOLYGON (((-81.81169 2...</span>
-<span class="co">#&gt; 6       9468815     10006693 MULTIPOLYGON (((-85.60516 3...</span>
-<span class="co">#&gt; 7       1526797      1616547 MULTIPOLYGON (((-116.916 45...</span>
-<span class="co">#&gt; 8       6417398      6568645 MULTIPOLYGON (((-87.52404 4...</span>
-<span class="co">#&gt; 9       2809329      2892987 MULTIPOLYGON (((-102.0517 4...</span>
-<span class="co">#&gt; 10      4429940      4625253 MULTIPOLYGON (((-92.01783 2...</span></code></pre></div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">us_states <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">select</span>(<span class="kw">contains</span>(<span class="st">"total_pop"</span>))
-<span class="co">#&gt; Simple feature collection with 49 features and 2 fields</span>
-<span class="co">#&gt; geometry type:  MULTIPOLYGON</span>
-<span class="co">#&gt; dimension:      XY</span>
-<span class="co">#&gt; bbox:           xmin: -124.7042 ymin: 24.55868 xmax: -66.9824 ymax: 49.38436</span>
-<span class="co">#&gt; epsg (SRID):    4269</span>
-<span class="co">#&gt; proj4string:    +proj=longlat +datum=NAD83 +no_defs</span>
-<span class="co">#&gt; First 10 features:</span>
-<span class="co">#&gt;    total_pop_10 total_pop_15                       geometry</span>
-<span class="co">#&gt; 1       4712651      4830620 MULTIPOLYGON (((-88.20006 3...</span>
-<span class="co">#&gt; 2       6246816      6641928 MULTIPOLYGON (((-114.7196 3...</span>
-<span class="co">#&gt; 3       4887061      5278906 MULTIPOLYGON (((-109.0501 4...</span>
-<span class="co">#&gt; 4       3545837      3593222 MULTIPOLYGON (((-73.48731 4...</span>
-<span class="co">#&gt; 5      18511620     19645772 MULTIPOLYGON (((-81.81169 2...</span>
-<span class="co">#&gt; 6       9468815     10006693 MULTIPOLYGON (((-85.60516 3...</span>
-<span class="co">#&gt; 7       1526797      1616547 MULTIPOLYGON (((-116.916 45...</span>
-<span class="co">#&gt; 8       6417398      6568645 MULTIPOLYGON (((-87.52404 4...</span>
-<span class="co">#&gt; 9       2809329      2892987 MULTIPOLYGON (((-102.0517 4...</span>
-<span class="co">#&gt; 10      4429940      4625253 MULTIPOLYGON (((-92.01783 2...</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">us_states <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">select</span>(total_pop_<span class="dv">10</span>, total_pop_<span class="dv">15</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">us_states <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">select</span>(<span class="kw">starts_with</span>(<span class="st">"total_pop"</span>))</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">us_states <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">select</span>(<span class="kw">contains</span>(<span class="st">"total_pop"</span>))</code></pre></div>
 <ol start="3" style="list-style-type: decimal">
 <li>Find all states that:</li>
 </ol>
 <ul>
 <li>Belongs to the Midwest region</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">us_states <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(total_pop_<span class="dv">15</span> <span class="op">&lt;</span><span class="st"> </span><span class="dv">750000</span>)
-<span class="co">#&gt; Simple feature collection with 4 features and 6 fields</span>
-<span class="co">#&gt; geometry type:  MULTIPOLYGON</span>
-<span class="co">#&gt; dimension:      XY</span>
-<span class="co">#&gt; bbox:           xmin: -111.0552 ymin: 38.79165 xmax: -71.49392 ymax: 49.00069</span>
-<span class="co">#&gt; epsg (SRID):    4269</span>
-<span class="co">#&gt; proj4string:    +proj=longlat +datum=NAD83 +no_defs</span>
-<span class="co">#&gt;   GEOID                 NAME   REGION           AREA total_pop_10</span>
-<span class="co">#&gt; 1    38         North Dakota  Midwest 183177.83 km^2       659858</span>
-<span class="co">#&gt; 2    50              Vermont Norteast  24866.16 km^2       624258</span>
-<span class="co">#&gt; 3    11 District of Columbia    South    178.21 km^2       584400</span>
-<span class="co">#&gt; 4    56              Wyoming     West 253309.56 km^2       545579</span>
-<span class="co">#&gt;   total_pop_15                       geometry</span>
-<span class="co">#&gt; 1       721640 MULTIPOLYGON (((-104.0487 4...</span>
-<span class="co">#&gt; 2       626604 MULTIPOLYGON (((-73.34312 4...</span>
-<span class="co">#&gt; 3       647484 MULTIPOLYGON (((-77.11976 3...</span>
-<span class="co">#&gt; 4       579679 MULTIPOLYGON (((-104.0577 4...</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">us_states <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(total_pop_<span class="dv">15</span> <span class="op">&lt;</span><span class="st"> </span><span class="dv">750000</span>)</code></pre></div>
 <ul>
 <li>Had a total population in 2015 lower than 750,000 residents</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">us_states <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(total_pop_<span class="dv">15</span> <span class="op">&lt;</span><span class="st"> </span><span class="dv">750000</span>)
-<span class="co">#&gt; Simple feature collection with 4 features and 6 fields</span>
-<span class="co">#&gt; geometry type:  MULTIPOLYGON</span>
-<span class="co">#&gt; dimension:      XY</span>
-<span class="co">#&gt; bbox:           xmin: -111.0552 ymin: 38.79165 xmax: -71.49392 ymax: 49.00069</span>
-<span class="co">#&gt; epsg (SRID):    4269</span>
-<span class="co">#&gt; proj4string:    +proj=longlat +datum=NAD83 +no_defs</span>
-<span class="co">#&gt;   GEOID                 NAME   REGION           AREA total_pop_10</span>
-<span class="co">#&gt; 1    38         North Dakota  Midwest 183177.83 km^2       659858</span>
-<span class="co">#&gt; 2    50              Vermont Norteast  24866.16 km^2       624258</span>
-<span class="co">#&gt; 3    11 District of Columbia    South    178.21 km^2       584400</span>
-<span class="co">#&gt; 4    56              Wyoming     West 253309.56 km^2       545579</span>
-<span class="co">#&gt;   total_pop_15                       geometry</span>
-<span class="co">#&gt; 1       721640 MULTIPOLYGON (((-104.0487 4...</span>
-<span class="co">#&gt; 2       626604 MULTIPOLYGON (((-73.34312 4...</span>
-<span class="co">#&gt; 3       647484 MULTIPOLYGON (((-77.11976 3...</span>
-<span class="co">#&gt; 4       579679 MULTIPOLYGON (((-104.0577 4...</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">us_states <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(total_pop_<span class="dv">15</span> <span class="op">&lt;</span><span class="st"> </span><span class="dv">750000</span>)</code></pre></div>
 <ul>
 <li>Belongs to the West region, had an area smaller than 250,000 km<sup>2</sup> and total population in 2015 larger than 5,000,000 residents</li>
 </ul>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">us_states <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(REGION <span class="op">==</span><span class="st"> "West"</span>, AREA <span class="op">&lt;</span><span class="st"> </span>units<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/units/topics/set_units">set_units</a></span>(<span class="dv">250000</span>, km<span class="op">^</span><span class="dv">2</span>),total_pop_<span class="dv">15</span> <span class="op">&gt;</span><span class="st"> </span><span class="dv">5000000</span>)
-<span class="co">#&gt; Simple feature collection with 1 feature and 6 fields</span>
-<span class="co">#&gt; geometry type:  MULTIPOLYGON</span>
-<span class="co">#&gt; dimension:      XY</span>
-<span class="co">#&gt; bbox:           xmin: -124.7042 ymin: 45.54774 xmax: -116.916 ymax: 49.00236</span>
-<span class="co">#&gt; epsg (SRID):    4269</span>
-<span class="co">#&gt; proj4string:    +proj=longlat +datum=NAD83 +no_defs</span>
-<span class="co">#&gt;   GEOID       NAME REGION        AREA total_pop_10 total_pop_15</span>
-<span class="co">#&gt; 1    53 Washington   West 175436 km^2      6561297      6985464</span>
-<span class="co">#&gt;                         geometry</span>
-<span class="co">#&gt; 1 MULTIPOLYGON (((-122.7699 4...</span>
 <span class="co"># or</span>
-us_states <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(REGION <span class="op">==</span><span class="st"> "West"</span>, <span class="kw">as.numeric</span>(AREA) <span class="op">&lt;</span><span class="st"> </span><span class="dv">250000</span>,total_pop_<span class="dv">15</span> <span class="op">&gt;</span><span class="st"> </span><span class="dv">5000000</span>)
-<span class="co">#&gt; Simple feature collection with 1 feature and 6 fields</span>
-<span class="co">#&gt; geometry type:  MULTIPOLYGON</span>
-<span class="co">#&gt; dimension:      XY</span>
-<span class="co">#&gt; bbox:           xmin: -124.7042 ymin: 45.54774 xmax: -116.916 ymax: 49.00236</span>
-<span class="co">#&gt; epsg (SRID):    4269</span>
-<span class="co">#&gt; proj4string:    +proj=longlat +datum=NAD83 +no_defs</span>
-<span class="co">#&gt;   GEOID       NAME REGION        AREA total_pop_10 total_pop_15</span>
-<span class="co">#&gt; 1    53 Washington   West 175436 km^2      6561297      6985464</span>
-<span class="co">#&gt;                         geometry</span>
-<span class="co">#&gt; 1 MULTIPOLYGON (((-122.7699 4...</span></code></pre></div>
+us_states <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(REGION <span class="op">==</span><span class="st"> "West"</span>, <span class="kw">as.numeric</span>(AREA) <span class="op">&lt;</span><span class="st"> </span><span class="dv">250000</span>,total_pop_<span class="dv">15</span> <span class="op">&gt;</span><span class="st"> </span><span class="dv">5000000</span>)</code></pre></div>
 <ul>
 <li>Belongs to the South region, had an area larger than 150,000 km<sup>2</sup> or total population in 2015 larger than 7,000,000 residents</li>
 </ul>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">us_states <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(REGION <span class="op">==</span><span class="st"> "South"</span>, AREA <span class="op">&gt;</span><span class="st"> </span>units<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/units/topics/set_units">set_units</a></span>(<span class="dv">150000</span>, km<span class="op">^</span><span class="dv">2</span>), total_pop_<span class="dv">15</span> <span class="op">&gt;</span><span class="st"> </span><span class="dv">7000000</span>)
-<span class="co">#&gt; Simple feature collection with 3 features and 6 fields</span>
-<span class="co">#&gt; geometry type:  MULTIPOLYGON</span>
-<span class="co">#&gt; dimension:      XY</span>
-<span class="co">#&gt; bbox:           xmin: -106.6359 ymin: 24.55868 xmax: -80.03136 ymax: 36.50044</span>
-<span class="co">#&gt; epsg (SRID):    4269</span>
-<span class="co">#&gt; proj4string:    +proj=longlat +datum=NAD83 +no_defs</span>
-<span class="co">#&gt;   GEOID    NAME REGION          AREA total_pop_10 total_pop_15</span>
-<span class="co">#&gt; 1    12 Florida  South 151052.0 km^2     18511620     19645772</span>
-<span class="co">#&gt; 2    13 Georgia  South 152725.2 km^2      9468815     10006693</span>
-<span class="co">#&gt; 3    48   Texas  South 687714.3 km^2     24311891     26538614</span>
-<span class="co">#&gt;                         geometry</span>
-<span class="co">#&gt; 1 MULTIPOLYGON (((-81.81169 2...</span>
-<span class="co">#&gt; 2 MULTIPOLYGON (((-85.60516 3...</span>
-<span class="co">#&gt; 3 MULTIPOLYGON (((-103.0024 3...</span>
 <span class="co"># or</span>
-us_states <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(REGION <span class="op">==</span><span class="st"> "South"</span>, <span class="kw">as.numeric</span>(AREA) <span class="op">&gt;</span><span class="st"> </span><span class="dv">150000</span>, total_pop_<span class="dv">15</span> <span class="op">&gt;</span><span class="st"> </span><span class="dv">7000000</span>)
-<span class="co">#&gt; Simple feature collection with 3 features and 6 fields</span>
-<span class="co">#&gt; geometry type:  MULTIPOLYGON</span>
-<span class="co">#&gt; dimension:      XY</span>
-<span class="co">#&gt; bbox:           xmin: -106.6359 ymin: 24.55868 xmax: -80.03136 ymax: 36.50044</span>
-<span class="co">#&gt; epsg (SRID):    4269</span>
-<span class="co">#&gt; proj4string:    +proj=longlat +datum=NAD83 +no_defs</span>
-<span class="co">#&gt;   GEOID    NAME REGION          AREA total_pop_10 total_pop_15</span>
-<span class="co">#&gt; 1    12 Florida  South 151052.0 km^2     18511620     19645772</span>
-<span class="co">#&gt; 2    13 Georgia  South 152725.2 km^2      9468815     10006693</span>
-<span class="co">#&gt; 3    48   Texas  South 687714.3 km^2     24311891     26538614</span>
-<span class="co">#&gt;                         geometry</span>
-<span class="co">#&gt; 1 MULTIPOLYGON (((-81.81169 2...</span>
-<span class="co">#&gt; 2 MULTIPOLYGON (((-85.60516 3...</span>
-<span class="co">#&gt; 3 MULTIPOLYGON (((-103.0024 3...</span></code></pre></div>
+us_states <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(REGION <span class="op">==</span><span class="st"> "South"</span>, <span class="kw">as.numeric</span>(AREA) <span class="op">&gt;</span><span class="st"> </span><span class="dv">150000</span>, total_pop_<span class="dv">15</span> <span class="op">&gt;</span><span class="st"> </span><span class="dv">7000000</span>)</code></pre></div>
 <!-- 4. Exercises about additional select and filter helper functions (one_of; between, is.na, near, etc.) -->
 <!-- Attribute aggregation -->
 <ol start="4" style="list-style-type: decimal">
@@ -398,34 +266,13 @@ us_states <span class="op">%&gt;%</span><span class="st"> </span><span class="kw
 </ol>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">us_states <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">summarize</span>(<span class="dt">total_pop =</span> <span class="kw">sum</span>(total_pop_<span class="dv">15</span>),
                         <span class="dt">min_pop =</span> <span class="kw">min</span>(total_pop_<span class="dv">15</span>),
-                        <span class="dt">max_pop =</span> <span class="kw">max</span>(total_pop_<span class="dv">15</span>))
-<span class="co">#&gt; Simple feature collection with 1 feature and 3 fields</span>
-<span class="co">#&gt; geometry type:  MULTIPOLYGON</span>
-<span class="co">#&gt; dimension:      XY</span>
-<span class="co">#&gt; bbox:           xmin: -124.7042 ymin: 24.55868 xmax: -66.9824 ymax: 49.38436</span>
-<span class="co">#&gt; epsg (SRID):    4269</span>
-<span class="co">#&gt; proj4string:    +proj=longlat +datum=NAD83 +no_defs</span>
-<span class="co">#&gt;   total_pop min_pop  max_pop                       geometry</span>
-<span class="co">#&gt; 1 314375347  579679 38421464 MULTIPOLYGON (((-81.81169 2...</span></code></pre></div>
+                        <span class="dt">max_pop =</span> <span class="kw">max</span>(total_pop_<span class="dv">15</span>))</code></pre></div>
 <ol start="5" style="list-style-type: decimal">
 <li>How many states are in each region?</li>
 </ol>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">us_states <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">group_by</span>(REGION) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">summarize</span>(<span class="dt">nr_of_states =</span> <span class="kw">n</span>())
-<span class="co">#&gt; Simple feature collection with 4 features and 2 fields</span>
-<span class="co">#&gt; geometry type:  MULTIPOLYGON</span>
-<span class="co">#&gt; dimension:      XY</span>
-<span class="co">#&gt; bbox:           xmin: -124.7042 ymin: 24.55868 xmax: -66.9824 ymax: 49.38436</span>
-<span class="co">#&gt; epsg (SRID):    4269</span>
-<span class="co">#&gt; proj4string:    +proj=longlat +datum=NAD83 +no_defs</span>
-<span class="co">#&gt; # A tibble: 4 x 3</span>
-<span class="co">#&gt;   REGION   nr_of_states                                           geometry</span>
-<span class="co">#&gt;   &lt;fct&gt;           &lt;int&gt;                                 &lt;MULTIPOLYGON [°]&gt;</span>
-<span class="co">#&gt; 1 Norteast            9 (((-68.9446 44.11284, -68.82507 44.18634, -68.770…</span>
-<span class="co">#&gt; 2 Midwest            12 (((-89.2552 47.8761, -89.17915 47.93503, -88.8357…</span>
-<span class="co">#&gt; 3 South              17 (((-81.81169 24.56874, -81.74565 24.65988, -81.44…</span>
-<span class="co">#&gt; 4 West               11 (((-118.6055 33.031, -118.37 32.83927, -118.4963 …</span></code></pre></div>
+<span class="st">  </span><span class="kw">summarize</span>(<span class="dt">nr_of_states =</span> <span class="kw">n</span>())</code></pre></div>
 <ol start="6" style="list-style-type: decimal">
 <li>What was the minimum and maximum total population in 2015 in each region? What was the total population in 2015 in each region?</li>
 </ol>
@@ -433,39 +280,20 @@ us_states <span class="op">%&gt;%</span><span class="st"> </span><span class="kw
 <span class="st">  </span><span class="kw">group_by</span>(REGION) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">summarize</span>(<span class="dt">min_pop =</span> <span class="kw">min</span>(total_pop_<span class="dv">15</span>),
             <span class="dt">max_pop =</span> <span class="kw">max</span>(total_pop_<span class="dv">15</span>),
-            <span class="dt">tot_pop =</span> <span class="kw">sum</span>(total_pop_<span class="dv">15</span>))
-<span class="co">#&gt; Simple feature collection with 4 features and 4 fields</span>
-<span class="co">#&gt; geometry type:  MULTIPOLYGON</span>
-<span class="co">#&gt; dimension:      XY</span>
-<span class="co">#&gt; bbox:           xmin: -124.7042 ymin: 24.55868 xmax: -66.9824 ymax: 49.38436</span>
-<span class="co">#&gt; epsg (SRID):    4269</span>
-<span class="co">#&gt; proj4string:    +proj=longlat +datum=NAD83 +no_defs</span>
-<span class="co">#&gt; # A tibble: 4 x 5</span>
-<span class="co">#&gt;   REGION  min_pop  max_pop tot_pop                                geometry</span>
-<span class="co">#&gt;   &lt;fct&gt;     &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt;                      &lt;MULTIPOLYGON [°]&gt;</span>
-<span class="co">#&gt; 1 Nortea…  626604 19673174  5.60e7 (((-68.9446 44.11284, -68.82507 44.186…</span>
-<span class="co">#&gt; 2 Midwest  721640 12873761  6.75e7 (((-89.2552 47.8761, -89.17915 47.9350…</span>
-<span class="co">#&gt; 3 South    647484 26538614  1.19e8 (((-81.81169 24.56874, -81.74565 24.65…</span>
-<span class="co">#&gt; 4 West     579679 38421464  7.23e7 (((-118.6055 33.031, -118.37 32.83927,…</span></code></pre></div>
+            <span class="dt">tot_pop =</span> <span class="kw">sum</span>(total_pop_<span class="dv">15</span>))</code></pre></div>
 <!-- Attribute joining -->
 <ol start="7" style="list-style-type: decimal">
 <li>Add variables from <code>us_states_df</code> to <code>us_states</code> and create a new object called <code>us_states_stats</code>. What is the best function to do it? Which variable is the key in the both datasets? What is the class of a new object?</li>
 </ol>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">us_states_stats =<span class="st"> </span>us_states <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">left_join</span>(us_states_df, <span class="dt">by =</span> <span class="kw">c</span>(<span class="st">"NAME"</span> =<span class="st"> "state"</span>))
-<span class="kw">class</span>(us_states_stats)
-<span class="co">#&gt; [1] "sf"         "data.frame"</span></code></pre></div>
+<span class="kw">class</span>(us_states_stats)</code></pre></div>
 <ol start="8" style="list-style-type: decimal">
 <li>
 <code>us_states_df</code> has two more variables than <code>us_states</code>. How you can find them?</li>
 </ol>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">us_states_df <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">anti_join</span>(us_states, <span class="dt">by =</span> <span class="kw">c</span>(<span class="st">"state"</span> =<span class="st"> "NAME"</span>))
-<span class="co">#&gt; # A tibble: 2 x 5</span>
-<span class="co">#&gt;   sta… median_income_10 median_income_15 poverty_level_10 poverty_level_15</span>
-<span class="co">#&gt;   &lt;ch&gt;            &lt;dbl&gt;            &lt;dbl&gt;            &lt;dbl&gt;            &lt;dbl&gt;</span>
-<span class="co">#&gt; 1 Ala…            29509            31455            64245            72957</span>
-<span class="co">#&gt; 2 Haw…            29945            31051           124627           153944</span></code></pre></div>
+<span class="st">  </span><span class="kw">anti_join</span>(us_states, <span class="dt">by =</span> <span class="kw">c</span>(<span class="st">"state"</span> =<span class="st"> "NAME"</span>))</code></pre></div>
 <!-- Attribute creation -->
 <ol start="9" style="list-style-type: decimal">
 <li>What was the population density in 2015 in each state? What was the population density in 2010 in each state?</li>
@@ -478,81 +306,12 @@ us_states <span class="op">%&gt;%</span><span class="st"> </span><span class="kw
 </ol>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">us_states2 <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">mutate</span>(<span class="dt">pop_dens_diff_10_15 =</span> pop_dens_<span class="dv">15</span> <span class="op">-</span><span class="st"> </span>pop_dens_<span class="dv">10</span>,
-         <span class="dt">pop_dens_diff_10_15p =</span> (pop_dens_diff_10_<span class="dv">15</span><span class="op">/</span>pop_dens_<span class="dv">15</span>) <span class="op">*</span><span class="st"> </span><span class="dv">100</span>)
-<span class="co">#&gt; Simple feature collection with 49 features and 10 fields</span>
-<span class="co">#&gt; geometry type:  MULTIPOLYGON</span>
-<span class="co">#&gt; dimension:      XY</span>
-<span class="co">#&gt; bbox:           xmin: -124.7042 ymin: 24.55868 xmax: -66.9824 ymax: 49.38436</span>
-<span class="co">#&gt; epsg (SRID):    4269</span>
-<span class="co">#&gt; proj4string:    +proj=longlat +datum=NAD83 +no_defs</span>
-<span class="co">#&gt; First 10 features:</span>
-<span class="co">#&gt;    GEOID        NAME   REGION           AREA total_pop_10 total_pop_15</span>
-<span class="co">#&gt; 1     01     Alabama    South 133709.27 km^2      4712651      4830620</span>
-<span class="co">#&gt; 2     04     Arizona     West 295281.25 km^2      6246816      6641928</span>
-<span class="co">#&gt; 3     08    Colorado     West 269573.06 km^2      4887061      5278906</span>
-<span class="co">#&gt; 4     09 Connecticut Norteast  12976.59 km^2      3545837      3593222</span>
-<span class="co">#&gt; 5     12     Florida    South 151052.01 km^2     18511620     19645772</span>
-<span class="co">#&gt; 6     13     Georgia    South 152725.21 km^2      9468815     10006693</span>
-<span class="co">#&gt; 7     16       Idaho     West 216512.66 km^2      1526797      1616547</span>
-<span class="co">#&gt; 8     18     Indiana  Midwest  93648.40 km^2      6417398      6568645</span>
-<span class="co">#&gt; 9     20      Kansas  Midwest 213037.08 km^2      2809329      2892987</span>
-<span class="co">#&gt; 10    22   Louisiana    South 122345.76 km^2      4429940      4625253</span>
-<span class="co">#&gt;          pop_dens_15       pop_dens_10 pop_dens_diff_10_15</span>
-<span class="co">#&gt; 1   36.127786 1/km^2  35.245506 1/km^2    0.8822799 1/km^2</span>
-<span class="co">#&gt; 2   22.493565 1/km^2  21.155478 1/km^2    1.3380870 1/km^2</span>
-<span class="co">#&gt; 3   19.582469 1/km^2  18.128893 1/km^2    1.4535763 1/km^2</span>
-<span class="co">#&gt; 4  276.900364 1/km^2 273.248788 1/km^2    3.6515761 1/km^2</span>
-<span class="co">#&gt; 5  130.059657 1/km^2 122.551303 1/km^2    7.5083545 1/km^2</span>
-<span class="co">#&gt; 6   65.520897 1/km^2  61.999029 1/km^2    3.5218677 1/km^2</span>
-<span class="co">#&gt; 7    7.466293 1/km^2   7.051768 1/km^2    0.4145254 1/km^2</span>
-<span class="co">#&gt; 8   70.141565 1/km^2  68.526513 1/km^2    1.6150517 1/km^2</span>
-<span class="co">#&gt; 9   13.579734 1/km^2  13.187042 1/km^2    0.3926922 1/km^2</span>
-<span class="co">#&gt; 10  37.804767 1/km^2  36.208365 1/km^2    1.5964018 1/km^2</span>
-<span class="co">#&gt;    pop_dens_diff_10_15p                       geometry</span>
-<span class="co">#&gt; 1            2.442109 1 MULTIPOLYGON (((-88.20006 3...</span>
-<span class="co">#&gt; 2            5.948755 1 MULTIPOLYGON (((-114.7196 3...</span>
-<span class="co">#&gt; 3            7.422845 1 MULTIPOLYGON (((-109.0501 4...</span>
-<span class="co">#&gt; 4            1.318733 1 MULTIPOLYGON (((-73.48731 4...</span>
-<span class="co">#&gt; 5            5.773008 1 MULTIPOLYGON (((-81.81169 2...</span>
-<span class="co">#&gt; 6            5.375182 1 MULTIPOLYGON (((-85.60516 3...</span>
-<span class="co">#&gt; 7            5.551957 1 MULTIPOLYGON (((-116.916 45...</span>
-<span class="co">#&gt; 8            2.302560 1 MULTIPOLYGON (((-87.52404 4...</span>
-<span class="co">#&gt; 9            2.891752 1 MULTIPOLYGON (((-102.0517 4...</span>
-<span class="co">#&gt; 10           4.222753 1 MULTIPOLYGON (((-92.01783 2...</span></code></pre></div>
+         <span class="dt">pop_dens_diff_10_15p =</span> (pop_dens_diff_10_<span class="dv">15</span><span class="op">/</span>pop_dens_<span class="dv">15</span>) <span class="op">*</span><span class="st"> </span><span class="dv">100</span>)</code></pre></div>
 <ol start="11" style="list-style-type: decimal">
 <li>Change the columns names in <code>us_states</code> to lowercase. Try to use two helper functions - <code>tolower()</code> and <code>colnames()</code>.</li>
 </ol>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">us_states <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">set_names</span>(<span class="kw">tolower</span>(<span class="kw">colnames</span>(.)))
-<span class="co">#&gt; Simple feature collection with 49 features and 6 fields</span>
-<span class="co">#&gt; geometry type:  MULTIPOLYGON</span>
-<span class="co">#&gt; dimension:      XY</span>
-<span class="co">#&gt; bbox:           xmin: -124.7042 ymin: 24.55868 xmax: -66.9824 ymax: 49.38436</span>
-<span class="co">#&gt; epsg (SRID):    4269</span>
-<span class="co">#&gt; proj4string:    +proj=longlat +datum=NAD83 +no_defs</span>
-<span class="co">#&gt; First 10 features:</span>
-<span class="co">#&gt;    geoid        name   region           area total_pop_10 total_pop_15</span>
-<span class="co">#&gt; 1     01     Alabama    South 133709.27 km^2      4712651      4830620</span>
-<span class="co">#&gt; 2     04     Arizona     West 295281.25 km^2      6246816      6641928</span>
-<span class="co">#&gt; 3     08    Colorado     West 269573.06 km^2      4887061      5278906</span>
-<span class="co">#&gt; 4     09 Connecticut Norteast  12976.59 km^2      3545837      3593222</span>
-<span class="co">#&gt; 5     12     Florida    South 151052.01 km^2     18511620     19645772</span>
-<span class="co">#&gt; 6     13     Georgia    South 152725.21 km^2      9468815     10006693</span>
-<span class="co">#&gt; 7     16       Idaho     West 216512.66 km^2      1526797      1616547</span>
-<span class="co">#&gt; 8     18     Indiana  Midwest  93648.40 km^2      6417398      6568645</span>
-<span class="co">#&gt; 9     20      Kansas  Midwest 213037.08 km^2      2809329      2892987</span>
-<span class="co">#&gt; 10    22   Louisiana    South 122345.76 km^2      4429940      4625253</span>
-<span class="co">#&gt;                          geometry</span>
-<span class="co">#&gt; 1  MULTIPOLYGON (((-88.20006 3...</span>
-<span class="co">#&gt; 2  MULTIPOLYGON (((-114.7196 3...</span>
-<span class="co">#&gt; 3  MULTIPOLYGON (((-109.0501 4...</span>
-<span class="co">#&gt; 4  MULTIPOLYGON (((-73.48731 4...</span>
-<span class="co">#&gt; 5  MULTIPOLYGON (((-81.81169 2...</span>
-<span class="co">#&gt; 6  MULTIPOLYGON (((-85.60516 3...</span>
-<span class="co">#&gt; 7  MULTIPOLYGON (((-116.916 45...</span>
-<span class="co">#&gt; 8  MULTIPOLYGON (((-87.52404 4...</span>
-<span class="co">#&gt; 9  MULTIPOLYGON (((-102.0517 4...</span>
-<span class="co">#&gt; 10 MULTIPOLYGON (((-92.01783 2...</span></code></pre></div>
+<span class="st">  </span><span class="kw">set_names</span>(<span class="kw">tolower</span>(<span class="kw">colnames</span>(.)))</code></pre></div>
 <!-- Mixed exercises -->
 <!-- combination of use of select, mutate, group_by, summarize, etc  -->
 <ol start="12" style="list-style-type: decimal">
@@ -560,25 +319,7 @@ us_states <span class="op">%&gt;%</span><span class="st"> </span><span class="kw
 </ol>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">us_states <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">left_join</span>(us_states_df, <span class="dt">by =</span> <span class="kw">c</span>(<span class="st">"NAME"</span> =<span class="st"> "state"</span>)) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">select</span>(<span class="dt">Income =</span> median_income_<span class="dv">15</span>)
-<span class="co">#&gt; Simple feature collection with 49 features and 1 field</span>
-<span class="co">#&gt; geometry type:  MULTIPOLYGON</span>
-<span class="co">#&gt; dimension:      XY</span>
-<span class="co">#&gt; bbox:           xmin: -124.7042 ymin: 24.55868 xmax: -66.9824 ymax: 49.38436</span>
-<span class="co">#&gt; epsg (SRID):    4269</span>
-<span class="co">#&gt; proj4string:    +proj=longlat +datum=NAD83 +no_defs</span>
-<span class="co">#&gt; First 10 features:</span>
-<span class="co">#&gt;    Income                       geometry</span>
-<span class="co">#&gt; 1   22890 MULTIPOLYGON (((-88.20006 3...</span>
-<span class="co">#&gt; 2   26156 MULTIPOLYGON (((-114.7196 3...</span>
-<span class="co">#&gt; 3   30752 MULTIPOLYGON (((-109.0501 4...</span>
-<span class="co">#&gt; 4   33226 MULTIPOLYGON (((-73.48731 4...</span>
-<span class="co">#&gt; 5   24654 MULTIPOLYGON (((-81.81169 2...</span>
-<span class="co">#&gt; 6   25588 MULTIPOLYGON (((-85.60516 3...</span>
-<span class="co">#&gt; 7   23558 MULTIPOLYGON (((-116.916 45...</span>
-<span class="co">#&gt; 8   25834 MULTIPOLYGON (((-87.52404 4...</span>
-<span class="co">#&gt; 9   27315 MULTIPOLYGON (((-102.0517 4...</span>
-<span class="co">#&gt; 10  24014 MULTIPOLYGON (((-92.01783 2...</span></code></pre></div>
+<span class="st">  </span><span class="kw">select</span>(<span class="dt">Income =</span> median_income_<span class="dv">15</span>)</code></pre></div>
 <ol start="13" style="list-style-type: decimal">
 <li>Calculate the change in median income between 2010 and 2015 for each state. What was the minimum, average and maximum median income in 2015 for each region? What is the region with the largest increase of the median income?</li>
 </ol>
@@ -591,29 +332,17 @@ us_states <span class="op">%&gt;%</span><span class="st"> </span><span class="kw
             <span class="dt">max_income_change =</span> <span class="kw">max</span>(income_change)) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">filter</span>(mean_income_change <span class="op">==</span><span class="st"> </span><span class="kw">max</span>(mean_income_change)) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">pull</span>(REGION) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">as.character</span>()
-<span class="co">#&gt; [1] "Midwest"</span></code></pre></div>
+<span class="st">  </span><span class="kw">as.character</span>()</code></pre></div>
 <ol start="14" style="list-style-type: decimal">
 <li>Create a raster from scratch with nine rows and columns and a resolution of 0.5 decimal degrees (WGS84). Fill it with random numbers. Extract the values of the four corner cells.</li>
 </ol>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(raster)
-<span class="co">#&gt; Loading required package: sp</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Attaching package: 'raster'</span>
-<span class="co">#&gt; The following object is masked from 'package:dplyr':</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;     select</span>
-<span class="co">#&gt; The following object is masked from 'package:tidyr':</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;     extract</span>
 r =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/raster">raster</a></span>(<span class="dt">nrow =</span> <span class="dv">9</span>, <span class="dt">ncol =</span> <span class="dv">9</span>, <span class="dt">res =</span> <span class="fl">0.5</span>, <span class="dt">xmn =</span> <span class="dv">0</span>, <span class="dt">xmx =</span> <span class="fl">4.5</span>,
            <span class="dt">ymn =</span> <span class="dv">0</span>, <span class="dt">ymx =</span> <span class="fl">4.5</span>, <span class="dt">vals =</span> <span class="kw">rnorm</span>(<span class="dv">81</span>))
 <span class="co"># using cell IDs</span>
 r[<span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">9</span>, <span class="dv">81</span> <span class="op">-</span><span class="st"> </span><span class="dv">9</span>, <span class="dv">81</span>)]
-<span class="co">#&gt; [1] -0.5749813 -1.4142496 -0.5329899  0.6908083</span>
 <span class="co"># using indexing</span>
 r[<span class="kw">c</span>(<span class="dv">1</span>, <span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/ncell">nrow</a></span>(r)), <span class="kw">c</span>(<span class="dv">1</span>, <span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/ncell">ncol</a></span>(r))]
-<span class="co">#&gt; [1] -0.5749813 -1.4142496  0.3789361  0.6908083</span>
 <span class="co"># corresponds to [1, 1], [1, 9], [9, 1], [9, 9]</span></code></pre></div>
 <ol start="15" style="list-style-type: decimal">
 <li>What is the most common class of our example raster <code>grain</code> (hint: <code><a href="http://www.rdocumentation.org/packages/raster/topics/modal">modal()</a></code>)?</li>
@@ -625,11 +354,7 @@ grain =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentat
                              <span class="dt">levels =</span> grain_size))
 <span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/cellStats">cellStats</a></span>(grain, modal) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/factor">factorValues</a></span>(grain, .)
-<span class="co">#&gt;   VALUE</span>
-<span class="co">#&gt; 1  silt</span>
-<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/factor">factorValues</a></span>(grain, <span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/modal">modal</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/getValues">values</a></span>(grain)))
-<span class="co">#&gt;   VALUE</span>
-<span class="co">#&gt; 1  silt</span></code></pre></div>
+<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/factor">factorValues</a></span>(grain, <span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/modal">modal</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/getValues">values</a></span>(grain)))</code></pre></div>
 <ol start="16" style="list-style-type: decimal">
 <li>Plot the histogram and the boxplot of the <code>data(dem, package = "RQGIS")</code> raster.</li>
 </ol>
@@ -637,11 +362,12 @@ grain =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentat
 <span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))
 <span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/hist">hist</a></span>(dem)
 <span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/boxplot">boxplot</a></span>(dem)</code></pre></div>
-<p><img src="solutions_files/figure-html/unnamed-chunk-21-1.png" width="700"> 17. Now attach also <code>data(ndvi, package = "RQGIS")</code>. Create a raster stack using <code>dem</code> and <code>ndvi</code>, and make a <code><a href="http://www.rdocumentation.org/packages/raster/topics/pairs">pairs()</a></code> plot</p>
+<ol start="17" style="list-style-type: decimal">
+<li>Now attach also <code>data(ndvi, package = "RQGIS")</code>. Create a raster stack using <code>dem</code> and <code>ndvi</code>, and make a <code><a href="http://www.rdocumentation.org/packages/raster/topics/pairs">pairs()</a></code> plot</li>
+</ol>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(ndvi, <span class="dt">package =</span> <span class="st">"RQGIS"</span>)
 s =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/stack">stack</a></span>(dem, ndvi)
 <span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/pairs">pairs</a></span>(s)</code></pre></div>
-<p><img src="solutions_files/figure-html/unnamed-chunk-22-1.png" width="700"></p>
 </div>
 <div id="chapter-4" class="section level1">
 <h1 class="hasAnchor">
@@ -652,13 +378,6 @@ s =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(classInt)
 <span class="kw">data</span>(dem, <span class="dt">package =</span> <span class="st">"RQGIS"</span>)
 <span class="kw">summary</span>(dem)
-<span class="co">#&gt;          dem</span>
-<span class="co">#&gt; Min.     238</span>
-<span class="co">#&gt; 1st Qu.  366</span>
-<span class="co">#&gt; Median   478</span>
-<span class="co">#&gt; 3rd Qu.  748</span>
-<span class="co">#&gt; Max.    1094</span>
-<span class="co">#&gt; NA's       0</span>
 <span class="co"># find quantile breaks</span>
 brk =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/classInt/topics/classIntervals">classIntervals</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/getValues">values</a></span>(dem), <span class="dt">n =</span> <span class="dv">3</span>)<span class="op">$</span>brk
 <span class="co"># also try</span>
@@ -669,11 +388,7 @@ rcl =<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">c<
 <span class="co"># reclassify altitudinal raster</span>
 recl =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/reclassify">reclassify</a></span>(dem, <span class="dt">rcl =</span> rcl)
 <span class="co"># compute the mean dem and ndvi values for each class</span>
-<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/zonal">zonal</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/stack">stack</a></span>(dem, ndvi), recl, <span class="dt">fun =</span> <span class="st">"mean"</span>)
-<span class="co">#&gt;      zone      dem       ndvi</span>
-<span class="co">#&gt; [1,]    1 329.7571 -0.3473349</span>
-<span class="co">#&gt; [2,]    2 492.8862 -0.1311101</span>
-<span class="co">#&gt; [3,]    3 846.9908 -0.2944226</span></code></pre></div>
+<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/zonal">zonal</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/stack">stack</a></span>(dem, ndvi), recl, <span class="dt">fun =</span> <span class="st">"mean"</span>)</code></pre></div>
 <ol start="5" style="list-style-type: decimal">
 <li>Apply a line detection filter to <code>data(dem, package = "RQGIS")</code>.</li>
 </ol>
@@ -683,14 +398,6 @@ recl =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentati
 <span class="co"># compute the Sobel filter</span>
 <span class="co"># check if there are NAs</span>
 <span class="kw">is.na</span>(dem)  <span class="co"># just 0s, so no NAs</span>
-<span class="co">#&gt; class       : RasterLayer </span>
-<span class="co">#&gt; dimensions  : 117, 117, 13689  (nrow, ncol, ncell)</span>
-<span class="co">#&gt; resolution  : 30.85, 30.85  (x, y)</span>
-<span class="co">#&gt; extent      : 794599.1, 798208.6, 8931775, 8935384  (xmin, xmax, ymin, ymax)</span>
-<span class="co">#&gt; coord. ref. : +proj=utm +zone=17 +south +ellps=WGS84 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs </span>
-<span class="co">#&gt; data source : in memory</span>
-<span class="co">#&gt; names       : layer </span>
-<span class="co">#&gt; values      : 0, 0  (min, max)</span>
 sobel =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/focal">focal</a></span>(dem, <span class="dt">w =</span> <span class="kw">matrix</span>(<span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="op">-</span><span class="dv">1</span>, <span class="op">-</span><span class="dv">2</span>, <span class="op">-</span><span class="dv">1</span>) <span class="op">/</span><span class="st"> </span><span class="dv">4</span>, <span class="dt">nrow =</span> <span class="dv">3</span>))
 <span class="co"># CHECK IF THIS IS CORRECT</span></code></pre></div>
 <ol start="6" style="list-style-type: decimal">
@@ -703,8 +410,7 @@ ndvi =<span class="st"> </span>(r[[<span class="st">"landsat.4"</span>]] <span c
 <span class="co"># compute NDVI with the help of RStoolbox</span>
 <span class="kw">library</span>(RStoolbox)
 ndvi_rstoolbox =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/RStoolbox/topics/spectralIndices">spectralIndices</a></span>(r, <span class="dt">red =</span> <span class="dv">3</span>, <span class="dt">nir =</span> <span class="dv">4</span>, <span class="dt">indices =</span> <span class="st">"NDVI"</span>)
-<span class="kw">all.equal</span>(ndvi, ndvi_rstoolbox)
-<span class="co">#&gt; [1] TRUE</span></code></pre></div>
+<span class="kw">all.equal</span>(ndvi, ndvi_rstoolbox)</code></pre></div>
 <ol start="7" style="list-style-type: decimal">
 <li>This <a href="https://stackoverflow.com/questions/35555709/global-raster-of-geographic-distances">post</a> shows how to use <code><a href="http://www.rdocumentation.org/packages/raster/topics/distance">raster::distance()</a></code>. Extract Spain, calculate a distance raster and weight it with elevation. Finally, compute the difference between the raster using the euclidean distance and the raster weighted by elevation. (Hint: Have a look at <code><a href="http://www.rdocumentation.org/packages/raster/topics/getData">getData()</a></code> to retrieve a digital elevation model for Spain.)</li>
 </ol>

@@ -1,11 +1,12 @@
 pandoc: 1.19.2.1
-pkgdown: 1.1.0
-pkgdown_sha: ~
+pkgdown: 1.1.0.9000
+pkgdown_sha: b2798656f04ce282edea3e12734ba5588c6acd6e
 articles:
   algorithm: algorithm.html
+  benchmark: benchmark.html
+  cast: cast.html
   erum-2018: erum-2018.html
   join: join.html
   linevia: linevia.html
-  sea-level-rise: sea-level-rise.html
   solutions: solutions.html
 
