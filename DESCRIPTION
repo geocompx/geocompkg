@@ -39,6 +39,7 @@ Imports:
     RPostgreSQL,
     RQGIS,
     RSAGA,
+    RStoolbox,
     sf,
     sp,
     spData,
