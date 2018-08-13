@@ -1,12 +1,24 @@
 ---
-title: "Different pathways using st_cast"
-output: 
-  html_document: 
-    code_folding: show
-    fig_height: 7
-    number_sections: yes
-    toc: yes
+title: "Casting Geometries Extended"
+author: "Robin Lovelace, Jakub Nowosad, Jannes Muenchow"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{geocompr-casting}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
+
+<!-- Old header (commented by RL) -->
+<!-- --- -->
+<!-- title: "Different pathways using st_cast" -->
+<!-- output:  -->
+<!--   html_document:  -->
+<!--     code_folding: show -->
+<!--     fig_height: 7 -->
+<!--     number_sections: yes -->
+<!--     toc: yes -->
+<!-- --- -->
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)

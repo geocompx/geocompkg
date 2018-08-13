@@ -1,3 +1,14 @@
+---
+title: "Extended Exercise: Sea Level Rise"
+author: "Robin Lovelace, Jakub Nowosad, Jannes Muenchow"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{geocompr-slr}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
 # Geocomputation for sea level research
 
 Sea level rise (SLR) is a worldwide phenemona with major implications for human civilisation.
@@ -7,3 +18,5 @@ These imacts are exacerbated by climate change, adding an element of uncertainty
 All these features of SLR make it well-suited to analysis using geocomputation.
 
 ## Exercises
+
+1. Use your geocompuational skills to create a reproducible study of the spatial distribution of the impacts of sea level rise, based on assumptions of 2m, 10m and a worst-case 50m scenario of change.
