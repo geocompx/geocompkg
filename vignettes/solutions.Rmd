@@ -105,39 +105,39 @@ Assign random values between 0 and 10 to the new raster and plot it.
 <!-- Attribute subsetting -->
 1. Select only the `NAME` column in `us_states` and create a new object called `us_states_name`. 
 What is the class of the new object? <!--why there is a "sf" part? -->
-```{r}
+```{r, eval=FALSE}
 us_states_name = us_states %>% dplyr::select(NAME)
 class(us_states_name)
 ```
 2. Select columns which contain information about a total population.
 Think about as many ways as possible to do it. 
 Hint: try to use helper functions, such as `contains` or `starts_with`.
-```{r}
+```{r, eval=FALSE}
 us_states %>% select(total_pop_10, total_pop_15)
 ```
-```{r}
+```{r, eval=FALSE}
 us_states %>% select(starts_with("total_pop"))
 ```
-```{r}
+```{r, eval=FALSE}
 us_states %>% select(contains("total_pop"))
 ```
 3. Find all states that:
 - Belongs to the Midwest region
-```{r}
+```{r, eval=FALSE}
 us_states %>% filter(total_pop_15 < 750000)
 ```
 - Had a total population in 2015 lower than 750,000 residents
-```{r}
+```{r, eval=FALSE}
 us_states %>% filter(total_pop_15 < 750000)
 ```
 - Belongs to the West region, had an area smaller than 250,000 km^2^ and total population in 2015 larger than 5,000,000 residents
-```{r}
+```{r, eval=FALSE}
 us_states %>% filter(REGION == "West", AREA < units::set_units(250000, km^2),total_pop_15 > 5000000)
 # or
 us_states %>% filter(REGION == "West", as.numeric(AREA) < 250000,total_pop_15 > 5000000)
 ```
 - Belongs to the South region, had an area larger than 150,000 km^2^ or total population in 2015 larger than 7,000,000 residents
-```{r}
+```{r, eval=FALSE}
 us_states %>% filter(REGION == "South", AREA > units::set_units(150000, km^2), total_pop_15 > 7000000)
 # or
 us_states %>% filter(REGION == "South", as.numeric(AREA) > 150000, total_pop_15 > 7000000)
@@ -145,19 +145,19 @@ us_states %>% filter(REGION == "South", as.numeric(AREA) > 150000, total_pop_15 
 <!-- 4. Exercises about additional select and filter helper functions (one_of; between, is.na, near, etc.) -->
 <!-- Attribute aggregation -->
 4. What was the total population in 2015 in the `us_states` database? What was the minimum and maximum total population in 2015?
-```{r}
+```{r, eval=FALSE}
 us_states %>% summarize(total_pop = sum(total_pop_15),
                         min_pop = min(total_pop_15),
                         max_pop = max(total_pop_15))
 ```
 5. How many states are in each region?
-```{r}
+```{r, eval=FALSE}
 us_states %>%
   group_by(REGION) %>%
   summarize(nr_of_states = n())
 ```
 6. What was the minimum and maximum total population in 2015 in each region? What was the total population in 2015 in each region?
-```{r}
+```{r, eval=FALSE}
 us_states %>%
   group_by(REGION) %>%
   summarize(min_pop = min(total_pop_15),
@@ -166,44 +166,44 @@ us_states %>%
 ```
 <!-- Attribute joining -->
 7. Add variables from `us_states_df` to `us_states` and create a new object called `us_states_stats`. What is the best function to do it? Which variable is the key in the both datasets? What is the class of a new object?
-```{r}
+```{r, eval=FALSE}
 us_states_stats = us_states %>%
   left_join(us_states_df, by = c("NAME" = "state"))
 class(us_states_stats)
 ```
 8. `us_states_df` has two more variables than `us_states`. How you can find them?
-```{r}
+```{r, eval=FALSE}
 us_states_df %>%
   anti_join(us_states, by = c("state" = "NAME"))
 ```
 <!-- Attribute creation -->
 9. What was the population density in 2015 in each state? What was the population density in 2010 in each state?
-```{r}
+```{r, eval=FALSE}
 us_states2 = us_states %>%
   mutate(pop_dens_15 = total_pop_15/AREA,
          pop_dens_10 = total_pop_10/AREA)
 ```
 10. How much the population density changed between 2010 and 2015 in each state? Calculate the change in percentages.
-```{r}
+```{r, eval=FALSE}
 us_states2 %>%
   mutate(pop_dens_diff_10_15 = pop_dens_15 - pop_dens_10,
          pop_dens_diff_10_15p = (pop_dens_diff_10_15/pop_dens_15) * 100)
 ```
 11. Change the columns names in `us_states` to lowercase. Try to use two helper functions - `tolower()` and `colnames()`.
-```{r}
+```{r, eval=FALSE}
 us_states %>%
   set_names(tolower(colnames(.)))
 ```
 <!-- Mixed exercises -->
 <!-- combination of use of select, mutate, group_by, summarize, etc  -->
 12. Using `us_states` and `us_states_df` create a new object called `us_states_sel`. The new object should have only two variables - `median_income_15` and `geometry`. Change the name of the `median_income_15` column to `Income`.
-```{r}
+```{r, eval=FALSE}
 us_states %>%
   left_join(us_states_df, by = c("NAME" = "state")) %>%
   select(Income = median_income_15)
 ```
 13. Calculate the change in median income between 2010 and 2015 for each state. What was the minimum, average and maximum median income in 2015 for each region? What is the region with the largest increase of the median income?
-```{r}
+```{r, eval=FALSE}
 us_states %>%
   left_join(us_states_df, by = c("NAME" = "state")) %>%
   mutate(income_change = median_income_15 - median_income_10) %>%
@@ -219,7 +219,7 @@ us_states %>%
 14. Create a raster from scratch with nine rows and columns and a resolution of 0.5 decimal degrees (WGS84).
 Fill it with random numbers.
 Extract the values of the four corner cells. 
-```{r}
+```{r, eval=FALSE}
 library(raster)
 r = raster(nrow = 9, ncol = 9, res = 0.5, xmn = 0, xmx = 4.5,
            ymn = 0, ymx = 4.5, vals = rnorm(81))
@@ -230,7 +230,7 @@ r[c(1, nrow(r)), c(1, ncol(r))]
 # corresponds to [1, 1], [1, 9], [9, 1], [9, 9]
 ```
 15. What is the most common class of our example raster `grain` (hint: `modal()`)?
-```{r}
+```{r, eval=FALSE}
 grain_size = c("clay", "silt", "sand")
 grain = raster(nrow = 6, ncol = 6, res = 0.5, 
                xmn = -1.5, xmx = 1.5, ymn = -1.5, ymx = 1.5,
@@ -241,7 +241,7 @@ cellStats(grain, modal) %>%
 factorValues(grain, modal(values(grain)))
 ```
 16. Plot the histogram and the boxplot of the `data(dem, package = "RQGIS")` raster. 
-```{r}
+```{r, eval=FALSE}
 data(dem, package = "RQGIS")
 par(mfrow = c(1, 2))
 hist(dem)
@@ -249,7 +249,7 @@ boxplot(dem)
 ```
 17. Now attach also `data(ndvi, package = "RQGIS")`. 
 Create a raster stack using `dem` and `ndvi`, and make a `pairs()` plot
-```{r}
+```{r, eval=FALSE}
 data(ndvi, package = "RQGIS")
 s = stack(dem, ndvi)
 pairs(s)
@@ -259,7 +259,7 @@ pairs(s)
 
 4. Use `data(dem, package = "RQGIS")`, and reclassify the elevation in three classes: low, middle and high.
 Secondly, compute the NDVI (`data(ndvi, package = "RQGIS")`) and the mean elevation for each altitudinal class.
-```{r}
+```{r, eval=FALSE}
 library(classInt)
 data(dem, package = "RQGIS")
 summary(dem)
@@ -277,7 +277,7 @@ zonal(stack(dem, ndvi), recl, fun = "mean")
 ```
 
 5. Apply a line detection filter to `data(dem, package = "RQGIS")`.
-```{r}
+```{r, eval=FALSE}
 # from the focal help page:
 # Laplacian filter: filter=matrix(c(0,1,0,1,-4,1,0,1,0), nrow=3)
 # Sobel filter: filter=matrix(c(1,2,1,0,0,0,-1,-2,-1) / 4, nrow=3)
@@ -290,7 +290,7 @@ sobel = focal(dem, w = matrix(c(1, 2, 1, 0, 0, 0, -1, -2, -1) / 4, nrow = 3))
 
 6. Calculate the NDVI of a Landsat image. 
 Use the Landsat image provided by the **spDataLarge** package (`system.file("raster/landsat.tif", package="spDataLarge")`).
-```{r}
+```{r, eval=FALSE}
 file = system.file("raster/landsat.tif", package="spDataLarge")
 r = stack(file)
 # compute NDVI manually
