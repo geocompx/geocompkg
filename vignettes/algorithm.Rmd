@@ -1,0 +1,69 @@
+---
+title: "Algorithms Extended"
+author: "Robin Lovelace"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{algorithms-extended}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+This vignette provides some further detail on the chapter Scripts, algorithms and functions (see https://geocompr.robinlovelace.net/algorithms.html ).
+It starts with the same input data:
+
+```{r}
+x_coords = c(10, 0, 0, 12, 20, 10)
+y_coords = c(0, 0, 10, 20, 15, 0)
+poly_mat = cbind(x_coords, y_coords)
+O = poly_mat[1, ] # create a point representing the origin
+T1 = rbind(O, poly_mat[2:3, ], O) # create 'triangle matrix'
+C1 = (T1[1, ] + T1[2, ] + T1[3, ]) / 3 # find centroid
+```
+
+```{r}
+t_area = function(x) {
+  abs(
+    x[1, 1] * (x[2, 2] - x[3, 2]) +
+    x[2, 1] * (x[3, 2] - x[1, 2]) +
+    x[3, 1] * (x[1, 2] - x[2, 2])
+  ) / 2
+}
+```
+
+The function `t_area` generalizes the solution by taking any object `x`, assumed to have the same dimensions as the triangle represented in `T1`.
+We can verify it works on the triangle matrix `T1` as follows:
+
+```{r}
+t_area(T1)
+```
+
+Likewise we can create a function that finds the triangle's centroid:
+
+```{r}
+t_centroid = function(x) {
+  (x[1, ] + x[2, ] + x[3, ]) / 3
+}
+t_centroid(T1)
+```
+
+The next stage is to create the second triangle and calculate its area and centroid.
+This is done in the code chunk below, which binds the 3^rd^ and 4^th^ coordinates onto the 1^st^, and uses the same functions we created above to calculate its area and width:
+
+```{r}
+T2 = rbind(O, poly_mat[3:4, ], O)
+A2 = t_area(T2)
+C2 = t_centroid(T2)
+```
+
+From this point it is not a big leap to see how to create the 3^rd^ and final triangle that constitutes the polygon represented by `poly_mat`.
+
+Note: it would also be possible to create the polygons with the **decido** package (code not run):
+
+```{r, eval=FALSE}
+ind = decido::earcut(poly_mat)
+decido::plot_ears(poly_mat, idx = ind)
+i = seq(1, length(ind), by = 3)
+i_list = purrr::map(i, ~c(.:(.+2), .))
+T_all = purrr::map(i_list, ~poly_mat[ind[.], ])
+```
