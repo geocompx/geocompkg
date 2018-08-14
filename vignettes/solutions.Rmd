@@ -290,6 +290,7 @@ sobel = focal(dem, w = matrix(c(1, 2, 1, 0, 0, 0, -1, -2, -1) / 4, nrow = 3))
 
 6. Calculate the NDVI of a Landsat image. 
 Use the Landsat image provided by the **spDataLarge** package (`system.file("raster/landsat.tif", package="spDataLarge")`).
+
 ```{r, eval=FALSE}
 file = system.file("raster/landsat.tif", package="spDataLarge")
 r = stack(file)
