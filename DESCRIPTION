@@ -1,5 +1,5 @@
 Package: geocompkg
-Title: Geocomputation with R solutions and extensions
+Title: Geocomputation with R metapackage with solutions and extensions
 Version: 0.0.66
 Authors@R: c(person("Robin", "Lovelace", role = c("aut")), 
     person("Jakub", "Nowosad", email = "nowosad.jakub@gmail.com",
@@ -51,9 +51,7 @@ Imports:
     tmaptools,
     vegan
 Remotes:
-    nowosad/spData,
-    jannes-m/RQGIS
-Additional_repositories: https://nowosad.github.io/drat
+    nowosad/spDataLarge,
 URL: https://github.com/geocompr/geocompkg
 BugReports: https://github.com/Robinlovelace/geocompr/issues
 LazyData: TRUE
