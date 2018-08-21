@@ -13,7 +13,7 @@ This vignette demonstrates some subtleties of spatial subsetting of `sf` objects
 
 The starting point is to load necessary packages:
 
-```{r}
+```{r, message=FALSE}
 library(sf)
 library(spData)
 library(tidyverse)
