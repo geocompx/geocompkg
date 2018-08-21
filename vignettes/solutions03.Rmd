@@ -38,13 +38,13 @@ class(us_states_name)
 Think about as many ways as possible to do it. 
 Hint: try to use helper functions, such as `contains` or `starts_with`.
 ```{r}
-us_states %>% select(total_pop_10, total_pop_15)
+us_states %>% dplyr::select(total_pop_10, total_pop_15)
 ```
 ```{r}
-us_states %>% select(starts_with("total_pop"))
+us_states %>% dplyr::select(starts_with("total_pop"))
 ```
 ```{r}
-us_states %>% select(contains("total_pop"))
+us_states %>% dplyr::select(contains("total_pop"))
 ```
 3. Find all states that:
 - Belongs to the Midwest region
@@ -125,7 +125,7 @@ us_states %>%
 ```{r}
 us_states %>%
   left_join(us_states_df, by = c("NAME" = "state")) %>%
-  select(Income = median_income_15)
+  dplyr::select(Income = median_income_15)
 ```
 13. Calculate the change in median income between 2010 and 2015 for each state. What was the minimum, average and maximum median income in 2015 for each region? What is the region with the largest increase of the median income?
 ```{r}
