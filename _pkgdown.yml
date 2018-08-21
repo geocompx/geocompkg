@@ -12,7 +12,20 @@ articles:
     desc: >
       This vignette provides solutions for the exercises from Geocomputation with R
     contents:
-      - solutions
+      - solutions01
+      - solutions02
+      - solutions03
+      - solutions04
+      - solutions05
+      - solutions06
+      - solutions07
+      - solutions08
+      - solutions09
+      - solutions10
+      - solutions11
+      - solutions12
+      - solutions13
+      - solutions14
   - title: "Extended examples"
     desc: >
       These vignettes provide extended examples for several methods and functions mentioned in Geocomputation with R
