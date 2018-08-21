@@ -104,10 +104,9 @@
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">nigeria =<span class="st"> </span>world[world<span class="op">$</span>name_long <span class="op">==</span><span class="st"> "Nigeria"</span>, ]
 africa =<span class="st"> </span>world[world<span class="op">$</span>continent <span class="op">==</span><span class="st"> "Africa"</span>, ]
 bb_africa =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_bbox">st_bbox</a></span>(africa)
-<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(africa[<span class="dv">2</span>], <span class="dt">col =</span> <span class="st">"white"</span>, <span class="dt">lwd =</span> <span class="dv">3</span>, <span class="dt">main =</span> <span class="st">"Nigeria in context"</span>, <span class="dt">border =</span> <span class="st">"lightgrey"</span>)
-<span class="co"># plot(world, lty = 3, add = TRUE, border = "grey")</span>
-<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(world, <span class="dt">add =</span> <span class="ot">TRUE</span>, <span class="dt">border =</span> <span class="st">"grey"</span>)
-<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(nigeria, <span class="dt">col =</span> <span class="st">"yellow"</span>, <span class="dt">add =</span> <span class="ot">TRUE</span>, <span class="dt">border =</span> <span class="st">"darkgrey"</span>)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(africa), <span class="dt">col =</span> <span class="st">"white"</span>, <span class="dt">lwd =</span> <span class="dv">3</span>, <span class="dt">main =</span> <span class="st">"Nigeria in context"</span>, <span class="dt">border =</span> <span class="st">"lightgrey"</span>)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(world), <span class="dt">lty =</span> <span class="dv">3</span>, <span class="dt">add =</span> <span class="ot">TRUE</span>, <span class="dt">border =</span> <span class="st">"grey"</span>)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(nigeria), <span class="dt">col =</span> <span class="st">"yellow"</span>, <span class="dt">add =</span> <span class="ot">TRUE</span>, <span class="dt">border =</span> <span class="st">"darkgrey"</span>)
 ncentre =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/geos_unary">st_centroid</a></span>(nigeria)
 ncentre_num =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_coordinates">st_coordinates</a></span>(ncentre)
 <span class="kw">text</span>(<span class="dt">x =</span> ncentre_num[<span class="dv">1</span>], <span class="dt">y =</span> ncentre_num[<span class="dv">2</span>], <span class="dt">labels =</span> <span class="st">"Nigeria"</span>)</code></pre></div>
@@ -151,14 +150,9 @@ Map of Nigeria in context illustrating sf’s plotting capabilities
 <!-- raster exercises --><ol start="5" style="list-style-type: decimal">
 <li>Read the <code>raster/nlcd2011.tif</code> file from the <strong>spDataLarge</strong> package. What kind of information can you get about the properties of this file? <!-- (crs, ncols, nrow, ncells, bbox, navalues) -->
 </li>
-<li><p>Create an empty <code>RasterLayer</code> object called <code>my_raster</code> with 10 columns and 10 rows, and resolution of 10 units. Assign random values between 0 and 10 to the new raster and plot it. <!-- crs exercises --> <!-- 1. pros and cons of the projection types --> <!-- 1. what's the difference between vector and raster transformation --> <!-- units exercises --> <!-- 1. ?? --></p></li>
-<li><p>Exercise 3 <!--missing title--></p></li>
+<li>Create an empty <code>RasterLayer</code> object called <code>my_raster</code> with 10 columns and 10 rows, and resolution of 10 units. Assign random values between 0 and 10 to the new raster and plot it. <!-- crs exercises --> <!-- 1. pros and cons of the projection types --> <!-- 1. what's the difference between vector and raster transformation --> <!-- units exercises --> <!-- 1. ?? -->
+</li>
 </ol>
-<ul>
-<li>What does the <code>lwd</code> argument do in the <code><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot()</a></code> code that generates Figure @ref(fig:africa).</li>
-<li>Perform the same operations and map making for another continent of your choice.</li>
-<li>Bonus: Download some global geographic data and add attribute variables assigning them to the continents of the world.</li>
-</ul>
 </div>
   </div>
 

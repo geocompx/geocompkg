@@ -73,6 +73,7 @@
 
     
     
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">knitr<span class="op">::</span>opts_chunk<span class="op">$</span><span class="kw">set</span>(<span class="dt">collapse =</span> <span class="ot">TRUE</span>, <span class="dt">comment =</span> <span class="st">"#&gt;"</span>)</code></pre></div>
 <div id="prerequisites" class="section level2 unnumbered">
 <h2 class="hasAnchor">
 <a href="#prerequisites" class="anchor"></a>Prerequisites</h2>
@@ -84,6 +85,55 @@
 <div id="chapter-6" class="section level1">
 <h1 class="hasAnchor">
 <a href="#chapter-6" class="anchor"></a>Chapter 6</h1>
+<!-- CRS CONVERSION -->
+<!-- 1. vector reprojection exercise (e.g. modification of proj4) -->
+<ol style="list-style-type: decimal">
+<li>Create a new object called <code>nz_wgs</code> by transforming <code>nz</code> object into the WGS84 CRS.
+<ul>
+<li>Create an object of class <code>crs</code> for both and use this to query their CRSs.</li>
+<li>With reference to the bounding box of each object, what units does each CRS use?</li>
+<li>Remove the CRS from <code>nz_wgs</code> and plot the result: what is wrong with this map of New Zealand and why?</li>
+</ul>
+</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_crs">st_crs</a></span>(nz)
+nz_wgs =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_transform">st_transform</a></span>(nz, <span class="dv">4326</span>)
+nz_crs =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_crs">st_crs</a></span>(nz)
+nz_wgs_crs =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_crs">st_crs</a></span>(nz_wgs)
+nz_crs<span class="op">$</span>epsg
+nz_wgs_crs<span class="op">$</span>epsg
+<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_bbox">st_bbox</a></span>(nz)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_bbox">st_bbox</a></span>(nz_wgs)
+nz_wgs_NULL_crs =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_crs">st_set_crs</a></span>(nz_wgs, <span class="ot">NA</span>)
+nz_<span class="dv">27700</span> =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_transform">st_transform</a></span>(nz_wgs, <span class="dv">27700</span>)
+<span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">3</span>))
+<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(nz))
+<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(nz_wgs))
+<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(nz_wgs_NULL_crs))
+<span class="co"># answer: it is fatter in the East-West direction</span>
+<span class="co"># because New Zealand is close to the South Pole and meridians converge there</span>
+<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(nz_<span class="dv">27700</span>))
+<span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">1</span>))</code></pre></div>
+<ol style="list-style-type: decimal">
+<li>Transform the <code>world</code> dataset to the transverse Mercator projection (<code>"+proj=tmerc"</code>) and plot the result. What has changed and why? Try to transform it back into WGS 84 and plot the new object. Why does the new object differ from the original one?</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># see https://github.com/r-spatial/sf/issues/509</span>
+world_tmerc =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_transform">st_transform</a></span>(world, <span class="st">"+proj=tmerc"</span>)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(world_tmerc))
+world_<span class="dv">4326</span> =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_transform">st_transform</a></span>(world_tmerc, <span class="dv">4326</span>)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(world_<span class="dv">4326</span>))</code></pre></div>
+<ol style="list-style-type: decimal">
+<li>Transform the continuous raster (<code>cat_raster</code>) into WGS 84 using the nearest neighbor interpolation method. What has changed? How does it influence the results?</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">con_raster =<span class="st"> </span><span class="kw">raster</span>(<span class="kw">system.file</span>(<span class="st">"raster/srtm.tif"</span>, <span class="dt">package=</span><span class="st">"spDataLarge"</span>))
+con_raster_wgs84 =<span class="st"> </span><span class="kw">projectRaster</span>(con_raster, <span class="dt">crs =</span> wgs84, <span class="dt">method =</span> <span class="st">"ngb"</span>)
+con_raster_wgs84</code></pre></div>
+<ol style="list-style-type: decimal">
+<li>Transform the categorical raster (<code>cat_raster</code>) into WGS 84 using the bilinear interpolation method. What has changed? How does it influence the results?</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">wgs84 =<span class="st"> "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs"</span>
+cat_raster_wgs84 =<span class="st"> </span><span class="kw">projectRaster</span>(cat_raster, <span class="dt">crs =</span> wgs84, <span class="dt">method =</span> <span class="st">"bilinear"</span>)
+cat_raster_wgs84</code></pre></div>
 </div>
   </div>
 

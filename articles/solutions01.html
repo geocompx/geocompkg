@@ -73,19 +73,11 @@
 
     
     
-<div id="prerequisites" class="section level2 unnumbered">
-<h2 class="hasAnchor">
-<a href="#prerequisites" class="anchor"></a>Prerequisites</h2>
-<p>The solutions assume the following packages are attached (other packages will be attached when needed):</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(sf)
-<span class="kw">library</span>(tidyverse)
-<span class="kw">library</span>(spData)</code></pre></div>
-</div>
 <div id="chapter-1" class="section level1">
 <h1 class="hasAnchor">
 <a href="#chapter-1" class="anchor"></a>Chapter 1</h1>
 <ol style="list-style-type: decimal">
-<li><p>Think about the terms ‘GIS’, ‘GDS’ and ‘Geocomputation’ described above. Which is your favorite and and why?</p></li>
+<li><p>Think about the terms ‘GIS’, ‘GDS’ and ‘Geocomputation’ described above. Which (if any) best describes the work you would like to do using geo* methods and software and why?</p></li>
 <li><p>Provide 3 reasons for using a scriptable language such R for geocomputation instead of established GIS programs such as QGIS.</p></li>
 </ol>
 <ul>
@@ -95,17 +87,21 @@
 <li>Efficiency: the GUI of GIS programs can be slow to use and install.</li>
 </ul>
 <ol style="list-style-type: decimal">
-<li>Name two advantages and two disadvantages of using the older <strong>sp</strong> package compared with the new <strong>sf</strong> package.</li>
+<li>Name two advantages and two disadvantages of using mature packages compared with ‘cutting edge’ packages for spatial data (for example <strong>sp</strong> vs <strong>sf</strong>).</li>
 </ol>
 <ul>
 <li>
-<code>+</code> Number of packages supported.</li>
+<code>+</code> Stability (newer packages may be more buggy)</li>
 <li>
-<code>+</code> Stability</li>
+<code>+</code> Number of packages currently supported (although this is changine)</li>
 <li>
-<code>-</code> Slow performance</li>
+<code>-</code> Slow performance for some operations</li>
 <li>
-<code>-</code> Non standard data format</li>
+<code>-</code> Non standard data representation</li>
+<li>
+<code>-</code> Fewer features</li>
+<li>
+<code>-</code> (Maybe) less future-proof</li>
 </ul>
 </div>
   </div>
@@ -115,8 +111,7 @@
       <h2 class="hasAnchor">
 <a href="#tocnav" class="anchor"></a>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-<li><a href="#prerequisites">Prerequisites</a></li>
-      <li><a href="#chapter-1">Chapter 1</a></li>
+<li><a href="#chapter-1">Chapter 1</a></li>
       </ul>
 </div>
       </div>

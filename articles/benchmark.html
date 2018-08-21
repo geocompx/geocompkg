@@ -98,12 +98,12 @@ world =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentat
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(microbenchmark)
 read_world_gpkg =<span class="st"> </span><span class="kw">bench_read</span>(<span class="dt">file =</span> vector_filepath, <span class="dt">n =</span> <span class="dv">5</span>)</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">read_world_gpkg
-<span class="co">#&gt; [1] 2.106496</span></code></pre></div>
-<p>The results demonstrate that <strong>sf</strong> was around 2 times faster than <strong>rgdal</strong> at reading-in the world countries vector. The relative performance of <code><a href="http://www.rdocumentation.org/packages/sf/topics/st_read">st_read()</a></code> compared with other functions will vary depending on file format and the nature of the data. To illustrate this point, we performed the same operation on a geojson file and found a greater speed saving:</p>
+<span class="co">#&gt; [1] 0.801636</span></code></pre></div>
+<p>The results demonstrate that <strong>sf</strong> was around 1 times faster than <strong>rgdal</strong> at reading-in the world countries vector. The relative performance of <code><a href="http://www.rdocumentation.org/packages/sf/topics/st_read">st_read()</a></code> compared with other functions will vary depending on file format and the nature of the data. To illustrate this point, we performed the same operation on a geojson file and found a greater speed saving:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">vector_filepath_gj =<span class="st"> </span><span class="kw">system.file</span>(<span class="st">"shapes/cycle_hire_osm.geojson"</span>, <span class="dt">package =</span> <span class="st">"spData"</span>)
 read_lnd_geojson =<span class="st"> </span><span class="kw">bench_read</span>(<span class="dt">file =</span> vector_filepath_gj, <span class="dt">n =</span> <span class="dv">5</span>)</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">read_lnd_geojson
-<span class="co">#&gt; [1] 1.478908</span></code></pre></div>
+<span class="co">#&gt; [1] 0.7309255</span></code></pre></div>
 <p>In this case <strong>sf</strong> was around 1 times faster than <strong>rgdal</strong>.</p>
 </div>
 <div id="writing-vector-data" class="section level1">
@@ -113,22 +113,22 @@ read_lnd_geojson =<span class="st"> </span><span class="kw">bench_read</span>(<s
 world_sp =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/coerce-methods">as</a></span>(world, <span class="st">"Spatial"</span>)</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">system.time</span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/rgdal/topics/writeOGR">writeOGR</a></span>(world_sp, <span class="dt">dsn =</span> <span class="st">"world_sp.geojson"</span>, <span class="dt">layer =</span> <span class="st">"world_sp.geojson"</span>, <span class="dt">driver =</span> <span class="st">"GeoJSON"</span>))
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;   0.100   0.004   0.115</span>
+<span class="co">#&gt;   0.064   0.000   0.063</span>
 <span class="kw">system.time</span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/rgdal/topics/writeOGR">writeOGR</a></span>(world_sp, <span class="dt">dsn =</span> <span class="st">"."</span>, <span class="dt">layer =</span> <span class="st">"world_sp"</span>, <span class="dt">driver =</span> <span class="st">"ESRI Shapefile"</span>)) 
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;   0.020   0.000   0.026</span>
+<span class="co">#&gt;   0.012   0.000   0.012</span>
 <span class="kw">system.time</span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/rgdal/topics/writeOGR">writeOGR</a></span>(world_sp, <span class="dt">dsn =</span> <span class="st">"world_sp.gpkg"</span>, <span class="dt">layer =</span> <span class="st">"world_sp.gpkg"</span>, <span class="dt">driver =</span> <span class="st">"GPKG"</span>))
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;   0.020   0.004   0.025</span>
+<span class="co">#&gt;   0.012   0.000   0.016</span>
 <span class="kw">system.time</span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_write">st_write</a></span>(world, <span class="st">"world_sf.geojson"</span>, <span class="dt">quiet =</span> <span class="ot">TRUE</span>))
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;   0.088   0.004   0.098</span>
+<span class="co">#&gt;    0.06    0.00    0.06</span>
 <span class="kw">system.time</span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_write">st_write</a></span>(world, <span class="st">"world_sf.shp"</span>, <span class="dt">quiet =</span> <span class="ot">TRUE</span>)) 
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;   0.020   0.000   0.021</span>
+<span class="co">#&gt;   0.016   0.004   0.019</span>
 <span class="kw">system.time</span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_write">st_write</a></span>(world, <span class="st">"world_sf.gpkg"</span>, <span class="dt">quiet =</span> <span class="ot">TRUE</span>))
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;   0.028   0.000   0.028</span></code></pre></div>
+<span class="co">#&gt;   0.024   0.000   0.024</span></code></pre></div>
 </div>
   </div>
 

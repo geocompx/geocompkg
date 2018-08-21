@@ -5,11 +5,11 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chapter 1 • geocompkg | metapackage for the book Gecomputation with R</title>
+<title>Chapter 5 • geocompkg | metapackage for the book Gecomputation with R</title>
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="Chapter 1">
+<script src="../pkgdown.js"></script><meta property="og:title" content="Chapter 5">
 <meta property="og:description" content="">
 <meta name="twitter:card" content="summary">
 <!-- mathjax --><script src="https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
@@ -61,7 +61,7 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1>Chapter 1</h1>
+      <h1>Chapter 5</h1>
                         <h4 class="author">Robin Lovelace, Jakub Nowosad, Jannes Muenchow</h4>
             
             <h4 class="date">2018-08-21</h4>
@@ -84,6 +84,189 @@
 <div id="chapter-5" class="section level1">
 <h1 class="hasAnchor">
 <a href="#chapter-5" class="anchor"></a>Chapter 5</h1>
+<p>Some of the exercises will use a vector (<code>random_points</code>) and raster dataset (<code>ndvi</code>) from the <strong>RQGIS</strong> package. It also uses a polygonal ‘convex hull’ derived from the vector dataset (<code>ch</code>) to represent the area of interest:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(RQGIS)
+<span class="kw">data</span>(random_points)
+<span class="kw">data</span>(ndvi)
+ch =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/geos_combine">st_combine</a></span>(random_points) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/geos_unary">st_convex_hull</a></span>()</code></pre></div>
+<ol style="list-style-type: decimal">
+<li>Generate and plot simplified versions of the <code>nz</code> dataset. Experiment with different values of <code>keep</code> (ranging from 0.5 to 0.00005) for <code>ms_simplify()</code> and <code>dTolerance</code> (from 100 to 100,000) <code><a href="http://www.rdocumentation.org/packages/sf/topics/geos_unary">st_simplify()</a></code> .
+<ul>
+<li>At what value does the form of the result start to break-down for each method, making New Zealand unrecognizable?</li>
+<li>Advanced: What is different about the geometry type of the results from <code><a href="http://www.rdocumentation.org/packages/sf/topics/geos_unary">st_simplify()</a></code> compared with the geometry type of <code>ms_simplify()</code>? What problems does this create and how can this be resolved?</li>
+</ul>
+</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(rmapshaper<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/rmapshaper/topics/ms_simplify">ms_simplify</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(nz), <span class="dt">keep =</span> <span class="dv">1</span>))
+<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(rmapshaper<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/rmapshaper/topics/ms_simplify">ms_simplify</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(nz), <span class="dt">keep =</span> <span class="fl">0.5</span>))
+<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(rmapshaper<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/rmapshaper/topics/ms_simplify">ms_simplify</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(nz), <span class="dt">keep =</span> <span class="fl">0.05</span>))
+<span class="co"># Starts to breakdown here at 0.5% of the points:</span>
+<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(rmapshaper<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/rmapshaper/topics/ms_simplify">ms_simplify</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(nz), <span class="dt">keep =</span> <span class="fl">0.005</span>))
+<span class="co"># At this point no further simplification changes the result</span>
+<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(rmapshaper<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/rmapshaper/topics/ms_simplify">ms_simplify</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(nz), <span class="dt">keep =</span> <span class="fl">0.0005</span>))
+<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(rmapshaper<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/rmapshaper/topics/ms_simplify">ms_simplify</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(nz), <span class="dt">keep =</span> <span class="fl">0.00005</span>))
+<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/geos_unary">st_simplify</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(nz), <span class="dt">dTolerance =</span> <span class="dv">100</span>))
+<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/geos_unary">st_simplify</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(nz), <span class="dt">dTolerance =</span> <span class="dv">1000</span>))
+<span class="co"># Starts to breakdown at 10 km:</span>
+<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/geos_unary">st_simplify</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(nz), <span class="dt">dTolerance =</span> <span class="dv">10000</span>))
+<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/geos_unary">st_simplify</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(nz), <span class="dt">dTolerance =</span> <span class="dv">100000</span>))
+<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/geos_unary">st_simplify</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(nz), <span class="dt">dTolerance =</span> <span class="dv">100000</span>, <span class="dt">preserveTopology =</span> <span class="ot">TRUE</span>))
+
+<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(rmapshaper<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/rmapshaper/topics/ms_simplify">ms_simplify</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(nz), <span class="dt">keep =</span> <span class="fl">0.05</span>))
+<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(rmapshaper<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/rmapshaper/topics/ms_simplify">ms_simplify</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(nz), <span class="dt">keep =</span> <span class="fl">0.05</span>))
+
+<span class="co"># Problem: st_simplify returns POLYGON and MULTIPOLYGON results, affecting plotting</span>
+<span class="co"># Cast into a single geometry type to resolve this</span>
+nz_simple_poly =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/geos_unary">st_simplify</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(nz), <span class="dt">dTolerance =</span> <span class="dv">10000</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/sfc">st_sfc</a></span>() <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_cast">st_cast</a></span>(<span class="st">"POLYGON"</span>)
+nz_simple_multipoly =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/geos_unary">st_simplify</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(nz), <span class="dt">dTolerance =</span> <span class="dv">10000</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/sfc">st_sfc</a></span>() <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_cast">st_cast</a></span>(<span class="st">"MULTIPOLYGON"</span>)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(nz_simple_poly)
+<span class="kw">length</span>(nz_simple_poly)
+<span class="kw">nrow</span>(nz)</code></pre></div>
+<ol style="list-style-type: decimal">
+<li>In the first exercise in Chapter @ref(spatial-operations) it was established that Canterbury region had 61 of the 101 highest points in New Zealand. Using <code><a href="http://www.rdocumentation.org/packages/sf/topics/geos_unary">st_buffer()</a></code>, how many points in <code>nz_height</code> are within 100 km of Canterbury?</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">canterbury =<span class="st"> </span>nz[nz<span class="op">$</span>Name <span class="op">==</span><span class="st"> "Canterbury Region"</span>, ]
+cant_buff =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/geos_unary">st_buffer</a></span>(canterbury, <span class="dv">100</span>)
+nz_height_near_cant =<span class="st"> </span>nz_height[cant_buff, ]
+<span class="kw">nrow</span>(nz_height_near_cant) <span class="co"># 66 - 5 more</span></code></pre></div>
+<ol style="list-style-type: decimal">
+<li>Find the geographic centroid of New Zealand. How far is it from the geographic centroid of Canterbury?</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cant_cent =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/geos_unary">st_centroid</a></span>(canterbury)
+nz_centre =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/geos_unary">st_centroid</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/geos_combine">st_union</a></span>(nz))
+<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/geos_measures">st_distance</a></span>(cant_cent, nz_centre) <span class="co"># 234 km</span></code></pre></div>
+<ol style="list-style-type: decimal">
+<li>Most world maps have a north-up orientation. A world map with a south-up orientation could be created by a reflection (one of the affine transformations not mentioned in @ref(affine-transformations)) of the <code>world</code> object’s geometry. Write code to do so. Hint: you need to use a two-element vector for this transformation.
+<ul>
+<li>Bonus: create a upside down map of your country.</li>
+</ul>
+</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">world_sfc =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(world)
+world_sfc_mirror =<span class="st"> </span>world_sfc <span class="op">*</span><span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>, <span class="op">-</span><span class="dv">1</span>)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(world_sfc)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(world_sfc_mirror)
+
+us_states_sfc =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(us_states)
+us_states_sfc_mirror =<span class="st"> </span>us_states_sfc <span class="op">*</span><span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>, <span class="op">-</span><span class="dv">1</span>)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(us_states_sfc)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(us_states_sfc_mirror)
+## nicer plot
+<span class="kw">library</span>(ggrepel)
+us_states_sfc_mirror_labels =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/geos_unary">st_centroid</a></span>(us_states_sfc_mirror) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_coordinates">st_coordinates</a></span>() <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">as_data_frame</span>() <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">name =</span> us_states<span class="op">$</span>NAME)
+us_states_sfc_mirror_sf =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_set_geometry</a></span>(us_states, us_states_sfc_mirror)
+<span class="kw">ggplot</span>(<span class="dt">data =</span> us_states_sfc_mirror_sf) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_sf</span>(<span class="dt">color =</span> <span class="st">"white"</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_text_repel</span>(<span class="dt">data =</span> us_states_sfc_mirror_labels, <span class="dt">mapping =</span> <span class="kw">aes</span>(X, Y, <span class="dt">label =</span> name), <span class="dt">size =</span> <span class="dv">3</span>, <span class="dt">min.segment.length =</span> <span class="dv">0</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">theme_void</span>() </code></pre></div>
+<ol style="list-style-type: decimal">
+<li>Subset the point in <code>p</code> that is contained within <code>x</code> <em>and</em> <code>y</code> (see section @ref(clipping) and Figure @ref(fig:venn-clip)).
+<ul>
+<li>Using base subsetting operators.</li>
+<li>Using an intermediary object created with <code><a href="http://www.rdocumentation.org/packages/sf/topics/geos_binary_ops">st_intersection()</a></code>.</li>
+</ul>
+</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">p_in_y =<span class="st"> </span>p[y]
+p_in_xy =<span class="st"> </span>p_in_y[x]
+x_and_y =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/geos_binary_ops">st_intersection</a></span>(x, y)
+p[x_and_y]</code></pre></div>
+<ol style="list-style-type: decimal">
+<li>Calculate the length of the boundary lines of US states in meters. Which state has the longest border and which has the shortest? Hint: The <code>st_length</code> function computes the length of a <code>LINESTRING</code> or <code>MULTILINESTRING</code> geometry.</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">us_states2163 =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_transform">st_transform</a></span>(us_states, <span class="dv">2163</span>)
+us_states_bor =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_cast">st_cast</a></span>(us_states2163, <span class="st">"MULTILINESTRING"</span>)
+us_states_bor<span class="op">$</span>borders =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/geos_measures">st_length</a></span>(us_states_bor)
+<span class="kw">arrange</span>(us_states_bor, borders)
+<span class="kw">arrange</span>(us_states_bor, <span class="op">-</span>borders)</code></pre></div>
+<ol style="list-style-type: decimal">
+<li>Aggregate the raster counting high points in New Zealand (created in the previous exercise), reduce its geographic resolution by half (so cells are 6 by 6 km) and plot the result.
+<ul>
+<li>Resample the lower resolution raster back to a resolution of 3 km. How have the results changed?</li>
+<li>Name two advantages and disadvantages of reducing raster resolution.</li>
+</ul>
+</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">nz_raster_low =<span class="st"> </span>raster<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/aggregate">aggregate</a></span>(nz_raster, <span class="dt">fact =</span> <span class="dv">2</span>, <span class="dt">fun =</span> sum)
+<span class="kw">res</span>(nz_raster_low)
+nz_resample =<span class="st"> </span><span class="kw">resample</span>(nz_raster_low, nz_raster)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(nz_raster_low)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(nz_resample) <span class="co"># the results are spread over a greater area and there are border issues</span>
+<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(nz_raster)
+<span class="co"># advantage: lower memory use</span>
+<span class="co"># advantage: faster processing</span>
+<span class="co"># advantage: good for viz in some cases</span>
+<span class="co"># disadvantage: removes geographic detail</span>
+<span class="co"># disadvantage: another processing step</span></code></pre></div>
+<ol style="list-style-type: decimal">
+<li>Crop the <code>ndvi</code> raster using (1) the <code>random_points</code> dataset and (2) the <code>ch</code> dataset. Are there any difference in the output maps? Next, mask <code>ndvi</code> using these two datasets. Can you see any difference now? How can you explain that?</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(ndvi)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(random_points), <span class="dt">add =</span> <span class="ot">TRUE</span>)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(ch, <span class="dt">add =</span> <span class="ot">TRUE</span>)
+
+ndvi_crop1 =<span class="st"> </span><span class="kw">crop</span>(ndvi, <span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/coerce-methods">as</a></span>(random_points, <span class="st">"Spatial"</span>)) 
+ndvi_crop2 =<span class="st"> </span><span class="kw">crop</span>(ndvi, <span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/coerce-methods">as</a></span>(ch, <span class="st">"Spatial"</span>)) 
+<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(ndvi_crop1)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(ndvi_crop2)
+
+ndvi_mask1 =<span class="st"> </span><span class="kw">mask</span>(ndvi, <span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/coerce-methods">as</a></span>(random_points, <span class="st">"Spatial"</span>)) 
+ndvi_mask2 =<span class="st"> </span><span class="kw">mask</span>(ndvi, <span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/coerce-methods">as</a></span>(ch, <span class="st">"Spatial"</span>)) 
+<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(ndvi_mask1)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(ndvi_mask2)</code></pre></div>
+<ol style="list-style-type: decimal">
+<li>Firstly, extract values from <code>ndvi</code> at the points represented in <code>random_points</code>. Next, extract average values of <code>ndvi</code> using a 90 buffer around each point from <code>random_points</code> and compare these two sets of values. When would extracting values by buffers be more suitable than by points alone?</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">random_points_buf =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/geos_unary">st_buffer</a></span>(random_points, <span class="dt">dist =</span> <span class="dv">90</span>)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(ndvi)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(random_points_buf), <span class="dt">add =</span> <span class="ot">TRUE</span>)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(ch, <span class="dt">add =</span> <span class="ot">TRUE</span>)
+random_points<span class="op">$</span>ndvi =<span class="st"> </span><span class="kw">extract</span>(ndvi, <span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/coerce-methods">as</a></span>(random_points, <span class="st">"Spatial"</span>), <span class="dt">buffer =</span> <span class="dv">90</span>, <span class="dt">fun =</span> mean)
+random_points<span class="op">$</span>ndvi2 =<span class="st"> </span><span class="kw">extract</span>(ndvi, <span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/coerce-methods">as</a></span>(random_points, <span class="st">"Spatial"</span>))
+<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(random_points<span class="op">$</span>ndvi, random_points<span class="op">$</span>ndvi2)</code></pre></div>
+<ol style="list-style-type: decimal">
+<li>Subset points higher than 3100 meters in New Zealand (the <code>nz_height</code> object) and create a template raster with a resolution of 3km. Using these objects:
+<ul>
+<li>Count numbers of the highest points in each grid cell.</li>
+<li>Find the maximum elevation in each grid cell.</li>
+</ul>
+</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">nz_height3100 =<span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(nz_height, elevation <span class="op">&gt;</span><span class="st"> </span><span class="dv">3100</span>)
+new_graticule =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_graticule">st_graticule</a></span>(nz_height3100, <span class="dt">datum =</span> <span class="dv">2193</span>)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(nz_height3100), <span class="dt">graticule =</span> new_graticule, <span class="dt">axes =</span> <span class="ot">TRUE</span>)
+nz_template =<span class="st"> </span><span class="kw">raster</span>(<span class="kw">extent</span>(nz_height3100), <span class="dt">resolution =</span> <span class="dv">3000</span>,
+                         <span class="dt">crs =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_crs">st_crs</a></span>(nz_height3100)<span class="op">$</span>proj4string)
+nz_raster =<span class="st"> </span><span class="kw">rasterize</span>(nz_height3100, nz_template, 
+                       <span class="dt">field =</span> <span class="st">"elevation"</span>, <span class="dt">fun =</span> <span class="st">"count"</span>)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(nz_raster)
+nz_raster2 =<span class="st"> </span><span class="kw">rasterize</span>(nz_height3100, nz_template, 
+                       <span class="dt">field =</span> <span class="st">"elevation"</span>, <span class="dt">fun =</span> max)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(nz_raster2)</code></pre></div>
+<ol style="list-style-type: decimal">
+<li>Polygonize the <code>grain</code> dataset and filter all squares representing clay.
+<ul>
+<li>Name two advantages and disadvantages of vector data over raster data.</li>
+<li>At which points would it be useful to convert rasters to vectors in your work?</li>
+</ul>
+</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">grain_poly =<span class="st"> </span><span class="kw">rasterToPolygons</span>(grain) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_as_sf">st_as_sf</a></span>()
+<span class="kw">levels</span>(grain)
+clay =<span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(grain_poly, layer <span class="op">==</span><span class="st"> </span><span class="dv">1</span>)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(clay)
+<span class="co"># advantages: can be used to subset other vector objects</span>
+<span class="co"># can do affine transformations and use sf/dplyr verbs</span>
+<span class="co"># disadvantages: better consistency, fast processing on some operations, functions developed for some domains</span></code></pre></div>
 </div>
   </div>
 
