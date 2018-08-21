@@ -200,7 +200,7 @@ tmap_arrange(ecm1, ecm2)
 ```
 1. Visualize population growth in Africa. 
 Next, compare it with the maps of a hexagonal and regular grid created using the **geogrid** package.
-```{r}
+```{r, eval=FALSE}
 # devtools::install_github("jbaileyh/geogrid")
 library(geogrid)
 
