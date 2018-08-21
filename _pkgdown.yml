@@ -1,5 +1,12 @@
 title: geocompkg | metapackage for the book Gecomputation with R
 
+navbar:
+  left:
+    - text: "Home"
+      href: https://geocompr.github.io/
+    - text: "Articles"
+      href: articles/index.html
+
 articles:
   - title: "Exercises and solutions"
     desc: >
