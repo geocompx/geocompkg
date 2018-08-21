@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Geocomputation with R - Benchmark • geocompkg</title>
+<title>Geocomputation with R - Benchmark • geocompkg | metapackage for the book Gecomputation with R</title>
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
@@ -28,7 +28,7 @@
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">geocompkg</a>
+        <a class="navbar-link" href="../index.html">geocompkg | metapackage for the book Gecomputation with R</a>
         <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.0.66</span>
       </span>
     </div>
@@ -36,55 +36,10 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
-     
-  </a>
+  <a href="https://geocompr.github.io/">Home</a>
 </li>
 <li>
-  <a href="../reference/index.html">Reference</a>
-</li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-<li>
-      <a href="../articles/algorithm.html">Algorithms Extended</a>
-    </li>
-    <li>
-      <a href="../articles/benchmark.html">Geocomputation with R - Benchmark</a>
-    </li>
-    <li>
-      <a href="../articles/cast.html">Casting Geometries Extended</a>
-    </li>
-    <li>
-      <a href="../articles/erum-2018.html">Geocomputation with R: workshop at eRum</a>
-    </li>
-    <li>
-      <a href="../articles/join.html">Spatial Joins Extended</a>
-    </li>
-    <li>
-      <a href="../articles/linevia.html">Desire Lines Extended</a>
-    </li>
-    <li>
-      <a href="../articles/point-pattern.html">Point Pattern analysis, spatial interpolation and heatmaps</a>
-    </li>
-    <li>
-      <a href="../articles/sea-level-rise.html">Extended Exercise: Sea Level Rise</a>
-    </li>
-    <li>
-      <a href="../articles/solutions.html">Geocomputation with R - Exercises and Solutions</a>
-    </li>
-    <li>
-      <a href="../articles/subsetting.html">Spatial Subsetting Extended</a>
-    </li>
-    <li>
-      <a href="../articles/us-map.html">Making inset maps of the USA</a>
-    </li>
-  </ul>
+  <a href="../articles/index.html">Articles</a>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
@@ -109,7 +64,7 @@
       <h1>Geocomputation with R - Benchmark</h1>
                         <h4 class="author">Robin Lovelace, Jakub Nowosad, Jannes Muenchow</h4>
             
-            <h4 class="date">2018-08-14</h4>
+            <h4 class="date">2018-08-21</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/geocompr/geocompkg/blob/master/vignettes/benchmark.Rmd"><code>vignettes/benchmark.Rmd</code></a></small>
       <div class="hidden name"><code>benchmark.Rmd</code></div>
@@ -121,59 +76,59 @@
 <div id="reading-vector-data" class="section level1">
 <h1 class="hasAnchor">
 <a href="#reading-vector-data" class="anchor"></a>Reading vector data</h1>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(sf)
-vector_filepath =<span class="st"> </span><span class="kw">system.file</span>(<span class="st">"shapes/world.gpkg"</span>, <span class="dt">package =</span> <span class="st">"spData"</span>)
-world =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_read">st_read</a></span>(vector_filepath)
-<span class="co">#&gt; Reading layer `world' from data source `/home/robin/R/x86_64-pc-linux-gnu-library/3.5/spData/shapes/world.gpkg' using driver `GPKG'</span>
-<span class="co">#&gt; Simple feature collection with 177 features and 10 fields</span>
-<span class="co">#&gt; geometry type:  MULTIPOLYGON</span>
-<span class="co">#&gt; dimension:      XY</span>
-<span class="co">#&gt; bbox:           xmin: -180 ymin: -90 xmax: 180 ymax: 83.64513</span>
-<span class="co">#&gt; epsg (SRID):    4326</span>
-<span class="co">#&gt; proj4string:    +proj=longlat +datum=WGS84 +no_defs</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(sf)</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2">vector_filepath =<span class="st"> </span><span class="kw">system.file</span>(<span class="st">"shapes/world.gpkg"</span>, <span class="dt">package =</span> <span class="st">"spData"</span>)</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3">world =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_read">st_read</a></span>(vector_filepath)</a>
+<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="co">#&gt; Reading layer `wrld.gpkg' from data source `/home/jn/R/x86_64-redhat-linux-gnu-library/3.5/spData/shapes/world.gpkg' using driver `GPKG'</span></a>
+<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="co">#&gt; Simple feature collection with 177 features and 10 fields</span></a>
+<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="co">#&gt; geometry type:  MULTIPOLYGON</span></a>
+<a class="sourceLine" id="cb1-7" data-line-number="7"><span class="co">#&gt; dimension:      XY</span></a>
+<a class="sourceLine" id="cb1-8" data-line-number="8"><span class="co">#&gt; bbox:           xmin: -180 ymin: -90 xmax: 180 ymax: 83.64513</span></a>
+<a class="sourceLine" id="cb1-9" data-line-number="9"><span class="co">#&gt; epsg (SRID):    4326</span></a>
+<a class="sourceLine" id="cb1-10" data-line-number="10"><span class="co">#&gt; proj4string:    +proj=longlat +datum=WGS84 +no_defs</span></a></code></pre></div>
 <p>To demonstrate this, we will use a function to compare <code><a href="http://www.rdocumentation.org/packages/sf/topics/st_read">st_read()</a></code> with its <strong>sp</strong> equivalent, <code><a href="http://www.rdocumentation.org/packages/rgdal/topics/readOGR">rgdal::readOGR()</a></code>:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">bench_read =<span class="st"> </span><span class="cf">function</span>(file, n) {
-  m =<span class="st"> </span><span class="kw">microbenchmark</span>(<span class="dt">times =</span> n,
-                     rgdal<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/rgdal/topics/readOGR">readOGR</a></span>(vector_filepath),
-                     <span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_read">st_read</a></span>(vector_filepath)
-  )
-  <span class="kw">mean</span>(m<span class="op">$</span>time[<span class="dv">1</span><span class="op">:</span>n]) <span class="op">/</span><span class="st"> </span><span class="kw">mean</span>(m<span class="op">$</span>time[(n <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)<span class="op">:</span>(n <span class="op">*</span><span class="st"> </span><span class="dv">2</span>)])
-}</code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">bench_read =<span class="st"> </span><span class="cf">function</span>(file, n) {</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">  m =<span class="st"> </span><span class="kw">microbenchmark</span>(<span class="dt">times =</span> n,</a>
+<a class="sourceLine" id="cb2-3" data-line-number="3">                     rgdal<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/rgdal/topics/readOGR">readOGR</a></span>(vector_filepath),</a>
+<a class="sourceLine" id="cb2-4" data-line-number="4">                     <span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_read">st_read</a></span>(vector_filepath)</a>
+<a class="sourceLine" id="cb2-5" data-line-number="5">  )</a>
+<a class="sourceLine" id="cb2-6" data-line-number="6">  <span class="kw">mean</span>(m<span class="op">$</span>time[<span class="dv">1</span><span class="op">:</span>n]) <span class="op">/</span><span class="st"> </span><span class="kw">mean</span>(m<span class="op">$</span>time[(n <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)<span class="op">:</span>(n <span class="op">*</span><span class="st"> </span><span class="dv">2</span>)])</a>
+<a class="sourceLine" id="cb2-7" data-line-number="7">}</a></code></pre></div>
 <p>This function takes as arguments an input file (<code>file</code>) and a number of times to run each command (<code>n</code>) and returns how many times faster <code><a href="http://www.rdocumentation.org/packages/sf/topics/st_read">st_read()</a></code> is than <code><a href="http://www.rdocumentation.org/packages/rgdal/topics/readOGR">readOGR()</a></code>. Let’s run the benchmark for the <code>world.gpkg</code> file represented by the object <code>vector_filepath</code>:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(microbenchmark)
-read_world_gpkg =<span class="st"> </span><span class="kw">bench_read</span>(<span class="dt">file =</span> vector_filepath, <span class="dt">n =</span> <span class="dv">5</span>)</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">read_world_gpkg
-<span class="co">#&gt; [1] 1.606788</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw">library</span>(microbenchmark)</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2">read_world_gpkg =<span class="st"> </span><span class="kw">bench_read</span>(<span class="dt">file =</span> vector_filepath, <span class="dt">n =</span> <span class="dv">5</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">read_world_gpkg</a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="co">#&gt; [1] 1.71735</span></a></code></pre></div>
 <p>The results demonstrate that <strong>sf</strong> was around 2 times faster than <strong>rgdal</strong> at reading-in the world countries vector. The relative performance of <code><a href="http://www.rdocumentation.org/packages/sf/topics/st_read">st_read()</a></code> compared with other functions will vary depending on file format and the nature of the data. To illustrate this point, we performed the same operation on a geojson file and found a greater speed saving:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">vector_filepath_gj =<span class="st"> </span><span class="kw">system.file</span>(<span class="st">"shapes/cycle_hire_osm.geojson"</span>, <span class="dt">package =</span> <span class="st">"spData"</span>)
-read_lnd_geojson =<span class="st"> </span><span class="kw">bench_read</span>(<span class="dt">file =</span> vector_filepath_gj, <span class="dt">n =</span> <span class="dv">5</span>)</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">read_lnd_geojson
-<span class="co">#&gt; [1] 1.467138</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">vector_filepath_gj =<span class="st"> </span><span class="kw">system.file</span>(<span class="st">"shapes/cycle_hire_osm.geojson"</span>, <span class="dt">package =</span> <span class="st">"spData"</span>)</a>
+<a class="sourceLine" id="cb5-2" data-line-number="2">read_lnd_geojson =<span class="st"> </span><span class="kw">bench_read</span>(<span class="dt">file =</span> vector_filepath_gj, <span class="dt">n =</span> <span class="dv">5</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">read_lnd_geojson</a>
+<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="co">#&gt; [1] 0.6615573</span></a></code></pre></div>
 <p>In this case <strong>sf</strong> was around 1 times faster than <strong>rgdal</strong>.</p>
 </div>
 <div id="writing-vector-data" class="section level1">
 <h1 class="hasAnchor">
 <a href="#writing-vector-data" class="anchor"></a>Writing vector data</h1>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(rgdal)
-world_sp =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/coerce-methods">as</a></span>(world, <span class="st">"Spatial"</span>)</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">system.time</span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/rgdal/topics/writeOGR">writeOGR</a></span>(world_sp, <span class="dt">dsn =</span> <span class="st">"world_sp.geojson"</span>, <span class="dt">layer =</span> <span class="st">"world_sp.geojson"</span>, <span class="dt">driver =</span> <span class="st">"GeoJSON"</span>))
-<span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;   0.052   0.000   0.061</span>
-<span class="kw">system.time</span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/rgdal/topics/writeOGR">writeOGR</a></span>(world_sp, <span class="dt">dsn =</span> <span class="st">"."</span>, <span class="dt">layer =</span> <span class="st">"world_sp"</span>, <span class="dt">driver =</span> <span class="st">"ESRI Shapefile"</span>)) 
-<span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;   0.008   0.004   0.012</span>
-<span class="kw">system.time</span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/rgdal/topics/writeOGR">writeOGR</a></span>(world_sp, <span class="dt">dsn =</span> <span class="st">"world_sp.gpkg"</span>, <span class="dt">layer =</span> <span class="st">"world_sp.gpkg"</span>, <span class="dt">driver =</span> <span class="st">"GPKG"</span>))
-<span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;   0.016   0.004   0.019</span>
-<span class="kw">system.time</span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_write">st_write</a></span>(world, <span class="st">"world_sf.geojson"</span>, <span class="dt">quiet =</span> <span class="ot">TRUE</span>))
-<span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;   0.052   0.000   0.052</span>
-<span class="kw">system.time</span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_write">st_write</a></span>(world, <span class="st">"world_sf.shp"</span>, <span class="dt">quiet =</span> <span class="ot">TRUE</span>)) 
-<span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;   0.008   0.000   0.010</span>
-<span class="kw">system.time</span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_write">st_write</a></span>(world, <span class="st">"world_sf.gpkg"</span>, <span class="dt">quiet =</span> <span class="ot">TRUE</span>))
-<span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;   0.016   0.000   0.014</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw">library</span>(rgdal)</a>
+<a class="sourceLine" id="cb7-2" data-line-number="2">world_sp =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/coerce-methods">as</a></span>(world, <span class="st">"Spatial"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw">system.time</span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/rgdal/topics/writeOGR">writeOGR</a></span>(world_sp, <span class="dt">dsn =</span> <span class="st">"world_sp.geojson"</span>, <span class="dt">layer =</span> <span class="st">"world_sp.geojson"</span>, <span class="dt">driver =</span> <span class="st">"GeoJSON"</span>))</a>
+<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="co">#&gt;    user  system elapsed </span></a>
+<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="co">#&gt;   0.048   0.001   0.051</span></a>
+<a class="sourceLine" id="cb8-4" data-line-number="4"><span class="kw">system.time</span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/rgdal/topics/writeOGR">writeOGR</a></span>(world_sp, <span class="dt">dsn =</span> <span class="st">"."</span>, <span class="dt">layer =</span> <span class="st">"world_sp"</span>, <span class="dt">driver =</span> <span class="st">"ESRI Shapefile"</span>)) </a>
+<a class="sourceLine" id="cb8-5" data-line-number="5"><span class="co">#&gt;    user  system elapsed </span></a>
+<a class="sourceLine" id="cb8-6" data-line-number="6"><span class="co">#&gt;   0.011   0.000   0.014</span></a>
+<a class="sourceLine" id="cb8-7" data-line-number="7"><span class="kw">system.time</span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/rgdal/topics/writeOGR">writeOGR</a></span>(world_sp, <span class="dt">dsn =</span> <span class="st">"world_sp.gpkg"</span>, <span class="dt">layer =</span> <span class="st">"world_sp.gpkg"</span>, <span class="dt">driver =</span> <span class="st">"GPKG"</span>))</a>
+<a class="sourceLine" id="cb8-8" data-line-number="8"><span class="co">#&gt;    user  system elapsed </span></a>
+<a class="sourceLine" id="cb8-9" data-line-number="9"><span class="co">#&gt;   0.013   0.002   0.016</span></a>
+<a class="sourceLine" id="cb8-10" data-line-number="10"><span class="kw">system.time</span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_write">st_write</a></span>(world, <span class="st">"world_sf.geojson"</span>, <span class="dt">quiet =</span> <span class="ot">TRUE</span>))</a>
+<a class="sourceLine" id="cb8-11" data-line-number="11"><span class="co">#&gt;    user  system elapsed </span></a>
+<a class="sourceLine" id="cb8-12" data-line-number="12"><span class="co">#&gt;   0.049   0.000   0.049</span></a>
+<a class="sourceLine" id="cb8-13" data-line-number="13"><span class="kw">system.time</span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_write">st_write</a></span>(world, <span class="st">"world_sf.shp"</span>, <span class="dt">quiet =</span> <span class="ot">TRUE</span>)) </a>
+<a class="sourceLine" id="cb8-14" data-line-number="14"><span class="co">#&gt;    user  system elapsed </span></a>
+<a class="sourceLine" id="cb8-15" data-line-number="15"><span class="co">#&gt;   0.017   0.000   0.018</span></a>
+<a class="sourceLine" id="cb8-16" data-line-number="16"><span class="kw">system.time</span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_write">st_write</a></span>(world, <span class="st">"world_sf.gpkg"</span>, <span class="dt">quiet =</span> <span class="ot">TRUE</span>))</a>
+<a class="sourceLine" id="cb8-17" data-line-number="17"><span class="co">#&gt;    user  system elapsed </span></a>
+<a class="sourceLine" id="cb8-18" data-line-number="18"><span class="co">#&gt;   0.012   0.003   0.014</span></a></code></pre></div>
 </div>
   </div>
 

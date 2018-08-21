@@ -1,16 +1,5 @@
-pandoc: 1.19.2.1
+pandoc: 2.2.1
 pkgdown: 1.1.0.9000
-pkgdown_sha: b2798656f04ce282edea3e12734ba5588c6acd6e
-articles:
-  algorithm: algorithm.html
-  benchmark: benchmark.html
-  cast: cast.html
-  erum-2018: erum-2018.html
-  join: join.html
-  linevia: linevia.html
-  point-pattern: point-pattern.html
-  sea-level-rise: sea-level-rise.html
-  solutions: solutions.html
-  subsetting: subsetting.html
-  us-map: us-map.html
+pkgdown_sha: bcf6299e76d4a398aadfc476b3ac22d253a91d35
+articles: []
 
