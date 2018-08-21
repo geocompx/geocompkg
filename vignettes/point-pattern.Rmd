@@ -193,7 +193,7 @@ plot(rc > 12)
 More useful, in terms of characterising the geographic characteristics of each cluster, would be to plot these 5 clusters interactively.
 Do this with **mapview** (results not shown):
 
-```{r}
+```{r, eval=FALSE}
 library(mapview)
 mapview(rc > 12) +
   mapview(cycle_hire)
