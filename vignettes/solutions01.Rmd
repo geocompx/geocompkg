@@ -1,5 +1,5 @@
 ---
-title: "Chapter 1"
+title: "Chapter 1: Introduction"
 author: "Robin Lovelace, Jakub Nowosad, Jannes Muenchow"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
@@ -13,7 +13,7 @@ vignette: >
 knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
 ```
 
-# Chapter 1
+# Chapter 1: Introduction
 
 1. Think about the terms 'GIS', 'GDS' and 'Geocomputation' described above. Which (if any) best describes the work you would like to do using geo* methods and software and why?
 
