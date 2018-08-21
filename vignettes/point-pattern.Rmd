@@ -65,7 +65,7 @@ Note the similarities and differences between **sp** and **sf** plotting code an
 **sp** plots omit a colourscheme by default.
 ]
 
-```{r cycle-hire1, fig.cap="The spatial distribution of cycle hire points in London according to two datasets. One is from the cyclehireapp.com website (black); the other is from OpenStreetMap (red).", eval=FALSE}
+```{r cycle-hire1, fig.cap="The spatial distribution of cycle hire points in London according to two datasets. One is from the cyclehireapp.com website (black); the other is from OpenStreetMap (red)."}
 plot(cycle_hire)
 points(cycle_hire_osm, col = "red")
 plot(lnd, add = TRUE)
@@ -150,7 +150,7 @@ Find the average density of cycle hire points per zone in London.
 - Plot the result in an attractive map (e.g. as shown below).
 - Find which zone has the highest density of cycle hire points.
 
-```{r zonedense, eval=FALSE, echo=FALSE}
+```{r zonedense, echo=FALSE}
 lnd_areas = area(lnd) / 1e6
 lnd$`cycle_hire_density` = cycle_hire_ag$id / lnd_areas
 library(tmap)
@@ -172,7 +172,7 @@ r = raster(bb_hire, ncol = 16, nrow = 10)
 rc = rasterize(cycle_hire@coords, r, fun = "count")
 ```
 
-```{r, eval=FALSE}
+```{r}
 plot(rc)
 points(cycle_hire)
 plot(lnd, add = TRUE)
@@ -183,7 +183,7 @@ This is already very useful.
 The results show that there are 5 clusters of cycle parking with much higher density than the surrounding areas.
 We can visualize these clusters using a static plot as follows:
 
-```{r, eval=FALSE}
+```{r}
 plot(rc)
 plot(rc > 12)
 ```
@@ -191,7 +191,7 @@ plot(rc > 12)
 More useful, in terms of characterising the geographic characteristics of each cluster, would be to plot these 5 clusters interactively.
 Do this with **mapview** (results not shown):
 
-```{r, eval=FALSE}
+```{r}
 library(mapview)
 mapview(rc > 12) +
   mapview(cycle_hire)
@@ -249,8 +249,8 @@ Thus spatial interpolation requires a dependent variable, which is summarised nu
 
 ```{r}
 summary(cycle_hire$nbikes)
-# tm_shape(cycle_hire) +
-#   tm_symbols(col = "nbikes", palette = "YlOrRd", alpha = 0.6, style = "quantile")
+tm_shape(cycle_hire) +
+  tm_symbols(col = "nbikes", palette = "YlOrRd", alpha = 0.6, style = "quantile")
 ```
 
 There is a clear spatial pattern to this: there are more bikes parked in the outer docking stations. We can say that verbally, but how to we represent that on the map?
@@ -259,7 +259,7 @@ A first port of call would be to rasterise the result, using the the raster repr
 
 ```{r}
 rnbikes = rasterize(cycle_hire, r, field = "nbikes", fun = mean)
-# plot(rnbikes)
+plot(rnbikes)
 ```
 
 What about estimating the values of cells outside the current network area?
@@ -268,8 +268,8 @@ We can use **raster**'s `focal()` function to estimate that.
 ```{r}
 w = matrix(1, nc = 9, nr = 9)
 r_interp1 = focal(x = rnbikes, w = w, fun = mean, NAonly = TRUE, na.rm = TRUE, pad = TRUE)
-# plot(r_interp1)
-# points(cycle_hire)
+plot(r_interp1)
+points(cycle_hire)
 ```
 
 ### Exercises
@@ -287,9 +287,9 @@ The next simplest solution is to break the area up into pieces using the **dismo
 library(dismo)
 v = voronoi(cycle_hire)
 v = intersect(v, r)
-# tm_shape(v) +
-#   tm_fill("nbikes", palette = "YlOrRd", style = "quantile") +
-#   qtm(cycle_hire, symbols.size = 0.2)
+tm_shape(v) +
+  tm_fill("nbikes", palette = "YlOrRd", style = "quantile") +
+  qtm(cycle_hire, symbols.size = 0.2)
 ```
 
 ### Exercises
@@ -303,12 +303,12 @@ v = intersect(v, r)
 **gstat** provides a number of functions for spatial prediction and interpolation using a range of models [@R-gstat].
 The most basic of these, and a workhorse for spatial interpolation is Inverse Distance Weighting (IDW) (results not shown):
 
-```{r, eval=FALSE}
+```{r}
 library(gstat)
 gs = gstat(formula = nbikes~1, locations = cycle_hire)
 crs(r) = crs(lnd)
 r_idw = interpolate(r, gs)
-# plot(r_idw)
+plot(r_idw)
 ```
 
 ### Exercises
