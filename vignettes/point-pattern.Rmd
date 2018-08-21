@@ -285,7 +285,7 @@ The raster cell method of spatial interpolation was fun, but not that sophistica
 
 The next simplest solution is to break the area up into pieces using the **dismo** package and assign the value of the entire area to the value of the point it contains:
 
-```{r}
+```{r, message=FALSE}
 library(dismo)
 v = voronoi(cycle_hire)
 v = intersect(v, r)
