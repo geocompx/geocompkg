@@ -1,3 +1,5 @@
+title: geocompkg | metapackage for the book Gecomputation with R
+
 articles:
   - title: "Exercises and solutions"
     desc: >
@@ -20,5 +22,5 @@ articles:
       These vignettes provide ...
     contents:
       - benchmark
-      - erum
+      - erum-2018
       - sea-level-rise
