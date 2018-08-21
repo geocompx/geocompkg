@@ -35,6 +35,8 @@ devtools::install_github("geocompr/geocompkg")
 
 
 ```{r, eval=FALSE, echo=FALSE}
+# build site:
+pkgdown::build_home()
 # build all articles
 articles = list.files(path = "vignettes/", pattern = ".Rmd")
 articles = gsub(pattern = ".Rmd", replacement = "", articles)
