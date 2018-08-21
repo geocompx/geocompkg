@@ -75,34 +75,34 @@
     
 <p>This vignette builds on the Raster-vector interactions section of Geocomputation with R (see <a href="https://geocompr.robinlovelace.net/geometric-operations.html#raster-vector">geocompr.robinlovelace.net/geometric-operations.html#raster-vector</a>). It shows the the basics of point pattern analysis in R and how to make (raster) ‘heatmaps’ from (vector) point data. It is influenced by the chapter on Spatial Point Pattern Analysis <span class="citation">(Bivand, Pebesma, and Gómez-Rubio 2013)</span> and an <a href="http://rspatial.org/analysis/rst/8-pointpat.html">online tutorial</a> on Point Pattern Analyis by Robert Hijmans.</p>
 <p>We will use the <strong>sp</strong> package for this rather than the newer <strong>sf</strong> package, as point pattern analysis is more established for the former <code>Spatial</code> class system than the latter’s <code>sf</code> classes. We will also use <strong>raster</strong> as it has concise and well-designed functions for spatial data:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">pkgs =<span class="st"> </span><span class="kw">c</span>(</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2">  <span class="st">"tmap"</span>,</a>
-<a class="sourceLine" id="cb1-3" data-line-number="3">  <span class="st">"raster"</span>,</a>
-<a class="sourceLine" id="cb1-4" data-line-number="4">  <span class="st">"mapview"</span>,</a>
-<a class="sourceLine" id="cb1-5" data-line-number="5">  <span class="st">"dismo"</span>,</a>
-<a class="sourceLine" id="cb1-6" data-line-number="6">  <span class="st">"gstat"</span></a>
-<a class="sourceLine" id="cb1-7" data-line-number="7">  )</a>
-<a class="sourceLine" id="cb1-8" data-line-number="8">i =<span class="st"> </span>pkgs[<span class="op">!</span>pkgs <span class="op">%in%</span><span class="st"> </span><span class="kw">installed.packages</span>()]</a>
-<a class="sourceLine" id="cb1-9" data-line-number="9"><span class="cf">if</span>(<span class="kw">length</span>(i) <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>)</a>
-<a class="sourceLine" id="cb1-10" data-line-number="10">  <span class="kw">install.packages</span>(i)</a>
-<a class="sourceLine" id="cb1-11" data-line-number="11"><span class="kw">lapply</span>(pkgs, library, <span class="dt">character.only =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pkgs =<span class="st"> </span><span class="kw">c</span>(
+  <span class="st">"tmap"</span>,
+  <span class="st">"raster"</span>,
+  <span class="st">"mapview"</span>,
+  <span class="st">"dismo"</span>,
+  <span class="st">"gstat"</span>
+  )
+i =<span class="st"> </span>pkgs[<span class="op">!</span>pkgs <span class="op">%in%</span><span class="st"> </span><span class="kw">installed.packages</span>()]
+<span class="cf">if</span>(<span class="kw">length</span>(i) <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>)
+  <span class="kw">install.packages</span>(i)
+<span class="kw">lapply</span>(pkgs, library, <span class="dt">character.only =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <div id="data" class="section level1">
 <h1 class="hasAnchor">
 <a href="#data" class="anchor"></a>Data</h1>
-<p>This chapter uses two datasets on the spatial distribution and some attributes of cycle hire ‘docking stations’, one from OpenStreetMap and one from an on-line data feed.<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> It also uses boundary data representing the 33 boroughs of London. These datasets live in the <strong>spData</strong> package and can be attached as follows:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">library</span>(spData)</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2">lnd =<span class="st"> </span><span class="kw">as</span>(lnd, <span class="st">"Spatial"</span>)</a>
-<a class="sourceLine" id="cb2-3" data-line-number="3">cycle_hire =<span class="st"> </span><span class="kw">as</span>(cycle_hire, <span class="st">"Spatial"</span>)</a>
-<a class="sourceLine" id="cb2-4" data-line-number="4">cycle_hire_osm =<span class="st"> </span><span class="kw">as</span>(cycle_hire_osm, <span class="st">"Spatial"</span>)</a></code></pre></div>
+<p>This chapter uses two datasets on the spatial distribution and some attributes of cycle hire ‘docking stations’, one from OpenStreetMap and one from an on-line data feed.<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a> It also uses boundary data representing the 33 boroughs of London. These datasets live in the <strong>spData</strong> package and can be attached as follows:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(spData)
+lnd =<span class="st"> </span><span class="kw">as</span>(lnd, <span class="st">"Spatial"</span>)
+cycle_hire =<span class="st"> </span><span class="kw">as</span>(cycle_hire, <span class="st">"Spatial"</span>)
+cycle_hire_osm =<span class="st"> </span><span class="kw">as</span>(cycle_hire_osm, <span class="st">"Spatial"</span>)</code></pre></div>
 <p>We use the <code>Spatial</code> classes used by the <strong>sp</strong> dataset, as these are required by point pattern analysis functions used in the chapter. The majority of the chapter will use only the official <code>cycle_hire</code> dataset. Towards the end of the chapter we will compare the two point patterns to see how similar they are. But first we focus only on the former dataset. <!-- TODO: ensure we do this --></p>
 </div>
 <div id="basic-point-pattern-analysis" class="section level1">
 <h1 class="hasAnchor">
 <a href="#basic-point-pattern-analysis" class="anchor"></a>Basic point pattern analysis</h1>
-<p>Before undertaking more advanced analysis, it makes sense to start simple, with basic statistics and visualizations describing point patterns. As with most analysis tasks this first stage involves visual inspection of the data. This done in the code chunk below, which generates the figure below:<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a></p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw">plot</span>(cycle_hire)</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="kw">points</span>(cycle_hire_osm, <span class="dt">col =</span> <span class="st">"red"</span>)</a>
-<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="kw">plot</span>(lnd, <span class="dt">add =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<p>Before undertaking more advanced analysis, it makes sense to start simple, with basic statistics and visualizations describing point patterns. As with most analysis tasks this first stage involves visual inspection of the data. This done in the code chunk below, which generates the figure below:<a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(cycle_hire)
+<span class="kw">points</span>(cycle_hire_osm, <span class="dt">col =</span> <span class="st">"red"</span>)
+<span class="kw">plot</span>(lnd, <span class="dt">add =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <div class="figure">
 <img src="point-pattern_files/figure-html/cycle-hire1-1.png" alt="The spatial distribution of cycle hire points in London according to two datasets. One is from the cyclehireapp.com website (black); the other is from OpenStreetMap (red)." width="700"><p class="caption">
 The spatial distribution of cycle hire points in London according to two datasets. One is from the cyclehireapp.com website (black); the other is from OpenStreetMap (red).
@@ -115,17 +115,17 @@ The spatial distribution of cycle hire points in London according to two dataset
 <h1 class="hasAnchor">
 <a href="#point-density" class="anchor"></a>Point density</h1>
 <p>A basic statistic to compute on points within a polygon is the number of points per polygon, and the related statistic of point density. Let’s first compute that for London overall, before doing a zone-by-zone breakdown:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw">nrow</span>(cycle_hire)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">nrow</span>(cycle_hire)</code></pre></div>
 <pre><code>## [1] 742</code></pre>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">lnd_area =<span class="st"> </span><span class="kw">sum</span>(<span class="kw">area</span>(lnd)) <span class="op">/</span><span class="st"> </span><span class="fl">1e6</span></a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lnd_area =<span class="st"> </span><span class="kw">sum</span>(<span class="kw">area</span>(lnd)) <span class="op">/</span><span class="st"> </span><span class="fl">1e6</span></code></pre></div>
 <p>The results show that there are 742 cycle hire points and that London covers an area of just over one-and-a-half thousand square kilometres (1 km<sup>2</sup> = 1000000 m<sup>2</sup> = 1e6 m<sup>2</sup> in scientific notation). That represents on average roughly one cycle parking rental space per 2 square kilometers, or half a rental point per square kilometer, as revealed by the results of the calculation below:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw">nrow</span>(cycle_hire) <span class="op">/</span><span class="st"> </span>lnd_area</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">nrow</span>(cycle_hire) <span class="op">/</span><span class="st"> </span>lnd_area</code></pre></div>
 <pre><code>## [1] 0.4714415</code></pre>
 <p>This is not a good indicator of the density of the bike hire scheme overall, because they are so concentrated in central London. A more representative result can be found by calculating the average point density <em>within the extent of the bike hire scheme</em>. We can coerce the bounding box (or extent in <strong>raster</strong> terminology) of the stations into a polygon whose area can be measured with the following commands:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">bb_hire =<span class="st"> </span><span class="kw">as</span>(<span class="kw">extent</span>(cycle_hire), <span class="st">"SpatialPolygons"</span>)</a>
-<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="kw">crs</span>(bb_hire) =<span class="st"> </span><span class="kw">crs</span>(lnd)</a>
-<a class="sourceLine" id="cb9-3" data-line-number="3">c_area =<span class="st"> </span><span class="kw">area</span>(bb_hire) <span class="op">/</span><span class="st"> </span><span class="fl">1e6</span></a>
-<a class="sourceLine" id="cb9-4" data-line-number="4">c_area</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">bb_hire =<span class="st"> </span><span class="kw">as</span>(<span class="kw">extent</span>(cycle_hire), <span class="st">"SpatialPolygons"</span>)
+<span class="kw">crs</span>(bb_hire) =<span class="st"> </span><span class="kw">crs</span>(lnd)
+c_area =<span class="st"> </span><span class="kw">area</span>(bb_hire) <span class="op">/</span><span class="st"> </span><span class="fl">1e6</span>
+c_area</code></pre></div>
 <pre><code>## [1] 158.3181</code></pre>
 <div id="exercises" class="section level2">
 <h2 class="hasAnchor">
@@ -152,8 +152,8 @@ The spatial distribution of cycle hire points in London according to two dataset
 <h1 class="hasAnchor">
 <a href="#points-in-polygons-and-raster-cells" class="anchor"></a>Points in polygons and raster cells</h1>
 <p>A useful level of analysis at which to analyse the geographic distribution of points is the zone-level. We can aggregate the points per zone and provide summary statistics. Starting with the number of points per polygon, this would calculated as follows:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw">crs</span>(lnd) =<span class="st"> </span><span class="kw">crs</span>(cycle_hire)</a>
-<a class="sourceLine" id="cb11-2" data-line-number="2">cycle_hire_ag =<span class="st"> </span><span class="kw">aggregate</span>(cycle_hire[<span class="st">"id"</span>], lnd, <span class="dt">FUN =</span> <span class="st">"length"</span>)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">crs</span>(lnd) =<span class="st"> </span><span class="kw">crs</span>(cycle_hire)
+cycle_hire_ag =<span class="st"> </span><span class="kw">aggregate</span>(cycle_hire[<span class="st">"id"</span>], lnd, <span class="dt">FUN =</span> <span class="st">"length"</span>)</code></pre></div>
 <div id="exercises-1" class="section level2">
 <h2 class="hasAnchor">
 <a href="#exercises-1" class="anchor"></a>Exercises</h2>
@@ -176,21 +176,21 @@ The spatial distribution of cycle hire points in London according to two dataset
 ## 33 Levels: Barking and Dagenham Barnet Bexley Brent Bromley ... Westminster</code></pre>
 <!-- ![](https://github.com/Robinlovelace/Creating-maps-in-R/raw/master/vignettes/point-pattern_files/figure-markdown_github/zonedense-1.png) -->
 <p>A problem with the zonal representation of point density is that the results are dependent on the somewhat arbitrary shapes and sizes of the zones in which the points are aggregated. To overcome this problem we can create a raster representation of the points:</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1">r =<span class="st"> </span><span class="kw">raster</span>(bb_hire, <span class="dt">ncol =</span> <span class="dv">16</span>, <span class="dt">nrow =</span> <span class="dv">10</span>)</a>
-<a class="sourceLine" id="cb13-2" data-line-number="2">rc =<span class="st"> </span><span class="kw">rasterize</span>(cycle_hire<span class="op">@</span>coords, r, <span class="dt">fun =</span> <span class="st">"count"</span>)</a></code></pre></div>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="kw">plot</span>(rc)</a>
-<a class="sourceLine" id="cb14-2" data-line-number="2"><span class="kw">points</span>(cycle_hire)</a>
-<a class="sourceLine" id="cb14-3" data-line-number="3"><span class="kw">plot</span>(lnd, <span class="dt">add =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">r =<span class="st"> </span><span class="kw">raster</span>(bb_hire, <span class="dt">ncol =</span> <span class="dv">16</span>, <span class="dt">nrow =</span> <span class="dv">10</span>)
+rc =<span class="st"> </span><span class="kw">rasterize</span>(cycle_hire<span class="op">@</span>coords, r, <span class="dt">fun =</span> <span class="st">"count"</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(rc)
+<span class="kw">points</span>(cycle_hire)
+<span class="kw">plot</span>(lnd, <span class="dt">add =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <p><img src="point-pattern_files/figure-html/unnamed-chunk-8-1.png" width="700"></p>
 <p>This is already very useful. The results show that there are 5 clusters of cycle parking with much higher density than the surrounding areas. We can visualize these clusters using a static plot as follows:</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="kw">plot</span>(rc)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(rc)</code></pre></div>
 <p><img src="point-pattern_files/figure-html/unnamed-chunk-9-1.png" width="700"></p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="kw">plot</span>(rc <span class="op">&gt;</span><span class="st"> </span><span class="dv">12</span>)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(rc <span class="op">&gt;</span><span class="st"> </span><span class="dv">12</span>)</code></pre></div>
 <p><img src="point-pattern_files/figure-html/unnamed-chunk-9-2.png" width="700"></p>
 <p>More useful, in terms of characterising the geographic characteristics of each cluster, would be to plot these 5 clusters interactively. Do this with <strong>mapview</strong> (results not shown):</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="kw">library</span>(mapview)</a>
-<a class="sourceLine" id="cb17-2" data-line-number="2"><span class="kw"><a href="http://www.rdocumentation.org/packages/mapview/topics/mapView">mapview</a></span>(rc <span class="op">&gt;</span><span class="st"> </span><span class="dv">12</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb17-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/mapview/topics/mapView">mapview</a></span>(cycle_hire)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(mapview)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/mapview/topics/mapView">mapview</a></span>(rc <span class="op">&gt;</span><span class="st"> </span><span class="dv">12</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/mapview/topics/mapView">mapview</a></span>(cycle_hire)</code></pre></div>
 <p>The resulting interactive plot draws attention to the areas of high point density, such as the area surrounding Victoria station, illustrated below.</p>
 <!-- ![](https://github.com/Robinlovelace/Creating-maps-in-R/raw/master/vignettes/point-pattern_files/figure-markdown_github/victoria-plot.png) -->
 </div>
@@ -208,47 +208,47 @@ The spatial distribution of cycle hire points in London according to two dataset
 <h1 class="hasAnchor">
 <a href="#point-distance-analysis" class="anchor"></a>Point distance analysis</h1>
 <p>Another important characteristic of point patterns is the distances between points, which can be calculated using <strong>raster</strong>’s <code>dist()</code> function:</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1">d =<span class="st"> </span><span class="kw">spDists</span>(cycle_hire, <span class="dt">longlat =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb18-2" data-line-number="2">dm =<span class="st"> </span><span class="kw">as.matrix</span>(d)</a>
-<a class="sourceLine" id="cb18-3" data-line-number="3">dm[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">5</span>]</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">d =<span class="st"> </span><span class="kw">spDists</span>(cycle_hire, <span class="dt">longlat =</span> <span class="ot">TRUE</span>)
+dm =<span class="st"> </span><span class="kw">as.matrix</span>(d)
+dm[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">5</span>]</code></pre></div>
 <pre><code>##          [,1]     [,2]     [,3]      [,4]     [,5]
 ## [1,] 0.000000 6.913473 1.966592 0.7700464 5.164896
 ## [2,] 6.913473 0.000000 8.205219 6.3051094 2.916743
 ## [3,] 1.966592 8.205219 0.000000 2.7062514 5.915129</code></pre>
 <p>The results show the distance, in km, form every point to every other. The <code>dm</code> object is known as a distance matrix: note the diagonal of zero values. This distance matrix is very useful for various types of analysis, a couple of which we’ll explore below.</p>
 <p>To find the minimum distance of each point to every other, we can use the <code>apply</code> function, for each row, and then select the top 5:</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1"><span class="kw">diag</span>(dm) =<span class="st"> </span><span class="ot">NA</span></a>
-<a class="sourceLine" id="cb20-2" data-line-number="2">dmin =<span class="st"> </span><span class="kw">apply</span>(<span class="dt">X =</span> dm, <span class="dt">MARGIN =</span> <span class="dv">1</span>, <span class="dt">FUN =</span> min, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb20-3" data-line-number="3">sel_isolated =<span class="st"> </span><span class="kw">order</span>(dmin, <span class="dt">decreasing =</span> <span class="ot">TRUE</span>)[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>]</a>
-<a class="sourceLine" id="cb20-4" data-line-number="4"><span class="co"># qtm(cycle_hire, col = "grey", main = "Isolated points") +</span></a>
-<a class="sourceLine" id="cb20-5" data-line-number="5"><span class="co"># qtm(cycle_hire[sel_isolated, ], symbols.col = "red", symbols.size = 2) + tm_scale_bar()</span></a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">diag</span>(dm) =<span class="st"> </span><span class="ot">NA</span>
+dmin =<span class="st"> </span><span class="kw">apply</span>(<span class="dt">X =</span> dm, <span class="dt">MARGIN =</span> <span class="dv">1</span>, <span class="dt">FUN =</span> min, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)
+sel_isolated =<span class="st"> </span><span class="kw">order</span>(dmin, <span class="dt">decreasing =</span> <span class="ot">TRUE</span>)[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>]
+<span class="co"># qtm(cycle_hire, col = "grey", main = "Isolated points") +</span>
+<span class="co"># qtm(cycle_hire[sel_isolated, ], symbols.col = "red", symbols.size = 2) + tm_scale_bar()</span></code></pre></div>
 <p>Another plot that is useful is that of the ‘G function’ for exploring the extent to which points cluster or separate compared with what would be expected from a random distribution <span class="citation">(Bivand, Pebesma, and Gómez-Rubio 2013)</span>:</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1">distance =<span class="st"> </span><span class="kw">sort</span>(<span class="kw">unique</span>(<span class="kw">round</span>(dmin, <span class="dt">digits =</span> <span class="dv">3</span>)))</a>
-<a class="sourceLine" id="cb21-2" data-line-number="2">Gd =<span class="st"> </span><span class="kw">vapply</span>(distance, <span class="cf">function</span>(x) <span class="kw">sum</span>(dmin <span class="op">&lt;</span><span class="st"> </span>x), <span class="kw">double</span>(<span class="dv">1</span>))</a>
-<a class="sourceLine" id="cb21-3" data-line-number="3">Gd =<span class="st"> </span>Gd <span class="op">/</span><span class="st"> </span><span class="kw">length</span>(dmin)</a>
-<a class="sourceLine" id="cb21-4" data-line-number="4"><span class="co"># plot(distance, Gd)</span></a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">distance =<span class="st"> </span><span class="kw">sort</span>(<span class="kw">unique</span>(<span class="kw">round</span>(dmin, <span class="dt">digits =</span> <span class="dv">3</span>)))
+Gd =<span class="st"> </span><span class="kw">vapply</span>(distance, <span class="cf">function</span>(x) <span class="kw">sum</span>(dmin <span class="op">&lt;</span><span class="st"> </span>x), <span class="kw">double</span>(<span class="dv">1</span>))
+Gd =<span class="st"> </span>Gd <span class="op">/</span><span class="st"> </span><span class="kw">length</span>(dmin)
+<span class="co"># plot(distance, Gd)</span></code></pre></div>
 </div>
 <div id="spatial-interpolation" class="section level1">
 <h1 class="hasAnchor">
 <a href="#spatial-interpolation" class="anchor"></a>Spatial interpolation</h1>
 <p>Spatial interpolation refers to methods of estimating the value of something in one place, based on measurements taken elsewhere. Building on the example of cycle hire points in London, we can ask the question: what is the expected number of bikes for a stand in location x, given knowledge of the existing data.</p>
 <p>Thus spatial interpolation requires a dependent variable, which is summarised numerically and visually below:</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" data-line-number="1"><span class="kw">summary</span>(cycle_hire<span class="op">$</span>nbikes)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(cycle_hire<span class="op">$</span>nbikes)</code></pre></div>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 ##     0.0     3.0    11.0    12.2    19.0    51.0</code></pre>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" data-line-number="1"><span class="kw">tm_shape</span>(cycle_hire) <span class="op">+</span></a>
-<a class="sourceLine" id="cb24-2" data-line-number="2"><span class="st">  </span><span class="kw">tm_symbols</span>(<span class="dt">col =</span> <span class="st">"nbikes"</span>, <span class="dt">palette =</span> <span class="st">"YlOrRd"</span>, <span class="dt">alpha =</span> <span class="fl">0.6</span>, <span class="dt">style =</span> <span class="st">"quantile"</span>)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tm_shape</span>(cycle_hire) <span class="op">+</span>
+<span class="st">  </span><span class="kw">tm_symbols</span>(<span class="dt">col =</span> <span class="st">"nbikes"</span>, <span class="dt">palette =</span> <span class="st">"YlOrRd"</span>, <span class="dt">alpha =</span> <span class="fl">0.6</span>, <span class="dt">style =</span> <span class="st">"quantile"</span>)</code></pre></div>
 <p><img src="point-pattern_files/figure-html/unnamed-chunk-14-1.png" width="700"></p>
 <p>There is a clear spatial pattern to this: there are more bikes parked in the outer docking stations. We can say that verbally, but how to we represent that on the map?</p>
 <p>A first port of call would be to rasterise the result, using the the raster representation of the study area contained in the object <code>r</code> to find the mean per cell:</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" data-line-number="1">rnbikes =<span class="st"> </span><span class="kw">rasterize</span>(cycle_hire, r, <span class="dt">field =</span> <span class="st">"nbikes"</span>, <span class="dt">fun =</span> mean)</a>
-<a class="sourceLine" id="cb25-2" data-line-number="2"><span class="kw">plot</span>(rnbikes)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">rnbikes =<span class="st"> </span><span class="kw">rasterize</span>(cycle_hire, r, <span class="dt">field =</span> <span class="st">"nbikes"</span>, <span class="dt">fun =</span> mean)
+<span class="kw">plot</span>(rnbikes)</code></pre></div>
 <p><img src="point-pattern_files/figure-html/unnamed-chunk-15-1.png" width="700"></p>
 <p>What about estimating the values of cells outside the current network area? We can use <strong>raster</strong>’s <code>focal()</code> function to estimate that.</p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" data-line-number="1">w =<span class="st"> </span><span class="kw">matrix</span>(<span class="dv">1</span>, <span class="dt">nc =</span> <span class="dv">9</span>, <span class="dt">nr =</span> <span class="dv">9</span>)</a>
-<a class="sourceLine" id="cb26-2" data-line-number="2">r_interp1 =<span class="st"> </span><span class="kw">focal</span>(<span class="dt">x =</span> rnbikes, <span class="dt">w =</span> w, <span class="dt">fun =</span> mean, <span class="dt">NAonly =</span> <span class="ot">TRUE</span>, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>, <span class="dt">pad =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb26-3" data-line-number="3"><span class="kw">plot</span>(r_interp1)</a>
-<a class="sourceLine" id="cb26-4" data-line-number="4"><span class="kw">points</span>(cycle_hire)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">w =<span class="st"> </span><span class="kw">matrix</span>(<span class="dv">1</span>, <span class="dt">nc =</span> <span class="dv">9</span>, <span class="dt">nr =</span> <span class="dv">9</span>)
+r_interp1 =<span class="st"> </span><span class="kw">focal</span>(<span class="dt">x =</span> rnbikes, <span class="dt">w =</span> w, <span class="dt">fun =</span> mean, <span class="dt">NAonly =</span> <span class="ot">TRUE</span>, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>, <span class="dt">pad =</span> <span class="ot">TRUE</span>)
+<span class="kw">plot</span>(r_interp1)
+<span class="kw">points</span>(cycle_hire)</code></pre></div>
 <p><img src="point-pattern_files/figure-html/unnamed-chunk-16-1.png" width="700"></p>
 <div id="exercises-3" class="section level2">
 <h2 class="hasAnchor">
@@ -264,13 +264,13 @@ The spatial distribution of cycle hire points in London according to two dataset
 <a href="#voronoi-polygon-interpolation" class="anchor"></a>Voronoi polygon interpolation</h1>
 <p>The raster cell method of spatial interpolation was fun, but not that sophisticated or spatially precise, with a resolution of around 1 km.</p>
 <p>The next simplest solution is to break the area up into pieces using the <strong>dismo</strong> package and assign the value of the entire area to the value of the point it contains:</p>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" data-line-number="1"><span class="kw">library</span>(dismo)</a>
-<a class="sourceLine" id="cb27-2" data-line-number="2">v =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/dismo/topics/voronoi">voronoi</a></span>(cycle_hire)</a>
-<a class="sourceLine" id="cb27-3" data-line-number="3">v =<span class="st"> </span><span class="kw">intersect</span>(v, r)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(dismo)
+v =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/dismo/topics/voronoi">voronoi</a></span>(cycle_hire)
+v =<span class="st"> </span><span class="kw">intersect</span>(v, r)</code></pre></div>
 <pre><code>## Warning in intersect(x, y): non identical CRS</code></pre>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" data-line-number="1"><span class="kw">tm_shape</span>(v) <span class="op">+</span></a>
-<a class="sourceLine" id="cb29-2" data-line-number="2"><span class="st">  </span><span class="kw">tm_fill</span>(<span class="st">"nbikes"</span>, <span class="dt">palette =</span> <span class="st">"YlOrRd"</span>, <span class="dt">style =</span> <span class="st">"quantile"</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb29-3" data-line-number="3"><span class="st">  </span><span class="kw">qtm</span>(cycle_hire, <span class="dt">symbols.size =</span> <span class="fl">0.2</span>)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tm_shape</span>(v) <span class="op">+</span>
+<span class="st">  </span><span class="kw">tm_fill</span>(<span class="st">"nbikes"</span>, <span class="dt">palette =</span> <span class="st">"YlOrRd"</span>, <span class="dt">style =</span> <span class="st">"quantile"</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">qtm</span>(cycle_hire, <span class="dt">symbols.size =</span> <span class="fl">0.2</span>)</code></pre></div>
 <p><img src="point-pattern_files/figure-html/unnamed-chunk-17-1.png" width="700"></p>
 <div id="exercises-4" class="section level2">
 <h2 class="hasAnchor">
@@ -285,13 +285,13 @@ The spatial distribution of cycle hire points in London according to two dataset
 <div id="interpolation-with-the-gstat-package" class="section level1">
 <h1 class="hasAnchor">
 <a href="#interpolation-with-the-gstat-package" class="anchor"></a>Interpolation with the gstat package</h1>
-<p><strong>gstat</strong> provides a number of functions for spatial prediction and interpolation using a range of models <span class="citation">(Pebesma and Graeler 2018)</span>. The most basic of these, and a workhorse for spatial interpolation is Inverse Distance Weighting (IDW) (results not shown):</p>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" data-line-number="1"><span class="kw">library</span>(gstat)</a>
-<a class="sourceLine" id="cb30-2" data-line-number="2">gs =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/gstat/topics/gstat">gstat</a></span>(<span class="dt">formula =</span> nbikes<span class="op">~</span><span class="dv">1</span>, <span class="dt">locations =</span> cycle_hire)</a>
-<a class="sourceLine" id="cb30-3" data-line-number="3"><span class="kw">crs</span>(r) =<span class="st"> </span><span class="kw">crs</span>(lnd)</a>
-<a class="sourceLine" id="cb30-4" data-line-number="4">r_idw =<span class="st"> </span><span class="kw">interpolate</span>(r, gs)</a></code></pre></div>
+<p><strong>gstat</strong> provides a number of functions for spatial prediction and interpolation using a range of models <span class="citation">(E. Pebesma and Graeler 2018)</span>. The most basic of these, and a workhorse for spatial interpolation is Inverse Distance Weighting (IDW) (results not shown):</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(gstat)
+gs =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/gstat/topics/gstat">gstat</a></span>(<span class="dt">formula =</span> nbikes<span class="op">~</span><span class="dv">1</span>, <span class="dt">locations =</span> cycle_hire)
+<span class="kw">crs</span>(r) =<span class="st"> </span><span class="kw">crs</span>(lnd)
+r_idw =<span class="st"> </span><span class="kw">interpolate</span>(r, gs)</code></pre></div>
 <pre><code>## [inverse distance weighted interpolation]</code></pre>
-<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" data-line-number="1"><span class="kw">plot</span>(r_idw)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(r_idw)</code></pre></div>
 <p><img src="point-pattern_files/figure-html/unnamed-chunk-18-1.png" width="700"></p>
 <div id="exercises-5" class="section level2">
 <h2 class="hasAnchor">
@@ -308,14 +308,14 @@ The spatial distribution of cycle hire points in London according to two dataset
 <h1 class="hasAnchor">
 <a href="#heatmaps-with-leaflet-extras" class="anchor"></a>Heatmaps with leaflet.extras</h1>
 <p>If your aim is to visualise clusters of points, without worrying about interpolation, which can be computationally intensive, you can create a heatmap directly. <strong>leaflet.extras</strong> provides the function <code>addHeatmap()</code> (among many other useful functions for interactive data visualization) for this purpose, as illustrated below.</p>
-<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb33-1" data-line-number="1"><span class="co"># library(leaflet.extras)</span></a>
-<a class="sourceLine" id="cb33-2" data-line-number="2"><span class="co"># leaflet() %&gt;% </span></a>
-<a class="sourceLine" id="cb33-3" data-line-number="3"><span class="co">#   addProviderTiles(provider = providers$OpenTopoMap) %&gt;% </span></a>
-<a class="sourceLine" id="cb33-4" data-line-number="4"><span class="co">#   addHeatmap(data = cycle_hire, intensity = cycle_hire$nbikes, blur = 50)</span></a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># library(leaflet.extras)</span>
+<span class="co"># leaflet() %&gt;% </span>
+<span class="co">#   addProviderTiles(provider = providers$OpenTopoMap) %&gt;% </span>
+<span class="co">#   addHeatmap(data = cycle_hire, intensity = cycle_hire$nbikes, blur = 50)</span></code></pre></div>
 <p>An alternative function that achieves a similar result is <code>addWebGLHeatmap()</code>, illustrated below. A notable feature of this function is that it allows size to be set in meters rather than pixels, which prevents the blur from changing when you zoom in:</p>
-<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb34-1" data-line-number="1"><span class="co"># leaflet() %&gt;% </span></a>
-<a class="sourceLine" id="cb34-2" data-line-number="2"><span class="co">#   addProviderTiles(provider = providers$OpenTopoMap) %&gt;% </span></a>
-<a class="sourceLine" id="cb34-3" data-line-number="3"><span class="co">#   addWebGLHeatmap(data = cycle_hire, size = 700, units = "m", intensity = 0.5)</span></a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># leaflet() %&gt;% </span>
+<span class="co">#   addProviderTiles(provider = providers$OpenTopoMap) %&gt;% </span>
+<span class="co">#   addWebGLHeatmap(data = cycle_hire, size = 700, units = "m", intensity = 0.5)</span></code></pre></div>
 </div>
 <div id="further-reading-and-tutorials" class="section level1">
 <h1 class="hasAnchor">
@@ -333,13 +333,13 @@ The spatial distribution of cycle hire points in London according to two dataset
 <p>Bivand, Roger, Edzer J Pebesma, and Virgilio Gómez-Rubio. 2013. <em>Applied Spatial Data Analysis with R</em>. Vol. 747248717. Springer.</p>
 </div>
 <div id="ref-hengl_random_2018">
-<p>Hengl, Tomislav, Madlene Nussbaum, Marvin N. Wright, Gerard B. M. Heuvelink, and Benedikt Gräler. 2018. “Random Forest as a Generic Framework for Predictive Modeling of Spatial and Spatio-Temporal Variables.” e26693v3. PeerJ Inc. <a href="https://doi.org/10.7287/peerj.preprints.26693v3" class="uri">https://doi.org/10.7287/peerj.preprints.26693v3</a>.</p>
+<p>Hengl, Tomislav, Madlene Nussbaum, Marvin N. Wright, Gerard B. M. Heuvelink, and Benedikt Gräler. 2018. “Random Forest as a Generic Framework for Predictive Modeling of Spatial and Spatio-Temporal Variables.” e26693v3. PeerJ Inc. doi:<a href="https://doi.org/10.7287/peerj.preprints.26693v3">10.7287/peerj.preprints.26693v3</a>.</p>
 </div>
 <div id="ref-jezek_design_2017">
 <p>Ježek, Jan, Karel Jedlička, Tom’aš Mildorf, J’achym Kellar, and Daniel Beran. 2017. “Design and Evaluation of WebGL-Based Heat Map Visualization for Big Point Data.” In <em>The Rise of Big Spatial Data</em>, edited by Igor Ivan, Alex Singleton, Jiří Hor’ak, and Tom’aš Inspektor, 13–26. Lecture Notes in Geoinformation and Cartography. Springer International Publishing.</p>
 </div>
 <div id="ref-meyer_improving_2018">
-<p>Meyer, Hanna, Christoph Reudenbach, Tomislav Hengl, Marwan Katurji, and Thomas Nauss. 2018. “Improving Performance of Spatio-Temporal Machine Learning Models Using Forward Feature Selection and Target-Oriented Validation.” <em>Environmental Modelling &amp; Software</em> 101 (March): 1–9. <a href="https://doi.org/10.1016/j.envsoft.2017.12.001" class="uri">https://doi.org/10.1016/j.envsoft.2017.12.001</a>.</p>
+<p>Meyer, Hanna, Christoph Reudenbach, Tomislav Hengl, Marwan Katurji, and Thomas Nauss. 2018. “Improving Performance of Spatio-Temporal Machine Learning Models Using Forward Feature Selection and Target-Oriented Validation.” <em>Environmental Modelling &amp; Software</em> 101 (March): 1–9. doi:<a href="https://doi.org/10.1016/j.envsoft.2017.12.001">10.1016/j.envsoft.2017.12.001</a>.</p>
 </div>
 <div id="ref-R-gstat">
 <p>Pebesma, Edzer, and Benedikt Graeler. 2018. <em>Gstat: Spatial and Spatio-Temporal Geostatistical Modelling, Prediction and Simulation</em>.</p>
@@ -349,8 +349,8 @@ The spatial distribution of cycle hire points in London according to two dataset
 <div class="footnotes">
 <hr>
 <ol>
-<li id="fn1"><p> Docking stations enable sustainable and fast mobility for people in central London. They are automated bicycle parking facilities which allow people can borrow and return bicycles for a small fee. The sturdy 3-speed bicycles they contain have become known as ‘Boris bikes’ and, among some Londoners, ‘Sadiq cycles’, after the past and present London Mayors Boris Johnson and Sadiq Khan, although their official name is ‘Santander cycles’. See <code><a href="http://www.rdocumentation.org/packages/spData/topics/cycle_hire">?cycle_hire</a></code> for further information about these datasets.<a href="#fnref1" class="footnote-back">↩</a></p></li>
-<li id="fn2"><p> Note the similarities and differences between <strong>sp</strong> and <strong>sf</strong> plotting code and results. Both extend the <code>plot()</code> command to create a simple static map, meaning that arguments used in base graphics such as <code>col</code> work. However, <strong>sp</strong>’s plot method does not create facets for multiple variables by default and therefore you do not have to specify columns to create a single map. <strong>sp</strong> plots omit a colourscheme by default.<a href="#fnref2" class="footnote-back">↩</a></p></li>
+<li id="fn1"><p>Docking stations enable sustainable and fast mobility for people in central London. They are automated bicycle parking facilities which allow people can borrow and return bicycles for a small fee. The sturdy 3-speed bicycles they contain have become known as ‘Boris bikes’ and, among some Londoners, ‘Sadiq cycles’, after the past and present London Mayors Boris Johnson and Sadiq Khan, although their official name is ‘Santander cycles’. See <code><a href="http://www.rdocumentation.org/packages/spData/topics/cycle_hire">?cycle_hire</a></code> for further information about these datasets.<a href="#fnref1">↩</a></p></li>
+<li id="fn2"><p>Note the similarities and differences between <strong>sp</strong> and <strong>sf</strong> plotting code and results. Both extend the <code>plot()</code> command to create a simple static map, meaning that arguments used in base graphics such as <code>col</code> work. However, <strong>sp</strong>’s plot method does not create facets for multiple variables by default and therefore you do not have to specify columns to create a single map. <strong>sp</strong> plots omit a colourscheme by default.<a href="#fnref2">↩</a></p></li>
 </ol>
 </div>
   </div>

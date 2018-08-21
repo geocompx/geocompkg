@@ -74,40 +74,40 @@
     
     
 <p>This vignette provides some further detail on the chapter Scripts, algorithms and functions (see <a href="https://geocompr.robinlovelace.net/algorithms.html" class="uri">https://geocompr.robinlovelace.net/algorithms.html</a> ). It starts with the same input data:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">x_coords =<span class="st"> </span><span class="kw">c</span>(<span class="dv">10</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">12</span>, <span class="dv">20</span>, <span class="dv">10</span>)</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2">y_coords =<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">15</span>, <span class="dv">0</span>)</a>
-<a class="sourceLine" id="cb1-3" data-line-number="3">poly_mat =<span class="st"> </span><span class="kw">cbind</span>(x_coords, y_coords)</a>
-<a class="sourceLine" id="cb1-4" data-line-number="4">O =<span class="st"> </span>poly_mat[<span class="dv">1</span>, ] <span class="co"># create a point representing the origin</span></a>
-<a class="sourceLine" id="cb1-5" data-line-number="5">T1 =<span class="st"> </span><span class="kw">rbind</span>(O, poly_mat[<span class="dv">2</span><span class="op">:</span><span class="dv">3</span>, ], O) <span class="co"># create 'triangle matrix'</span></a>
-<a class="sourceLine" id="cb1-6" data-line-number="6">C1 =<span class="st"> </span>(T1[<span class="dv">1</span>, ] <span class="op">+</span><span class="st"> </span>T1[<span class="dv">2</span>, ] <span class="op">+</span><span class="st"> </span>T1[<span class="dv">3</span>, ]) <span class="op">/</span><span class="st"> </span><span class="dv">3</span> <span class="co"># find centroid</span></a></code></pre></div>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">t_area =<span class="st"> </span><span class="cf">function</span>(x) {</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2">  <span class="kw">abs</span>(</a>
-<a class="sourceLine" id="cb2-3" data-line-number="3">    x[<span class="dv">1</span>, <span class="dv">1</span>] <span class="op">*</span><span class="st"> </span>(x[<span class="dv">2</span>, <span class="dv">2</span>] <span class="op">-</span><span class="st"> </span>x[<span class="dv">3</span>, <span class="dv">2</span>]) <span class="op">+</span></a>
-<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="st">    </span>x[<span class="dv">2</span>, <span class="dv">1</span>] <span class="op">*</span><span class="st"> </span>(x[<span class="dv">3</span>, <span class="dv">2</span>] <span class="op">-</span><span class="st"> </span>x[<span class="dv">1</span>, <span class="dv">2</span>]) <span class="op">+</span></a>
-<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="st">    </span>x[<span class="dv">3</span>, <span class="dv">1</span>] <span class="op">*</span><span class="st"> </span>(x[<span class="dv">1</span>, <span class="dv">2</span>] <span class="op">-</span><span class="st"> </span>x[<span class="dv">2</span>, <span class="dv">2</span>])</a>
-<a class="sourceLine" id="cb2-6" data-line-number="6">  ) <span class="op">/</span><span class="st"> </span><span class="dv">2</span></a>
-<a class="sourceLine" id="cb2-7" data-line-number="7">}</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x_coords =<span class="st"> </span><span class="kw">c</span>(<span class="dv">10</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">12</span>, <span class="dv">20</span>, <span class="dv">10</span>)
+y_coords =<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">15</span>, <span class="dv">0</span>)
+poly_mat =<span class="st"> </span><span class="kw">cbind</span>(x_coords, y_coords)
+O =<span class="st"> </span>poly_mat[<span class="dv">1</span>, ] <span class="co"># create a point representing the origin</span>
+T1 =<span class="st"> </span><span class="kw">rbind</span>(O, poly_mat[<span class="dv">2</span><span class="op">:</span><span class="dv">3</span>, ], O) <span class="co"># create 'triangle matrix'</span>
+C1 =<span class="st"> </span>(T1[<span class="dv">1</span>, ] <span class="op">+</span><span class="st"> </span>T1[<span class="dv">2</span>, ] <span class="op">+</span><span class="st"> </span>T1[<span class="dv">3</span>, ]) <span class="op">/</span><span class="st"> </span><span class="dv">3</span> <span class="co"># find centroid</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">t_area =<span class="st"> </span><span class="cf">function</span>(x) {
+  <span class="kw">abs</span>(
+    x[<span class="dv">1</span>, <span class="dv">1</span>] <span class="op">*</span><span class="st"> </span>(x[<span class="dv">2</span>, <span class="dv">2</span>] <span class="op">-</span><span class="st"> </span>x[<span class="dv">3</span>, <span class="dv">2</span>]) <span class="op">+</span>
+<span class="st">    </span>x[<span class="dv">2</span>, <span class="dv">1</span>] <span class="op">*</span><span class="st"> </span>(x[<span class="dv">3</span>, <span class="dv">2</span>] <span class="op">-</span><span class="st"> </span>x[<span class="dv">1</span>, <span class="dv">2</span>]) <span class="op">+</span>
+<span class="st">    </span>x[<span class="dv">3</span>, <span class="dv">1</span>] <span class="op">*</span><span class="st"> </span>(x[<span class="dv">1</span>, <span class="dv">2</span>] <span class="op">-</span><span class="st"> </span>x[<span class="dv">2</span>, <span class="dv">2</span>])
+  ) <span class="op">/</span><span class="st"> </span><span class="dv">2</span>
+}</code></pre></div>
 <p>The function <code>t_area</code> generalizes the solution by taking any object <code>x</code>, assumed to have the same dimensions as the triangle represented in <code>T1</code>. We can verify it works on the triangle matrix <code>T1</code> as follows:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw">t_area</span>(T1)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">t_area</span>(T1)</code></pre></div>
 <pre><code>## [1] 50</code></pre>
 <p>Likewise we can create a function that finds the triangle’s centroid:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">t_centroid =<span class="st"> </span><span class="cf">function</span>(x) {</a>
-<a class="sourceLine" id="cb5-2" data-line-number="2">  (x[<span class="dv">1</span>, ] <span class="op">+</span><span class="st"> </span>x[<span class="dv">2</span>, ] <span class="op">+</span><span class="st"> </span>x[<span class="dv">3</span>, ]) <span class="op">/</span><span class="st"> </span><span class="dv">3</span></a>
-<a class="sourceLine" id="cb5-3" data-line-number="3">}</a>
-<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="kw">t_centroid</span>(T1)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">t_centroid =<span class="st"> </span><span class="cf">function</span>(x) {
+  (x[<span class="dv">1</span>, ] <span class="op">+</span><span class="st"> </span>x[<span class="dv">2</span>, ] <span class="op">+</span><span class="st"> </span>x[<span class="dv">3</span>, ]) <span class="op">/</span><span class="st"> </span><span class="dv">3</span>
+}
+<span class="kw">t_centroid</span>(T1)</code></pre></div>
 <pre><code>## x_coords y_coords 
 ## 3.333333 3.333333</code></pre>
 <p>The next stage is to create the second triangle and calculate its area and centroid. This is done in the code chunk below, which binds the 3<sup>rd</sup> and 4<sup>th</sup> coordinates onto the 1<sup>st</sup>, and uses the same functions we created above to calculate its area and width:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">T2 =<span class="st"> </span><span class="kw">rbind</span>(O, poly_mat[<span class="dv">3</span><span class="op">:</span><span class="dv">4</span>, ], O)</a>
-<a class="sourceLine" id="cb7-2" data-line-number="2">A2 =<span class="st"> </span><span class="kw">t_area</span>(T2)</a>
-<a class="sourceLine" id="cb7-3" data-line-number="3">C2 =<span class="st"> </span><span class="kw">t_centroid</span>(T2)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">T2 =<span class="st"> </span><span class="kw">rbind</span>(O, poly_mat[<span class="dv">3</span><span class="op">:</span><span class="dv">4</span>, ], O)
+A2 =<span class="st"> </span><span class="kw">t_area</span>(T2)
+C2 =<span class="st"> </span><span class="kw">t_centroid</span>(T2)</code></pre></div>
 <p>From this point it is not a big leap to see how to create the 3<sup>rd</sup> and final triangle that constitutes the polygon represented by <code>poly_mat</code>.</p>
 <p>Note: it would also be possible to create the polygons with the <strong>decido</strong> package (code not run):</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">ind =<span class="st"> </span>decido<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/decido/topics/earcut">earcut</a></span>(poly_mat)</a>
-<a class="sourceLine" id="cb8-2" data-line-number="2">decido<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/decido/topics/plot_ears">plot_ears</a></span>(poly_mat, <span class="dt">idx =</span> ind)</a>
-<a class="sourceLine" id="cb8-3" data-line-number="3">i =<span class="st"> </span><span class="kw">seq</span>(<span class="dv">1</span>, <span class="kw">length</span>(ind), <span class="dt">by =</span> <span class="dv">3</span>)</a>
-<a class="sourceLine" id="cb8-4" data-line-number="4">i_list =<span class="st"> </span>purrr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/purrr/topics/map">map</a></span>(i, <span class="op">~</span><span class="kw">c</span>(.<span class="op">:</span>(.<span class="op">+</span><span class="dv">2</span>), .))</a>
-<a class="sourceLine" id="cb8-5" data-line-number="5">T_all =<span class="st"> </span>purrr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/purrr/topics/map">map</a></span>(i_list, <span class="op">~</span>poly_mat[ind[.], ])</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ind =<span class="st"> </span>decido<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/decido/topics/earcut">earcut</a></span>(poly_mat)
+decido<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/decido/topics/plot_ears">plot_ears</a></span>(poly_mat, <span class="dt">idx =</span> ind)
+i =<span class="st"> </span><span class="kw">seq</span>(<span class="dv">1</span>, <span class="kw">length</span>(ind), <span class="dt">by =</span> <span class="dv">3</span>)
+i_list =<span class="st"> </span>purrr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/purrr/topics/map">map</a></span>(i, <span class="op">~</span><span class="kw">c</span>(.<span class="op">:</span>(.<span class="op">+</span><span class="dv">2</span>), .))
+T_all =<span class="st"> </span>purrr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/purrr/topics/map">map</a></span>(i_list, <span class="op">~</span>poly_mat[ind[.], ])</code></pre></div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
