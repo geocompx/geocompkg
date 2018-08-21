@@ -2,11 +2,14 @@
 title: "Point Pattern analysis, spatial interpolation and heatmaps"
 author: "Robin Lovelace"
 date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
+# output: rmarkdown::html_vignette
+output: bookdown::html_document2
 vignette: >
   %\VignetteIndexEntry{point-pattern}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+bibliography:
+  - refs.bib
 ---
 
 
@@ -22,7 +25,8 @@ pkgs = c(
   "raster",
   "mapview",
   "dismo",
-  "gstat"
+  "gstat",
+  "leaflet.extras"
   )
 i = pkgs[!pkgs %in% installed.packages()]
 if(length(i) > 0)
@@ -30,7 +34,7 @@ if(length(i) > 0)
 lapply(pkgs, library, character.only = TRUE)
 ```
 
-## Data
+# Data
 
 This chapter uses two datasets on the spatial distribution and some attributes of cycle hire 'docking stations', one from OpenStreetMap and one from an on-line data feed.^[
 Docking stations enable sustainable and fast mobility for people in central London.
@@ -55,12 +59,11 @@ But first we focus only on the former dataset.
 <!-- TODO: ensure we do this -->
 
 
-## Basic point pattern analysis
+# Basic point pattern analysis
 
 Before undertaking more advanced analysis, it makes sense to start simple, with basic statistics and visualizations describing point patterns.
 As with most analysis tasks this first stage involves visual inspection of the data.
-This done in the code chunk below, which generates Figure
-\@ref(fig:cycle-hire1):^[
+This done in the code chunk below, which generates the figure below:^[
 Note the similarities and differences between **sp** and **sf** plotting code and results. Both extend the `plot()` command to create a simple static map, meaning that arguments used in base graphics such as `col` work. However, **sp**'s plot method does not create facets for multiple variables by default and therefore you do not have to specify columns to create a single map.
 **sp** plots omit a colourscheme by default.
 ]
@@ -79,7 +82,7 @@ But how to describe that information quantitatively, and extrapolate the values 
 
 It is the purpose of this chapter to provide the know-how to answer such questions, that should be extensible to many applications that involve point data.
 
-## Point density
+# Point density
 
 A basic statistic to compute on points within a polygon is the number of points per polygon, and the related statistic of point density.
 Let's first compute that for London overall, before doing a zone-by-zone breakdown:
@@ -107,7 +110,7 @@ c_area = area(bb_hire) / 1e6
 c_area
 ```
 
-### Exercises
+## Exercises
 
 - What is the average point density of cycle hire points within the scheme's bounding box?
 
@@ -120,12 +123,12 @@ c_area
 - Why are there two `crs()` calls?
 - The above chunk uses **raster** functions. How would you write the above code using **sp** code?
 
-### Challenges
+## Challenges
 
 - Reproduce the result using **sp** code.
 - Reproduce the results using **sf** code.
 
-## Points in polygons and raster cells
+# Points in polygons and raster cells
 
 A useful level of analysis at which to analyse the geographic distribution of points is the zone-level.
 We can aggregate the points per zone and provide summary statistics.
@@ -136,14 +139,14 @@ crs(lnd) = crs(cycle_hire)
 cycle_hire_ag = aggregate(cycle_hire["id"], lnd, FUN = "length")
 ```
 
-### Exercises
+## Exercises
 
 Based on an analysis of the `cycle_hire_ag`:
 
 - How many zones contain no cycle hire points?
 - What is the average number of cycle hire points per zone?
 
-### Challenge
+## Challenge
 
 Find the average density of cycle hire points per zone in London.
 
@@ -201,13 +204,13 @@ The resulting interactive plot draws attention to the areas of high point densit
 
 <!-- ![](https://github.com/Robinlovelace/Creating-maps-in-R/raw/master/vignettes/point-pattern_files/figure-markdown_github/victoria-plot.png) -->
 
-### Exercises
+## Exercises
 
 - Explore the interactive map created by **mapview** above.
 - Try to explain the location of the high density clusters: what are they near?
 - Where would you suggest building more cycle hire points? 
 
-## Point distance analysis
+# Point distance analysis
 
 Another important characteristic of point patterns is the distances between points, which can be calculated using **raster**'s `dist()` function:
 
@@ -240,7 +243,7 @@ Gd = Gd / length(dmin)
 # plot(distance, Gd)
 ```
 
-## Spatial interpolation
+# Spatial interpolation
 
 Spatial interpolation refers to methods of estimating the value of something in one place, based on measurements taken elsewhere.
 Building on the example of cycle hire points in London, we can ask the question: what is the expected number of bikes for a stand in location x, given knowledge of the existing data.
@@ -272,16 +275,16 @@ plot(r_interp1)
 points(cycle_hire)
 ```
 
-### Exercises
+## Exercises
 
 - Experiment with different matrix sizes of `w` in the above code block. What difference does the size make?
 - Note that the 9x9 cell focal point leads to an 'over smoothing' of the results. Find a way to include only values from touching cells in the results.
 
-## Voronoi polygon interpolation
+# Voronoi polygon interpolation
 
 The raster cell method of spatial interpolation was fun, but not that sophisticated or spatially precise, with a resolution of around 1 km.
 
-The next simplest solution is to break the area up into pieces using the **dismo** package [@R-dismo] and assign the value of the entire area to the value of the point it contains:
+The next simplest solution is to break the area up into pieces using the **dismo** package and assign the value of the entire area to the value of the point it contains:
 
 ```{r}
 library(dismo)
@@ -292,13 +295,13 @@ tm_shape(v) +
   qtm(cycle_hire, symbols.size = 0.2)
 ```
 
-### Exercises
+## Exercises
 
 - Create a point at a random location on the map and plot it prominently on top of the previously plotted layers.
 - What would be it's estimated 'nbikes' a) from the voronoi polygon interpolation and b) from the raster interpolation.
 - Which do you think is most accurate?
 
-## Interpolation with the gstat package
+# Interpolation with the gstat package
 
 **gstat** provides a number of functions for spatial prediction and interpolation using a range of models [@R-gstat].
 The most basic of these, and a workhorse for spatial interpolation is Inverse Distance Weighting (IDW) (results not shown):
@@ -311,9 +314,38 @@ r_idw = interpolate(r, gs)
 plot(r_idw)
 ```
 
-### Exercises
+## Exercises
 
 - Look at the original data - what could explain the spatial distribution of the `nbikes` variable?
 - Experiment with the spatial resolution - we're using 1 km grid cells which are huge!
 - Try using other methods described in Robert Hijman's [tutorial](http://rspatial.org/analysis/rst/4-interpolation.html) on spatial interpolation.
 - Try cross-validating the results. Which performs best?
+
+# Heatmaps with leaflet.extras
+
+If your aim is to visualise clusters of points, without worrying about interpolation, which can be computationally intensive, you can create a heatmap directly.
+**leaflet.extras** provides the function `addHeatmap()` (among many other useful functions for interactive data visualization) for this purpose, as illustrated below.
+
+```{r}
+leaflet() %>% 
+  addProviderTiles(provider = providers$OpenTopoMap) %>% 
+  addHeatmap(data = cycle_hire, intensity = cycle_hire$nbikes, blur = 50)
+```
+
+An alternative function that achieves a similar result is `addWebGLHeatmap()`, illustrated below.
+A notable feature of this function is that it allows size to be set in meters rather than pixels, which prevents the blur from changing when you zoom in:
+
+```{r}
+leaflet() %>% 
+  addProviderTiles(provider = providers$OpenTopoMap) %>% 
+  addWebGLHeatmap(data = cycle_hire, size = 700, units = "m", intensity = 0.5)
+```
+
+# Further reading and tutorials
+
+There is much more to learn about point pattern analysis, spatial interpolation and heatmaps.
+For point pattern analysis, we recommend reading-up on the **spatstat** package [e.g. @baddeley_spatial_2015].
+For more on interpolation, there are many methods including recent machine learning approaches [e.g. @hengl_random_2018; @meyer_improving_2018] (see reproducible tutorial at https://github.com/Envirometrix/BigSpatialDataR ).
+For more on visualising point datasets as heatmaps a recent paper provides insight into the use of WebGL, applied to road traffic crash data [@jezek_design_2017].
+
+# References
