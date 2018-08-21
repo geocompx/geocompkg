@@ -21,6 +21,7 @@ The solutions assume the following packages are attached (other packages will be
 library(sf)
 library(tidyverse)
 library(spData)
+library(tmap)
 ```
 
 # Chapter 8
@@ -51,7 +52,7 @@ zion = st_read((system.file("vector/zion.gpkg", package = "spDataLarge")))
     - Bonus: create three more maps of Africa using the three packages mentioned previously
 1. Extend the map of Africa created with **tmap** for the previous exercise so the legend has three bins: "High" (`HDI` above 0.7), "Medium" (`HDI` between 0.55 and 0.7) and "Low" (`HDI` below 0.55).
     - Bonus: improve the map aesthetics, for example by changing the legend title, class labels and color palette.
-```{r, eval=FALSE}
+```{r}
 # >0.8 - Very high human development
 # >0.7 - High human development
 # >0.55 - Medium human development
@@ -68,7 +69,7 @@ sm1 = tm_shape(africa) +
 1. Represent `africa`'s subregions on the map. 
 Change the default color palette and legend title.
 Next, combine this map and the map created in the previous exercise into a single plot.
-```{r, eval=FALSE}
+```{r}
 sm2 = tm_shape(africa) +
   tm_polygons(col = "subregion",
               title = "Subregion", 
@@ -80,6 +81,7 @@ tmap_arrange(sm2, sm1)
     - Add a scale bar and north arrow and change the position of both to improve the map's aesthetic appeal
     - Bonus: Add an inset map of the Zion National Park's location in the context of the Utah state. (Hint: an object representing Utah can be subsetted from the `us_states` dataset.) 
 ```{r, eval=FALSE}
+# FIX NEEDED
 lc_colors = c("#476ba0", "#aa0000", "#b2ada3", "#68aa63", "#a58c30",
               "#c9c977", "#dbd83d", "#bad8ea")
 sm3 = tm_shape(nlcd) + tm_raster(palette = lc_colors, title = "Land cover") +
@@ -107,7 +109,7 @@ print(im, vp = grid::viewport(0.2, 0.4, width = 0.35, height = 0.35))
 1. Create facet maps of countries in Eastern Africa:
     - with one facet showing HDI and the other representing population growth (hint: using variables `HDI` and `pop_growth` respectively)
     - with a 'small multiple' per country <!-- animated map, interactive map -->
-```{r, eval=FALSE}
+```{r}
 eastern_africa = filter(africa, subregion == "Eastern Africa")
 tm_shape(eastern_africa) +
   tm_polygons(col = c("HDI", "pop_growth")) +
@@ -120,7 +122,7 @@ tm_shape(eastern_africa) +
 1. Building on the previous facet map examples, create animated maps of East Africa:
     - showing first the spatial distribution of HDI scores then population growth
     - showing each country in order
-```{r, eval=FALSE}
+```{r}
 m = tm_shape(eastern_africa) +
   tm_polygons(col = c("HDI", "pop_growth")) +
   qtm(africa, fill = NULL) +
@@ -147,7 +149,7 @@ browseURL("m.gif")
     - Using `textInput()`
     - Using `selectInput()`
 1. Reproduce Figure \@ref(fig:tmshape) and the 1st and 6th panel of Figure \@ref(fig:break-styles) as closely as possible using the **ggplot2** package.
-```{r, eval=FALSE}
+```{r}
 # fig 9.1 (\@ref(fig:tmshape))
 ggplot() + 
   geom_sf(data = nz, color = NA) +
@@ -180,7 +182,7 @@ Next, construct a continuous area cartogram based on total population.
 Finally, create and compare two maps of the poverty rate: (1) a standard choropleth map and (2) a map using the created cartogram boundaries.
 What is the information provided by the first and the second map?
 How do they differ from each other?
-```{r, eval=FALSE}
+```{r}
 library(cartogram)
 # prepare the data
 us = st_transform(us_states, 2163)
@@ -198,7 +200,7 @@ tmap_arrange(ecm1, ecm2)
 ```
 1. Visualize population growth in Africa. 
 Next, compare it with the maps of a hexagonal and regular grid created using the **geogrid** package.
-```{r, eval=FALSE}
+```{r}
 # devtools::install_github("jbaileyh/geogrid")
 library(geogrid)
 

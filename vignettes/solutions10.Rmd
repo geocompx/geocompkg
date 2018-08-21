@@ -38,12 +38,13 @@ library(spData)
 <!-- u = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/significant_hour.geojson" -->
     - How could the documentation be improved?
   <!-- It could document the source of the data better - e.g. with `data from https://earthquake.usgs.gov/earthquakes/feed/v1.0/geojson.php` -->
-1. In section \@ref(geographic-algorithms) we calculated that the area and geographic centroid of the polygon represented by `poly_mat` was `r sum(A)` and `r round(c(weighted.mean(C[, 1], A), weighted.mean(C[, 2], A)), 1)`, respectively.
+1. In section \@ref(geographic-algorithms) we calculated the area and geographic centroid of the polygon represented by `poly_mat`.
     - Reproduce the results on your own computer with reference to the script `10-centroid-alg.R`, an implementation of this algorithm (bonus: type out the commands - try to avoid copy-pasting).
     <!-- Todo: add link to that script file (RL) -->
     - Are the results correct? Verify them by converting `poly_mat` into an `sfc` object (named `poly_sfc`) with `st_polygon()` (hint: this function takes objects of class `list()`) and then using `st_area()` and `st_centroid()`.
 <!-- We can verify the answer by converting `poly_mat` into a simple feature collection as follows, which shows the calculations match: -->
 ```{r, eval=FALSE}
+# FIX NEEDED
 poly_sfc = sf::st_polygon(list(poly_mat))
 sf::st_area(poly_sfc)
 sf::st_centroid(poly_sfc)
@@ -58,6 +59,7 @@ sf::st_centroid(poly_sfc)
     - What error message do you get when you try to run `poly_centroid_sf(poly_mat)`?
     
 ```{r, eval=FALSE}
+# FIX NEEDED
 poly_centroid_sf = function(x) {
   stopifnot(is(x, "sf"))
   xcoords = sf::st_coordinates(x)
