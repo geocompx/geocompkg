@@ -19,8 +19,11 @@ The solutions assume the following packages are attached (other packages will be
 
 ```{r packages, message=FALSE, warning=FALSE}
 library(sf)
+library(raster)
 library(tidyverse)
 library(spData)
+library(spDataLarge)
+library(RQGIS)
 ```
 
 # Chapter 5
@@ -29,7 +32,6 @@ library(spData)
 Some of the exercises will use a vector (`random_points`) and raster dataset (`ndvi`) from the **RQGIS** package.
 It also uses a polygonal 'convex hull' derived from the vector dataset (`ch`) to represent the area of interest:
 ```{r, message=FALSE}
-library(RQGIS)
 data(random_points)
 data(ndvi)
 ch = st_combine(random_points) %>% 
@@ -39,7 +41,7 @@ ch = st_combine(random_points) %>%
 Experiment with different values of `keep` (ranging from 0.5 to 0.00005) for `ms_simplify()` and `dTolerance` (from 100 to 100,000) `st_simplify()` .
     - At what value does the form of the result start to break-down for each method, making New Zealand unrecognizable?
     - Advanced: What is different about the geometry type of the results from `st_simplify()` compared with the geometry type of `ms_simplify()`? What problems does this create and how can this be resolved?
-```{r, eval=FALSE}
+```{r}
 plot(rmapshaper::ms_simplify(st_geometry(nz), keep = 1))
 plot(rmapshaper::ms_simplify(st_geometry(nz), keep = 0.5))
 plot(rmapshaper::ms_simplify(st_geometry(nz), keep = 0.05))
@@ -71,14 +73,14 @@ length(nz_simple_poly)
 nrow(nz)
 ```
 1. In the first exercise in Chapter \@ref(spatial-operations) it was established that Canterbury region had 61 of the 101 highest points in New Zealand. Using `st_buffer()`, how many points in `nz_height` are within 100 km of Canterbury?
-```{r, eval=FALSE}
+```{r}
 canterbury = nz[nz$Name == "Canterbury Region", ]
 cant_buff = st_buffer(canterbury, 100)
 nz_height_near_cant = nz_height[cant_buff, ]
 nrow(nz_height_near_cant) # 66 - 5 more
 ```
 1. Find the geographic centroid of New Zealand. How far is it from the geographic centroid of Canterbury?
-```{r, eval=FALSE}
+```{r}
 cant_cent = st_centroid(canterbury)
 nz_centre = st_centroid(st_union(nz))
 st_distance(cant_cent, nz_centre) # 234 km
@@ -88,7 +90,7 @@ A world map with a south-up orientation could be created by a reflection (one of
 Write code to do so.
 Hint: you need to use a two-element vector for this transformation.
     - Bonus: create a upside down map of your country.
-```{r, eval=FALSE}
+```{r}
 world_sfc = st_geometry(world)
 world_sfc_mirror = world_sfc * c(1, -1)
 plot(world_sfc)
@@ -114,6 +116,7 @@ ggplot(data = us_states_sfc_mirror_sf) +
     - Using base subsetting operators.
     - Using an intermediary object created with `st_intersection()`.
 ```{r, eval=FALSE}
+# FIX NEEDED
 p_in_y = p[y]
 p_in_xy = p_in_y[x]
 x_and_y = st_intersection(x, y)
@@ -122,7 +125,7 @@ p[x_and_y]
 1. Calculate the length of the boundary lines of US states in meters.
 Which state has the longest border and which has the shortest?
 Hint: The `st_length` function computes the length of a `LINESTRING` or `MULTILINESTRING` geometry.
-```{r, eval=FALSE}
+```{r}
 us_states2163 = st_transform(us_states, 2163)
 us_states_bor = st_cast(us_states2163, "MULTILINESTRING")
 us_states_bor$borders = st_length(us_states_bor)
@@ -133,6 +136,7 @@ arrange(us_states_bor, -borders)
     - Resample the lower resolution raster back to a resolution of 3 km. How have the results changed?
     - Name two advantages and disadvantages of reducing raster resolution.
 ```{r, eval=FALSE}
+# FIX NEEDED
 nz_raster_low = raster::aggregate(nz_raster, fact = 2, fun = sum)
 res(nz_raster_low)
 nz_resample = resample(nz_raster_low, nz_raster)
@@ -150,7 +154,7 @@ Are there any difference in the output maps?
 Next, mask `ndvi` using these two datasets.
 Can you see any difference now?
 How can you explain that?
-```{r, eval=FALSE}
+```{r}
 plot(ndvi)
 plot(st_geometry(random_points), add = TRUE)
 plot(ch, add = TRUE)
@@ -168,20 +172,20 @@ plot(ndvi_mask2)
 1. Firstly, extract values from `ndvi` at the points represented in `random_points`.
 Next, extract average values of `ndvi` using a 90 buffer around each point from `random_points` and compare these two sets of values. 
 When would extracting values by buffers be more suitable than by points alone?
-```{r, eval=FALSE}
+```{r}
 random_points_buf = st_buffer(random_points, dist = 90)
 plot(ndvi)
 plot(st_geometry(random_points_buf), add = TRUE)
 plot(ch, add = TRUE)
-random_points$ndvi = extract(ndvi, as(random_points, "Spatial"), buffer = 90, fun = mean)
-random_points$ndvi2 = extract(ndvi, as(random_points, "Spatial"))
+random_points$ndvi = raster::extract(ndvi, as(random_points, "Spatial"), buffer = 90, fun = mean)
+random_points$ndvi2 = raster::extract(ndvi, as(random_points, "Spatial"))
 plot(random_points$ndvi, random_points$ndvi2)
 ```
 1. Subset points higher than 3100 meters in New Zealand (the `nz_height` object) and create a template raster with a resolution of 3km. 
 Using these objects:
     - Count numbers of the highest points in each grid cell.
     - Find the maximum elevation in each grid cell.
-```{r, eval=FALSE}
+```{r}
 nz_height3100 = dplyr::filter(nz_height, elevation > 3100)
 new_graticule = st_graticule(nz_height3100, datum = 2193)
 plot(st_geometry(nz_height3100), graticule = new_graticule, axes = TRUE)
@@ -198,7 +202,7 @@ plot(nz_raster2)
     - Name two advantages and disadvantages of vector data over raster data.
     -  At which points would it be useful to convert rasters to vectors in your work?
 
-```{r, eval=FALSE}
+```{r}
 grain_poly = rasterToPolygons(grain) %>% 
   st_as_sf()
 levels(grain)
