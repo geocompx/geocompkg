@@ -1,0 +1,24 @@
+articles:
+  - title: "Exercises and solutions"
+    desc: >
+      These vignettes provide ...
+    contents:
+      - solutions
+  - title: "Extended examples"
+    desc: >
+      These vignettes provide ...
+    contents:
+      - join
+      - subsetting
+      - cast
+      - us-map
+      - algorithm
+      - point-pattern
+      - linevia
+  - title: "Misc"
+    desc: >
+      These vignettes provide ...
+    contents:
+      - benchmark
+      - erum
+      - sea-level-rise
