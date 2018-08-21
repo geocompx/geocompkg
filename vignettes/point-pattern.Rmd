@@ -152,7 +152,7 @@ Find the average density of cycle hire points per zone in London.
 - Plot the result in an attractive map (e.g. as shown below).
 - Find which zone has the highest density of cycle hire points.
 
-```{r zonedense, echo=FALSE}
+```{r zonedense, echo=FALSE, message=FALSE}
 lnd_areas = area(lnd) / 1e6
 lnd$`cycle_hire_density` = cycle_hire_ag$id / lnd_areas
 library(tmap)
