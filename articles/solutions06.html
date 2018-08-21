@@ -73,12 +73,12 @@
 
     
     
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">knitr<span class="op">::</span>opts_chunk<span class="op">$</span><span class="kw">set</span>(<span class="dt">collapse =</span> <span class="ot">TRUE</span>, <span class="dt">comment =</span> <span class="st">"#&gt;"</span>)</code></pre></div>
 <div id="prerequisites" class="section level2 unnumbered">
 <h2 class="hasAnchor">
 <a href="#prerequisites" class="anchor"></a>Prerequisites</h2>
 <p>The solutions assume the following packages are attached (other packages will be attached when needed):</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(sf)
+<span class="kw">library</span>(raster)
 <span class="kw">library</span>(tidyverse)
 <span class="kw">library</span>(spData)</code></pre></div>
 </div>
@@ -96,7 +96,8 @@
 </ul>
 </li>
 </ol>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_crs">st_crs</a></span>(nz)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># FIX NEEDED</span>
+<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_crs">st_crs</a></span>(nz)
 nz_wgs =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_transform">st_transform</a></span>(nz, <span class="dv">4326</span>)
 nz_crs =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_crs">st_crs</a></span>(nz)
 nz_wgs_crs =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_crs">st_crs</a></span>(nz_wgs)
@@ -119,20 +120,29 @@ nz_<span class="dv">27700</span> =<span class="st"> </span><span class="kw"><a h
 </ol>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># see https://github.com/r-spatial/sf/issues/509</span>
 world_tmerc =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_transform">st_transform</a></span>(world, <span class="st">"+proj=tmerc"</span>)
-<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(world_tmerc))
-world_<span class="dv">4326</span> =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_transform">st_transform</a></span>(world_tmerc, <span class="dv">4326</span>)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(world_tmerc))</code></pre></div>
+<p><img src="solutions06_files/figure-html/unnamed-chunk-2-1.png" width="700"></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">world_<span class="dv">4326</span> =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_transform">st_transform</a></span>(world_tmerc, <span class="dv">4326</span>)
 <span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(world_<span class="dv">4326</span>))</code></pre></div>
-<ol style="list-style-type: decimal">
-<li>Transform the continuous raster (<code>cat_raster</code>) into WGS 84 using the nearest neighbor interpolation method. What has changed? How does it influence the results?</li>
-</ol>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">con_raster =<span class="st"> </span><span class="kw">raster</span>(<span class="kw">system.file</span>(<span class="st">"raster/srtm.tif"</span>, <span class="dt">package=</span><span class="st">"spDataLarge"</span>))
-con_raster_wgs84 =<span class="st"> </span><span class="kw">projectRaster</span>(con_raster, <span class="dt">crs =</span> wgs84, <span class="dt">method =</span> <span class="st">"ngb"</span>)
-con_raster_wgs84</code></pre></div>
+<p><img src="solutions06_files/figure-html/unnamed-chunk-2-2.png" width="700"> 1. Transform the continuous raster (<code>cat_raster</code>) into WGS 84 using the nearest neighbor interpolation method. What has changed? How does it influence the results?</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">wgs84 =<span class="st"> "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs"</span>
+con_raster =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/raster">raster</a></span>(<span class="kw">system.file</span>(<span class="st">"raster/srtm.tif"</span>, <span class="dt">package=</span><span class="st">"spDataLarge"</span>))
+con_raster_wgs84 =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/projectRaster">projectRaster</a></span>(con_raster, <span class="dt">crs =</span> wgs84, <span class="dt">method =</span> <span class="st">"ngb"</span>)
+con_raster_wgs84
+<span class="co">#&gt; class       : RasterLayer </span>
+<span class="co">#&gt; dimensions  : 467, 475, 221825  (nrow, ncol, ncell)</span>
+<span class="co">#&gt; resolution  : 0.000833, 0.000833  (x, y)</span>
+<span class="co">#&gt; extent      : -113.2437, -112.8481, 37.12807, 37.51708  (xmin, xmax, ymin, ymax)</span>
+<span class="co">#&gt; coord. ref. : +proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs +towgs84=0,0,0 </span>
+<span class="co">#&gt; data source : in memory</span>
+<span class="co">#&gt; names       : srtm </span>
+<span class="co">#&gt; values      : 1024, 2892  (min, max)</span></code></pre></div>
 <ol style="list-style-type: decimal">
 <li>Transform the categorical raster (<code>cat_raster</code>) into WGS 84 using the bilinear interpolation method. What has changed? How does it influence the results?</li>
 </ol>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">wgs84 =<span class="st"> "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs"</span>
-cat_raster_wgs84 =<span class="st"> </span><span class="kw">projectRaster</span>(cat_raster, <span class="dt">crs =</span> wgs84, <span class="dt">method =</span> <span class="st">"bilinear"</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># FIX NEEDED</span>
+wgs84 =<span class="st"> "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs"</span>
+cat_raster_wgs84 =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/projectRaster">projectRaster</a></span>(cat_raster, <span class="dt">crs =</span> wgs84, <span class="dt">method =</span> <span class="st">"bilinear"</span>)
 cat_raster_wgs84</code></pre></div>
 </div>
   </div>

@@ -84,6 +84,22 @@
 <div id="chapter-12" class="section level1">
 <h1 class="hasAnchor">
 <a href="#chapter-12" class="anchor"></a>Chapter 12</h1>
+<ol style="list-style-type: decimal">
+<li>Compute the following terrain attributes from the <code>dem</code> datasets loaded with <code>data("landslides", package = "RSAGA")</code> with the help of R-GIS bridges (see Chapter @ref(gis)):
+<ul>
+<li>slope</li>
+<li>plan curvature</li>
+<li>profile curvature</li>
+<li>catchment area</li>
+</ul>
+</li>
+<li>Extract the values from the corresponding output rasters to the <code>landslides</code> data frame (<code>data(landslides, package = "RSAGA"</code>) by adding new variables called <code>slope</code>, <code>cplan</code>, <code>cprof</code>, <code>elev</code> and <code>log_carea</code>. Keep all landslide initiation points and 175 randomly selected non-landslide points (see section @ref(case-landslide) for details).</li>
+<li>Use the derived terrain attribute rasters in combination with a GLM to make a spatial prediction map similar to that shown in Figure @ref(fig:lsl-susc). Running <code>data("study_mask", package = "spDataLarge")</code> attaches a mask of the study area.</li>
+<li>Compute a 100-repeated 5-fold non-spatial cross-validation and spatial CV based on the GLM learner and compare the AUROC values from both resampling strategies with the help of boxplots (see Figure @ref(fig:boxplot-cv)). Hint: You need to specify a non-spatial task and a non-spatial resampling strategy. <!-- @Patrick: talk in person; but I think this step is not necessary since spatial and non-spatial partitions must be different --> <!-- Before running the spatial cross-validation for both tasks set a seed to make sure that both use the same partitions which in turn guarantees comparability.-->
+</li>
+<li>Model landslide susceptibility using a quadratic discriminant analysis <span class="citation">[QDA, @james_introduction_2013]</span>. Assess the predictive performance (AUROC) of the QDA. What is the difference between the spatially cross-validated mean AUROC value of the QDA and the GLM? <!-- so I think, setting a seed here makes sure that the same spatial partitions are used for both models, right?--> Hint: Before running the spatial cross-validation for both learners set a seed to make sure that both use the same spatial partitions which in turn guarantees comparability.</li>
+<li>Run the SVM without tuning the hyperparameters. Use the <code>rbfdot</code> kernel with <span class="math inline">\(\sigma\)</span> = 1 and <em>C</em> = 1. Leaving the hyperparameters unspecified in <strong>kernlab</strong>’s <code>ksvm()</code> would otherwise initialize an automatic non-spatial hyperparameter tuning.</li>
+</ol>
 </div>
   </div>
 

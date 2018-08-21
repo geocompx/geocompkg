@@ -84,6 +84,20 @@
 <div id="chapter-13" class="section level1">
 <h1 class="hasAnchor">
 <a href="#chapter-13" class="anchor"></a>Chapter 13</h1>
+<ol style="list-style-type: decimal">
+<li><p>We have used <code><a href="http://www.rdocumentation.org/packages/raster/topics/rasterFromXYZ">raster::rasterFromXYZ()</a></code> to convert a <code>input_tidy</code> into a raster brick. Try to achieve the same with the help of the <code><a href="http://www.rdocumentation.org/packages/sp/topics/gridded-methods">sp::gridded()</a></code> function. <!--
+input = st_as_sf(input, coords = c("x", "y"))
+# use the correct projection (see data description)
+input = st_set_crs(input, 3035)
+# convert into an sp-object
+input = as(input, "Spatial")
+gridded(input) = TRUE
+# convert into a raster stack
+input = stack(input)
+--></p></li>
+<li><p>Download the csv file containing inhabitant information for a 100 m cell resolution (<a href="https://www.zensus2011.de/SharedDocs/Downloads/DE/Pressemitteilung/DemografischeGrunddaten/csv_Bevoelkerung_100m_Gitter.zip?__blob=publicationFile&amp;v=3" class="uri">https://www.zensus2011.de/SharedDocs/Downloads/DE/Pressemitteilung/DemografischeGrunddaten/csv_Bevoelkerung_100m_Gitter.zip?__blob=publicationFile&amp;v=3</a>). Please note that the unzipped file has a size of 1.23 GB. To read it into R you can use <code><a href="http://www.rdocumentation.org/packages/readr/topics/read_delim">readr::read_csv</a></code>. This takes 30 seconds on my machine (16 GB RAM) <code><a href="http://www.rdocumentation.org/packages/data.table/topics/fread">data.table::fread()</a></code> might be even faster, and returns an object of class <code>data.table()</code>. Use <code>as.tibble()</code> to convert it into a tibble. Build an inhabitant raster, aggregate it to a cell resolution of 1 km, and compare the difference with the inhabitant raster (<code>inh</code>) we have created using class mean values.</p></li>
+<li><p>Suppose our bike shop predominantly sold electric bikes to older people. Change the age raster accordingly, repeat the remaining analyses and compare the changes with our original result.</p></li>
+</ol>
 </div>
   </div>
 

@@ -78,15 +78,17 @@
 <a href="#prerequisites" class="anchor"></a>Prerequisites</h2>
 <p>The solutions assume the following packages are attached (other packages will be attached when needed):</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(sf)
+<span class="kw">library</span>(raster)
 <span class="kw">library</span>(tidyverse)
-<span class="kw">library</span>(spData)</code></pre></div>
+<span class="kw">library</span>(spData)
+<span class="kw">library</span>(spDataLarge)
+<span class="kw">library</span>(RQGIS)</code></pre></div>
 </div>
 <div id="chapter-5" class="section level1">
 <h1 class="hasAnchor">
 <a href="#chapter-5" class="anchor"></a>Chapter 5</h1>
 <p>Some of the exercises will use a vector (<code>random_points</code>) and raster dataset (<code>ndvi</code>) from the <strong>RQGIS</strong> package. It also uses a polygonal ‘convex hull’ derived from the vector dataset (<code>ch</code>) to represent the area of interest:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(RQGIS)
-<span class="kw">data</span>(random_points)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(random_points)
 <span class="kw">data</span>(ndvi)
 ch =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/geos_combine">st_combine</a></span>(random_points) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/geos_unary">st_convex_hull</a></span>()</code></pre></div>
@@ -98,48 +100,70 @@ ch =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation
 </ul>
 </li>
 </ol>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(rmapshaper<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/rmapshaper/topics/ms_simplify">ms_simplify</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(nz), <span class="dt">keep =</span> <span class="dv">1</span>))
-<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(rmapshaper<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/rmapshaper/topics/ms_simplify">ms_simplify</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(nz), <span class="dt">keep =</span> <span class="fl">0.5</span>))
-<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(rmapshaper<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/rmapshaper/topics/ms_simplify">ms_simplify</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(nz), <span class="dt">keep =</span> <span class="fl">0.05</span>))
-<span class="co"># Starts to breakdown here at 0.5% of the points:</span>
-<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(rmapshaper<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/rmapshaper/topics/ms_simplify">ms_simplify</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(nz), <span class="dt">keep =</span> <span class="fl">0.005</span>))
-<span class="co"># At this point no further simplification changes the result</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(rmapshaper<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/rmapshaper/topics/ms_simplify">ms_simplify</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(nz), <span class="dt">keep =</span> <span class="dv">1</span>))</code></pre></div>
+<p><img src="solutions05_files/figure-html/unnamed-chunk-2-1.png" width="700"></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(rmapshaper<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/rmapshaper/topics/ms_simplify">ms_simplify</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(nz), <span class="dt">keep =</span> <span class="fl">0.5</span>))</code></pre></div>
+<p><img src="solutions05_files/figure-html/unnamed-chunk-2-2.png" width="700"></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(rmapshaper<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/rmapshaper/topics/ms_simplify">ms_simplify</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(nz), <span class="dt">keep =</span> <span class="fl">0.05</span>))</code></pre></div>
+<p><img src="solutions05_files/figure-html/unnamed-chunk-2-3.png" width="700"></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Starts to breakdown here at 0.5% of the points:</span>
+<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(rmapshaper<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/rmapshaper/topics/ms_simplify">ms_simplify</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(nz), <span class="dt">keep =</span> <span class="fl">0.005</span>))</code></pre></div>
+<p><img src="solutions05_files/figure-html/unnamed-chunk-2-4.png" width="700"></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># At this point no further simplification changes the result</span>
 <span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(rmapshaper<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/rmapshaper/topics/ms_simplify">ms_simplify</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(nz), <span class="dt">keep =</span> <span class="fl">0.0005</span>))
-<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(rmapshaper<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/rmapshaper/topics/ms_simplify">ms_simplify</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(nz), <span class="dt">keep =</span> <span class="fl">0.00005</span>))
-<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/geos_unary">st_simplify</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(nz), <span class="dt">dTolerance =</span> <span class="dv">100</span>))
-<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/geos_unary">st_simplify</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(nz), <span class="dt">dTolerance =</span> <span class="dv">1000</span>))
-<span class="co"># Starts to breakdown at 10 km:</span>
-<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/geos_unary">st_simplify</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(nz), <span class="dt">dTolerance =</span> <span class="dv">10000</span>))
-<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/geos_unary">st_simplify</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(nz), <span class="dt">dTolerance =</span> <span class="dv">100000</span>))
-<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/geos_unary">st_simplify</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(nz), <span class="dt">dTolerance =</span> <span class="dv">100000</span>, <span class="dt">preserveTopology =</span> <span class="ot">TRUE</span>))
-
+<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(rmapshaper<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/rmapshaper/topics/ms_simplify">ms_simplify</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(nz), <span class="dt">keep =</span> <span class="fl">0.00005</span>))</code></pre></div>
+<p><img src="solutions05_files/figure-html/unnamed-chunk-2-5.png" width="700"></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/geos_unary">st_simplify</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(nz), <span class="dt">dTolerance =</span> <span class="dv">100</span>))</code></pre></div>
+<p><img src="solutions05_files/figure-html/unnamed-chunk-2-6.png" width="700"></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/geos_unary">st_simplify</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(nz), <span class="dt">dTolerance =</span> <span class="dv">1000</span>))</code></pre></div>
+<p><img src="solutions05_files/figure-html/unnamed-chunk-2-7.png" width="700"></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Starts to breakdown at 10 km:</span>
+<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/geos_unary">st_simplify</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(nz), <span class="dt">dTolerance =</span> <span class="dv">10000</span>))</code></pre></div>
+<p><img src="solutions05_files/figure-html/unnamed-chunk-2-8.png" width="700"></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/geos_unary">st_simplify</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(nz), <span class="dt">dTolerance =</span> <span class="dv">100000</span>))</code></pre></div>
+<p><img src="solutions05_files/figure-html/unnamed-chunk-2-9.png" width="700"></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/geos_unary">st_simplify</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(nz), <span class="dt">dTolerance =</span> <span class="dv">100000</span>, <span class="dt">preserveTopology =</span> <span class="ot">TRUE</span>))</code></pre></div>
+<p><img src="solutions05_files/figure-html/unnamed-chunk-2-10.png" width="700"></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">
 <span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(rmapshaper<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/rmapshaper/topics/ms_simplify">ms_simplify</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(nz), <span class="dt">keep =</span> <span class="fl">0.05</span>))
-<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(rmapshaper<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/rmapshaper/topics/ms_simplify">ms_simplify</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(nz), <span class="dt">keep =</span> <span class="fl">0.05</span>))
-
+<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(rmapshaper<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/rmapshaper/topics/ms_simplify">ms_simplify</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(nz), <span class="dt">keep =</span> <span class="fl">0.05</span>))</code></pre></div>
+<p><img src="solutions05_files/figure-html/unnamed-chunk-2-11.png" width="700"></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">
 <span class="co"># Problem: st_simplify returns POLYGON and MULTIPOLYGON results, affecting plotting</span>
 <span class="co"># Cast into a single geometry type to resolve this</span>
 nz_simple_poly =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/geos_unary">st_simplify</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(nz), <span class="dt">dTolerance =</span> <span class="dv">10000</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/sfc">st_sfc</a></span>() <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_cast">st_cast</a></span>(<span class="st">"POLYGON"</span>)
+<span class="co">#&gt; Warning in st_cast.MULTIPOLYGON(X[[i]], ...): polygon from first part only</span>
+
+<span class="co">#&gt; Warning in st_cast.MULTIPOLYGON(X[[i]], ...): polygon from first part only</span>
 nz_simple_multipoly =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/geos_unary">st_simplify</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(nz), <span class="dt">dTolerance =</span> <span class="dv">10000</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/sfc">st_sfc</a></span>() <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_cast">st_cast</a></span>(<span class="st">"MULTIPOLYGON"</span>)
-<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(nz_simple_poly)
-<span class="kw">length</span>(nz_simple_poly)
-<span class="kw">nrow</span>(nz)</code></pre></div>
+<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(nz_simple_poly)</code></pre></div>
+<p><img src="solutions05_files/figure-html/unnamed-chunk-2-12.png" width="700"></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">length</span>(nz_simple_poly)
+<span class="co">#&gt; [1] 16</span>
+<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/ncell">nrow</a></span>(nz)
+<span class="co">#&gt; [1] 16</span></code></pre></div>
 <ol style="list-style-type: decimal">
 <li>In the first exercise in Chapter @ref(spatial-operations) it was established that Canterbury region had 61 of the 101 highest points in New Zealand. Using <code><a href="http://www.rdocumentation.org/packages/sf/topics/geos_unary">st_buffer()</a></code>, how many points in <code>nz_height</code> are within 100 km of Canterbury?</li>
 </ol>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">canterbury =<span class="st"> </span>nz[nz<span class="op">$</span>Name <span class="op">==</span><span class="st"> "Canterbury Region"</span>, ]
 cant_buff =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/geos_unary">st_buffer</a></span>(canterbury, <span class="dv">100</span>)
 nz_height_near_cant =<span class="st"> </span>nz_height[cant_buff, ]
-<span class="kw">nrow</span>(nz_height_near_cant) <span class="co"># 66 - 5 more</span></code></pre></div>
+<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/ncell">nrow</a></span>(nz_height_near_cant) <span class="co"># 66 - 5 more</span>
+<span class="co">#&gt; [1] 0</span></code></pre></div>
 <ol style="list-style-type: decimal">
 <li>Find the geographic centroid of New Zealand. How far is it from the geographic centroid of Canterbury?</li>
 </ol>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cant_cent =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/geos_unary">st_centroid</a></span>(canterbury)
+<span class="co">#&gt; Warning in st_centroid.sf(canterbury): st_centroid assumes attributes are</span>
+<span class="co">#&gt; constant over geometries of x</span>
 nz_centre =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/geos_unary">st_centroid</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/geos_combine">st_union</a></span>(nz))
-<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/geos_measures">st_distance</a></span>(cant_cent, nz_centre) <span class="co"># 234 km</span></code></pre></div>
+<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/geos_measures">st_distance</a></span>(cant_cent, nz_centre) <span class="co"># 234 km</span>
+<span class="co">#&gt; Units: m</span>
+<span class="co">#&gt;      [,1]</span></code></pre></div>
 <ol style="list-style-type: decimal">
 <li>Most world maps have a north-up orientation. A world map with a south-up orientation could be created by a reflection (one of the affine transformations not mentioned in @ref(affine-transformations)) of the <code>world</code> object’s geometry. Write code to do so. Hint: you need to use a two-element vector for this transformation.
 <ul>
@@ -149,24 +173,28 @@ nz_centre =<span class="st"> </span><span class="kw"><a href="http://www.rdocume
 </ol>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">world_sfc =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(world)
 world_sfc_mirror =<span class="st"> </span>world_sfc <span class="op">*</span><span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>, <span class="op">-</span><span class="dv">1</span>)
-<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(world_sfc)
-<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(world_sfc_mirror)
-
+<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(world_sfc)</code></pre></div>
+<p><img src="solutions05_files/figure-html/unnamed-chunk-5-1.png" width="700"></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(world_sfc_mirror)</code></pre></div>
+<p><img src="solutions05_files/figure-html/unnamed-chunk-5-2.png" width="700"></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">
 us_states_sfc =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(us_states)
 us_states_sfc_mirror =<span class="st"> </span>us_states_sfc <span class="op">*</span><span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>, <span class="op">-</span><span class="dv">1</span>)
-<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(us_states_sfc)
-<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(us_states_sfc_mirror)
-## nicer plot
-<span class="kw">library</span>(ggrepel)
-us_states_sfc_mirror_labels =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/geos_unary">st_centroid</a></span>(us_states_sfc_mirror) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_coordinates">st_coordinates</a></span>() <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">as_data_frame</span>() <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">name =</span> us_states<span class="op">$</span>NAME)
-us_states_sfc_mirror_sf =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_set_geometry</a></span>(us_states, us_states_sfc_mirror)
-<span class="kw">ggplot</span>(<span class="dt">data =</span> us_states_sfc_mirror_sf) <span class="op">+</span>
-<span class="st">  </span><span class="kw">geom_sf</span>(<span class="dt">color =</span> <span class="st">"white"</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">geom_text_repel</span>(<span class="dt">data =</span> us_states_sfc_mirror_labels, <span class="dt">mapping =</span> <span class="kw">aes</span>(X, Y, <span class="dt">label =</span> name), <span class="dt">size =</span> <span class="dv">3</span>, <span class="dt">min.segment.length =</span> <span class="dv">0</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">theme_void</span>() </code></pre></div>
+<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(us_states_sfc)</code></pre></div>
+<p><img src="solutions05_files/figure-html/unnamed-chunk-5-3.png" width="700"></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(us_states_sfc_mirror)</code></pre></div>
+<p><img src="solutions05_files/figure-html/unnamed-chunk-5-4.png" width="700"></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## nicer plot
+<span class="co"># library(ggrepel)</span>
+<span class="co"># us_states_sfc_mirror_labels = st_centroid(us_states_sfc_mirror) %&gt;% </span>
+<span class="co">#   st_coordinates() %&gt;%</span>
+<span class="co">#   as_data_frame() %&gt;% </span>
+<span class="co">#   mutate(name = us_states$NAME)</span>
+<span class="co"># us_states_sfc_mirror_sf = st_set_geometry(us_states, us_states_sfc_mirror)</span>
+<span class="co"># ggplot(data = us_states_sfc_mirror_sf) +</span>
+<span class="co">#   geom_sf(color = "white") +</span>
+<span class="co">#   geom_text_repel(data = us_states_sfc_mirror_labels, mapping = aes(X, Y, label = name), size = 3, min.segment.length = 0) +</span>
+<span class="co">#   theme_void() </span></code></pre></div>
 <ol style="list-style-type: decimal">
 <li>Subset the point in <code>p</code> that is contained within <code>x</code> <em>and</em> <code>y</code> (see section @ref(clipping) and Figure @ref(fig:venn-clip)).
 <ul>
@@ -175,7 +203,8 @@ us_states_sfc_mirror_sf =<span class="st"> </span><span class="kw"><a href="http
 </ul>
 </li>
 </ol>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">p_in_y =<span class="st"> </span>p[y]
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># FIX NEEDED</span>
+p_in_y =<span class="st"> </span>p[y]
 p_in_xy =<span class="st"> </span>p_in_y[x]
 x_and_y =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/geos_binary_ops">st_intersection</a></span>(x, y)
 p[x_and_y]</code></pre></div>
@@ -186,7 +215,65 @@ p[x_and_y]</code></pre></div>
 us_states_bor =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_cast">st_cast</a></span>(us_states2163, <span class="st">"MULTILINESTRING"</span>)
 us_states_bor<span class="op">$</span>borders =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/geos_measures">st_length</a></span>(us_states_bor)
 <span class="kw">arrange</span>(us_states_bor, borders)
-<span class="kw">arrange</span>(us_states_bor, <span class="op">-</span>borders)</code></pre></div>
+<span class="co">#&gt; Simple feature collection with 49 features and 7 fields</span>
+<span class="co">#&gt; geometry type:  MULTILINESTRING</span>
+<span class="co">#&gt; dimension:      XY</span>
+<span class="co">#&gt; bbox:           xmin: -2031905 ymin: -2116610 xmax: 2514262 ymax: 731601.3</span>
+<span class="co">#&gt; epsg (SRID):    2163</span>
+<span class="co">#&gt; proj4string:    +proj=laea +lat_0=45 +lon_0=-100 +x_0=0 +y_0=0 +a=6370997 +b=6370997 +units=m +no_defs</span>
+<span class="co">#&gt; First 10 features:</span>
+<span class="co">#&gt;    GEOID                 NAME   REGION           AREA total_pop_10</span>
+<span class="co">#&gt; 1     11 District of Columbia    South   178.210 km^2       584400</span>
+<span class="co">#&gt; 2     44         Rhode Island Norteast  2743.057 km^2      1056389</span>
+<span class="co">#&gt; 3     10             Delaware    South  5181.844 km^2       881278</span>
+<span class="co">#&gt; 4     09          Connecticut Norteast 12976.588 km^2      3545837</span>
+<span class="co">#&gt; 5     34           New Jersey Norteast 20273.671 km^2      8721577</span>
+<span class="co">#&gt; 6     50              Vermont Norteast 24866.158 km^2       624258</span>
+<span class="co">#&gt; 7     33        New Hampshire Norteast 24026.479 km^2      1313939</span>
+<span class="co">#&gt; 8     25        Massachusetts Norteast 20910.750 km^2      6477096</span>
+<span class="co">#&gt; 9     45       South Carolina    South 80903.582 km^2      4511428</span>
+<span class="co">#&gt; 10    18              Indiana  Midwest 93648.395 km^2      6417398</span>
+<span class="co">#&gt;    total_pop_15      borders                       geometry</span>
+<span class="co">#&gt; 1        647484   60322.91 m MULTILINESTRING ((1950825 -...</span>
+<span class="co">#&gt; 2       1053661  304593.73 m MULTILINESTRING ((2332242 4...</span>
+<span class="co">#&gt; 3        926454  408048.55 m MULTILINESTRING ((2036308 -...</span>
+<span class="co">#&gt; 4       3593222  514090.14 m MULTILINESTRING ((2142347 2...</span>
+<span class="co">#&gt; 5       8904413  746942.10 m MULTILINESTRING ((2057740 -...</span>
+<span class="co">#&gt; 6        626604  778203.70 m MULTILINESTRING ((2048149 3...</span>
+<span class="co">#&gt; 7       1324201  782643.83 m MULTILINESTRING ((2182313 3...</span>
+<span class="co">#&gt; 8       6705586 1017375.49 m MULTILINESTRING ((2416684 3...</span>
+<span class="co">#&gt; 9       4777576 1275279.82 m MULTILINESTRING ((1531823 -...</span>
+<span class="co">#&gt; 10      6568645 1436287.75 m MULTILINESTRING ((1031129 -...</span>
+<span class="kw">arrange</span>(us_states_bor, <span class="op">-</span>borders)
+<span class="co">#&gt; Simple feature collection with 49 features and 7 fields</span>
+<span class="co">#&gt; geometry type:  MULTILINESTRING</span>
+<span class="co">#&gt; dimension:      XY</span>
+<span class="co">#&gt; bbox:           xmin: -2031905 ymin: -2116610 xmax: 2514262 ymax: 731601.3</span>
+<span class="co">#&gt; epsg (SRID):    2163</span>
+<span class="co">#&gt; proj4string:    +proj=laea +lat_0=45 +lon_0=-100 +x_0=0 +y_0=0 +a=6370997 +b=6370997 +units=m +no_defs</span>
+<span class="co">#&gt; First 10 features:</span>
+<span class="co">#&gt;    GEOID       NAME  REGION          AREA total_pop_10 total_pop_15</span>
+<span class="co">#&gt; 1     48      Texas   South 687714.3 km^2     24311891     26538614</span>
+<span class="co">#&gt; 2     06 California    West 409747.1 km^2     36637290     38421464</span>
+<span class="co">#&gt; 3     26   Michigan Midwest 151119.0 km^2      9952687      9900571</span>
+<span class="co">#&gt; 4     12    Florida   South 151052.0 km^2     18511620     19645772</span>
+<span class="co">#&gt; 5     30    Montana    West 380829.2 km^2       973739      1014699</span>
+<span class="co">#&gt; 6     16      Idaho    West 216512.7 km^2      1526797      1616547</span>
+<span class="co">#&gt; 7     27  Minnesota Midwest 218566.5 km^2      5241914      5419171</span>
+<span class="co">#&gt; 8     51   Virginia   South 105404.7 km^2      7841754      8256630</span>
+<span class="co">#&gt; 9     35 New Mexico    West 314886.1 km^2      2013122      2084117</span>
+<span class="co">#&gt; 10    53 Washington    West 175436.0 km^2      6561297      6985464</span>
+<span class="co">#&gt;      borders                       geometry</span>
+<span class="co">#&gt; 1  4961585 m MULTILINESTRING ((-269040 -...</span>
+<span class="co">#&gt; 2  3810226 m MULTILINESTRING ((-1717278 ...</span>
+<span class="co">#&gt; 3  3574933 m MULTILINESTRING ((1110644 1...</span>
+<span class="co">#&gt; 4  2951059 m MULTILINESTRING ((1853170 -...</span>
+<span class="co">#&gt; 5  2821788 m MULTILINESTRING ((-1161496 ...</span>
+<span class="co">#&gt; 6  2568711 m MULTILINESTRING ((-1294787 ...</span>
+<span class="co">#&gt; 7  2563963 m MULTILINESTRING ((202211.8 ...</span>
+<span class="co">#&gt; 8  2405725 m MULTILINESTRING ((2099962 -...</span>
+<span class="co">#&gt; 9  2378721 m MULTILINESTRING ((-803303.1...</span>
+<span class="co">#&gt; 10 2340809 m MULTILINESTRING ((-1658594 ...</span></code></pre></div>
 <ol style="list-style-type: decimal">
 <li>Aggregate the raster counting high points in New Zealand (created in the previous exercise), reduce its geographic resolution by half (so cells are 6 by 6 km) and plot the result.
 <ul>
@@ -195,9 +282,10 @@ us_states_bor<span class="op">$</span>borders =<span class="st"> </span><span cl
 </ul>
 </li>
 </ol>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">nz_raster_low =<span class="st"> </span>raster<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/aggregate">aggregate</a></span>(nz_raster, <span class="dt">fact =</span> <span class="dv">2</span>, <span class="dt">fun =</span> sum)
-<span class="kw">res</span>(nz_raster_low)
-nz_resample =<span class="st"> </span><span class="kw">resample</span>(nz_raster_low, nz_raster)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># FIX NEEDED</span>
+nz_raster_low =<span class="st"> </span>raster<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/aggregate">aggregate</a></span>(nz_raster, <span class="dt">fact =</span> <span class="dv">2</span>, <span class="dt">fun =</span> sum)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/resolution">res</a></span>(nz_raster_low)
+nz_resample =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/resample">resample</a></span>(nz_raster_low, nz_raster)
 <span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(nz_raster_low)
 <span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(nz_resample) <span class="co"># the results are spread over a greater area and there are border issues</span>
 <span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(nz_raster)
@@ -211,60 +299,56 @@ nz_resample =<span class="st"> </span><span class="kw">resample</span>(nz_raster
 </ol>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(ndvi)
 <span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(random_points), <span class="dt">add =</span> <span class="ot">TRUE</span>)
-<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(ch, <span class="dt">add =</span> <span class="ot">TRUE</span>)
-
-ndvi_crop1 =<span class="st"> </span><span class="kw">crop</span>(ndvi, <span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/coerce-methods">as</a></span>(random_points, <span class="st">"Spatial"</span>)) 
-ndvi_crop2 =<span class="st"> </span><span class="kw">crop</span>(ndvi, <span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/coerce-methods">as</a></span>(ch, <span class="st">"Spatial"</span>)) 
+<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(ch, <span class="dt">add =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<p><img src="solutions05_files/figure-html/unnamed-chunk-9-1.png" width="700"></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">
+ndvi_crop1 =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/crop">crop</a></span>(ndvi, <span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/coerce-methods">as</a></span>(random_points, <span class="st">"Spatial"</span>)) 
+ndvi_crop2 =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/crop">crop</a></span>(ndvi, <span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/coerce-methods">as</a></span>(ch, <span class="st">"Spatial"</span>)) 
 <span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(ndvi_crop1)
-<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(ndvi_crop2)
-
-ndvi_mask1 =<span class="st"> </span><span class="kw">mask</span>(ndvi, <span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/coerce-methods">as</a></span>(random_points, <span class="st">"Spatial"</span>)) 
-ndvi_mask2 =<span class="st"> </span><span class="kw">mask</span>(ndvi, <span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/coerce-methods">as</a></span>(ch, <span class="st">"Spatial"</span>)) 
-<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(ndvi_mask1)
-<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(ndvi_mask2)</code></pre></div>
-<ol style="list-style-type: decimal">
-<li>Firstly, extract values from <code>ndvi</code> at the points represented in <code>random_points</code>. Next, extract average values of <code>ndvi</code> using a 90 buffer around each point from <code>random_points</code> and compare these two sets of values. When would extracting values by buffers be more suitable than by points alone?</li>
-</ol>
+<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(ndvi_crop2)</code></pre></div>
+<p><img src="solutions05_files/figure-html/unnamed-chunk-9-2.png" width="700"></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">
+ndvi_mask1 =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/mask">mask</a></span>(ndvi, <span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/coerce-methods">as</a></span>(random_points, <span class="st">"Spatial"</span>)) 
+ndvi_mask2 =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/mask">mask</a></span>(ndvi, <span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/coerce-methods">as</a></span>(ch, <span class="st">"Spatial"</span>)) 
+<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(ndvi_mask1)</code></pre></div>
+<p><img src="solutions05_files/figure-html/unnamed-chunk-9-3.png" width="700"></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(ndvi_mask2)</code></pre></div>
+<p><img src="solutions05_files/figure-html/unnamed-chunk-9-4.png" width="700"> 1. Firstly, extract values from <code>ndvi</code> at the points represented in <code>random_points</code>. Next, extract average values of <code>ndvi</code> using a 90 buffer around each point from <code>random_points</code> and compare these two sets of values. When would extracting values by buffers be more suitable than by points alone?</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">random_points_buf =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/geos_unary">st_buffer</a></span>(random_points, <span class="dt">dist =</span> <span class="dv">90</span>)
 <span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(ndvi)
 <span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(random_points_buf), <span class="dt">add =</span> <span class="ot">TRUE</span>)
-<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(ch, <span class="dt">add =</span> <span class="ot">TRUE</span>)
-random_points<span class="op">$</span>ndvi =<span class="st"> </span><span class="kw">extract</span>(ndvi, <span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/coerce-methods">as</a></span>(random_points, <span class="st">"Spatial"</span>), <span class="dt">buffer =</span> <span class="dv">90</span>, <span class="dt">fun =</span> mean)
-random_points<span class="op">$</span>ndvi2 =<span class="st"> </span><span class="kw">extract</span>(ndvi, <span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/coerce-methods">as</a></span>(random_points, <span class="st">"Spatial"</span>))
+<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(ch, <span class="dt">add =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<p><img src="solutions05_files/figure-html/unnamed-chunk-10-1.png" width="700"></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">random_points<span class="op">$</span>ndvi =<span class="st"> </span>raster<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/extract">extract</a></span>(ndvi, <span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/coerce-methods">as</a></span>(random_points, <span class="st">"Spatial"</span>), <span class="dt">buffer =</span> <span class="dv">90</span>, <span class="dt">fun =</span> mean)
+random_points<span class="op">$</span>ndvi2 =<span class="st"> </span>raster<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/extract">extract</a></span>(ndvi, <span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/coerce-methods">as</a></span>(random_points, <span class="st">"Spatial"</span>))
 <span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(random_points<span class="op">$</span>ndvi, random_points<span class="op">$</span>ndvi2)</code></pre></div>
-<ol style="list-style-type: decimal">
-<li>Subset points higher than 3100 meters in New Zealand (the <code>nz_height</code> object) and create a template raster with a resolution of 3km. Using these objects:
-<ul>
-<li>Count numbers of the highest points in each grid cell.</li>
-<li>Find the maximum elevation in each grid cell.</li>
-</ul>
-</li>
-</ol>
+<p><img src="solutions05_files/figure-html/unnamed-chunk-10-2.png" width="700"> 1. Subset points higher than 3100 meters in New Zealand (the <code>nz_height</code> object) and create a template raster with a resolution of 3km. Using these objects: - Count numbers of the highest points in each grid cell. - Find the maximum elevation in each grid cell.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">nz_height3100 =<span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(nz_height, elevation <span class="op">&gt;</span><span class="st"> </span><span class="dv">3100</span>)
 new_graticule =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_graticule">st_graticule</a></span>(nz_height3100, <span class="dt">datum =</span> <span class="dv">2193</span>)
-<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(nz_height3100), <span class="dt">graticule =</span> new_graticule, <span class="dt">axes =</span> <span class="ot">TRUE</span>)
-nz_template =<span class="st"> </span><span class="kw">raster</span>(<span class="kw">extent</span>(nz_height3100), <span class="dt">resolution =</span> <span class="dv">3000</span>,
+<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(nz_height3100), <span class="dt">graticule =</span> new_graticule, <span class="dt">axes =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<p><img src="solutions05_files/figure-html/unnamed-chunk-11-1.png" width="700"></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">nz_template =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/raster">raster</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/extent">extent</a></span>(nz_height3100), <span class="dt">resolution =</span> <span class="dv">3000</span>,
                          <span class="dt">crs =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_crs">st_crs</a></span>(nz_height3100)<span class="op">$</span>proj4string)
-nz_raster =<span class="st"> </span><span class="kw">rasterize</span>(nz_height3100, nz_template, 
+nz_raster =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/rasterize">rasterize</a></span>(nz_height3100, nz_template, 
                        <span class="dt">field =</span> <span class="st">"elevation"</span>, <span class="dt">fun =</span> <span class="st">"count"</span>)
-<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(nz_raster)
-nz_raster2 =<span class="st"> </span><span class="kw">rasterize</span>(nz_height3100, nz_template, 
+<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(nz_raster)</code></pre></div>
+<p><img src="solutions05_files/figure-html/unnamed-chunk-11-2.png" width="700"></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">nz_raster2 =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/rasterize">rasterize</a></span>(nz_height3100, nz_template, 
                        <span class="dt">field =</span> <span class="st">"elevation"</span>, <span class="dt">fun =</span> max)
 <span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(nz_raster2)</code></pre></div>
-<ol style="list-style-type: decimal">
-<li>Polygonize the <code>grain</code> dataset and filter all squares representing clay.
-<ul>
-<li>Name two advantages and disadvantages of vector data over raster data.</li>
-<li>At which points would it be useful to convert rasters to vectors in your work?</li>
-</ul>
-</li>
-</ol>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">grain_poly =<span class="st"> </span><span class="kw">rasterToPolygons</span>(grain) <span class="op">%&gt;%</span><span class="st"> </span>
+<p><img src="solutions05_files/figure-html/unnamed-chunk-11-3.png" width="700"> 1. Polygonize the <code>grain</code> dataset and filter all squares representing clay. - Name two advantages and disadvantages of vector data over raster data. - At which points would it be useful to convert rasters to vectors in your work?</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">grain_poly =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/rasterToPolygons">rasterToPolygons</a></span>(grain) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_as_sf">st_as_sf</a></span>()
-<span class="kw">levels</span>(grain)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/factor">levels</a></span>(grain)
+<span class="co">#&gt; [[1]]</span>
+<span class="co">#&gt;   ID VALUE</span>
+<span class="co">#&gt; 1  1  clay</span>
+<span class="co">#&gt; 2  2  silt</span>
+<span class="co">#&gt; 3  3  sand</span>
 clay =<span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(grain_poly, layer <span class="op">==</span><span class="st"> </span><span class="dv">1</span>)
-<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(clay)
-<span class="co"># advantages: can be used to subset other vector objects</span>
+<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(clay)</code></pre></div>
+<p><img src="solutions05_files/figure-html/unnamed-chunk-12-1.png" width="700"></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># advantages: can be used to subset other vector objects</span>
 <span class="co"># can do affine transformations and use sf/dplyr verbs</span>
 <span class="co"># disadvantages: better consistency, fast processing on some operations, functions developed for some domains</span></code></pre></div>
 </div>

@@ -84,6 +84,58 @@
 <div id="chapter-10" class="section level1">
 <h1 class="hasAnchor">
 <a href="#chapter-10" class="anchor"></a>Chapter 10</h1>
+<ol style="list-style-type: decimal">
+<li>Read the script <code>10-centroid-alg.R</code> in the <code>code</code> folder of the book’s GitHub repo.
+<ul>
+<li>Which of the best practices covered in section @ref(scripts) does it follow?</li>
+<li>Create a version of the script on your computer in an IDE such as RStudio (preferably by typing-out the script line-by-line, in your own coding style and with your own comments, rather than copy-pasting — this will help you learn how to type scripts) and, using the example of a square polygon (e.g. created with <code>poly_mat = cbind(x = c(0, 0, 9, 9, 0), y = c(0, 9, 9, 0, 0))</code>) execute the script line-by-line.</li>
+<li>What changes could be made to the script to make it more reproducible? <!-- - Answer: The script could state that it needs a an object called `poly_mat` to be present and, if none is present, create an example dataset at the outset for testing. --> <!-- 1. Check-out the script `10-earthquakes.R` in the `code` folder of the book's GitHub [repo](https://github.com/Robinlovelace/geocompr/blob/master/code/10-earthquakes.R). --> <!--     - Try to reproduce the results: how many significant earthquakes were there last month? --> <!--     - Modify the script so that it provides a map with all earthquakes that happened in the past hour. --> <!-- change line 10 to: --> <!-- u = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/significant_hour.geojson" -->
+</li>
+<li>How could the documentation be improved? <!-- It could document the source of the data better - e.g. with `data from https://earthquake.usgs.gov/earthquakes/feed/v1.0/geojson.php` -->
+</li>
+</ul>
+</li>
+<li>In section @ref(geographic-algorithms) we calculated the area and geographic centroid of the polygon represented by <code>poly_mat</code>.
+<ul>
+<li>Reproduce the results on your own computer with reference to the script <code>10-centroid-alg.R</code>, an implementation of this algorithm (bonus: type out the commands - try to avoid copy-pasting). <!-- Todo: add link to that script file (RL) -->
+</li>
+<li>Are the results correct? Verify them by converting <code>poly_mat</code> into an <code>sfc</code> object (named <code>poly_sfc</code>) with <code><a href="http://www.rdocumentation.org/packages/sf/topics/st">st_polygon()</a></code> (hint: this function takes objects of class <code>list()</code>) and then using <code><a href="http://www.rdocumentation.org/packages/sf/topics/geos_measures">st_area()</a></code> and <code><a href="http://www.rdocumentation.org/packages/sf/topics/geos_unary">st_centroid()</a></code>. <!-- We can verify the answer by converting `poly_mat` into a simple feature collection as follows, which shows the calculations match: -->
+</li>
+</ul>
+</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># FIX NEEDED</span>
+poly_sfc =<span class="st"> </span>sf<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st">st_polygon</a></span>(<span class="kw">list</span>(poly_mat))
+sf<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/geos_measures">st_area</a></span>(poly_sfc)
+sf<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/geos_unary">st_centroid</a></span>(poly_sfc)</code></pre></div>
+<ol style="list-style-type: decimal">
+<li>It was stated that the algorithm we created only works for <em>convex hulls</em>. Define convex hulls (see Chapter @ref(geometric-operations)) and test the algorithm on a polygon that is <em>not</em> a convex hull.
+<ul>
+<li>Bonus 1: Think about why the method only works for convex hulls and note changes that would need to be made to the algorithm for other types of shape to be calculated. <!-- The algorithm would need to be able to have negative as well as positive area values. -->
+</li>
+<li>Bonus 2: Building on the contents of <code>10-centroid-alg.R</code>, write an algorithm only using base R functions that can find the total length of linestrings represented in matrix form. <!-- Todo: add example of matrix representing a linestring, demonstrate code to verify the answer, suggest alternative functions to decompose as a bonus. -->
+</li>
+</ul>
+</li>
+<li>In section @ref(functions) we created a different versions of the <code>poly_centroid()</code> function that generated outputs of class <code>sfg</code> (<code>poly_centroid_sfg()</code>) and type-stable <code>matrix</code> outputs (<code>poly_centroid_type_stable()</code>). Further extend the function by creating a version (e.g. called <code>poly_centroid_sf()</code>) that is type stable (only accepts inputs of class <code>sf</code>) <em>and</em> returns <code>sf</code> objects (hint: you may need to convert the object <code>x</code> into a matrix with the command <code><a href="http://www.rdocumentation.org/packages/sf/topics/st_coordinates">sf::st_coordinates(x)</a></code>.
+<ul>
+<li>Verify it works by running <code>poly_centroid_sf(sf::st_sf(sf::st_sfc(poly_sfc)))</code>
+</li>
+<li>What error message do you get when you try to run <code>poly_centroid_sf(poly_mat)</code>?</li>
+</ul>
+</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># FIX NEEDED</span>
+poly_centroid_sf =<span class="st"> </span><span class="cf">function</span>(x) {
+  <span class="kw">stopifnot</span>(<span class="kw">is</span>(x, <span class="st">"sf"</span>))
+  xcoords =<span class="st"> </span>sf<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_coordinates">st_coordinates</a></span>(x)
+  centroid_coords =<span class="st"> </span><span class="kw">poly_centroid</span>(xcoords)
+  centroid_sf =<span class="st"> </span>sf<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/sf">st_sf</a></span>(<span class="dt">geometry =</span> sf<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/sfc">st_sfc</a></span>(sf<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st">st_point</a></span>(centroid_coords)))
+  centroid_sf
+}
+<span class="kw">poly_centroid_sf</span>(sf<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/sf">st_sf</a></span>(sf<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/sfc">st_sfc</a></span>(poly_sfc)))
+<span class="kw">poly_centroid_sf</span>(poly_sfc)
+<span class="kw">poly_centroid_sf</span>(poly_mat)</code></pre></div>
 </div>
   </div>
 
