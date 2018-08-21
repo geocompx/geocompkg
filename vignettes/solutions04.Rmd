@@ -1,0 +1,111 @@
+---
+title: "Chapter 4"
+author: "Robin Lovelace, Jakub Nowosad, Jannes Muenchow"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{geocompr-solutions}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, echo = FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
+```
+
+## Prerequisites {-}
+
+The solutions assume the following packages are attached (other packages will be attached when needed):
+
+```{r packages, message=FALSE, warning=FALSE}
+library(sf)
+library(tidyverse)
+library(spData)
+```
+
+# Chapter 4
+
+4. Use `data(dem, package = "RQGIS")`, and reclassify the elevation in three classes: low, middle and high.
+Secondly, compute the NDVI (`data(ndvi, package = "RQGIS")`) and the mean elevation for each altitudinal class.
+```{r, eval=FALSE}
+library(classInt)
+data(dem, package = "RQGIS")
+summary(dem)
+# find quantile breaks
+brk = classIntervals(values(dem), n = 3)$brk
+# also try
+# breask = classIntervals(values(dem), n = 3, style = "fisher")
+# construct reclassification matrix
+rcl = matrix(c(brk[1] - 1, brk[2], 1, brk[2], brk[3], 2, brk[3], brk[4], 3), 
+             ncol = 3, byrow = TRUE)
+# reclassify altitudinal raster
+recl = reclassify(dem, rcl = rcl)
+# compute the mean dem and ndvi values for each class
+zonal(stack(dem, ndvi), recl, fun = "mean")
+```
+
+5. Apply a line detection filter to `data(dem, package = "RQGIS")`.
+```{r, eval=FALSE}
+# from the focal help page:
+# Laplacian filter: filter=matrix(c(0,1,0,1,-4,1,0,1,0), nrow=3)
+# Sobel filter: filter=matrix(c(1,2,1,0,0,0,-1,-2,-1) / 4, nrow=3)
+# compute the Sobel filter
+# check if there are NAs
+is.na(dem)  # just 0s, so no NAs
+sobel = focal(dem, w = matrix(c(1, 2, 1, 0, 0, 0, -1, -2, -1) / 4, nrow = 3))
+# CHECK IF THIS IS CORRECT
+```
+
+6. Calculate the NDVI of a Landsat image. 
+Use the Landsat image provided by the **spDataLarge** package (`system.file("raster/landsat.tif", package="spDataLarge")`).
+
+```{r, eval=FALSE}
+file = system.file("raster/landsat.tif", package="spDataLarge")
+r = stack(file)
+# compute NDVI manually
+ndvi = (r[["landsat.4"]] - r[["landsat.3"]]) / (r[["landsat.4"]] + r[["landsat.3"]])
+# compute NDVI with the help of RStoolbox
+library(RStoolbox)
+ndvi_rstoolbox = spectralIndices(r, red = 3, nir = 4, indices = "NDVI")
+all.equal(ndvi, ndvi_rstoolbox)
+```
+
+7. This [post](https://stackoverflow.com/questions/35555709/global-raster-of-geographic-distances) shows how to use `raster::distance()`.
+Extract Spain, calculate a distance raster and weight it with elevation.
+Finally, compute the difference between the raster using the euclidean distance and the raster weighted by elevation.
+(Hint: Have a look at `getData()` to retrieve a digital elevation model for Spain.)
+
+```{r, eval=FALSE}
+library(raster)
+# find out the ISO_3 code of Spain
+dplyr::filter(ccodes(), NAME %in% "Spain")
+# retrieve a dem of Spain
+dem = getData("alt", country = "ESP", mask = FALSE)
+# change the resolution to decrease computing time
+agg = aggregate(dem, fact = 5)
+poly = getData("GADM", country = "ESP", level = 1)
+plot(dem)
+plot(poly, add = TRUE)
+# visualize NAs
+plot(is.na(agg))
+# construct a distance input raster
+# we have to set the land cells to NA and the sea cells to an arbitrary value since 
+# raster::distance computes the distance to the nearest non-NA cell
+dist = is.na(agg)
+cellStats(dist, summary)
+# convert land cells into NAs and sea cells into 1s
+dist[dist == FALSE] = NA
+dist[dist == TRUE] = 1
+plot(dist)
+# compute distance to nearest non-NA cell
+dist = raster::distance(dist)
+# just keep Spain
+dist = mask(dist, poly)
+# convert distance into km
+dist = dist / 1000
+# now let's weight each 100 altitudinal meters by an additionaly distance of 10 km
+agg = mask(agg, poly)
+agg[agg < 0] = 0
+weight = dist + agg / 100 * 10
+plot(weight - dist)
+```

@@ -1,0 +1,26 @@
+---
+title: "Chapter 9"
+author: "Robin Lovelace, Jakub Nowosad, Jannes Muenchow"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{geocompr-solutions}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, echo = FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
+```
+
+## Prerequisites {-}
+
+The solutions assume the following packages are attached (other packages will be attached when needed):
+
+```{r packages, message=FALSE, warning=FALSE}
+library(sf)
+library(tidyverse)
+library(spData)
+```
+
+# Chapter 9
