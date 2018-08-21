@@ -13,16 +13,6 @@ vignette: >
 knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
 ```
 
-## Prerequisites {-}
-
-The solutions assume the following packages are attached (other packages will be attached when needed):
-
-```{r packages, message=FALSE, warning=FALSE}
-library(sf)
-library(tidyverse)
-library(spData)
-```
-
 # Chapter 1
 
 1. Think about the terms 'GIS', 'GDS' and 'Geocomputation' described above. Which is your favorite and and why?
