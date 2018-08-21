@@ -24,3 +24,25 @@ library(spData)
 ```
 
 # Chapter 9
+
+
+1. Create two overlapping polygons (`poly_1` and `poly_2`) with the help of the **sf**-package (see Chapter \@ref(spatial-class)). 
+
+1. Union `poly_1` and `poly_2` using `st_union()` and `qgis:union`.
+What is the difference between the two union operations? 
+How can we use the **sf** package to obtain the same result as QGIS?
+
+1. Calculate the intersection of `poly_1` and `poly_2` using:
+
+    - **RQGIS**, **RSAGA** and **rgrass7**
+    - **sf**
+
+1. Attach `data(dem, package = "RQGIS")` and `data(random_points, package = "RQGIS")`.
+Select randomly a point from `random_points` and find all `dem` pixels that can be seen from this point (hint: viewshed).
+Visualize your result.
+For example, plot a hillshade, and on top of it the digital elevation model, your viewshed output and the point.
+Additionally, give `mapview` a try.
+
+1. Use `gdalinfo` via a system call for a raster file stored on disk of your choice.
+
+1. Query all Californian highways from the PostgreSQL/PostGIS database living in the QGIS Cloud introduced in this chapter.
