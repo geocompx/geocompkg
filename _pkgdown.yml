@@ -10,7 +10,7 @@ navbar:
 articles:
   - title: "Exercises and solutions"
     desc: >
-      This vignette provides solutions for the exercises from Geocomputation with R
+      These vignettes provide solutions for the exercises from Geocomputation with R
     contents:
       - solutions01
       - solutions02
