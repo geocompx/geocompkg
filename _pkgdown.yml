@@ -3,12 +3,12 @@ title: geocompkg | metapackage for the book Gecomputation with R
 articles:
   - title: "Exercises and solutions"
     desc: >
-      These vignettes provide ...
+      This vignette provides solutions for the exercises from Geocomputation with R
     contents:
       - solutions
   - title: "Extended examples"
     desc: >
-      These vignettes provide ...
+      These vignettes provide extended examples for several methods and functions mentioned in Geocomputation with R
     contents:
       - join
       - subsetting
@@ -19,7 +19,7 @@ articles:
       - linevia
   - title: "Misc"
     desc: >
-      These vignettes provide ...
+      These vignettes provide additional miscellaneous materials related to Geocomputation with R
     contents:
       - benchmark
       - erum-2018
