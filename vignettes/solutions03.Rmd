@@ -1,5 +1,5 @@
 ---
-title: "Chapter 3"
+title: "Chapter 3: Attribute operations"
 author: "Robin Lovelace, Jakub Nowosad, Jannes Muenchow"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette

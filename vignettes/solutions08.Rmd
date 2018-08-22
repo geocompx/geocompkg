@@ -1,5 +1,5 @@
 ---
-title: "Chapter 8"
+title: "Chapter 8: Making maps with R"
 author: "Robin Lovelace, Jakub Nowosad, Jannes Muenchow"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette

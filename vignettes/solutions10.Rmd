@@ -1,5 +1,5 @@
 ---
-title: "Chapter 10"
+title: "Chapter 10: Scripts, algorithms and functions"
 author: "Robin Lovelace, Jakub Nowosad, Jannes Muenchow"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette

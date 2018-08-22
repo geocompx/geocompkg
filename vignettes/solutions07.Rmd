@@ -1,5 +1,5 @@
 ---
-title: "Chapter 7"
+title: "Chapter 7: Geographic data I/O"
 author: "Robin Lovelace, Jakub Nowosad, Jannes Muenchow"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette

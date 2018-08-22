@@ -1,5 +1,5 @@
 ---
-title: "Chapter 9"
+title: "Chapter 9: Bridges to GIS software"
 author: "Robin Lovelace, Jakub Nowosad, Jannes Muenchow"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
