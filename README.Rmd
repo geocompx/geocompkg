@@ -28,20 +28,31 @@ See [the vignettes folder](https://github.com/geocompr/geocompkg/tree/master/vig
 You can install the packages needed to reproduce the code in Geocompuation with R by installing the [geocompkg](https://github.com/geocompr/geocompkg) package as follows:
 
 ```{r, eval=FALSE}
-install.packages("spDataLarge", repos = "https://nowosad.github.io/drat/",
-                 type = "source")
 devtools::install_github("geocompr/geocompkg")
 ```
+
+If you have any issues, check-out [Chapter 2](https://geocompr.robinlovelace.net/spatial-class.html) of the book.
+You may need to install **spDataLarge** from drat:
+
+```{r, eval=FALSE}
+install.packages("spDataLarge", repos = "https://nowosad.github.io/drat/",
+                 type = "source")
+```
+
 
 ```{r, eval=FALSE, echo=FALSE}
 # build site:
 pkgdown::build_home()
-pkgdown::build_articles()
-# build all articles
-articles = list.files(path = "vignettes/", pattern = ".Rmd")
-articles = gsub(pattern = ".Rmd", replacement = "", articles)
-for(i in articles) {
-  pkgdown::build_article(i)
-}
+
+# build vignettes one by one, e.g.
+pkgdown::build_article("sea-level-rise")
+
+# pkgdown::build_articles()
+# # build all articles
+# articles = list.files(path = "vignettes/", pattern = ".Rmd")
+# articles = gsub(pattern = ".Rmd", replacement = "", articles)
+# for(i in articles) {
+#   pkgdown::build_article(i)
+# }
 ```
 

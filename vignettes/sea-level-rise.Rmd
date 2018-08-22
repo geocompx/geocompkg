@@ -16,7 +16,7 @@ These imacts are exacerbated by climate change, adding an element of uncertainty
 All these features of SLR make it well-suited to analysis using geocomputation.
 
 
-```{r}
+```{r, eval=FALSE}
 # aim: demo r-spatial capabilities with slr data
 # See https://github.com/geocompr/geostats_18/blob/master/code/geocompr/slr.R
 
