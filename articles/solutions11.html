@@ -5,11 +5,11 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chapter 11 • geocompkg | metapackage for the book Gecomputation with R</title>
+<title>Chapter 11: Statistical learning • geocompkg | metapackage for the book Gecomputation with R</title>
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="Chapter 11">
+<script src="../pkgdown.js"></script><meta property="og:title" content="Chapter 11: Statistical learning">
 <meta property="og:description" content="">
 <meta name="twitter:card" content="summary">
 <!-- mathjax --><script src="https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
@@ -61,10 +61,10 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1>Chapter 11</h1>
+      <h1>Chapter 11: Statistical learning</h1>
                         <h4 class="author">Robin Lovelace, Jakub Nowosad, Jannes Muenchow</h4>
             
-            <h4 class="date">2018-08-21</h4>
+            <h4 class="date">2018-08-22</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/geocompr/geocompkg/blob/master/vignettes/solutions11.Rmd"><code>vignettes/solutions11.Rmd</code></a></small>
       <div class="hidden name"><code>solutions11.Rmd</code></div>
@@ -85,21 +85,336 @@
 <h1 class="hasAnchor">
 <a href="#chapter-11" class="anchor"></a>Chapter 11</h1>
 <ol style="list-style-type: decimal">
-<li>Compute the following terrain attributes from the <code>dem</code> datasets loaded with <code>data("landslides", package = "RSAGA")</code> with the help of R-GIS bridges (see Chapter @ref(gis)):
-<ul>
-<li>slope</li>
-<li>plan curvature</li>
-<li>profile curvature</li>
-<li>catchment area</li>
-</ul>
-</li>
-<li>Extract the values from the corresponding output rasters to the <code>landslides</code> data frame (<code>data(landslides, package = "RSAGA"</code>) by adding new variables called <code>slope</code>, <code>cplan</code>, <code>cprof</code>, <code>elev</code> and <code>log_carea</code>. Keep all landslide initiation points and 175 randomly selected non-landslide points (see section @ref(case-landslide) for details).</li>
-<li>Use the derived terrain attribute rasters in combination with a GLM to make a spatial prediction map similar to that shown in Figure @ref(fig:lsl-susc). Running <code>data("study_mask", package = "spDataLarge")</code> attaches a mask of the study area.</li>
-<li>Compute a 100-repeated 5-fold non-spatial cross-validation and spatial CV based on the GLM learner and compare the AUROC values from both resampling strategies with the help of boxplots (see Figure @ref(fig:boxplot-cv)). Hint: You need to specify a non-spatial task and a non-spatial resampling strategy. <!-- @Patrick: talk in person; but I think this step is not necessary since spatial and non-spatial partitions must be different --> <!-- Before running the spatial cross-validation for both tasks set a seed to make sure that both use the same partitions which in turn guarantees comparability.-->
-</li>
-<li>Model landslide susceptibility using a quadratic discriminant analysis <span class="citation">[QDA, @james_introduction_2013]</span>. Assess the predictive performance (AUROC) of the QDA. What is the difference between the spatially cross-validated mean AUROC value of the QDA and the GLM? <!-- so I think, setting a seed here makes sure that the same spatial partitions are used for both models, right?--> Hint: Before running the spatial cross-validation for both learners set a seed to make sure that both use the same spatial partitions which in turn guarantees comparability.</li>
-<li>Run the SVM without tuning the hyperparameters. Use the <code>rbfdot</code> kernel with <span class="math inline">\(\sigma\)</span> = 1 and <em>C</em> = 1. Leaving the hyperparameters unspecified in <strong>kernlab</strong>’s <code>ksvm()</code> would otherwise initialize an automatic non-spatial hyperparameter tuning. For a discussion on the need for (spatial) tuning of hyperparameters please refer to <span class="citation">@schratz_performance_nodate</span>.</li>
+<li>Compute the terrain attributes slope, plan curvature, profile curvature and catchment area from <code>dem</code> (provided by <code>data("landslides", package = "RSAGA")</code>) with the help of R-GIS bridges, and extract the values from the corresponding output rasters to the <code>landslides</code> dataframe (<code>data(landslides, package = "RSAGA"</code>)). Keep all landslide initation points and 175 randomly selected non-landslide points.</li>
 </ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># attach packages</span>
+<span class="kw">library</span>(RSAGA)
+<span class="kw">library</span>(RQGIS)
+
+<span class="co"># attach data</span>
+<span class="kw">data</span>(<span class="st">"landslides"</span>, <span class="dt">package =</span> <span class="st">"RSAGA"</span>)
+
+
+<span class="co"># DATA PREPROCESSING</span>
+<span class="co">#*******************</span>
+
+<span class="co"># landslide points</span>
+non =<span class="st"> </span>landslides[landslides<span class="op">$</span>lslpts <span class="op">==</span><span class="st"> </span><span class="ot">FALSE</span>, ]
+ind =<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(non), <span class="kw">nrow</span>(landslides[landslides<span class="op">$</span>lslpts <span class="op">==</span><span class="st"> </span><span class="ot">TRUE</span>, ]))
+lsl =<span class="st"> </span><span class="kw">rbind</span>(non[ind, ], landslides[landslides<span class="op">$</span>lslpts <span class="op">==</span><span class="st"> </span><span class="ot">TRUE</span>, ])
+
+<span class="co"># digital elevation model</span>
+dem =<span class="st"> </span>
+<span class="st">  </span><span class="kw">raster</span>(dem<span class="op">$</span>data, 
+         <span class="dt">crs =</span> <span class="st">"+proj=utm +zone=17 +south +datum=WGS84 +units=m +no_defs"</span>,
+         <span class="dt">xmn =</span> dem<span class="op">$</span>header<span class="op">$</span>xllcorner, 
+         <span class="dt">xmx =</span> dem<span class="op">$</span>header<span class="op">$</span>xllcorner <span class="op">+</span><span class="st"> </span>dem<span class="op">$</span>header<span class="op">$</span>ncols <span class="op">*</span><span class="st"> </span>dem<span class="op">$</span>header<span class="op">$</span>cellsize,
+         <span class="dt">ymn =</span> dem<span class="op">$</span>header<span class="op">$</span>yllcorner,
+         <span class="dt">ymx =</span> dem<span class="op">$</span>header<span class="op">$</span>yllcorner <span class="op">+</span><span class="st"> </span>dem<span class="op">$</span>header<span class="op">$</span>nrows <span class="op">*</span><span class="st"> </span>dem<span class="op">$</span>header<span class="op">$</span>cellsize)
+
+<span class="co"># COMPUTING TERRAIN ATTRIBUTES</span>
+<span class="co">#*******************************</span>
+
+<span class="co"># slope, aspect, curvatures</span>
+<span class="kw"><a href="http://www.rdocumentation.org/packages/RQGIS/topics/set_env">set_env</a></span>(<span class="dt">dev =</span> <span class="ot">FALSE</span>)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/RQGIS/topics/find_algorithms">find_algorithms</a></span>(<span class="st">"curvature"</span>)
+alg =<span class="st"> "saga:slopeaspectcurvature"</span>
+<span class="kw"><a href="http://www.rdocumentation.org/packages/RQGIS/topics/get_usage">get_usage</a></span>(alg)
+<span class="co"># terrain attributes (ta)</span>
+out =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/RQGIS/topics/run_qgis">run_qgis</a></span>(alg, <span class="dt">ELEVATION =</span> dem, <span class="dt">METHOD =</span> <span class="dv">6</span>, <span class="dt">UNIT_SLOPE =</span> <span class="st">"degree"</span>,
+               <span class="dt">UNIT_ASPECT =</span> <span class="st">"degree"</span>,
+               <span class="dt">ASPECT =</span> <span class="kw">file.path</span>(<span class="kw">tempdir</span>(), <span class="st">"aspect.tif"</span>),
+               <span class="dt">SLOPE =</span> <span class="kw">file.path</span>(<span class="kw">tempdir</span>(), <span class="st">"slope.tif"</span>),
+               <span class="dt">C_PLAN =</span> <span class="kw">file.path</span>(<span class="kw">tempdir</span>(), <span class="st">"cplan.tif"</span>),
+               <span class="dt">C_PROF =</span> <span class="kw">file.path</span>(<span class="kw">tempdir</span>(), <span class="st">"cprof.tif"</span>),
+               <span class="dt">load_output =</span> <span class="ot">TRUE</span>)
+
+<span class="co"># use brick because then the layers will be in memory and not on disk</span>
+ta =<span class="st"> </span><span class="kw">brick</span>(out[<span class="kw">names</span>(out) <span class="op">!=</span><span class="st"> "ASPECT"</span>])
+<span class="kw">names</span>(ta) =<span class="st"> </span><span class="kw">c</span>(<span class="st">"slope"</span>, <span class="st">"cplan"</span>, <span class="st">"cprof"</span>)
+<span class="co"># catchment area</span>
+<span class="kw"><a href="http://www.rdocumentation.org/packages/RQGIS/topics/find_algorithms">find_algorithms</a></span>(<span class="st">"[Cc]atchment"</span>)
+alg =<span class="st"> "saga:flowaccumulationtopdown"</span>
+<span class="kw"><a href="http://www.rdocumentation.org/packages/RQGIS/topics/get_usage">get_usage</a></span>(alg)
+carea =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/RQGIS/topics/run_qgis">run_qgis</a></span>(alg, <span class="dt">ELEVATION =</span> dem, <span class="dt">METHOD =</span> <span class="dv">4</span>, 
+                 <span class="dt">FLOW =</span> <span class="kw">file.path</span>(<span class="kw">tempdir</span>(), <span class="st">"carea.tif"</span>),
+                 <span class="dt">load_output =</span> <span class="ot">TRUE</span>)
+<span class="co"># transform carea</span>
+log_carea =<span class="st"> </span><span class="kw">log10</span>(carea)
+<span class="kw">names</span>(log_carea) =<span class="st"> "log_carea"</span>
+<span class="kw">names</span>(dem) =<span class="st"> "elev"</span>
+<span class="co"># add log_carea</span>
+ta =<span class="st"> </span><span class="kw">addLayer</span>(<span class="dt">x =</span> ta, dem, log_carea)
+<span class="co"># extract values to points, i.e., create predictors</span>
+lsl[, <span class="kw">names</span>(ta)] =<span class="st"> </span>raster<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/extract">extract</a></span>(ta, lsl[, <span class="kw">c</span>(<span class="st">"x"</span>, <span class="st">"y"</span>)])</code></pre></div>
+<ol start="2" style="list-style-type: decimal">
+<li>Make a spatial prediction map similar with the derived model results and terrain attribute rasters.</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># attach packages</span>
+<span class="kw">library</span>(raster)
+<span class="kw">library</span>(sf)
+<span class="kw">library</span>(tmap)
+<span class="co"># attach data (in case you have not computed the terrain attributes before)</span>
+<span class="kw">load</span>(<span class="st">"extdata/spatialcv.Rdata"</span>)
+
+<span class="co"># fit the model</span>
+fit =<span class="st"> </span><span class="kw">glm</span>(lslpts <span class="op">~</span><span class="st"> </span>slope <span class="op">+</span><span class="st"> </span>cplan <span class="op">+</span><span class="st"> </span>cprof <span class="op">+</span><span class="st"> </span>elev <span class="op">+</span><span class="st"> </span>log_carea, 
+          <span class="dt">data =</span> lsl, <span class="dt">family =</span> <span class="kw">binomial</span>())
+
+<span class="co"># make the prediction</span>
+pred =<span class="st"> </span>raster<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/predict">predict</a></span>(<span class="dt">object =</span> ta, <span class="dt">model =</span> fit, <span class="dt">type =</span> <span class="st">"response"</span>)
+
+<span class="co"># make the map</span>
+lsl_sf =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_as_sf">st_as_sf</a></span>(lsl, <span class="dt">coords =</span> <span class="kw">c</span>(<span class="st">"x"</span>, <span class="st">"y"</span>), <span class="dt">crs =</span> <span class="dv">32717</span>)
+hs =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/hillShade">hillShade</a></span>(ta<span class="op">$</span>slope <span class="op">*</span><span class="st"> </span>pi <span class="op">/</span><span class="st"> </span><span class="dv">180</span>, <span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/terrain">terrain</a></span>(ta<span class="op">$</span>elev, <span class="dt">opt =</span> <span class="st">"aspect"</span>))
+rect =<span class="st"> </span>tmaptools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/tmaptools/topics/bb_poly">bb_poly</a></span>(hs)
+bbx =<span class="st"> </span>tmaptools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/tmaptools/topics/bb">bb</a></span>(hs, <span class="dt">xlim =</span> <span class="kw">c</span>(<span class="op">-</span><span class="fl">0.02</span>, <span class="dv">1</span>), <span class="dt">ylim =</span> <span class="kw">c</span>(<span class="op">-</span><span class="fl">0.02</span>, <span class="dv">1</span>), <span class="dt">relative =</span> <span class="ot">TRUE</span>)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/tmap/topics/tm_shape">tm_shape</a></span>(hs, <span class="dt">bbox =</span> bbx) <span class="op">+</span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/tmap/topics/tm_grid">tm_grid</a></span>(<span class="dt">col =</span> <span class="st">"black"</span>, <span class="dt">n.x =</span> <span class="dv">1</span>, <span class="dt">n.y =</span> <span class="dv">1</span>, <span class="dt">labels.inside.frame =</span> <span class="ot">FALSE</span>,
+          <span class="dt">labels.rot =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">90</span>)) <span class="op">+</span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/tmap/topics/tm_raster">tm_raster</a></span>(<span class="dt">palette =</span> <span class="st">"white"</span>, <span class="dt">legend.show =</span> <span class="ot">FALSE</span>) <span class="op">+</span>
+<span class="st">  </span><span class="co"># hillshade</span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/tmap/topics/tm_shape">tm_shape</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/mask">mask</a></span>(hs, study_area), <span class="dt">bbox =</span> bbx) <span class="op">+</span>
+<span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/tmap/topics/tm_raster">tm_raster</a></span>(<span class="dt">palette =</span> <span class="kw">gray</span>(<span class="dv">0</span><span class="op">:</span><span class="dv">100</span> <span class="op">/</span><span class="st"> </span><span class="dv">100</span>), <span class="dt">n =</span> <span class="dv">100</span>, <span class="dt">legend.show =</span> <span class="ot">FALSE</span>) <span class="op">+</span>
+<span class="st">    </span><span class="co"># prediction raster</span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/tmap/topics/tm_shape">tm_shape</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/mask">mask</a></span>(pred, study_area)) <span class="op">+</span>
+<span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/tmap/topics/tm_raster">tm_raster</a></span>(<span class="dt">alpha =</span> <span class="fl">0.5</span>, <span class="dt">palette =</span> RColorBrewer<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/RColorBrewer/topics/ColorBrewer">brewer.pal</a></span>(<span class="dt">name =</span> <span class="st">"Reds"</span>, <span class="dv">6</span>),
+              <span class="dt">auto.palette.mapping =</span> <span class="ot">FALSE</span>, <span class="dt">legend.show =</span> <span class="ot">TRUE</span>,
+              <span class="dt">title =</span> <span class="st">"Susceptibility</span><span class="ch">\n</span><span class="st">probability"</span>) <span class="op">+</span>
+<span class="st">    </span><span class="co"># rectangle and outer margins</span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/tmap/topics/qtm">qtm</a></span>(rect, <span class="dt">fill =</span> <span class="ot">NULL</span>) <span class="op">+</span>
+<span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/tmap/topics/tm_layout">tm_layout</a></span>(<span class="dt">outer.margins =</span> <span class="kw">c</span>(<span class="fl">0.04</span>, <span class="fl">0.04</span>, <span class="fl">0.02</span>, <span class="fl">0.02</span>), <span class="dt">frame =</span> <span class="ot">FALSE</span>,
+              <span class="dt">legend.position =</span> <span class="kw">c</span>(<span class="st">"left"</span>, <span class="st">"bottom"</span>),
+              <span class="dt">legend.title.size =</span> <span class="fl">0.9</span>)</code></pre></div>
+<ol start="3" style="list-style-type: decimal">
+<li>Compute a non-spatial cross-validation and make boxplots to compare the AUROC from a spatial and a non-spatial CV (see Figure @ref(fig:boxplot-cv)). Hint: You need to specify a non-spatial task and a non-spatial resampling strategy. Before running the spatial cross-validation for both tasks set a seed to make sure that both use the same partitions which in turn guarantees comparability.</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># attach packages</span>
+<span class="kw">library</span>(mlr)
+<span class="co"># attach data (in case you have not computed the terrain attributes before)</span>
+<span class="kw">load</span>(<span class="st">"extdata/spatialcv.Rdata"</span>)
+
+<span class="co"># put the coordinates in an additional dataframe</span>
+coords =<span class="st"> </span>lsl[, <span class="kw">c</span>(<span class="st">"x"</span>, <span class="st">"y"</span>)]
+data =<span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(lsl, <span class="op">-</span>x, <span class="op">-</span>y)
+<span class="co"># data_nonspatial = dplyr::select(data, -x, -y)</span>
+
+<span class="co"># CREATE TASKS</span>
+<span class="co">#*************</span>
+
+<span class="co"># spatial task</span>
+task =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/mlr/topics/Task">makeClassifTask</a></span>(<span class="dt">data =</span> data, <span class="dt">target =</span> <span class="st">"lslpts"</span>, 
+                       <span class="dt">positive =</span> <span class="st">"TRUE"</span>, <span class="dt">coordinates =</span> coords)
+<span class="co"># non-spatial task</span>
+task_nsp =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/mlr/topics/Task">makeClassifTask</a></span>(<span class="dt">data =</span> data, <span class="dt">target =</span> <span class="st">"lslpts"</span>, <span class="dt">positive =</span> <span class="st">"TRUE"</span>)
+
+<span class="co"># CONSTRUCT LEARNER</span>
+<span class="co">#******************</span>
+
+lrn =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/mlr/topics/makeLearner">makeLearner</a></span>(<span class="dt">cl =</span> <span class="st">"classif.binomial"</span>,
+                  <span class="dt">link =</span> <span class="st">"logit"</span>,
+                  <span class="dt">predict.type =</span> <span class="st">"prob"</span>)
+
+<span class="co"># DEFINE RESAMPLING STRATEGY</span>
+<span class="co">#***************************</span>
+
+<span class="co"># 100-repeated 5-fold spatial resampling strategy</span>
+resampling =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/mlr/topics/makeResampleDesc">makeResampleDesc</a></span>(<span class="dt">method =</span> <span class="st">"SpRepCV"</span>, <span class="dt">folds =</span> <span class="dv">5</span>, <span class="dt">reps =</span> <span class="dv">100</span>)
+<span class="co"># 100-repeated 5-fold non-spatial resampling strategy</span>
+resampling_nsp =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/mlr/topics/makeResampleDesc">makeResampleDesc</a></span>(<span class="dt">method =</span> <span class="st">"RepCV"</span>, <span class="dt">folds =</span> <span class="dv">5</span>, <span class="dt">reps =</span> <span class="dv">100</span>)
+
+<span class="co"># (SPATIAL) CROSS-VALIDATAION</span>
+<span class="co">#****************************</span>
+
+<span class="co"># setting a seed guarantees that the same partitions are used for both spatial </span>
+<span class="co"># CVs</span>
+<span class="kw">set.seed</span>(<span class="dv">012348</span>)
+<span class="co"># execute the resampling</span>
+sp_cv =<span class="st"> </span>mlr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/mlr/topics/resample">resample</a></span>(<span class="dt">learner =</span> lrn, <span class="dt">task =</span> task,
+                      <span class="dt">resampling =</span> resampling,
+                      <span class="dt">measures =</span> mlr<span class="op">::</span>auc)
+conv_cv =<span class="st"> </span>mlr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/mlr/topics/resample">resample</a></span>(<span class="dt">learner =</span> lrn, <span class="dt">task =</span> task_nsp,
+                        <span class="dt">resampling =</span> resampling_nsp,
+                        <span class="dt">measures =</span> mlr<span class="op">::</span>auc)
+<span class="co"># Visualization of non-spatial overfitting</span>
+<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/boxplot">boxplot</a></span>(sp_cv<span class="op">$</span>measures.test<span class="op">$</span>auc,
+        conv_cv<span class="op">$</span>measures.test<span class="op">$</span>auc, <span class="dt">col =</span> <span class="kw">c</span>(<span class="st">"lightblue2"</span>, <span class="st">"mistyrose2"</span>),
+        <span class="dt">names =</span> <span class="kw">c</span>(<span class="st">"spatial CV"</span>, <span class="st">"conventional CV"</span>), <span class="dt">ylab =</span> <span class="st">"AUROC"</span>)</code></pre></div>
+<ol start="4" style="list-style-type: decimal">
+<li>Model landslide susceptibility using a quadratic discriminant analysis (QDA). Assess the predictive performance of the QDA. What is the a difference between the spatially cross-validated mean AUROC value of the QDA and the GLM? Hint: Before running the spatial cross-validation for both learners set a seed to make sure that both use the same partitions which in turn guarantees comparability.</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># attach packages</span>
+<span class="kw">library</span>(mlr)
+<span class="co"># attach data (in case you have not computed the terrain attributes before)</span>
+<span class="kw">load</span>(<span class="st">"extdata/spatialcv.Rdata"</span>)
+
+<span class="co"># put the coordinates in an additional dataframe</span>
+coords =<span class="st"> </span>lsl[, <span class="kw">c</span>(<span class="st">"x"</span>, <span class="st">"y"</span>)]
+data =<span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(lsl, <span class="op">-</span>x, <span class="op">-</span>y)
+<span class="co"># data_nonspatial = dplyr::select(data, -x, -y)</span>
+
+<span class="co"># CREATE TASKS</span>
+<span class="co">#*************</span>
+
+<span class="co"># spatial task</span>
+task =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/mlr/topics/Task">makeClassifTask</a></span>(<span class="dt">data =</span> data, <span class="dt">target =</span> <span class="st">"lslpts"</span>, 
+                       <span class="dt">positive =</span> <span class="st">"TRUE"</span>, <span class="dt">coordinates =</span> coords)
+
+<span class="co"># CONSTRUCT LEARNER</span>
+<span class="co">#******************</span>
+
+lrn_glm =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/mlr/topics/makeLearner">makeLearner</a></span>(<span class="dt">cl =</span> <span class="st">"classif.binomial"</span>,
+                      <span class="dt">link =</span> <span class="st">"logit"</span>,
+                      <span class="dt">predict.type =</span> <span class="st">"prob"</span>)
+lrn_qda =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/mlr/topics/makeLearner">makeLearner</a></span>(<span class="dt">cl =</span> <span class="st">"classif.qda"</span>,
+                      <span class="dt">predict.type =</span> <span class="st">"prob"</span>)
+
+<span class="co"># find out about the models to be fitted</span>
+<span class="co"># getTaskFormula(task)</span>
+<span class="co"># train(learner = lrn_glm, task = task)</span>
+<span class="co"># getLearnerModel(train(learner = lrn_glm, task = task))</span>
+<span class="co"># train(learner = lrn_qda, task = task)</span>
+<span class="co"># getLearnerModel(train(learner = lrn_qda, task = task))</span>
+
+<span class="co"># DEFINE RESAMPLING STRATEGY</span>
+<span class="co">#***************************</span>
+
+<span class="co"># 100-repeated 5-fold spatial resampling strategy</span>
+resampling =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/mlr/topics/makeResampleDesc">makeResampleDesc</a></span>(<span class="dt">method =</span> <span class="st">"SpRepCV"</span>, <span class="dt">folds =</span> <span class="dv">5</span>, <span class="dt">reps =</span> <span class="dv">100</span>)
+
+<span class="co"># (SPATIAL) CROSS-VALIDATAION</span>
+<span class="co">#****************************</span>
+
+<span class="co"># set a seed to make sure that the same partitions are used for GLM and QDA</span>
+<span class="kw">set.seed</span>(<span class="dv">012349</span>)
+<span class="co"># execute the resampling</span>
+sp_glm =<span class="st"> </span>mlr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/mlr/topics/resample">resample</a></span>(<span class="dt">learner =</span> lrn_glm, <span class="dt">task =</span> task,
+                       <span class="dt">resampling =</span> resampling,
+                       <span class="dt">measures =</span> mlr<span class="op">::</span>auc)
+sp_qda =<span class="st"> </span>mlr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/mlr/topics/resample">resample</a></span>(<span class="dt">learner =</span> lrn_qda, <span class="dt">task =</span> task_nsp,
+                       <span class="dt">resampling =</span> resampling_nsp,
+                       <span class="dt">measures =</span> mlr<span class="op">::</span>auc)
+<span class="co"># QDA has higher AUROC values on average which indicates moderately non-linear</span>
+<span class="co"># boundaries</span>
+<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/boxplot">boxplot</a></span>(sp_glm<span class="op">$</span>measures.test<span class="op">$</span>auc,
+        sp_qda<span class="op">$</span>measures.test<span class="op">$</span>auc, <span class="dt">col =</span> <span class="kw">c</span>(<span class="st">"lightblue2"</span>, <span class="st">"mistyrose2"</span>),
+        <span class="dt">names =</span> <span class="kw">c</span>(<span class="st">"GLM"</span>, <span class="st">"QDA"</span>), <span class="dt">ylab =</span> <span class="st">"AUROC"</span>)</code></pre></div>
+<ol start="5" style="list-style-type: decimal">
+<li>Run the SVM without tuning the hyperparameters. Use the <code>rbfdot</code> kernel with <span class="math inline">\(\sigma\)</span> = 1 and <em>C</em> = 1. Leaving the hyperparameters unspecified in <strong>kernlab</strong>’s <code>ksvm()</code> would otherwise initialize an automatic non-spatial hyperparameter tuning.</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># attach packages</span>
+<span class="kw">library</span>(mlr)
+<span class="co"># attach data (in case you have not computed the terrain attributes before)</span>
+<span class="kw">load</span>(<span class="st">"extdata/spatialcv.Rdata"</span>)
+
+<span class="co"># put the coordinates in an additional dataframe</span>
+coords =<span class="st"> </span>lsl[, <span class="kw">c</span>(<span class="st">"x"</span>, <span class="st">"y"</span>)]
+data =<span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(lsl, <span class="op">-</span>x, <span class="op">-</span>y)
+<span class="co"># data_nonspatial = dplyr::select(data, -x, -y)</span>
+
+<span class="co"># CREATE </span><span class="al">TASK</span>
+<span class="co">#*************</span>
+
+<span class="co"># spatial task</span>
+task =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/mlr/topics/Task">makeClassifTask</a></span>(<span class="dt">data =</span> data, <span class="dt">target =</span> <span class="st">"lslpts"</span>, 
+                       <span class="dt">positive =</span> <span class="st">"TRUE"</span>, <span class="dt">coordinates =</span> coords)
+
+
+<span class="co"># CONSTRUCT LEARNER</span>
+<span class="co">#******************</span>
+lrn_ksvm =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/mlr/topics/makeLearner">makeLearner</a></span>(<span class="st">"classif.ksvm"</span>,
+                       <span class="dt">predict.type =</span> <span class="st">"prob"</span>,
+                       <span class="dt">kernel =</span> <span class="st">"rbfdot"</span>,
+                       <span class="dt">C =</span> <span class="dv">1</span>,
+                       <span class="dt">sigma =</span> <span class="dv">1</span>)
+
+<span class="co"># RESAMPLING</span>
+<span class="co">#***********</span>
+<span class="co"># 100-repeated 5-fold spatial cross-validation without any hyperparameter </span>
+<span class="co"># tuning</span>
+resampling =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/mlr/topics/makeResampleDesc">makeResampleDesc</a></span>(<span class="st">"SpRepCV"</span>, <span class="dt">folds =</span> <span class="dv">5</span>, <span class="dt">reps =</span> <span class="dv">100</span>)
+
+<span class="co"># parallel processing not really necessary (only 500 models)</span>
+<span class="co"># library(parallelMap)</span>
+<span class="co"># parallelStart(mode = "multicore", level = "mlr.resample", </span>
+<span class="co">#               cpus = parallel::detectCores() / 2)</span>
+
+<span class="kw">set.seed</span>(<span class="dv">28032018</span>)
+resa_svm_spatial =<span class="st"> </span>mlr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/mlr/topics/resample">resample</a></span>(<span class="dt">learner =</span> lrn_ksvm, 
+                                 <span class="dt">task =</span> task,
+                                 <span class="dt">resampling =</span> resampling,
+                                 <span class="dt">measures =</span> mlr<span class="op">::</span>auc,
+                                 <span class="dt">show.info =</span> <span class="ot">TRUE</span>)
+<span class="co"># Aggregated Result: auc.test.mean=0.7843021</span>
+<span class="co"># parallelStop()</span></code></pre></div>
+<ol start="6" style="list-style-type: decimal">
+<li>Model landslide susceptibility with the help of <strong>mlr</strong> using a random forest model as implemented by the <strong>ranger</strong> package. Apply a nested spatial CV. Parallelize the tuning level. Use a random search with 50 iterations to find the optimal hyperparameter combination (here: <code>mtry</code> and <code>num.trees</code>). The tuning space limits are 1 and 4 for <code>mtry</code>, and 1 and 10,000 for <code>num.trees</code>. Warning: This might take a long time. More cores substantially decrease computing time.</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># attach packages</span>
+<span class="kw">library</span>(mlr)
+<span class="co"># attach data (in case you have not computed the terrain attributes before)</span>
+<span class="kw">load</span>(<span class="st">"extdata/spatialcv.Rdata"</span>)
+
+<span class="co"># put the coordinates in an additional dataframe</span>
+coords =<span class="st"> </span>lsl[, <span class="kw">c</span>(<span class="st">"x"</span>, <span class="st">"y"</span>)]
+data =<span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(lsl, <span class="op">-</span>x, <span class="op">-</span>y)
+<span class="co"># data_nonspatial = dplyr::select(data, -x, -y)</span>
+
+<span class="co"># CREATE TASKS</span>
+<span class="co">#*************</span>
+
+<span class="co"># spatial task</span>
+task =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/mlr/topics/Task">makeClassifTask</a></span>(<span class="dt">data =</span> data, <span class="dt">target =</span> <span class="st">"lslpts"</span>, 
+                       <span class="dt">positive =</span> <span class="st">"TRUE"</span>, <span class="dt">coordinates =</span> coords)
+
+<span class="co"># CONSTRUCT LEARNER</span>
+<span class="co">#******************</span>
+<span class="co"># possibly you have to run:</span>
+<span class="co"># install.packages("ranger")</span>
+lrns =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/mlr/topics/listLearners">listLearners</a></span>(task)
+<span class="co"># look for the ranger package</span>
+dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(lrns, package <span class="op">%in%</span><span class="st"> "ranger"</span>)
+<span class="co"># use random forest as implemented in the ranger package</span>
+lrn_rf =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/mlr/topics/makeLearner">makeLearner</a></span>(<span class="dt">cl =</span> <span class="st">"classif.ranger"</span>,
+                     <span class="dt">predict.type =</span> <span class="st">"prob"</span>)
+
+<span class="co"># RESAMPLING</span>
+<span class="co">#***********</span>
+
+<span class="co"># Outer resampling loop</span>
+outer =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/mlr/topics/makeResampleDesc">makeResampleDesc</a></span>(<span class="st">"SpRepCV"</span>, <span class="dt">folds =</span> <span class="dv">5</span>, <span class="dt">reps =</span> <span class="dv">100</span>)
+<span class="co"># Tuning of hyperparameters in inner resampling loop using a random search with</span>
+<span class="co"># 50 iterations</span>
+ctrl =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/mlr/topics/makeTuneControlRandom">makeTuneControlRandom</a></span>(<span class="dt">maxit =</span> <span class="dv">50</span>)
+inner =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/mlr/topics/makeResampleDesc">makeResampleDesc</a></span>(<span class="st">"SpCV"</span>, <span class="dt">iters =</span> <span class="dv">5</span>)
+ps =<span class="st"> </span><span class="kw">makeParamSet</span>(<span class="kw">makeIntegerParam</span>(<span class="st">"mtry"</span>, <span class="dt">lower =</span> <span class="dv">1</span>, <span class="dt">upper =</span> <span class="dv">11</span>),
+                  <span class="kw">makeIntegerParam</span>(<span class="st">"num.trees"</span>, <span class="dt">lower =</span> <span class="dv">10</span>, <span class="dt">upper =</span> <span class="dv">10000</span>))
+<span class="co"># wrap the learner</span>
+wrapped_lrn_rf =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/mlr/topics/makeTuneWrapper">makeTuneWrapper</a></span>(<span class="dt">learner =</span> lrn_rf,
+                                 <span class="dt">resampling =</span> inner,
+                                 <span class="dt">par.set =</span> ps,
+                                 <span class="dt">control =</span> ctrl,
+                                 <span class="dt">measures =</span> mlr<span class="op">::</span>auc,
+                                 <span class="dt">show.info =</span> <span class="ot">TRUE</span>)
+
+<span class="co"># parallelization</span>
+<span class="kw">library</span>(parallelMap)
+
+<span class="kw"><a href="http://www.rdocumentation.org/packages/mlr/topics/configureMlr">configureMlr</a></span>(<span class="dt">on.learner.error =</span> <span class="st">"warn"</span>, <span class="dt">on.error.dump =</span> <span class="ot">TRUE</span>)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/parallelMap/topics/parallelStart">parallelStart</a></span>(<span class="dt">mode =</span> <span class="st">"multicore"</span>, 
+              <span class="co"># only parallelize the tuning</span>
+              <span class="dt">level =</span> <span class="st">"mlr.tuneParams"</span>, 
+              <span class="dt">cpus =</span> <span class="kw">round</span>(parallel<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/parallel/topics/detectCores">detectCores</a></span>() <span class="op">/</span><span class="st"> </span><span class="dv">2</span>),
+              <span class="dt">mc.set.seed =</span> <span class="ot">TRUE</span>) 
+
+<span class="kw">set.seed</span>(<span class="dv">280320181</span>)
+resa_rf_spatial =<span class="st"> </span>mlr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/mlr/topics/resample">resample</a></span>(<span class="dt">learner =</span> wrapped_lrn_rf,
+                                <span class="dt">task =</span> task,
+                                <span class="dt">resampling =</span> outer,
+                                <span class="dt">extract =</span> getTuneResult,
+                                <span class="dt">measures =</span> mlr<span class="op">::</span>auc,
+                                <span class="dt">show.info =</span> <span class="ot">TRUE</span>)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/parallelMap/topics/parallelStop">parallelStop</a></span>()</code></pre></div>
 </div>
   </div>
 

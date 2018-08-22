@@ -5,11 +5,11 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chapter 9 • geocompkg | metapackage for the book Gecomputation with R</title>
+<title>Chapter 9: Bridges to GIS software • geocompkg | metapackage for the book Gecomputation with R</title>
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="Chapter 9">
+<script src="../pkgdown.js"></script><meta property="og:title" content="Chapter 9: Bridges to GIS software">
 <meta property="og:description" content="">
 <meta name="twitter:card" content="summary">
 <!-- mathjax --><script src="https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
@@ -61,10 +61,10 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1>Chapter 9</h1>
+      <h1>Chapter 9: Bridges to GIS software</h1>
                         <h4 class="author">Robin Lovelace, Jakub Nowosad, Jannes Muenchow</h4>
             
-            <h4 class="date">2018-08-21</h4>
+            <h4 class="date">2018-08-22</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/geocompr/geocompkg/blob/master/vignettes/solutions09.Rmd"><code>vignettes/solutions09.Rmd</code></a></small>
       <div class="hidden name"><code>solutions09.Rmd</code></div>
@@ -85,21 +85,200 @@
 <h1 class="hasAnchor">
 <a href="#chapter-9" class="anchor"></a>Chapter 9</h1>
 <ol style="list-style-type: decimal">
-<li><p>Create two overlapping polygons (<code>poly_1</code> and <code>poly_2</code>) with the help of the <strong>sf</strong>-package (see Chapter @ref(spatial-class)).</p></li>
-<li><p>Union <code>poly_1</code> and <code>poly_2</code> using <code><a href="http://www.rdocumentation.org/packages/sf/topics/geos_combine">st_union()</a></code> and <code>qgis:union</code>. What is the difference between the two union operations? How can we use the <strong>sf</strong> package to obtain the same result as QGIS?</p></li>
-<li>
-<p>Calculate the intersection of <code>poly_1</code> and <code>poly_2</code> using:</p>
+<li>Create two overlapping polygons (<code>poly_1</code> and <code>poly_2</code>) with the help of the <strong>sf</strong>-package (see Chapter 2).</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(sf)
+<span class="co"># create two polygons</span>
+coords_<span class="dv">1</span> =<span class="st">  </span>
+<span class="st">  </span><span class="kw">matrix</span>(<span class="dt">data =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>),
+         <span class="dt">ncol =</span> <span class="dv">2</span>, <span class="dt">byrow =</span> <span class="ot">TRUE</span>)
+coords_<span class="dv">2</span> =
+<span class="st">  </span><span class="kw">matrix</span>(<span class="dt">data =</span> <span class="kw">c</span>(<span class="op">-</span><span class="fl">0.5</span>, <span class="op">-</span><span class="fl">0.5</span>, <span class="fl">0.5</span>, <span class="op">-</span><span class="fl">0.5</span>, <span class="fl">0.5</span>, <span class="fl">0.5</span>, 
+                  <span class="op">-</span><span class="fl">0.5</span>, <span class="fl">0.5</span>, <span class="op">-</span><span class="fl">0.5</span>, <span class="op">-</span><span class="fl">0.5</span>),
+         <span class="dt">ncol =</span> <span class="dv">2</span>, <span class="dt">byrow =</span> <span class="ot">TRUE</span>)
+
+<span class="co"># create the first polygon</span>
+poly_<span class="dv">1</span> =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st">st_polygon</a></span>(<span class="kw">list</span>((coords_<span class="dv">1</span>))) 
+<span class="co"># convert it into a simple feature collection </span>
+poly_<span class="dv">1</span> =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/sfc">st_sfc</a></span>(poly_<span class="dv">1</span>)
+poly_<span class="dv">1</span> =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/sfc">st_sfc</a></span>(poly_<span class="dv">1</span>, <span class="dt">crs =</span> <span class="dv">4326</span>)
+<span class="co"># finally, convert it into an sf-object</span>
+poly_<span class="dv">1</span> =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/sf">st_sf</a></span>(<span class="dt">geometry =</span> poly_<span class="dv">1</span>, <span class="dt">data =</span> <span class="kw">data.frame</span>(<span class="dt">id =</span> <span class="dv">1</span>))
+
+<span class="co"># create a second polygon</span>
+poly_<span class="dv">2</span> =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st">st_polygon</a></span>(<span class="kw">list</span>((coords_<span class="dv">2</span>))) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/sfc">st_sfc</a></span>(., <span class="dt">crs =</span> <span class="dv">4326</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/sf">st_sf</a></span>(<span class="dt">geometry =</span> ., <span class="dt">data =</span> <span class="kw">data.frame</span>(<span class="dt">id =</span> <span class="dv">1</span>))
+<span class="co"># visualize it</span>
+<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(poly_<span class="dv">1</span>), <span class="dt">xlim =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>), <span class="dt">ylim =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>))
+<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(poly_<span class="dv">2</span>), <span class="dt">add =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<ol start="2" style="list-style-type: decimal">
+<li>Union <code>poly_1</code> and <code>poly_2</code> using <code><a href="http://www.rdocumentation.org/packages/sf/topics/geos_combine">st_union()</a></code> and <code>qgis:union</code>. What is the difference between the two union operations? How can we use the <strong>sf</strong> package to obtain the same result as QGIS?</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">"RQGIS"</span>)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/RQGIS/topics/set_env">set_env</a></span>(<span class="dt">dev =</span> <span class="ot">FALSE</span>)
+union_sf =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/geos_combine">st_union</a></span>(poly_<span class="dv">1</span>, poly_<span class="dv">2</span>)
+union_qgis =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/RQGIS/topics/run_qgis">run_qgis</a></span>(<span class="st">"qgis:union"</span>, <span class="dt">INPUT =</span> poly_<span class="dv">1</span>, <span class="dt">INPUT2 =</span> poly_<span class="dv">2</span>,
+                 <span class="dt">OUTPUT =</span> <span class="kw">file.path</span>(<span class="kw">tempdir</span>(), <span class="st">"union.shp"</span>),
+                 <span class="dt">load_output =</span> <span class="ot">TRUE</span>)
+<span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))
+<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(union_sf), <span class="dt">main =</span> <span class="st">"st_union"</span>)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(union_qgis), <span class="dt">col =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">3</span>, <span class="dt">main =</span> <span class="st">"QGIS union"</span>)
+<span class="co"># achieve the QGIS result using sf</span>
+int =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/geos_binary_ops">st_intersection</a></span>(poly_<span class="dv">1</span>, poly_<span class="dv">2</span>)
+<span class="co"># difference_1</span>
+diff_<span class="dv">1</span> =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/geos_binary_ops">st_sym_difference</a></span>(poly_<span class="dv">1</span>, poly_<span class="dv">2</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_cast">st_cast</a></span>(<span class="st">"POLYGON"</span>)
+<span class="co"># the same as:</span>
+<span class="co"># diff_2 = st_difference(poly_1, poly_2)</span>
+<span class="co"># diff_3 = st_difference(poly_2, poly_1)</span>
+<span class="co"># rbind(diff_2, diff_3)</span>
+union_sf_<span class="dv">2</span> =<span class="st"> </span><span class="kw">rbind</span>(int, diff_<span class="dv">1</span>)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(union_sf_<span class="dv">2</span>), <span class="dt">col =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">3</span>)</code></pre></div>
+<ol start="3" style="list-style-type: decimal">
+<li>Calculate the intersection of <code>poly_1</code> and <code>poly_2</code> using:</li>
+</ol>
 <ul>
 <li>
 <strong>RQGIS</strong>, <strong>RSAGA</strong> and <strong>rgrass7</strong>
 </li>
 <li><strong>sf</strong></li>
 </ul>
-</li>
-<li><p>Attach <code>data(dem, package = "RQGIS")</code> and <code>data(random_points, package = "RQGIS")</code>. Select randomly a point from <code>random_points</code> and find all <code>dem</code> pixels that can be seen from this point (hint: viewshed). Visualize your result. For example, plot a hillshade, and on top of it the digital elevation model, your viewshed output and the point. Additionally, give <code>mapview</code> a try.</p></li>
-<li><p>Use <code>gdalinfo</code> via a system call for a raster file stored on disk of your choice.</p></li>
-<li><p>Query all Californian highways from the PostgreSQL/PostGIS database living in the QGIS Cloud introduced in this chapter.</p></li>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(sf)
+<span class="kw">library</span>(RQGIS)
+
+<span class="co"># INTERSECTION USING RQGIS</span>
+<span class="co">#***************************</span>
+<span class="co"># first of all, we need to find out which function might do this for us</span>
+<span class="kw"><a href="http://www.rdocumentation.org/packages/RQGIS/topics/find_algorithms">find_algorithms</a></span>(<span class="st">"intersec"</span>)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/RQGIS/topics/open_help">open_help</a></span>(<span class="st">"qgis:intersection"</span>)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/RQGIS/topics/get_usage">get_usage</a></span>(<span class="st">"qgis:intersection"</span>)
+<span class="co"># using R named arguments#</span>
+int_qgis =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/RQGIS/topics/run_qgis">run_qgis</a></span>(<span class="st">"qgis:intersection"</span>, <span class="dt">INPUT =</span> poly_<span class="dv">1</span>, <span class="dt">INPUT2 =</span> poly_<span class="dv">2</span>,
+                    <span class="dt">OUTPUT =</span> <span class="st">"int_qgis.shp"</span>, <span class="dt">load_output =</span> <span class="ot">TRUE</span>)
+<span class="co"># visualize it</span>
+<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(poly_<span class="dv">1</span>), <span class="dt">xlim =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>), <span class="dt">ylim =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>))
+<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(poly_<span class="dv">2</span>), <span class="dt">add =</span> <span class="ot">TRUE</span>)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(int_qgis, <span class="dt">col =</span> <span class="st">"lightblue"</span>, <span class="dt">add =</span> <span class="ot">TRUE</span>)
+
+
+<span class="co"># INTERSECTION USING RSAGA</span>
+<span class="co">#***************************</span>
+<span class="co"># The RSAGA examples only work with SAGA &lt; 2.3. We have informed the</span>
+<span class="co"># package maintainer to update SAGA</span>
+<span class="kw">library</span>(RSAGA)
+<span class="kw">library</span>(link2GI)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/link2GI/topics/linkSAGA">linkSAGA</a></span>()
+<span class="kw"><a href="http://www.rdocumentation.org/packages/RSAGA/topics/rsaga.env">rsaga.env</a></span>()
+<span class="co"># save shapefile layers</span>
+<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_write">write_sf</a></span>(poly_<span class="dv">1</span>, <span class="kw">file.path</span>(<span class="kw">tempdir</span>(), <span class="st">"poly_1.shp"</span>))
+<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_write">write_sf</a></span>(poly_<span class="dv">2</span>, <span class="kw">file.path</span>(<span class="kw">tempdir</span>(), <span class="st">"poly_2.shp"</span>))
+<span class="co"># find out how to union shapefiles with the help of SAGA</span>
+<span class="kw"><a href="http://www.rdocumentation.org/packages/RSAGA/topics/rsaga.get.modules">rsaga.get.modules</a></span>(<span class="dt">lib =</span> <span class="st">"shapes_polygons"</span>)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/RSAGA/topics/rsaga.get.usage">rsaga.get.usage</a></span>(<span class="dt">lib =</span> <span class="st">"shapes_polygons"</span>, <span class="dt">module =</span> <span class="st">"Intersect"</span>)
+<span class="co"># create parameter-argument list for RSAGA</span>
+params =<span class="st"> </span><span class="kw">list</span>(<span class="dt">A =</span> <span class="kw">file.path</span>(<span class="kw">tempdir</span>(), <span class="st">"poly_1.shp"</span>),
+              <span class="dt">B =</span> <span class="kw">file.path</span>(<span class="kw">tempdir</span>(), <span class="st">"poly_2.shp"</span>),
+              <span class="dt">RESULT =</span> <span class="kw">file.path</span>(<span class="kw">tempdir</span>(), <span class="st">"int_saga.shp"</span>))
+<span class="kw"><a href="http://www.rdocumentation.org/packages/RSAGA/topics/rsaga.geoprocessor">rsaga.geoprocessor</a></span>(<span class="dt">lib =</span> <span class="st">"shapes_polygons"</span>, <span class="dt">module =</span> <span class="st">"Intersect"</span>, 
+                   <span class="dt">param =</span> params)
+int_saga =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_read">st_read</a></span>(<span class="kw">file.path</span>(<span class="kw">tempdir</span>(), <span class="st">"int_saga.shp"</span>))
+<span class="co"># visualize it</span>
+<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(poly_<span class="dv">1</span>), <span class="dt">xlim =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>), <span class="dt">ylim =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>))
+<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(poly_<span class="dv">2</span>), <span class="dt">add =</span> <span class="ot">TRUE</span>)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(int_saga), <span class="dt">col =</span> <span class="st">"lightblue"</span>, <span class="dt">add =</span> <span class="ot">TRUE</span>)
+
+<span class="co"># INTERSECTION USING rgrass7</span>
+<span class="co">#***************************</span>
+<span class="kw">library</span>(link2GI)
+<span class="kw">library</span>(rgrass7)
+link2GI<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/link2GI/topics/linkGRASS7">linkGRASS7</a></span>(<span class="kw">rbind</span>(poly_<span class="dv">1</span>, poly_<span class="dv">2</span>), <span class="dt">ver_select =</span> <span class="ot">TRUE</span>)
+<span class="co"># let's have a look at the help of v.overlay via rgrass7</span>
+<span class="kw"><a href="http://www.rdocumentation.org/packages/rgrass7/topics/execGRASS">execGRASS</a></span>(<span class="st">"g.manual"</span>, <span class="dt">entry =</span> <span class="st">"v.overlay"</span>)
+<span class="co"># RQGIS::open_help("grass7:v.overlay")</span>
+<span class="kw"><a href="http://www.rdocumentation.org/packages/rgrass7/topics/readVECT">writeVECT</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/coerce-methods">as</a></span>(poly_<span class="dv">1</span>, <span class="st">"Spatial"</span>), <span class="dt">vname =</span> <span class="st">"poly_1"</span>)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/rgrass7/topics/readVECT">writeVECT</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/coerce-methods">as</a></span>(poly_<span class="dv">2</span>, <span class="st">"Spatial"</span>), <span class="dt">vname =</span> <span class="st">"poly_2"</span>)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/rgrass7/topics/execGRASS">execGRASS</a></span>(<span class="st">"v.overlay"</span>, <span class="dt">ainput =</span> <span class="st">"poly_1"</span>, <span class="dt">binput =</span> <span class="st">"poly_2"</span>,
+          <span class="dt">output =</span> <span class="st">"int_grass"</span>, <span class="dt">operator =</span> <span class="st">"and"</span>, <span class="dt">flag =</span> <span class="st">"overwrite"</span>)
+out_grass =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/rgrass7/topics/readVECT">readVECT</a></span>(<span class="st">"int_grass"</span>)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(poly_<span class="dv">1</span>), <span class="dt">xlim =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>), <span class="dt">ylim =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>))
+<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(poly_<span class="dv">2</span>), <span class="dt">add =</span> <span class="ot">TRUE</span>)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(int_grass, <span class="dt">add =</span> <span class="ot">TRUE</span>, <span class="dt">col =</span> <span class="st">"lightblue"</span>)
+
+<span class="co"># INTERSECTION USING sf</span>
+<span class="co">#***************************</span>
+
+int_sf =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/geos_binary_ops">st_intersection</a></span>(poly_<span class="dv">1</span>, poly_<span class="dv">2</span>)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(poly_<span class="dv">1</span>), <span class="dt">xlim =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>), <span class="dt">ylim =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>))
+<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(poly_<span class="dv">2</span>), <span class="dt">add =</span> <span class="ot">TRUE</span>)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(int_sf, <span class="dt">add =</span> <span class="ot">TRUE</span>, <span class="dt">col =</span> <span class="st">"lightblue"</span>)</code></pre></div>
+<ol start="4" style="list-style-type: decimal">
+<li>Run <code>data(dem, package = "RQGIS")</code> and <code>data(random_points, package = "RQGIS")</code>. Select randomly a point from <code>random_points</code> and find all <code>dem</code> pixels that can be seen from this point (hint: viewshed). Visualize your result. For example, plot a hillshade, and on top of it the digital elevation model, your viewshed output and the point. Additionally, give <code>mapview</code> a try.</li>
 </ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(RQGIS)
+<span class="kw">library</span>(raster)
+<span class="kw">data</span>(dem, <span class="dt">package =</span> <span class="st">"RQGIS"</span>)
+<span class="kw">data</span>(random_points, <span class="dt">package =</span> <span class="st">"RQGIS"</span>)
+
+<span class="kw"><a href="http://www.rdocumentation.org/packages/RQGIS/topics/find_algorithms">find_algorithms</a></span>(<span class="st">"viewshed"</span>)
+alg =<span class="st"> "grass7:r.viewshed"</span>
+<span class="kw"><a href="http://www.rdocumentation.org/packages/RQGIS/topics/get_usage">get_usage</a></span>(alg)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/RQGIS/topics/open_help">open_help</a></span>(alg)
+<span class="co"># let's find out about the default values</span>
+<span class="kw"><a href="http://www.rdocumentation.org/packages/RQGIS/topics/get_args_man">get_args_man</a></span>(alg)
+point =<span class="st"> </span>random_points[<span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/ncell">nrow</a></span>(random_points), <span class="dv">1</span>), ]
+coord =<span class="st"> </span><span class="kw">paste</span>(sf<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_coordinates">st_coordinates</a></span>(point), <span class="dt">collapse =</span> <span class="st">","</span>)
+out =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/RQGIS/topics/run_qgis">run_qgis</a></span>(alg, <span class="dt">input =</span> dem,
+               <span class="dt">coordinates =</span> coord,
+               <span class="dt">output =</span> <span class="kw">file.path</span>(<span class="kw">tempdir</span>(), <span class="st">"out.tif"</span>),
+               <span class="dt">load_output =</span> <span class="ot">TRUE</span>)
+
+<span class="co"># under Linux this was tested using QGIS 2.18.22 and GRASS GIS 7.4.1. In</span>
+<span class="co"># previous versions, however, "grass7:r.viewshed" might not work. In this case</span>
+<span class="co"># use rgrass7 directly:</span>
+<span class="kw">library</span>(rgrass7)
+link2GI<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/link2GI/topics/linkGRASS7">linkGRASS7</a></span>(dem, <span class="dt">ver_select =</span> <span class="ot">TRUE</span>)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/rgrass7/topics/readRAST">writeRAST</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/coerce-methods">as</a></span>(dem, <span class="st">"SpatialGridDataFrame"</span>), <span class="st">"dem"</span>)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/rgrass7/topics/readVECT">writeVECT</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/coerce-methods">as</a></span>(random_points, <span class="st">"Spatial"</span>), <span class="dt">vname =</span> <span class="st">"points"</span>)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/rgrass7/topics/execGRASS">execGRASS</a></span>(<span class="st">"r.viewshed"</span>, <span class="dt">input =</span> <span class="st">"dem"</span>, <span class="dt">coordinates =</span> sf<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_coordinates">st_coordinates</a></span>(point),
+          <span class="dt">output =</span> <span class="st">"view"</span>)
+out =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/raster">raster</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/rgrass7/topics/readRAST">readRAST</a></span>(<span class="st">"view"</span>))
+
+hs =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/hillShade">hillShade</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/terrain">terrain</a></span>(dem), <span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/terrain">terrain</a></span>(dem, <span class="st">"aspect"</span>), <span class="dv">40</span>, <span class="dv">270</span>)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(hs, <span class="dt">col =</span> <span class="kw">gray</span>(<span class="dv">0</span><span class="op">:</span><span class="dv">100</span> <span class="op">/</span><span class="st"> </span><span class="dv">100</span>), <span class="dt">legend =</span> <span class="ot">FALSE</span>)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(dem, <span class="dt">add =</span> <span class="ot">TRUE</span>, <span class="dt">alpha =</span> <span class="fl">0.5</span>, <span class="dt">legend =</span> <span class="ot">FALSE</span>)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(point, <span class="dt">add =</span> <span class="ot">TRUE</span>, <span class="dt">col =</span> <span class="st">"red"</span>, <span class="dt">pch =</span> <span class="dv">16</span>)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(out, <span class="dt">add =</span> <span class="ot">TRUE</span>, <span class="dt">col =</span> <span class="st">"lightgray"</span>, <span class="dt">legend =</span> <span class="ot">FALSE</span>)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(point, <span class="dt">add =</span> <span class="ot">TRUE</span>, <span class="dt">col =</span> <span class="st">"red"</span>, <span class="dt">pch =</span> <span class="dv">16</span>)
+
+<span class="co"># or using mapview</span>
+<span class="kw">library</span>(mapview)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/mapview/topics/mapView">mapview</a></span>(out, <span class="dt">col =</span> <span class="st">"white"</span>, <span class="dt">map.type =</span> <span class="st">"Esri.WorldImagery"</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/mapview/topics/mapView">mapview</a></span>(point)</code></pre></div>
+<ol start="5" style="list-style-type: decimal">
+<li>Use <code>gdalinfo</code> via a system call for a raster file stored on disk of your choice.</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">link2GI<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/link2GI/topics/linkGDAL">linkGDAL</a></span>()
+<span class="kw">data</span>(<span class="st">"dem"</span>, <span class="dt">package =</span> <span class="st">"RQGIS"</span>)
+file =<span class="st"> </span><span class="kw">file.path</span>(<span class="kw">tempdir</span>(), <span class="st">"dem.tif"</span>)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/writeRaster">writeRaster</a></span>(dem, <span class="dt">filename =</span> file, <span class="dt">prj =</span> <span class="ot">TRUE</span>, <span class="dt">format =</span> <span class="st">"GTiff"</span>)
+cmd =<span class="st"> </span><span class="kw">paste</span>(<span class="st">"gdalinfo"</span>, file)
+<span class="kw">system</span>(cmd)</code></pre></div>
+<ol start="6" style="list-style-type: decimal">
+<li>Query all Californian highways from the PostgreSQL/PostGIS database living in the QGIS Cloud introduced in this chapter.</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(RPostgreSQL)
+<span class="kw">library</span>(sf)
+conn =<span class="st"> </span><span class="kw">dbConnect</span>(<span class="dt">drv =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/RPostgreSQL/topics/PostgreSQL">PostgreSQL</a></span>(), <span class="dt">dbname =</span> <span class="st">"rtafdf_zljbqm"</span>,
+                 <span class="dt">host =</span> <span class="st">"db.qgiscloud.com"</span>,
+                 <span class="dt">port =</span> <span class="st">"5432"</span>, <span class="dt">user =</span> <span class="st">"rtafdf_zljbqm"</span>, 
+                 <span class="dt">password =</span> <span class="st">"d3290ead"</span>)
+query =<span class="st"> </span><span class="kw">paste</span>(
+  <span class="st">"SELECT *"</span>,
+  <span class="st">"FROM highways"</span>,
+  <span class="st">"WHERE state = 'CA';"</span>)
+ca_highways =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_read">st_read</a></span>(conn, <span class="dt">query =</span> query, <span class="dt">geom =</span> <span class="st">"wkb_geometry"</span>)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(ca_highways))</code></pre></div>
 </div>
   </div>
 

@@ -5,11 +5,11 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chapter 13 • geocompkg | metapackage for the book Gecomputation with R</title>
+<title>Chapter 13: Geomarketing • geocompkg | metapackage for the book Gecomputation with R</title>
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="Chapter 13">
+<script src="../pkgdown.js"></script><meta property="og:title" content="Chapter 13: Geomarketing">
 <meta property="og:description" content="">
 <meta name="twitter:card" content="summary">
 <!-- mathjax --><script src="https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
@@ -61,10 +61,10 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1>Chapter 13</h1>
+      <h1>Chapter 13: Geomarketing</h1>
                         <h4 class="author">Robin Lovelace, Jakub Nowosad, Jannes Muenchow</h4>
             
-            <h4 class="date">2018-08-21</h4>
+            <h4 class="date">2018-08-22</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/geocompr/geocompkg/blob/master/vignettes/solutions13.Rmd"><code>vignettes/solutions13.Rmd</code></a></small>
       <div class="hidden name"><code>solutions13.Rmd</code></div>
@@ -96,7 +96,60 @@ gridded(input) = TRUE
 input = stack(input)
 --></p></li>
 <li><p>Download the csv file containing inhabitant information for a 100 m cell resolution (<a href="https://www.zensus2011.de/SharedDocs/Downloads/DE/Pressemitteilung/DemografischeGrunddaten/csv_Bevoelkerung_100m_Gitter.zip?__blob=publicationFile&amp;v=3" class="uri">https://www.zensus2011.de/SharedDocs/Downloads/DE/Pressemitteilung/DemografischeGrunddaten/csv_Bevoelkerung_100m_Gitter.zip?__blob=publicationFile&amp;v=3</a>). Please note that the unzipped file has a size of 1.23 GB. To read it into R you can use <code><a href="http://www.rdocumentation.org/packages/readr/topics/read_delim">readr::read_csv</a></code>. This takes 30 seconds on my machine (16 GB RAM) <code><a href="http://www.rdocumentation.org/packages/data.table/topics/fread">data.table::fread()</a></code> might be even faster, and returns an object of class <code>data.table()</code>. Use <code>as.tibble()</code> to convert it into a tibble. Build an inhabitant raster, aggregate it to a cell resolution of 1 km, and compare the difference with the inhabitant raster (<code>inh</code>) we have created using class mean values.</p></li>
-<li><p>Suppose our bike shop predominantly sold electric bikes to older people. Change the age raster accordingly, repeat the remaining analyses and compare the changes with our original result.</p></li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyverse)
+<span class="kw">library</span>(raster)
+<span class="kw">library</span>(sp)
+
+build_census_raster =<span class="st"> </span><span class="cf">function</span>(url) {
+  <span class="kw">download.file</span>(<span class="dt">url =</span> url, <span class="dt">destfile =</span> <span class="kw">file.path</span>(<span class="kw">tempdir</span>(), <span class="st">"census.zip"</span>),
+                <span class="dt">method =</span> <span class="st">"auto"</span>, <span class="dt">mode =</span> <span class="st">"wb"</span>)
+  <span class="co"># list the file names</span>
+  nms =<span class="st"> </span><span class="kw">unzip</span>(<span class="kw">file.path</span>(<span class="kw">tempdir</span>(), <span class="st">"census.zip"</span>), <span class="dt">list =</span> <span class="ot">TRUE</span>)
+  <span class="co"># unzip only the csv file</span>
+  base_name =<span class="st"> </span><span class="kw">grep</span>(<span class="st">".csv$"</span>, nms<span class="op">$</span>Name, <span class="dt">value =</span> <span class="ot">TRUE</span>)
+  <span class="kw">unzip</span>(<span class="kw">file.path</span>(<span class="kw">tempdir</span>(), <span class="st">"census.zip"</span>), <span class="dt">files =</span> base_name, <span class="dt">exdir =</span> <span class="kw">tempdir</span>())
+  <span class="co"># read in the csv file</span>
+  input =<span class="st"> </span>data.table<span class="op">::</span><span class="kw">fread</span>(<span class="kw">file.path</span>(<span class="kw">tempdir</span>(), base_name)) <span class="op">%&gt;%</span>
+<span class="st">    </span>as.tibble
+  input =<span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(input, <span class="dt">x =</span> <span class="kw">starts_with</span>(<span class="st">"x_mp_1"</span>), <span class="dt">y =</span> <span class="kw">starts_with</span>(<span class="st">"y_mp_1"</span>),
+                        <span class="dt">inh =</span> Einwohner)
+  <span class="co"># set -1 and -9 to NA</span>
+  input =<span class="st"> </span><span class="kw">mutate_all</span>(input, <span class="kw">funs</span>(<span class="kw">ifelse</span>(. <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>, <span class="op">-</span><span class="dv">9</span>), <span class="ot">NA</span>, .)))
+  <span class="co"># convert table into a raster (x and y are cell midpoints)</span>
+  <span class="kw"><a href="http://www.rdocumentation.org/packages/sp/topics/coordinates">coordinates</a></span>(input) =<span class="er">~</span><span class="st"> </span>x <span class="op">+</span><span class="st"> </span>y
+  <span class="co"># use the correct projection</span>
+  <span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/projection">proj4string</a></span>(input) =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sp/topics/CRS-class">CRS</a></span>(<span class="st">"+init=epsg:3035"</span>)
+  <span class="kw"><a href="http://www.rdocumentation.org/packages/sp/topics/gridded-methods">gridded</a></span>(input) =<span class="st"> </span><span class="ot">TRUE</span>
+  <span class="co"># convert into a raster stack</span>
+  <span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/raster">raster</a></span>(input)
+}
+
+<span class="co"># download 1km resolution</span>
+url =<span class="st"> </span><span class="kw">paste0</span>(<span class="st">"https://www.zensus2011.de/SharedDocs/Downloads/DE/"</span>, 
+             <span class="st">"Pressemitteilung/DemografischeGrunddaten/csv_Zensusatlas_"</span>, 
+             <span class="st">"klassierte_Werte_1km_Gitter.zip?__blob=publicationFile&amp;v=8"</span>)
+inp_coarse =<span class="st"> </span><span class="kw">build_census_raster</span>(url)
+<span class="co"># reclassify</span>
+rcl =<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">125</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">375</span>, <span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">1250</span>, <span class="dv">4</span>, <span class="dv">4</span>, <span class="dv">3000</span>, <span class="dv">5</span>, <span class="dv">5</span>, <span class="dv">6000</span>,
+               <span class="dv">6</span>, <span class="dv">6</span>, <span class="dv">8000</span>), <span class="dt">ncol =</span> <span class="dv">3</span>, <span class="dt">byrow =</span> <span class="ot">TRUE</span>)
+inh_coarse =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/reclassify">reclassify</a></span>(inp_coarse, <span class="dt">rcl =</span> rcl, <span class="dt">right =</span> <span class="ot">NA</span>)
+
+<span class="co"># Download and build 1km inhabitant raster</span>
+url =<span class="st"> </span><span class="kw">paste0</span>(<span class="st">"https://www.zensus2011.de/SharedDocs/Downloads/DE/Pressemitteilung/"</span>,
+             <span class="st">"DemografischeGrunddaten/csv_Bevoelkerung_100m_Gitter.zip"</span>, 
+             <span class="st">"?__blob=publicationFile&amp;v=3"</span>)
+inh_fine =<span class="st"> </span><span class="kw">build_census_raster</span>(url)
+inh_fine =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/aggregate">aggregate</a></span>(inh_fine, <span class="dt">fact =</span> <span class="dv">1000</span> <span class="op">/</span><span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/resolution">res</a></span>(inp_fine)[<span class="dv">1</span>], <span class="dt">fun =</span> sum)
+inh_fine <span class="op">-</span><span class="st"> </span>inh_coarse  <span class="co"># origin has to be the same</span>
+<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/origin">origin</a></span>(inh_fine) =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/origin">origin</a></span>(inh_coarse)
+<span class="kw">summary</span>(inh_fine <span class="op">-</span><span class="st"> </span>inh_coarse)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(inh_fine <span class="op">-</span><span class="st"> </span>inh_coarse)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(<span class="kw">abs</span>(inh_fine <span class="op">-</span><span class="st"> </span>inh_coarse) <span class="op">&gt;</span><span class="st"> </span><span class="dv">1000</span>)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/cellStats">cellStats</a></span>((<span class="kw">abs</span>(inh_fine <span class="op">-</span><span class="st"> </span>inh_coarse) <span class="op">&gt;</span><span class="st"> </span><span class="dv">1000</span>), <span class="dt">stat =</span> <span class="st">"sum"</span>)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/cellStats">cellStats</a></span>((<span class="kw">abs</span>(inh_fine <span class="op">-</span><span class="st"> </span>inh_coarse) <span class="op">&gt;</span><span class="st"> </span><span class="dv">5000</span>), <span class="dt">stat =</span> <span class="st">"sum"</span>)</code></pre></div>
+<ol style="list-style-type: decimal">
+<li>Suppose our bike shop predominantly sold electric bikes to older people. Change the age raster accordingly, repeat the remaining analyses and compare the changes with our original result.</li>
 </ol>
 </div>
   </div>

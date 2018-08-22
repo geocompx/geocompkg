@@ -81,11 +81,10 @@
 <span class="co">#   install.packages("elevatr")</span>
 <span class="co"># }</span>
 <span class="co"># library(elevatr)</span>
-<span class="kw">library</span>(raster)</code></pre></div>
-<pre><code>## Loading required package: sp</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(sf)</code></pre></div>
-<pre><code>## Linking to GEOS 3.5.1, GDAL 2.2.2, proj.4 4.9.2</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># load data</span>
+<span class="kw">library</span>(raster)
+<span class="kw">library</span>(sf)
+
+<span class="co"># load data</span>
 <span class="cf">if</span>(<span class="op">!</span><span class="kw">dir.exists</span>(<span class="st">"data"</span>)) {
   <span class="kw">download.file</span>(<span class="st">"https://github.com/geocompr/geostats_18/releases/download/0.1/data.zip"</span>, <span class="st">"data.zip"</span>)
   <span class="kw">unzip</span>(<span class="st">"data.zip"</span>)
@@ -93,14 +92,10 @@
 }
 
 <span class="co"># vector data</span>
-<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(spData<span class="op">::</span>world)</code></pre></div>
-<pre><code>## Warning: plotting the first 9 out of 10 attributes; use max.plot = 10 to
-## plot all</code></pre>
-<p><img src="sea-level-rise_files/figure-html/unnamed-chunk-1-1.png" width="700"></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">poland =<span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(spData<span class="op">::</span>world, <span class="kw">grepl</span>(<span class="dt">pattern =</span> <span class="st">"Pola"</span>, name_long))
-<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(poland))</code></pre></div>
-<p><img src="sea-level-rise_files/figure-html/unnamed-chunk-1-2.png" width="700"></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># testing elevatr (from readme / vignette)</span>
+<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(spData<span class="op">::</span>world)
+poland =<span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(spData<span class="op">::</span>world, <span class="kw">grepl</span>(<span class="dt">pattern =</span> <span class="st">"Pola"</span>, name_long))
+<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(poland))
+<span class="co"># testing elevatr (from readme / vignette)</span>
 <span class="co"># data(lake)</span>
 <span class="co"># elevation_high = get_elev_raster(lake, z = 14, src = "aws")</span>
 <span class="co"># 120 MB"</span>
@@ -125,21 +120,17 @@ scz =<span class="st"> </span>sf<span class="op">::</span><span class="kw"><a hr
 <span class="co"># scz_mapedit = mapedit::drawFeatures(map = m)</span>
 <span class="co"># sf::write_sf(scz_mapedit, "data/scz-mapedit.geojson")</span>
 scz_mapedit =<span class="st"> </span>sf<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_read">read_sf</a></span>(<span class="st">"data/scz-mapedit.geojson"</span>)
-<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(scz_mapedit)</code></pre></div>
-<p><img src="sea-level-rise_files/figure-html/unnamed-chunk-1-3.png" width="700"></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">scz_sp =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/coerce-methods">as</a></span>(scz_mapedit, <span class="st">"Spatial"</span>)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(scz_mapedit)
+scz_sp =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/coerce-methods">as</a></span>(scz_mapedit, <span class="st">"Spatial"</span>)
 <span class="co"># e = elevatr::get_elev_raster(locations = scz_sp, z = 5, src = "aws")</span>
 <span class="co"># raster::writeRaster(x = e, filename = "data/scz-elev-z5.tif")</span>
 e =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/raster">raster</a></span>(<span class="st">"data/scz-elev-z5.tif"</span>)
 
 <span class="co"># get points less than 10m above slr</span>
 e_mask =<span class="st"> </span>e_low =<span class="st"> </span>e <span class="op">&lt;</span><span class="st"> </span><span class="dv">10</span>
-<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(e_low)
-<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(spData<span class="op">::</span>world, <span class="dt">add =</span> T, <span class="dt">col =</span> <span class="ot">NA</span>)</code></pre></div>
-<pre><code>## Warning in plot.sf(spData::world, add = T, col = NA): ignoring all but the
-## first attribute</code></pre>
-<p><img src="sea-level-rise_files/figure-html/unnamed-chunk-1-4.png" width="700"></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">e_mask[e <span class="op">&gt;</span><span class="st"> </span><span class="dv">10</span>] =<span class="st"> </span><span class="ot">NA</span>
+<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(e_low)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(spData<span class="op">::</span>world, <span class="dt">add =</span> T, <span class="dt">col =</span> <span class="ot">NA</span>)
+e_mask[e <span class="op">&gt;</span><span class="st"> </span><span class="dv">10</span>] =<span class="st"> </span><span class="ot">NA</span>
 e_low =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/mask">mask</a></span>(e, e_mask)
 mapview<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/mapview/topics/mapView">mapview</a></span>(e_low)
 <span class="co"># out-takes</span>
@@ -148,55 +139,35 @@ mapview<span class="op">::</span><span class="kw"><a href="http://www.rdocumenta
 
 <span class="kw">system.time</span>({
   r_orig =<span class="st"> </span>raster<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/raster">raster</a></span>(<span class="st">"data/20180816184319_429977190-14-degrees-polish-coast.tif"</span>)
-  <span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(r_orig)
-  })</code></pre></div>
-<p><img src="sea-level-rise_files/figure-html/unnamed-chunk-1-5.png" width="700"></p>
-<pre><code>##    user  system elapsed 
-##   2.768   0.372   3.140</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(r_orig)</code></pre></div>
-<pre><code>## Warning in .local(object, ...): summary is an estimate based on a sample of 1e+05 cells (0.22% of all cells)</code></pre>
-<pre><code>##         X20180816184319_429977190.14.degrees.polish.coast
-## Min.                                                    0
-## 1st Qu.                                                 0
-## Median                                                  8
-## 3rd Qu.                                                35
-## Max.                                                  183
-## NA's                                                    0</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">r_agg =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/aggregate.sf">aggregate</a></span>(r_orig, <span class="dv">100</span>)
-<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/resolution">res</a></span>(r_agg)</code></pre></div>
-<pre><code>## [1] 0.02777778 0.02777778</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/resolution">res</a></span>(e)</code></pre></div>
-<pre><code>## [1] 0.0220 0.0134</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(r_agg)
-<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(e_low, <span class="dt">add =</span> T)</code></pre></div>
-<p><img src="sea-level-rise_files/figure-html/unnamed-chunk-1-6.png" width="700"></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">e_resampled =<span class="st"> </span>raster<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/resample">resample</a></span>(e, r_agg)
-<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/getValues">values</a></span>(r_agg), <span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/getValues">values</a></span>(e_resampled))</code></pre></div>
-<p><img src="sea-level-rise_files/figure-html/unnamed-chunk-1-7.png" width="700"></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">cor</span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/getValues">values</a></span>(r_agg), <span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/getValues">values</a></span>(e_resampled))<span class="op">^</span><span class="dv">2</span></code></pre></div>
-<pre><code>## [1] 0.90463</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># r = extend(r_agg, e)</span>
+  <span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(r_orig)
+  })
+<span class="kw">summary</span>(r_orig)
+r_agg =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/aggregate">aggregate</a></span>(r_orig, <span class="dv">100</span>)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/resolution">res</a></span>(r_agg)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/resolution">res</a></span>(e)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(r_agg)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(e_low, <span class="dt">add =</span> T)
+e_resampled =<span class="st"> </span>raster<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/resample">resample</a></span>(e, r_agg)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/getValues">values</a></span>(r_agg), <span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/getValues">values</a></span>(e_resampled))
+<span class="kw">cor</span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/getValues">values</a></span>(r_agg), <span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/getValues">values</a></span>(e_resampled))<span class="op">^</span><span class="dv">2</span>
+
+<span class="co"># r = extend(r_agg, e)</span>
 <span class="co"># r_low = mask(r, e_mask)</span>
 
 <span class="co"># proportion of sczezcin that is at risk from slr</span>
 e_low_crop =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/crop">crop</a></span>(e_low, scz)
-<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(e_low_crop)</code></pre></div>
-<p><img src="sea-level-rise_files/figure-html/unnamed-chunk-1-8.png" width="700"></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">e_low_sf =<span class="st"> </span>spex<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/spex/topics/polygonize">polygonize</a></span>(e_low_crop)
-e_low_intersect =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/geos_binary_ops">st_intersection</a></span>(e_low_sf, scz)</code></pre></div>
-<pre><code>## although coordinates are longitude/latitude, st_intersection assumes that they are planar</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(scz)
-<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(e_low_sf, <span class="dt">add =</span> T)
-<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(e_low_intersect, <span class="dt">add =</span> <span class="ot">TRUE</span>, <span class="dt">col =</span> <span class="st">"blue"</span>)</code></pre></div>
-<p><img src="sea-level-rise_files/figure-html/unnamed-chunk-1-9.png" width="700"></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sum</span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/geos_measures">st_area</a></span>(e_low_intersect)) <span class="op">/</span><span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/geos_measures">st_area</a></span>(scz)</code></pre></div>
-<pre><code>## 0.4800977 1</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># publish</span>
-scz_buff =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/geos_unary">st_buffer</a></span>(scz, <span class="dt">dist =</span> <span class="dv">0</span>)</code></pre></div>
-<pre><code>## Warning in st_buffer.sfc(st_geometry(x), dist, nQuadSegs): st_buffer does
-## not correctly buffer longitude/latitude data</code></pre>
-<pre><code>## dist is assumed to be in decimal degrees (arc_degrees).</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tmap)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(e_low_crop)
+e_low_sf =<span class="st"> </span>spex<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/spex/topics/polygonize">polygonize</a></span>(e_low_crop)
+e_low_intersect =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/geos_binary_ops">st_intersection</a></span>(e_low_sf, scz)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(scz)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(e_low_sf, <span class="dt">add =</span> T)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(e_low_intersect, <span class="dt">add =</span> <span class="ot">TRUE</span>, <span class="dt">col =</span> <span class="st">"blue"</span>)
+<span class="kw">sum</span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/geos_measures">st_area</a></span>(e_low_intersect)) <span class="op">/</span><span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/geos_measures">st_area</a></span>(scz)
+
+
+<span class="co"># publish</span>
+scz_buff =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/geos_unary">st_buffer</a></span>(scz, <span class="dt">dist =</span> <span class="dv">0</span>)
+<span class="kw">library</span>(tmap)
 scz<span class="op">$</span>col =<span class="st"> "red"</span>
 m =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/tmap/topics/tm_shape">tm_shape</a></span>(e_low) <span class="op">+</span>
 <span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/tmap/topics/tm_raster">tm_raster</a></span>(<span class="dt">alpha =</span> <span class="fl">0.5</span>) <span class="op">+</span>
@@ -206,15 +177,11 @@ m =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.
 <span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/tmap/topics/tm_polygons">tm_polygons</a></span>() <span class="op">+</span>
 <span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/tmap/topics/tm_shape">tm_shape</a></span>(poland) <span class="op">+</span>
 <span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/tmap/topics/tm_polygons">tm_borders</a></span>()
-m</code></pre></div>
-<pre><code>## Variable "scz.elev.z5" contains positive and negative values, so midpoint is set to 0. Set midpoint = NA to show the full spectrum of the color palette.</code></pre>
-<p><img src="sea-level-rise_files/figure-html/unnamed-chunk-1-10.png" width="700"></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m2 =<span class="st"> </span>mapview<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/mapview/topics/mapView">mapview</a></span>(e_low) <span class="op">+</span><span class="st"> </span>scz
+m
+m2 =<span class="st"> </span>mapview<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/mapview/topics/mapView">mapview</a></span>(e_low) <span class="op">+</span><span class="st"> </span>scz
 m2
-<span class="kw"><a href="http://www.rdocumentation.org/packages/tmap/topics/tmap_save">tmap_save</a></span>(m, <span class="st">"/home/robin/repos/geostats_18/data/scz-map.html"</span>)</code></pre></div>
-<pre><code>## Variable "scz.elev.z5" contains positive and negative values, so midpoint is set to 0. Set midpoint = NA to show the full spectrum of the color palette.</code></pre>
-<pre><code>## Interactive map saved to /home/robin/repos/geostats_18/data/scz-map.html</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">browseURL</span>(<span class="st">"data/scz-map.html"</span>)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/tmap/topics/tmap_save">tmap_save</a></span>(m, <span class="st">"/home/robin/repos/geostats_18/data/scz-map.html"</span>)
+<span class="kw">browseURL</span>(<span class="st">"data/scz-map.html"</span>)
 
 <span class="co"># elevation data around prague</span>
 <span class="co"># prague = osmdata::getbb("prague", format_out = "sf_polygon")</span>
@@ -224,10 +191,9 @@ m2
 <span class="co"># writeRaster(prague_elev, "data/prague_elev.tif")</span>
 prague =<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/st_read">read_sf</a></span>(<span class="st">"data/prague.geojson"</span>)
 prague_elev =<span class="st"> </span>raster<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/raster">raster</a></span>(<span class="st">"data/prague_elev.tif"</span>)
-<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(prague_elev)
-<span class="kw"><a href="http://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(prague, <span class="dt">add =</span> <span class="ot">TRUE</span>)</code></pre></div>
-<p><img src="sea-level-rise_files/figure-html/unnamed-chunk-1-11.png" width="700"></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># mapview::mapview(prague_elev) +</span>
+<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(prague_elev)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(prague, <span class="dt">add =</span> <span class="ot">TRUE</span>)
+<span class="co"># mapview::mapview(prague_elev) +</span>
 <span class="co">#   mapview::mapview(prague)</span>
 
 <span class="co"># # detour: finding the resolution:</span>
