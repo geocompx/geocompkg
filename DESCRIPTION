@@ -1,6 +1,6 @@
 Package: geocompkg
 Title: Geocomputation with R metapackage with solutions and extensions
-Version: 0.0.66
+Version: 0.0.67
 Authors@R: c(person("Robin", "Lovelace", role = c("aut")), 
     person("Jakub", "Nowosad", email = "nowosad.jakub@gmail.com",
     role = c("aut", "cre")),
@@ -29,6 +29,7 @@ Imports:
     pROC,
     ranger,
     raster,
+    rasterVis,
     rcartocolor,
     rmapshaper,
     rgdal,
