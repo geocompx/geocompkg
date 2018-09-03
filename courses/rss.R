@@ -94,3 +94,7 @@ x_osbg = st_transform(x_sf, 27700)
 leaflet::providers$OpenStreetMap.Mapnik
 
 # tip: use Ctl-Shift-F for global search
+
+# viz chapter: https://geocompr.robinlovelace.net/adv-map.html
+# link for feedback:
+# https://www.jumpingrivers.com/q/rss.html
