@@ -1,5 +1,9 @@
+inst/doc
 .Rproj.user
 .Rhistory
 .RData
 .Ruserdata
 docs/
+data.zip
+*.html
+*_files*

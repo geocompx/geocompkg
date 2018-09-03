@@ -1,0 +1,203 @@
+---
+title: "Geocomputation with R"
+subtitle: "🗺 <br/> Book Preview / Unlaunch"
+author: "Robin Lovelace, Jakub Nowosad, Jannes Muenchow"
+date: "GeoStat 2018(-08-20)"
+output:
+  xaringan::moon_reader:
+    nature:
+#      highlightStyle: dracula
+      highlightLines: true
+      ratio: '4:3'
+      countIncrementalSlides: false
+# for use with citr (allows auto-updates)
+bibliography: refs-geostat.bib
+---
+
+<!-- 14:15 - 15:00 - 45 minute talk  -->
+<!-- Aims: show-off the book, provide overview, some useful things in it -->
+
+
+```{r setup, include = FALSE}
+options(htmltools.dir.version = FALSE)
+library(RefManageR)
+BibOptions(check.entries = FALSE, 
+           bib.style = "authoryear", 
+           cite.style = 'alphabetic', 
+           style = "markdown",
+           first.inits = FALSE,
+           hyperlink = FALSE, 
+           dashed = FALSE)
+my_bib = ReadBib("refs-geostat.bib", check = FALSE)
+```
+
+
+layout: true
+background-image: url(xaringan_stuff/img/r_geocomp_background.png)
+background-size: cover
+
+---
+
+# The wider project
+
+See https://geocompr.github.io/
+
+```{r, echo=FALSE}
+knitr::include_graphics("images/Screenshot_2018-08-22 Geocomputation with R.png")
+```
+
+---
+
+# What's in the geocompr box?
+
+.pull-left[
+
+- Chapter 1: History + 'philosophy' = important
+
+Foundations
+
+<br>
+<br>
+<br>
+
+Extensions
+
+<br>
+<br>
+<br>
+
+Applications
+
+<br>
+<br>
+<br>
+
+]
+
+.pull-right[
+```{r, echo=FALSE, message=FALSE, out.height="500"}
+knitr::include_graphics("images/geocompr-index.png")
+```
+]
+
+---
+
+# Overview of contents: Part I
+
+- Chapter 1: history, context, motivation
+- Chapter 2: R's main spatial classes (sf/raster)
+- Chapter 3: Attribute data (tidyverse/base R functions)
+- Chapter 4: Spatial data operations (spatial join, spatial subset)
+- Chapter 5: Geometry operations (simplify, buffer etc)
+- Chapter 6: Projections + transformations 
+- Chapter 7: Reading and writing spatial data (I/O)
+
+---
+
+# Overview of contents: Part II
+
+- Chapter 8: Making maps (tmap, interactive maps, etc)
+- Chapter 9: Bridges to dedicated GIS software
+- Chapter 10: Scripts, algorithms and functions (how to build geo-tools)
+- Chapter 11: Statistical learning (mlr)
+
+---
+
+# Overview of contents: Part III
+
+- Chapter 12: Transport 
+- Chapter 13: Geomarketing 
+- Chapter 14: Ecology
+
+---
+
+# Publication plan
+
+- Original deadline: 1st November
+
+--
+
+- We're ahead of schedule: 1st October!
+
+--
+
+Priorities: 
+
+- Robustness testing (try and break our code)
+- Improve exercises (are they too easy/hard?)
+- Refine explanation (anything unclear?)
+
+---
+
+# Contributors over time
+
+- We've had 20+ [contributors](https://github.com/Robinlovelace/geocompr/graphs/contributors) and 150+ [issues](https://github.com/Robinlovelace/geocompr/issues) (questions, answers, learning)
+
+```{r, eval=FALSE}
+webshot::webshot("https://github.com/jannes-m/RQGIS/issues/66")
+```
+
+```{r, echo=FALSE}
+# webshot::webshot("https://github.com/jannes-m/RQGIS/issues/66#issuecomment-304788979", file = "images/rqgis-question.png")
+# i = magick::image_read("images/rqgis-question.png")
+# i = magick::image_crop(image = i, "992x+0+1500")
+# magick::image_write(i, "images/rqgis-question.png")
+knitr::include_graphics("images/rqgis-question.png")
+```
+
+---
+
+# How to get involved
+
+- Just ask a question (especially if it's got a reprex)
+- Issues with the prose (typos, bits not clear)
+- Issues with the exercises
+- Any content missing? 
+
+---
+
+# Front cover visualisation competition
+
+```{r, echo=FALSE, out.width="60%", fig.align='center'}
+knitr::include_graphics("images/Screenshot_2018-08-22 GEOSTAT 2018 Prague.png")
+```
+
+
+---
+
+# Upstream contributions
+
+```{r, echo=FALSE}
+knitr::include_graphics("images/Screenshot_2018-08-22 Robinlovelace geocompr.png")
+```
+
+---
+
+# Thanks
+
+- Thanks to the amazing R and R-spatial communities
+- Everyone who's contributed so far
+- GEOSTAT/OpenGeoHub for the opportunity to present
+
+```{r, echo=FALSE}
+knitr::include_graphics("images/dscf0770s.jpg")
+```
+
+---
+
+# 10 years previously...
+
+```{r, echo=FALSE}
+knitr::include_graphics("images/Use_R_bang.jpg")
+```
+
+---
+
+# Next steps
+
+- Next stop: beer/finish/relax
+
+```{r, echo=FALSE}
+knitr::include_graphics("images/team-geocompr-beer.png")
+```
+
