@@ -39,7 +39,7 @@ The geometry type: `MULTIPOLYGON`.
 Number of objects (countries): 177
 The coordinate reference system (CRS): WGS84 (EPSG 4326)
 
-2. Using **sf**'s `plot()` command, create a map of Nigeria in context, building on the code that creates and plots Asia above (see Figure \@ref(fig:asia) for an example of what this could look like). 
+2. Using **sf**'s `plot()` command, create a map of Nigeria in context, building on the code that creates and plots Asia above (see section https://geocompr.robinlovelace.net/spatial-class.html#basic-map).
     - Hint: this used the `lwd`, `main` and `col` arguments of `plot()`. 
     - Bonus: make the country boundaries a dotted grey line.
     - Hint: `border` is an additional argument of `plot()` for **sf**  objects.
