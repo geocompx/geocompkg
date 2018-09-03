@@ -39,12 +39,22 @@ The data comes from the US Census Bureau, and is documented in `?us_states` and 
 
 <!-- Attribute subsetting -->
 1. Create a new object called `us_states_name` that contains only the `NAME` column from the `us_states` object. 
-What is the class of the new object? 
+What is the class of the new object and what makes it geographic? 
 
 ```{r}
 us_states_name = us_states %>% dplyr::select(NAME)
 class(us_states_name)
 ```
+
+  - It is of class `sf` and `data.frame`: it has 2 classes.
+  - It is the `sf` class that makes in geographic.
+  - More specifically it is the attributes of the object (`sf_column`) and the geometry column (such as `bbox`, `crs`) that make it geographic.
+
+```{r}
+attributes(us_states_name)
+attributes(us_states_name$geometry)
+```
+
 
 2. Select columns from the `us_states` object which contain population data.
 Obtain the same result using a different command (bonus: try to find three ways of obtaining the same result).

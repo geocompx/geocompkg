@@ -16,7 +16,7 @@ These imacts are exacerbated by climate change, adding an element of uncertainty
 All these features of SLR make it well-suited to analysis using geocomputation.
 
 
-```{r, eval=FALSE}
+```{r}
 # aim: demo r-spatial capabilities with slr data
 # See https://github.com/geocompr/geostats_18/blob/master/code/geocompr/slr.R
 
@@ -26,14 +26,18 @@ All these features of SLR make it well-suited to analysis using geocomputation.
 # library(elevatr)
 library(raster)
 library(sf)
+```
 
+```{r}
 # load data
 if(!dir.exists("data")) {
   download.file("https://github.com/geocompr/geostats_18/releases/download/0.1/data.zip", "data.zip")
   unzip("data.zip")
   file.rename("pres/geocompr/data/", "data")
 }
+```
 
+```{r, eval=FALSE}
 # vector data
 plot(spData::world)
 poland = dplyr::filter(spData::world, grepl(pattern = "Pola", name_long))
@@ -54,18 +58,19 @@ plot(st_geometry(poland))
 # getting a map of the szczecin coastline
 # option 1 - via osmdata:
 # library(osmdata)
-# scz = getbb(place_name = "szczecin", format_out = "sf_polygon")
-# sf::st_write(scz, "data/scz-osm.geojson")
-scz = sf::read_sf("data/scz-osm.geojson")
-(m = mapview::mapview(scz)) # not quite what I was after, but a good start
+# region = getbb(place_name = "szczecin", format_out = "sf_polygon")
+# region = getbb(place_name = "cardiff uk", format_out = "sf_polygon")
+# sf::st_write(region, "data/scz-osm.geojson")
+region = sf::read_sf("data/scz-osm.geojson")
+(m = mapview::mapview(region)) # not quite what I was after, but a good start
 
 # option 2 - via (new+improved) mapedit
-# scz_mapedit = mapedit::drawFeatures(map = m)
-# sf::write_sf(scz_mapedit, "data/scz-mapedit.geojson")
-scz_mapedit = sf::read_sf("data/scz-mapedit.geojson")
-plot(scz_mapedit)
-scz_sp = as(scz_mapedit, "Spatial")
-# e = elevatr::get_elev_raster(locations = scz_sp, z = 5, src = "aws")
+# region_mapedit = mapedit::drawFeatures(map = m)
+# sf::write_sf(region_mapedit, "data/scz-mapedit.geojson")
+region_mapedit = sf::read_sf("data/scz-mapedit.geojson")
+plot(region_mapedit)
+region_sp = as(region, "Spatial")
+# e = elevatr::get_elev_raster(locations = region_sp, z = 8, src = "aws")
 # raster::writeRaster(x = e, filename = "data/scz-elev-z5.tif")
 e = raster("data/scz-elev-z5.tif")
 
@@ -97,7 +102,7 @@ cor(values(r_agg), values(e_resampled))^2
 # r = extend(r_agg, e)
 # r_low = mask(r, e_mask)
 
-# proportion of sczezcin that is at risk from slr
+# proportion of region that is at risk from slr
 e_low_crop = crop(e_low, scz)
 plot(e_low_crop)
 e_low_sf = spex::polygonize(e_low_crop)
