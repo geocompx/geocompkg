@@ -73,6 +73,7 @@ sm1 = tm_shape(africa) +
   palette = "YlGn")
 sm1
 ```
+
 3. Represent `africa`'s subregions on the map. 
 Change the default color palette and legend title.
 Next, combine this map and the map created in the previous exercise into a single plot.
@@ -83,6 +84,7 @@ sm2 = tm_shape(africa) +
               palette = "Set2")
 tmap_arrange(sm2, sm1)
 ```
+
 4. Create a land cover map of the Zion National Park.
     - Change the default colors to match your perception of the land cover categories
     - Add a scale bar and north arrow and change the position of both to improve the map's aesthetic appeal
@@ -112,6 +114,7 @@ library(grid)
 print(sm3_plus, vp = grid::viewport(0.5, 0.5, width = 0.95, height = 0.95))
 print(im, vp = grid::viewport(0.2, 0.4, width = 0.35, height = 0.35))
 ```
+
 5. Create facet maps of countries in Eastern Africa:
     - with one facet showing HDI and the other representing population growth (hint: using variables `HDI` and `pop_growth` respectively)
     - with a 'small multiple' per country
@@ -124,6 +127,7 @@ tm_shape(eastern_africa) +
   tm_polygons("pop_growth", style = "jenks", palette = "BuPu") +
   tm_facets(by = "name", drop.NA.facets = TRUE)
 ```
+
 6. Building on the previous facet map examples, create animated maps of East Africa:
     - showing first the spatial distribution of HDI scores then population growth
     - showing each country in order
