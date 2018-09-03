@@ -20,6 +20,7 @@ The solutions assume the following packages are attached (other packages will be
 ```{r packages, message=FALSE, warning=FALSE}
 library(sf)
 library(tidyverse)
+library(raster)
 library(spData)
 ```
 
@@ -30,8 +31,16 @@ library(spData)
     - The geometry type?
     - How many countries there are?
     - The coordinate reference system (CRS)?
+    
+```{r}
+summary(st_geometry(world))
+```
 
-2. Using **sf**'s `plot()` command, create a map of Nigeria in context, building on the code that creates and plots Asia above (see Figure \@ref(fig:asia) for an example of what this could look like). 
+The geometry type: `MULTIPOLYGON`. 
+Number of objects (countries): 177
+The coordinate reference system (CRS): WGS84 (EPSG 4326)
+
+2. Using **sf**'s `plot()` command, create a map of Nigeria in context, building on the code that creates and plots Asia above (see section https://geocompr.robinlovelace.net/spatial-class.html#basic-map).
     - Hint: this used the `lwd`, `main` and `col` arguments of `plot()`. 
     - Bonus: make the country boundaries a dotted grey line.
     - Hint: `border` is an additional argument of `plot()` for **sf**  objects.
@@ -48,26 +57,41 @@ ncentre_num = st_coordinates(ncentre)
 text(x = ncentre_num[1], y = ncentre_num[2], labels = "Nigeria")
 ```
 
-3. What does the `cex` argument do in the `plot()` function that generates Figure \@ref(fig:contpop)?
-    - Why was `cex` passed the `sqrt(world$pop) / 10000` instead of just the population directly?
-    - Bonus: what equivalent arguments to `cex` exist in the dedicated vizualisation package **tmap**?
+3. What does the `cex` argument do in the `plot()` function that generates this [Figure](https://geocompr.robinlovelace.net/spatial-class.html#fig:contpop)?
+    - Why was `cex` set to the `sqrt(world$pop) / 10000` instead of just the population directly?
+    - Bonus: what equivalent arguments to `cex` exist in the dedicated visualization package **tmap**?
     
-4. Re-run the code that 'generated' Figure \@ref(fig:contpop) at the end of \@ref(base-args) and find 3 similarities and 3 differences between the plot produced on your computer and that in the book.
+4. Re-run the code that 'generated' this [Figure](https://geocompr.robinlovelace.net/spatial-class.html#fig:contpop) at the end of this [section](https://geocompr.robinlovelace.net/spatial-class.html#base-args) and find 3 similarities and 3 differences between the plot produced on your computer and that in the book.
     - What is similar?
-        - The map orientation (north is up), colors of the continents and sizes of the circles are the same, among other things.
     - What has changed?
-        - The shape of the countries (an equal area projection has been used), the color of the points has changed (to red) and are now filled in (using the `pch` argument to change the point symbol), the plot has graticules and (most subtly) the points are now in the centroid of the largest polygon of each country, rather than in the area-weighted centroid across all polygons per country.
-    - Bonus: play around with and research base plotting arguments to make your version of Figure \@ref(fig:contpop) more attractive. Which arguments were most useful.
-        - This is a subjective question: have fun!
-    - Advanced: try to reproduce the map presented in Figure \@ref(base-args). Copy-and-pasting is prohibited!
-        - You can *look* at the code that generated the plot here: https://github.com/Robinlovelace/geocompr/blob/master/02-spatial-data.Rmd . If you memorise its important parts, and type them in your own script to reproduce the code that does not count as cheating. That will be a valuable learning experience.
+    - Bonus: play around with and research base plotting arguments to make your version of this [Figure](https://geocompr.robinlovelace.net/spatial-class.html#fig:contpop) more attractive. Which arguments were most useful?
+    - Advanced: try to reproduce the map presented in this [section](https://geocompr.robinlovelace.net/spatial-class.html#base-args). Copy-and-pasting is prohibited!
 
 <!-- raster exercises -->
 5. Read the `raster/nlcd2011.tif` file from the **spDataLarge** package. 
 What kind of information can you get about the properties of this file?
-<!-- (crs, ncols, nrow, ncells, bbox, navalues) -->
-6. Create an empty `RasterLayer` object called `my_raster` with 10 columns and 10 rows, and resolution of 10 units.
+
+```{r}
+nlcd = raster(system.file("raster/nlcd2011.tif", package = "spDataLarge"))
+nlcd
+```
+
+You can get information about:
+- dimensions - a number of rows (`nrow`), a number of columns (`ncol`), a total number of cells (`ncell`)
+- resolution - x and y resolution in the map units
+- spatial extent of the dataset - `xmin`, `xmax`, `ymin`, `ymax`
+- coordinate reference system
+- range of values - `min` and `max`
+
+6. Create an empty `RasterLayer` object called `my_raster` with 10 columns and 10 rows.
 Assign random values between 0 and 10 to the new raster and plot it.
+
+```{r}
+set.seed(2018-09-03)
+my_raster = raster(ncol = 10, nrow = 10, vals = runif(n = 100, min = 0, max = 10))
+plot(my_raster)
+```
+
 <!-- crs exercises -->
 <!-- 1. pros and cons of the projection types -->
 <!-- 1. what's the difference between vector and raster transformation -->
