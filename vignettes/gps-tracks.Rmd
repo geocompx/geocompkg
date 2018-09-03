@@ -1,6 +1,6 @@
 ---
-title: "Vignette Title"
-author: "Vignette Author"
+title: "Loading and analysing GPS tracks with R"
+author: "Robin Lovelace"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
@@ -16,59 +16,29 @@ knitr::opts_chunk$set(
 )
 ```
 
-Vignettes are long form documentation commonly included in packages. Because they are part of the distribution of the package, they need to be as compact as possible. The `html_vignette` output type provides a custom style sheet (and tweaks some options) to ensure that the resulting html is as small as possible. The `html_vignette` format:
+## Introduction
 
-- Never uses retina figures
-- Has a smaller default figure size
-- Uses a custom CSS stylesheet instead of the default Twitter Bootstrap style
-
-## Vignette Info
-
-Note the various macros within the `vignette` section of the metadata block above. These are required in order to instruct R how to build the vignette. Note that you should change the `title` field and the `\VignetteIndexEntry` to match the title of your vignette.
-
-## Styles
-
-The `html_vignette` template includes a basic CSS theme. To override this theme you can specify your own CSS in the document metadata as follows:
-
-    output: 
-      rmarkdown::html_vignette:
-        css: mystyles.css
-
-## Figures
-
-The figure sizes have been customised so that you can easily put two images side-by-side. 
-
-```{r, fig.show='hold'}
-plot(1:10)
-plot(10:1)
-```
-
-You can enable figure captions by `fig_caption: yes` in YAML:
-
-    output:
-      rmarkdown::html_vignette:
-        fig_caption: yes
-
-Then you can use the chunk option `fig.cap = "Your figure caption."` in **knitr**.
-
-## More Examples
-
-You can write math expressions, e.g. $Y = X\beta + \epsilon$, footnotes^[A footnote here.], and tables, e.g. using `knitr::kable()`.
-
-```{r, echo=FALSE, results='asis'}
-knitr::kable(head(mtcars, 10))
-```
-
-Also a quote using `>`:
-
-> "He who gives up [code] safety for [code] speed deserves neither."
-([via](https://twitter.com/hadleywickham/status/504368538874703872))
-
+Perhaps the most ubiquitous type of geographic information is the continuous stream of data churned-out by GPS devices.
+Global Positioning System (GPS) devices are now in everything from watches to cars and, of course, smartphones.
+This means that GPS datasets have the ability to track a large proportion of the world's population.
+Although there are privacy concerns, when appropriately anonymized and aggregated, GPS datasets have the potential to help tackle the issues raised in Chapter [12](http://geocompr.robinlovelace.net/transport.html) of Gecomputation with R:
+to design healthy transport systems in which walking and cycling overtake cars as the main travel modes.
 
 ## Loading GPS data
 
+But how to load GPS data?
+Because GPS traces are vector datasets, we use **sf** to load them:
+
 ```{r}
 library(sf)
+```
+
+
+As with any dataset the first stage is to identify the source.
+For my own GPS data I use the open source Android app Orux to log my routes which I then transfer onto my computer, into the `Gps` folder in my home directory.
+The following code allows me to load the route I took on the 30^th^ August 2018, for example (not run):
+
+```{r, eval=FALSE}
 file_gps = "~/Gps/2018-08-30 1515__20180830_1515.gpx"
 st_layers(file_gps)
 r = st_read(file_gps, layer = "tracks")

@@ -112,59 +112,71 @@ The course will be based on Chapter 3 of [Geocomputation with R](http://geocompr
 
 ## Course agenda
 
-Refreshments & set-up: (09:00 - 09:30)
-
-- R's spatial ecosystem: (09:30 - 09:40)
+- Intro + R's spatial ecosystem: (10:00 - 10:30)
     - See section [1.4 of Geocomputation with R](http://geocompr.robinlovelace.net/intro.html#rs-spatial-ecosystem)
-- R and RStudio for spatial data (09:40 - 09:50)
-    - See [Section 2.5 of Efficient R Programming](https://csgillespie.github.io/efficientR/set-up.html#rstudio)
-- An introduction to simple features (09:50 - 10:00)
-    - See [Spatial Data and the tidyverse](http://robinlovelace.net/presentations/spatial-tidyverse.html#1)
-- Working with attribute data (10:00 - 10:45)
+- Working with attribute data (10:30 - 11:00)
     - [Section 3.2](http://geocompr.robinlovelace.net/attr.html#vector-attribute-manipulation) of handouts
 
-Coffee break: (10:45 - 11:00)
+Coffee break: (11:00 - 11:15)
 
----
-
-- Raster data classes and functions (11:00 - 11:15)
+- Spatial data and the tidyverse lecture (11:15 - 11:30)
+- Vector data classes  
+    - Online tutorial: [2.1 of Geocomputation with R](http://geocompr.robinlovelace.net/spatial-class.html#vector-data) (11:30 - 12:00)
+- Raster data classes and functions lecture (12:00 - 12:15)
     - Online tutorial: [2.2 of Geocomputation with R](http://geocompr.robinlovelace.net/spatial-class.html#raster-data)
-- Raster attribute data (11:15 - 12:00)
-    - [Section 3.3](http://geocompr.robinlovelace.net/attr.html#manipulating-raster-objects) of handouts
-- Free working (12:00 - 12:30)
-    - Challenge: working-through and complete the exercises in Chapter 3
-    - Bonus: ask a question and help explain something
-    - Advanced: look into GitHub and data science
+    
+- Practical working (12:15 - 13:00):
+  - Completing the code examples and tackling the exercises in Chapte 3 handouts
+  - Bonus: take a look at the visualisation chapter in the book
+  - Challenge: Identify other pitfalls of tidyverse -> discussion tidyverse vs base R
 
-LUNCH and looking at your data (12:30 - 13:30)
+LUNCH and discussing at your data (13:00 - 14:00)
 
 ---
  
-- Worked example: Sea Level Rise in Cardiff (13:30 - 14:15)
-
-- Spatial data operations (14:15 - 15:00)
-    - Spatial subsetting, section 4.2.1
-    - Topological relations
-    - Spatial joining and aggregation
-
-Coffee break: 15:00 - 15:15
-
----
-
-- Geographic data I/O: (15:15 - 15:30)
-    - Taught lecture
-    - Test based on your own data
-- Spatial operations on raster data (15:30 - 15:45)
-    - Practical - work through section 4.3
-
-- Consolidating knowledge (15:45 - 16:15)
-    - Completing the printed hand-out OR
-    - Point pattern analysis, interpolation and rasterization [tutorial](https://geocompr.github.io/geocompkg/articles/point-pattern.html)
-    - Working on your own data
+# After lunch: Raster data and your data
+   
+- Raster attribute data (14:00 - 15:00)
+    - [Section 3.3](http://geocompr.robinlovelace.net/attr.html#manipulating-raster-objects) of handouts
+- Free working with options (15:00 - 16:00)
+    - Consolidation: working-through and completing the exercises in Chapter 3
+    - Strong foundations: work through chapter 2
+    - Visualisation: reproduce the figures in chapter 8
     
-- Wrap-up and next steps (16:15 - 16:30)
+- For everyone:
+    - Ask a question or help someone
+    - Advanced: look into GitHub and data science
+
 
 ---
+
+<!-- --- -->
+
+<!-- - Worked example: Sea Level Rise in Cardiff (13:30 - 14:15) -->
+
+<!-- - Spatial data operations (14:15 - 15:00) -->
+<!--     - Spatial subsetting, section 4.2.1 -->
+<!--     - Topological relations -->
+<!--     - Spatial joining and aggregation -->
+
+<!-- Coffee break: 15:00 - 15:15 -->
+
+<!-- --- -->
+
+<!-- - Geographic data I/O: (15:15 - 15:30) -->
+<!--     - Taught lecture -->
+<!--     - Test based on your own data -->
+<!-- - Spatial operations on raster data (15:30 - 15:45) -->
+<!--     - Practical - work through section 4.3 -->
+
+<!-- - Consolidating knowledge (15:45 - 16:15) -->
+<!--     - Completing the printed hand-out OR -->
+<!--     - Point pattern analysis, interpolation and rasterization [tutorial](https://geocompr.github.io/geocompkg/articles/point-pattern.html) -->
+<!--     - Working on your own data -->
+
+<!-- - Wrap-up and next steps (16:15 - 16:30) -->
+
+<!-- --- -->
 
 # Why Geocomputation with R?
 
@@ -710,6 +722,16 @@ library(tmap)
 tmap_mode("view")
 qtm(world, fill = "pop")
 ```
+
+---
+
+# Practical
+
+In groups of 2:4:
+
+-- Work-through section 3.2 in the handout
+
+-- Answer questions 1:3
 
 ---
 
