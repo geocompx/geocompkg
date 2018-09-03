@@ -39,6 +39,7 @@ We will also use `zion` and `nlcd` datasets from **spDataLarge**:
 
 ```{r, results='hide'}
 zion = st_read((system.file("vector/zion.gpkg", package = "spDataLarge")))
+data(nlcd, package = "spDataLarge")
 ```
 
 # Chapter 8
@@ -50,6 +51,12 @@ zion = st_read((system.file("vector/zion.gpkg", package = "spDataLarge")))
     - What three other mapping packages could be used to show the same data?
     - Name an advantage of each
     - Bonus: create three more maps of Africa using the three packages mentioned previously
+    
+```{r}
+plot(africa["HDI"])
+tm_shape(africa) + tm_polygons("HDI")
+```
+
 2. Extend the map of Africa created with **tmap** for the previous exercise so the legend has three bins: "High" (`HDI` above 0.7), "Medium" (`HDI` between 0.55 and 0.7) and "Low" (`HDI` below 0.55).
     - Bonus: improve the map aesthetics, for example by changing the legend title, class labels and color palette.
 ```{r}
@@ -63,8 +70,8 @@ sm1 = tm_shape(africa) +
   title = "Human Development Index",
   breaks = c(0, 0.55, 0.7, 0.8),
   labels = c("Low", "Medium", "High"),
-  palette = "YlGn"
-  )
+  palette = "YlGn")
+sm1
 ```
 3. Represent `africa`'s subregions on the map. 
 Change the default color palette and legend title.
@@ -80,11 +87,10 @@ tmap_arrange(sm2, sm1)
     - Change the default colors to match your perception of the land cover categories
     - Add a scale bar and north arrow and change the position of both to improve the map's aesthetic appeal
     - Bonus: Add an inset map of the Zion National Park's location in the context of the Utah state. (Hint: an object representing Utah can be subsetted from the `us_states` dataset.) 
-```{r, eval=FALSE}
-# FIX NEEDED
+```{r}
 lc_colors = c("#476ba0", "#aa0000", "#b2ada3", "#68aa63", "#a58c30",
               "#c9c977", "#dbd83d", "#bad8ea")
-sm3 = tm_shape(nlcd) + tm_raster(palette = lc_colors, title = "Land cover") +
+sm3 = tm_shape(nlcd) + tm_raster("levels", palette = lc_colors, title = "Land cover") +
   tm_shape(zion) + tm_borders(lwd = 3) +
   tm_scale_bar(size = 1, position = "left") +
   tm_compass(type = "8star", position = c("RIGHT", "top")) + 
@@ -108,16 +114,15 @@ print(im, vp = grid::viewport(0.2, 0.4, width = 0.35, height = 0.35))
 ```
 5. Create facet maps of countries in Eastern Africa:
     - with one facet showing HDI and the other representing population growth (hint: using variables `HDI` and `pop_growth` respectively)
-    - with a 'small multiple' per country <!-- animated map, interactive map -->
+    - with a 'small multiple' per country
 ```{r}
 eastern_africa = filter(africa, subregion == "Eastern Africa")
 tm_shape(eastern_africa) +
   tm_polygons(col = c("HDI", "pop_growth")) +
   qtm(africa, fill = NULL)
-# https://github.com/mtennekes/tmap/issues/190#issuecomment-384184801
 tm_shape(eastern_africa) +
   tm_polygons("pop_growth", style = "jenks", palette = "BuPu") +
-  tm_facets(by = "name", showNA = FALSE)
+  tm_facets(by = "name", drop.NA.facets = TRUE)
 ```
 6. Building on the previous facet map examples, create animated maps of East Africa:
     - showing first the spatial distribution of HDI scores then population growth
@@ -131,7 +136,7 @@ tmap_animation(m, filename = "m.gif")
 browseURL("m.gif")
 m = tm_shape(eastern_africa) +
   tm_polygons("pop_growth", style = "jenks", palette = "BuPu") +
-  tm_facets(by = "name", showNA = FALSE, ncol = 1, nrow = 1)
+  tm_facets(by = "name", drop.NA.facets = TRUE, ncol = 1, nrow = 1)
 tmap_animation(m, filename = "m.gif")
 browseURL("m.gif")
 ```
@@ -140,17 +145,17 @@ browseURL("m.gif")
     - with **mapview**
     - with **leaflet**
     - bonus: for each approach add a legend (if not automatically provided) and a scale bar
-1. Sketch on paper ideas for a web mapping app that could be used to make transport or land-use policies more evidence based:
+8. Sketch on paper ideas for a web mapping app that could be used to make transport or land-use policies more evidence based:
     - In the city you live in, for a couple of users per day
     - In the country you live in, for dozens of users per day
     - Worldwide for hundreds of users per day and large data serving requirements
-8. How would app design, deployment and project management decisions change as the scale of map deployment increases?
-9. Update the code in `coffeeApp/app.R` so that instead of centering on Brazil the user can select which country to focus on:
+9. How would app design, deployment and project management decisions change as the scale of map deployment increases?
+10. Update the code in `coffeeApp/app.R` so that instead of centering on Brazil the user can select which country to focus on:
     - Using `textInput()`
     - Using `selectInput()`
-10. Reproduce Figure \@ref(fig:tmshape) and the 1st and 6th panel of Figure \@ref(fig:break-styles) as closely as possible using the **ggplot2** package.
+11. Reproduce this [Figure](https://geocompr.robinlovelace.net/adv-map.html#fig:tmshape) and the 1st and 6th panel of this [Figure](https://geocompr.robinlovelace.net/adv-map.html#fig:break-styles) as closely as possible using the **ggplot2** package.
 ```{r}
-# fig 9.1 (\@ref(fig:tmshape))
+# fig 8.1 
 ggplot() + 
   geom_sf(data = nz, color = NA) +
   coord_sf(crs = st_crs(nz), datum = NA) + 
@@ -163,7 +168,7 @@ ggplot() +
   geom_sf(data = nz) + 
   coord_sf(crs = st_crs(nz), datum = NA) +
   theme_void()
-# fig 9.7 ( \@ref(fig:break-styles))
+# fig 8.6
 ggplot() +
   geom_sf(data = nz, aes(fill = Median_income)) +
   coord_sf(crs = st_crs(nz), datum = NA) + 
@@ -174,10 +179,8 @@ ggplot() +
   coord_sf(crs = st_crs(nz), datum = NA) + 
   scale_fill_brewer(palette = "Set3") + 
   theme_void()
-# fig 9.13 (\@ref(fig:urban-facet))
-# ggplot() + geom_sf(data = world) + geom_sf(data = urb_1970_2030, aes(size = population_millions)) + coord_sf(crs = st_crs(urb_1970_2030), datum = NA) + facet_wrap(~year, nrow = 2) + theme(panel.background = element_rect(fill = "white"))
 ```
-11. Join `us_states` and `us_states_df` together and calculate a poverty rate for each state using the new dataset.
+12. Join `us_states` and `us_states_df` together and calculate a poverty rate for each state using the new dataset.
 Next, construct a continuous area cartogram based on total population. 
 Finally, create and compare two maps of the poverty rate: (1) a standard choropleth map and (2) a map using the created cartogram boundaries.
 What is the information provided by the first and the second map?
@@ -198,17 +201,17 @@ ecm2 = tm_shape(us_carto) + tm_polygons("poverty_rate", title = "Poverty rate")
 # combine two maps
 tmap_arrange(ecm1, ecm2)
 ```
-12. Visualize population growth in Africa. 
+13. Visualize population growth in Africa. 
 Next, compare it with the maps of a hexagonal and regular grid created using the **geogrid** package.
 ```{r, eval=FALSE}
 # devtools::install_github("jbaileyh/geogrid")
 library(geogrid)
 
 hex_cells = calculate_grid(africa, grid_type = "hexagonal", seed = 25, learning_rate = 0.03)
-africa_hex = st_as_sf(assign_polygons(africa, hex_cells))
+africa_hex = assign_polygons(africa, hex_cells)
 
 reg_cells = calculate_grid(africa, grid_type = "regular", seed = 25, learning_rate = 0.03)
-africa_reg = st_as_sf(assign_polygons(africa, reg_cells))
+africa_reg = assign_polygons(africa, reg_cells)
 
 tgg1 = tm_shape(africa) + tm_polygons("pop_growth", title = "Population's growth (annual %)")
 tgg2 = tm_shape(africa_hex) + tm_polygons("pop_growth", title = "Population's growth (annual %)")
