@@ -83,8 +83,15 @@ You can get information about:
 - coordinate reference system
 - range of values - `min` and `max`
 
-6. Create an empty `RasterLayer` object called `my_raster` with 10 columns and 10 rows, and resolution of 10 units.
+6. Create an empty `RasterLayer` object called `my_raster` with 10 columns and 10 rows.
 Assign random values between 0 and 10 to the new raster and plot it.
+
+```{r}
+set.seed(2018-09-03)
+my_raster = raster(ncol = 10, nrow = 10, vals = runif(n = 100, min = 0, max = 10))
+plot(my_raster)
+```
+
 <!-- crs exercises -->
 <!-- 1. pros and cons of the projection types -->
 <!-- 1. what's the difference between vector and raster transformation -->
