@@ -126,8 +126,9 @@ Coffee break: (11:00 - 11:15)
     - Online tutorial: [2.2 of Geocomputation with R](http://geocompr.robinlovelace.net/spatial-class.html#raster-data)
     
 - Practical working (12:15 - 13:00):
-  - Working-through code and Exercises in Chapter 2 of 'geocompr'
-  - Identify pitfalls of tidyverse
+  - Completing the code examples and tackling the exercises in Chapte 3 handouts
+  - Bonus: take a look at the visualisation chapter in the book
+  - Challenge: Identify other pitfalls of tidyverse -> discussion tidyverse vs base R
 
 LUNCH and discussing at your data (13:00 - 14:00)
 
@@ -137,8 +138,12 @@ LUNCH and discussing at your data (13:00 - 14:00)
    
 - Raster attribute data (14:00 - 15:00)
     - [Section 3.3](http://geocompr.robinlovelace.net/attr.html#manipulating-raster-objects) of handouts
-- Free working (15:00 - 16:00)
-    - Challenge: working-through and complete the exercises in Chapter 3
+- Free working with options (15:00 - 16:00)
+    - Consolidation: working-through and completing the exercises in Chapter 3
+    - Strong foundations: work through chapter 2
+    - Visualisation: reproduce the figures in chapter 8
+    
+- For everyone:
     - Ask a question or help someone
     - Advanced: look into GitHub and data science
 
