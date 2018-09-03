@@ -26,23 +26,23 @@ library(spDataLarge)
 library(RQGIS)
 ```
 
-# Chapter 5
-
-
-Some of the exercises will use a vector (`random_points`) and raster dataset (`ndvi`) from the **RQGIS** package.
-It also uses a polygonal 'convex hull' derived from the vector dataset (`ch`) to represent the area of interest:
+Some of the exercises use a vector (`random_points`) and raster dataset (`ndvi`) from the **RQGIS** package.
+They also use a polygonal 'convex hull' derived from the vector dataset (`ch`) to represent the area of interest:
 ```{r, message=FALSE}
 data(random_points)
 data(ndvi)
 ch = st_combine(random_points) %>% 
   st_convex_hull()
 ```
+
+# Chapter 5
+
 1. Generate and plot simplified versions of the `nz` dataset.
 Experiment with different values of `keep` (ranging from 0.5 to 0.00005) for `ms_simplify()` and `dTolerance` (from 100 to 100,000) `st_simplify()` .
     - At what value does the form of the result start to break-down for each method, making New Zealand unrecognizable?
-    - Advanced: What is different about the geometry type of the results from `st_simplify()` compared with the geometry type of `ms_simplify()`? What problems does this create and how can this be resolved?
+    - Advanced: What is different about the geometry type of the results from `st_simplify()` compared with the geometry type of `ms_simplify()`? 
+What problems does this create and how can this be resolved?
 ```{r}
-plot(rmapshaper::ms_simplify(st_geometry(nz), keep = 1))
 plot(rmapshaper::ms_simplify(st_geometry(nz), keep = 0.5))
 plot(rmapshaper::ms_simplify(st_geometry(nz), keep = 0.05))
 # Starts to breakdown here at 0.5% of the points:
@@ -57,9 +57,6 @@ plot(st_simplify(st_geometry(nz), dTolerance = 10000))
 plot(st_simplify(st_geometry(nz), dTolerance = 100000))
 plot(st_simplify(st_geometry(nz), dTolerance = 100000, preserveTopology = TRUE))
 
-plot(rmapshaper::ms_simplify(st_geometry(nz), keep = 0.05))
-plot(rmapshaper::ms_simplify(st_geometry(nz), keep = 0.05))
-
 # Problem: st_simplify returns POLYGON and MULTIPOLYGON results, affecting plotting
 # Cast into a single geometry type to resolve this
 nz_simple_poly = st_simplify(st_geometry(nz), dTolerance = 10000) %>% 
@@ -72,21 +69,23 @@ plot(nz_simple_poly)
 length(nz_simple_poly)
 nrow(nz)
 ```
-1. In the first exercise in Chapter \@ref(spatial-operations) it was established that Canterbury region had 61 of the 101 highest points in New Zealand. Using `st_buffer()`, how many points in `nz_height` are within 100 km of Canterbury?
+2. In the first exercise in this [Chapter](https://geocompr.robinlovelace.net/spatial-data-operations.html) it was established that Canterbury region had 70 of the 101 highest points in New Zealand.
+Using `st_buffer()`, how many points in `nz_height` are within 100 km of Canterbury?
 ```{r}
-canterbury = nz[nz$Name == "Canterbury Region", ]
+canterbury = nz[nz$Name == "Canterbury", ]
 cant_buff = st_buffer(canterbury, 100)
 nz_height_near_cant = nz_height[cant_buff, ]
-nrow(nz_height_near_cant) # 66 - 5 more
+nrow(nz_height_near_cant) # 75 - 5 more
 ```
-1. Find the geographic centroid of New Zealand. How far is it from the geographic centroid of Canterbury?
+3. Find the geographic centroid of New Zealand.
+How far is it from the geographic centroid of Canterbury?
 ```{r}
 cant_cent = st_centroid(canterbury)
 nz_centre = st_centroid(st_union(nz))
 st_distance(cant_cent, nz_centre) # 234 km
 ```
-1. Most world maps have a north-up orientation.
-A world map with a south-up orientation could be created by a reflection (one of the affine transformations not mentioned in \@ref(affine-transformations)) of the `world` object's geometry.
+4. Most world maps have a north-up orientation.
+A world map with a south-up orientation could be created by a reflection (one of the affine transformations not mentioned in this [section](https://geocompr.robinlovelace.net/geometric-operations.html#affine-transformations)) of the `world` object's geometry.
 Write code to do so.
 Hint: you need to use a two-element vector for this transformation.
     - Bonus: create a upside down map of your country.
@@ -112,44 +111,38 @@ plot(us_states_sfc_mirror)
 #   geom_text_repel(data = us_states_sfc_mirror_labels, mapping = aes(X, Y, label = name), size = 3, min.segment.length = 0) +
 #   theme_void() 
 ```
-1. Subset the point in `p` that is contained within `x` *and* `y` (see section \@ref(clipping) and Figure \@ref(fig:venn-clip)).
+5. Subset the point in `p` that is contained within `x` *and* `y` (see this [section](https://geocompr.robinlovelace.net/geometric-operations.html#clipping) and this [Figure](https://geocompr.robinlovelace.net/geometric-operations.html#fig:venn-clip)).
     - Using base subsetting operators.
     - Using an intermediary object created with `st_intersection()`.
-```{r, eval=FALSE}
-# FIX NEEDED
+```{r}
+# data preparation
+b = st_sfc(st_point(c(0, 1)), st_point(c(1, 1))) # create 2 points
+b = st_buffer(b, dist = 1) # convert points to circles
+x = b[1]
+y = b[2]
+bb = st_bbox(st_union(x, y))
+pmat = matrix(c(bb[c(1, 2, 3, 2, 3, 4, 1, 4, 1, 2)]), ncol = 2, byrow = TRUE)
+box = st_polygon(list(pmat))
+set.seed(2017)
+p = st_sample(x = box, size = 10)
+```
+```{r}
 p_in_y = p[y]
 p_in_xy = p_in_y[x]
 x_and_y = st_intersection(x, y)
 p[x_and_y]
 ```
-1. Calculate the length of the boundary lines of US states in meters.
+6. Calculate the length of the boundary lines of US states in meters.
 Which state has the longest border and which has the shortest?
 Hint: The `st_length` function computes the length of a `LINESTRING` or `MULTILINESTRING` geometry.
 ```{r}
 us_states2163 = st_transform(us_states, 2163)
 us_states_bor = st_cast(us_states2163, "MULTILINESTRING")
 us_states_bor$borders = st_length(us_states_bor)
-arrange(us_states_bor, borders)
-arrange(us_states_bor, -borders)
+arrange(us_states_bor, borders) %>% slice(1)
+arrange(us_states_bor, -borders) %>% slice(1)
 ```
-1. Aggregate the raster counting high points in New Zealand (created in the previous exercise), reduce its geographic resolution by half (so cells are 6 by 6 km) and plot the result.
-    - Resample the lower resolution raster back to a resolution of 3 km. How have the results changed?
-    - Name two advantages and disadvantages of reducing raster resolution.
-```{r, eval=FALSE}
-# FIX NEEDED
-nz_raster_low = raster::aggregate(nz_raster, fact = 2, fun = sum)
-res(nz_raster_low)
-nz_resample = resample(nz_raster_low, nz_raster)
-plot(nz_raster_low)
-plot(nz_resample) # the results are spread over a greater area and there are border issues
-plot(nz_raster)
-# advantage: lower memory use
-# advantage: faster processing
-# advantage: good for viz in some cases
-# disadvantage: removes geographic detail
-# disadvantage: another processing step
-```
-1. Crop the `ndvi` raster using (1) the `random_points` dataset and (2) the `ch` dataset.
+7. Crop the `ndvi` raster using (1) the `random_points` dataset and (2) the `ch` dataset.
 Are there any difference in the output maps?
 Next, mask `ndvi` using these two datasets.
 Can you see any difference now?
@@ -169,7 +162,7 @@ ndvi_mask2 = mask(ndvi, as(ch, "Spatial"))
 plot(ndvi_mask1)
 plot(ndvi_mask2)
 ```
-1. Firstly, extract values from `ndvi` at the points represented in `random_points`.
+8. Firstly, extract values from `ndvi` at the points represented in `random_points`.
 Next, extract average values of `ndvi` using a 90 buffer around each point from `random_points` and compare these two sets of values. 
 When would extracting values by buffers be more suitable than by points alone?
 ```{r}
@@ -181,7 +174,7 @@ random_points$ndvi = raster::extract(ndvi, as(random_points, "Spatial"), buffer 
 random_points$ndvi2 = raster::extract(ndvi, as(random_points, "Spatial"))
 plot(random_points$ndvi, random_points$ndvi2)
 ```
-1. Subset points higher than 3100 meters in New Zealand (the `nz_height` object) and create a template raster with a resolution of 3km. 
+9. Subset points higher than 3100 meters in New Zealand (the `nz_height` object) and create a template raster with a resolution of 3km. 
 Using these objects:
     - Count numbers of the highest points in each grid cell.
     - Find the maximum elevation in each grid cell.
@@ -198,9 +191,28 @@ nz_raster2 = rasterize(nz_height3100, nz_template,
                        field = "elevation", fun = max)
 plot(nz_raster2)
 ```
-1. Polygonize the `grain` dataset and filter all squares representing clay.
+
+10. Aggregate the raster counting high points in New Zealand (created in the previous exercise), reduce its geographic resolution by half (so cells are 6 by 6 km) and plot the result.
+    - Resample the lower resolution raster back to a resolution of 3 km. How have the results changed?
+    - Name two advantages and disadvantages of reducing raster resolution.
+```{r, eval=FALSE}
+nz_raster_low = raster::aggregate(nz_raster, fact = 2, fun = sum)
+res(nz_raster_low)
+nz_resample = resample(nz_raster_low, nz_raster)
+plot(nz_raster_low)
+plot(nz_resample) # the results are spread over a greater area and there are border issues
+plot(nz_raster)
+```
+
+advantage: lower memory use
+advantage: faster processing
+advantage: good for viz in some cases
+disadvantage: removes geographic detail
+disadvantage: another processing step
+
+11. Polygonize the `grain` dataset and filter all squares representing clay.
     - Name two advantages and disadvantages of vector data over raster data.
-    -  At which points would it be useful to convert rasters to vectors in your work?
+    - At which points would it be useful to convert rasters to vectors in your work?
 
 ```{r}
 grain_poly = rasterToPolygons(grain) %>% 
@@ -208,7 +220,10 @@ grain_poly = rasterToPolygons(grain) %>%
 levels(grain)
 clay = dplyr::filter(grain_poly, layer == 1)
 plot(clay)
-# advantages: can be used to subset other vector objects
-# can do affine transformations and use sf/dplyr verbs
-# disadvantages: better consistency, fast processing on some operations, functions developed for some domains
 ```
+
+advantages:
+- can be used to subset other vector objects
+- can do affine transformations and use sf/dplyr verbs
+disadvantages:
+- better consistency, fast processing on some operations, functions developed for some domains
