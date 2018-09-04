@@ -41,7 +41,8 @@ articles:
     desc: >
       These vignettes provide additional miscellaneous materials related to Geocomputation with R
     contents:
+      - maps
       - benchmark
       - erum-2018
       - sea-level-rise
-      - maps
+
