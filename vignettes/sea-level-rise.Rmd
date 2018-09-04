@@ -7,14 +7,38 @@ vignette: >
   %\VignetteIndexEntry{geocompr-slr}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+bibliography: refs.bib
 ---
 
-Sea level rise (SLR) is a worldwide phenemona with major implications for human civilisation.
-Despite the globally interconnected nature of the oceans, the rates and likely impacts of SLR have a strong spatial footprint.
-Some countries such as Norway are actually increasing in height and have limited exposure while in some, such as Bangladesh, millions of people are at risk from catastrophic SLR-related flooding.
-These imacts are exacerbated by climate change, adding an element of uncertainty and dynamics to the problem.
-All these features of SLR make it well-suited to analysis using geocomputation.
+# Introduction
 
+Sea level rise (SLR) is a worldwide phenemona with major implications.
+Although SLR is a global phenomenon, its potentially deadly impacts will vary greatly over the globe, making it well-suited to geographical analysis.
+The need for reproducibility and scalability of the approach means a computational approach, of the type recommended in the book, is needed.
+
+In terms of the spatial distribution of impacts the main factor is current elevation: low-lying areas closed to the sea are most vulnerable.
+Elevation in countries is actually dynamic due to [glacial isostatic adjustment](https://en.wikipedia.org/wiki/Post-glacial_rebound).
+However, the rate of change in elevation in most places is slow compared with rapid sea level rise.
+
+How much the sea will rise in the next 10, 100, 1000 and even 10,000 is a subject of scientific research.
+One thing is for certain: the trend of rising sea levels, illustrated in the figure below, will continue (source: [NASA](https://climate.nasa.gov/vital-signs/sea-level/)).
+
+```{r, echo=FALSE, out.width="100%"}
+knitr::include_graphics("https://climate.nasa.gov/system/charts/12_seaLevel_left.gif")
+```
+
+One recent analysis suggests 50 m of SLR is likely in the next 10,000 years (note the units in the previous graph are mm, 1000 times less than a meter), with much of that happening in the next 1,000 years [@clark_consequences_2016].
+Their model results provide a range of SLR futures, as illustrated in the figure below:
+
+```{r, echo=FALSE, out.width="100%"}
+knitr::include_graphics("https://raw.githubusercontent.com/geocompr/geostats_18/master/images/slr-long-clark-et-al-2016.png")
+```
+
+This vignette will download data for a city and analyse vulnerable areas based on the assumption of 10 m of sea level rise.
+In the exercises you will be encouraged to re-run the analysis in different places and assuming different levels of SLR.
+The first stage is to read-in the data:
+
+## Read-in data
 
 ```{r}
 # aim: demo r-spatial capabilities with slr data
@@ -37,7 +61,7 @@ if(!dir.exists("data")) {
 }
 ```
 
-```{r, eval=FALSE}
+```{r}
 # vector data
 plot(spData::world)
 poland = dplyr::filter(spData::world, grepl(pattern = "Pola", name_long))
@@ -81,6 +105,12 @@ e_projected
 e_mask = e_low = e < 10
 plot(e_low)
 plot(spData::world, add = T, col = NA)
+
+```
+
+## Analysis
+
+```{r, eval=FALSE}
 e_mask[e > 10] = NA
 e_low = mask(e, e_mask)
 mapview::mapview(e_low)
@@ -178,3 +208,5 @@ plot(prague, add = TRUE)
 ## Exercises
 
 1. Use your geocompuational skills to create a reproducible study of the spatial distribution of the impacts of sea level rise, based on assumptions of 2m, 10m and a worst-case 50m scenario of change.
+
+## References
