@@ -19,18 +19,15 @@ The solutions assume the following packages are attached (other packages will be
 
 ```{r packages, message=FALSE, warning=FALSE}
 library(sf)
-library(tidyverse)
-library(spData)
 ```
 
 # Chapter 14
 
-
 1. Run a NMDS using the percentage data of the community matrix. 
 Report the stress value and compare it to the stress value as retrieved from the NMDS using presence-absence data.
 What might explain the observed difference?
-1. Compute catchment area and catchment slope using **RSAGA** (see section \@ref(rsaga)).
-1. Use profile and tangential curvature as additional predictors for the spatial prediction of the floristic gradient (hint: `grass7:r.slope.aspect`).
-1. Retrieve the bias-reduced RMSE using spatial cross-validation including the estimation of optimal hyperparameter combinations (random search with 50 iterations) in an inner tuning loop (see section \@ref(svm)).
-Parallelize the tuning level (see section \@ref(svm)).
+2. Compute catchment area and catchment slope using **RSAGA** (see this [section](https://geocompr.robinlovelace.net/gis.html#rsaga)).
+3. Use profile and tangential curvature as additional predictors for the spatial prediction of the floristic gradient (hint: `grass7:r.slope.aspect`).
+4. Retrieve the bias-reduced RMSE using spatial cross-validation including the estimation of optimal hyperparameter combinations (random search with 50 iterations) in an inner tuning loop (see [section](https://geocompr.robinlovelace.net/spatial-cv.html#svm)).
+Parallelize the tuning level (see section [section](https://geocompr.robinlovelace.net/spatial-cv.html#svm)).
 Report the mean RMSE and use a boxplot to visualize all retrieved RMSEs.
