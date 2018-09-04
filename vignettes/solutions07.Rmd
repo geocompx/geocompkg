@@ -28,7 +28,20 @@ library(spData)
 
 1. List and describe three types of vector, raster, and geodatabase formats.
 
+Vector formats: Shapefile (old format supported by many programs), GeoPackage (more recent format with better support of attribute data) and GeoJSON (common format for web mapping).
+
+Raster formats: GeoTiff, Arc ASCII, R-raster (see book for descriptions).
+
+Database formats: PostGIS, SQLite, FileGDB (see book for details).
+
 2. Name at least two differences between `read_sf()` and the more well-known function `st_read()`.
+
+`st_read()` prints outputs and keeps strings as text strings (`st_read()` creates factors). This can be seen from the source code of `read_sf()`, which show's it wraps `st_read()`:
+
+```{r}
+read_sf
+```
+
 
 3. Read the `cycle_hire_xy.csv` file from the **spData** package as a spatial object (Hint: it is located in the `misc\` folder).
 What is a geometry type of the loaded object? 
