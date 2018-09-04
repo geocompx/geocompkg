@@ -19,8 +19,13 @@ The solutions assume the following packages are attached (other packages will be
 
 ```{r packages, message=FALSE, warning=FALSE}
 library(sf)
+library(raster)
 library(tidyverse)
 library(spData)
+library(RSAGA)
+library(RQGIS)
+library(mlr)
+library(tmap)
 ```
 
 # Chapter 11
@@ -28,13 +33,8 @@ library(spData)
 1. Compute the terrain attributes slope, plan curvature, profile curvature and catchment area from `dem` (provided by `data("landslides", package = "RSAGA")`) with the help of R-GIS bridges, and extract the values from the corresponding output rasters to the `landslides` dataframe (`data(landslides, package = "RSAGA"`)). Keep all landslide initation points and 175 randomly selected non-landslide points.
 
 ```{r, eval=FALSE}
-# attach packages
-library(RSAGA)
-library(RQGIS)
-
 # attach data
 data("landslides", package = "RSAGA")
-
 
 # DATA PREPROCESSING
 #*******************
@@ -93,10 +93,6 @@ lsl[, names(ta)] = raster::extract(ta, lsl[, c("x", "y")])
 2. Make a spatial prediction map similar with the derived model results and terrain attribute rasters.
 
 ```{r, eval=FALSE}
-# attach packages
-library(raster)
-library(sf)
-library(tmap)
 # attach data (in case you have not computed the terrain attributes before)
 load("extdata/spatialcv.Rdata")
 
@@ -135,8 +131,6 @@ tm_shape(hs, bbox = bbx) +
 Hint: You need to specify a non-spatial task and a non-spatial resampling strategy.
 
 ```{r, eval=FALSE}
-# attach packages
-library(mlr)
 # attach data (in case you have not computed the terrain attributes before)
 load("extdata/spatialcv.Rdata")
 
@@ -192,7 +186,6 @@ Hint: Before running the spatial cross-validation for both learners set a seed t
 
 ```{r, eval=FALSE}
 # attach packages
-library(mlr)
 # attach data (in case you have not computed the terrain attributes before)
 load("extdata/spatialcv.Rdata")
 
@@ -252,8 +245,6 @@ Use the `rbfdot` kernel with $\sigma$ = 1 and *C* = 1.
 Leaving the hyperparameters unspecified in **kernlab**'s `ksvm()` would otherwise initialize an automatic non-spatial hyperparameter tuning.
 
 ```{r, eval=FALSE}
-# attach packages
-library(mlr)
 # attach data (in case you have not computed the terrain attributes before)
 load("extdata/spatialcv.Rdata")
 
