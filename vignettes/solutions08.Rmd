@@ -89,7 +89,7 @@ tmap_arrange(sm2, sm1)
     - Change the default colors to match your perception of the land cover categories
     - Add a scale bar and north arrow and change the position of both to improve the map's aesthetic appeal
     - Bonus: Add an inset map of the Zion National Park's location in the context of the Utah state. (Hint: an object representing Utah can be subsetted from the `us_states` dataset.) 
-```{r}
+```{r, eval=FALSE}
 lc_colors = c("#476ba0", "#aa0000", "#b2ada3", "#68aa63", "#a58c30",
               "#c9c977", "#dbd83d", "#bad8ea")
 sm3 = tm_shape(nlcd) + tm_raster("levels", palette = lc_colors, title = "Land cover") +
@@ -101,7 +101,7 @@ sm3 = tm_shape(nlcd) + tm_raster("levels", palette = lc_colors, title = "Land co
 sm3
 ```
 
-```{r}
+```{r, eval=FALSE}
 utah = dplyr::filter(us_states, NAME == "Utah")
 zion_bbox = st_as_sfc(st_bbox(nlcd))
 
