@@ -81,7 +81,7 @@ Answer: The algorithm would need to be able to have negative as well as positive
     - Verify it works by running `poly_centroid_sf(sf::st_sf(sf::st_sfc(poly_sfc)))`
     - What error message do you get when you try to run `poly_centroid_sf(poly_mat)`?
     
-```{r}
+```{r, error=TRUE}
 poly_centroid_sf = function(x) {
   stopifnot(is(x, "sf"))
   xcoords = sf::st_coordinates(x)
