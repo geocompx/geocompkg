@@ -14,7 +14,7 @@ vignette: >
 ```{r}
 # data download
 library(raster)
-alt = getData("alt", country = "SVN")
+alt = getData("alt", country = "SVN", path = tempdir())
 slope = terrain(alt, opt = "slope")
 aspect = terrain(alt, opt = "aspect")
 hill = hillShade(slope, aspect, 40, 270)
