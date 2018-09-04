@@ -1,3 +1,16 @@
+iz chapter: https://geocompr.robinlovelace.net/adv-map.html
+# link for feedback:
+# https://www.jumpingrivers.com/q/rss.html
+devtools::install_github("nowosad/spDataLarge")
+# install.packages("raster")
+nz$Land_area
+nz[, "Land_area", drop = T]
+
+world$climate = "good"
+names(world)
+rm(world)
+data("world")
+world
 ---
 title: "Geocomputation for sea level research"
 author: "Robin Lovelace, Jakub Nowosad, Jannes Muenchow"
@@ -58,7 +71,7 @@ plot(st_geometry(poland))
 # getting a map of the szczecin coastline
 # option 1 - via osmdata:
 # library(osmdata)
-# region = getbb(place_name = "szczecin", format_out = "sf_polygon")
+# region = osmdata::getbb(place_name = "cardiff uk", format_out = "sf_polygon")
 # region = getbb(place_name = "cardiff uk", format_out = "sf_polygon")
 # sf::st_write(region, "data/scz-osm.geojson")
 region = sf::read_sf("data/scz-osm.geojson")
@@ -73,6 +86,9 @@ region_sp = as(region, "Spatial")
 # e = elevatr::get_elev_raster(locations = region_sp, z = 8, src = "aws")
 # raster::writeRaster(x = e, filename = "data/scz-elev-z5.tif")
 e = raster("data/scz-elev-z5.tif")
+x_crs = st_crs(27700)
+e_projected = raster::projectRaster(e, crs = x_crs$proj4string)
+e_projected
 
 # get points less than 10m above slr
 e_mask = e_low = e < 10
