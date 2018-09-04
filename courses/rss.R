@@ -98,3 +98,13 @@ leaflet::providers$OpenStreetMap.Mapnik
 # viz chapter: https://geocompr.robinlovelace.net/adv-map.html
 # link for feedback:
 # https://www.jumpingrivers.com/q/rss.html
+devtools::install_github("nowosad/spDataLarge")
+# install.packages("raster")
+nz$Land_area
+nz[, "Land_area", drop = T]
+
+world$climate = "good"
+names(world)
+rm(world)
+data("world")
+world
