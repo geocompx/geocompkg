@@ -30,6 +30,7 @@ poly_mat = cbind(
   x = c(0, 0, 9, 9, 0),
   y = c(0, 9, 9, 0, 0)
 )
+O = poly_mat[1, ] # create a point representing the origin
 t_centroid = function(x) {
   (x[1, ] + x[2, ] + x[3, ]) / 3
 }
@@ -43,7 +44,7 @@ t_area = function(x) {
 poly_centroid = function(x) {
   i = 2:(nrow(x) - 2)
   T_all = T_all = lapply(i, function(x) {
-    rbind(0, poly_mat[x:(x + 1), ], 0)
+    rbind(O, poly_mat[x:(x + 1), ], O)
   })
   C_list = lapply(T_all, t_centroid)
   C = do.call(rbind, C_list)
@@ -51,7 +52,6 @@ poly_centroid = function(x) {
   c(weighted.mean(C[, 1], A), weighted.mean(C[, 2], A))
 }
 ```
-
 
 # Chapter 10
 
