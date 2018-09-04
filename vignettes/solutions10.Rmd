@@ -20,8 +20,6 @@ The solutions assume the following packages are attached (other packages will be
 
 ```{r packages, message=FALSE, warning=FALSE}
 library(sf)
-library(tidyverse)
-library(spData)
 ```
 
 They also require a few objects and functions from Chapter 10:
