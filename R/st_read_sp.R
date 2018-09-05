@@ -8,11 +8,10 @@
 #' @export
 #' @md
 #' @examples
-#' \dontrun{
-#' x = st_read_sp(system.file("shapes/wrld.gpkg", package = "spData"))
+#' x = st_read_sp(system.file("shapes/world.gpkg", package = "spData"))
 #' class(x)
-#' }
 st_read_sp = function(dsn, ...) {
   x = sf::st_read(dsn, ...)
   as(object = x, Class = "Spatial")
 }
+
