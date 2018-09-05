@@ -113,8 +113,7 @@ world_sf = st_as_sf(world_sp)
 ```
 
 - The structures in the **sp** packages are more complicated - `str(world_sf)` vs `str(world_sp)`
-  
---
+
 
 - **sp** doesn't play well with the **tidyverse**:
 
@@ -157,7 +156,7 @@ data.frame(near_lnd$name_long,
 
 We can resolve this issue by casting them:
 
-```{r, message = FALSE, warning = FALSE, fig.height = 6}
+```{r, message = FALSE, warning = FALSE, fig.height = 6, warning=FALSE}
 world_poly = world %>% 
   st_cast(to = "POLYGON")
 near_lnd_new = world_poly[lnd_buff, ]
@@ -199,15 +198,11 @@ world %>%
   filter(name_long == "United Kingdom")
 ```
 
---
-
 Base R equivalent:
 
 ```{r, eval=FALSE}
 world[world$name_long == "United Kingdom", ]
 ```
-
---
 
 Question:
 
@@ -226,8 +221,6 @@ u2 = world[world$name_long == "United Kingdom", ]
 row.names(u2) = 1
 identical(u1, u2)
 ```
-
---
 
 - Advanced challenge: how to make u1 and u2 identical?
 
