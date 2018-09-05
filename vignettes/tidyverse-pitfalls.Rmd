@@ -1,0 +1,320 @@
+---
+title: "Spatial data and the tidyverse: pitfalls to avoid"
+author: "Robin Lovelace, Jakub Nowosad, Jannes Muenchow"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{tidyverse-pitfalls}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+bibliography: refs.bib
+---
+
+
+## Prerequisites
+
+This article is about working with spatial data 'in the tidyverse'.
+By this we mean handling spatial datasets using functions (such as ` %>% ` and `filter()`) and concepts (such as type stability) from R packages that are part of the metapackage **tidyverse**.
+You should already have an R installation set-up for spatial data analysis [having read Chapter 2 of Geocomputation with R](https://geocompr.robinlovelace.net/spatial-class.html).
+
+If not take a read there now.
+In any case the **tidyverse** can be installed from CRAN with the following command:
+
+```{r, eval=FALSE}
+install.packages("tidyverse")
+```
+
+The **tidyverse** works with spatial data thanks to **sf** which is quite a recent package (first release in 2016).
+If you have not already got it, get **sf** with:
+
+```{r, eval=FALSE}
+install.packages("sf")
+```
+
+The we will also uses a dataset from the **spData** package, which can be installed with:
+
+```{r, eval=FALSE}
+install.packages("spData")
+```
+
+## Context
+
+Software for 'data science' is evolving.
+As we saw in [Chapter 1](https://geocompr.robinlovelace.net/intro.html), R packages **ggplot2** and **dplyr** have become immensely popular.
+Now they are a part of the **tidyverse**.
+
+These packages use the 'tidy data' principles for consistency and speed of processing.
+According to the `vignette("tidy-data")`, in tidy datasets:
+
+- Each variable forms a column.
+- Each observation forms a row.
+- Each type of observational unit forms a table
+
+Historically spatial R packages have not been compatible with the **tidyverse**.
+But this has changed with the release of **sf** and hard work by Edzer Pebesma and Hadley Wickham to make them work together.
+As described in [Chapter 2](https://geocompr.robinlovelace.net/spatial-class.html), **sf** combines the functionality of three previous packages: **sp**, **rgeos** and **rgdal**.
+It has many other advantages, including:
+
+- Consistent function names (`st_*`)
+- More geometry types supported
+- Pulls in functionality from **lwgeom**
+- Compatibility with the **tidyverse**
+    
+The final advantage comes with a warning:
+watch out for pitfalls!
+That's topic of this workshop, as illustrated by the following GIF:
+it's easy to imagine spatial data analyses but, as Homer Simson discovered with his BBQ project, doing something complicated is easier said than done, especially when combining packages that have only recently started working together:
+
+![](https://media.giphy.com/media/OMeGDxdAsMPzW/giphy.gif)
+
+## Loading spatial packages
+
+Now you know the context and have your R setup sorted, it's time to begin the practical.
+Execute the following 2 commands to attach spatial data libraries:
+
+```{r}
+library(sf)
+library(raster)
+```
+
+Notice the messages: **sf** uses some C libraries behind the scenes.
+**raster** depends on the older **sp** package which **sf** replaces (confusing I know!).
+
+The next step is to attach the tidyverse, which brings us onto the first pitfall.
+
+## Pitfall: name clashes
+
+Just loading the tidyverse reveals a pitfall of using spatial data with the tidyverse that affects the **raster** package in particular:
+
+```{r}
+library(tidyverse)
+```
+
+The first chunk of output shows that the tidyverse is attaching its packages.
+✔ yes we want **ggplot2**, ✔ we want **dplyr** etc.
+But we also get less positive messages.
+✖ Doh! there are many conflicts.
+
+In the context of spatial data this may only be a problem if you use the **raster** package.
+The final ✖ shows that **dplyr**'s `select()` function has boshed (technically speaking, masked) **raster**'s select function.
+This can cause issues.
+To avoid this pitfall we suggest using `dplyr::select()` and `raster::select()` rather than just `select()` when using this conflicted function name if you use **raster** and the **tidyverse**.
+
+## Pitfall: tidyverse and sp don't play
+
+- **sp** precedes **sf**  
+- Together with the **rgdal** and **rgeos** package, it creates a powerful tool to works with spatial data
+- Many spatial R packages still depends on the **sp** package, therefore it is important to know how to convert **sp** to and from **sf** objects
+
+```{r}
+library(spData)
+world_sp = as(world, "Spatial")
+world_sf = st_as_sf(world_sp)
+```
+
+- The structures in the **sp** packages are more complicated - `str(world_sf)` vs `str(world_sp)`
+  
+--
+
+- **sp** doesn't play well with the **tidyverse**:
+
+```{r, eval = FALSE}
+world_sp %>% 
+  filter(name_long == "England")
+```
+
+`Error in UseMethod("filter_") : 
+  no applicable method for 'filter_' applied to an object of class "c('SpatialPolygonsDataFrame', 'SpatialPolygons', 'Spatial')"`
+  
+## Pitfall: multipolygon objects
+
+This pitfall is not specific to the tidyverse but is worth being aware of.
+Let's create a buffer around London of 500 km:
+
+```{r}
+lnd_buff = lnd[1, ] %>% 
+  st_transform(crs = 27700) %>%  # uk CRS
+  st_buffer(500000) %>%
+  st_transform(crs = 4326)
+near_lnd = world[lnd_buff, ]
+plot(near_lnd$geom)
+```
+
+What is going with the country miles away?
+
+The issue is that some objects have multiple geometries:
+
+```{r}
+st_geometry_type(near_lnd)
+```
+
+Which have more than 1?
+
+```{r}
+data.frame(near_lnd$name_long,
+           sapply(near_lnd$geom, length))
+```
+
+We can resolve this issue by casting them:
+
+```{r, message = FALSE, warning = FALSE, fig.height = 6}
+world_poly = world %>% 
+  st_cast(to = "POLYGON")
+near_lnd_new = world_poly[lnd_buff, ]
+plot(st_geometry(near_lnd_new))
+```
+
+## Pitfall: spatial subsetting
+
+The previous code chunk shows how spatial subsetting works in base R, with `near_lnd = world_poly[lnd_buff, ]`.
+
+You can also do tidy spatial subsetting:
+
+```{r, message=FALSE}
+near_lnd_tidy = world %>% 
+  filter(st_intersects(., lnd_buff, sparse = FALSE))
+```
+
+But there are pitfalls
+
+- It's verbose (you need `sparse = FALSE` in the spatial predicate function)
+- See the next pitfall: it boshes the row names!
+
+## Pitfall: row names
+
+```{r}
+row.names(near_lnd_tidy)
+row.names(near_lnd)
+```
+
+- Consequences for joining - rownames can be useful! 
+
+Also affects non-spatial data - [tidyverse/dplyr#366](https://github.com/tidyverse/dplyr/issues/366)
+
+
+## Pitfall: attribute alteration
+
+```{r, warning=FALSE}
+world %>% 
+  filter(name_long == "United Kingdom")
+```
+
+--
+
+Base R equivalent:
+
+```{r, eval=FALSE}
+world[world$name_long == "United Kingdom", ]
+```
+
+--
+
+Question:
+
+```{r}
+identical(
+  world %>% filter(name_long == "United Kingdom"),
+  world[world$name_long == "United Kingdom", ]
+) # ?
+```
+
+Row names usually don't matter but they can bite
+
+```{r}
+u1 = world %>% filter(name_long == "United Kingdom")
+u2 = world[world$name_long == "United Kingdom", ]
+row.names(u2) = 1
+identical(u1, u2)
+```
+
+--
+
+- Advanced challenge: how to make u1 and u2 identical?
+
+```{r, eval=FALSE, echo=FALSE}
+attributes(u2) = attributes(u1)
+identical(u1, u2)
+attributes(u1$geom)
+```
+
+---
+
+## Pitfall: Duplicate column names
+
+See [edzer/sf#544](https://github.com/r-spatial/sf/issues/544)
+
+```{r}
+names(world)
+names(lnd_buff)
+```
+
+```{r}
+lnd_buff$iso_a2 = NA
+```
+
+```{r, eval=FALSE}
+st_intersection(world, lnd_buff) # works
+world_tidy = st_as_sf(as_tibble(world))
+st_intersection(world_tidy, lnd_buff) # fails
+```
+
+```
+Error: Column `iso_a2` must have a unique name
+```
+
+---
+
+## Pitfall: binding rows
+
+
+```{r, eval=FALSE}
+rbind(near_lnd, near_lnd) # works
+bind_rows(near_lnd, near_lnd)
+```
+
+```
+Error in .subset2(x, i, exact = exact) : 
+  attempt to select less than one element in get1index
+```
+
+But this does:
+
+```{r, warning=FALSE}
+near_lnd_data = st_set_geometry(near_lnd, NULL)
+d = bind_rows(near_lnd_data, near_lnd_data)
+d_sf = st_sf(d, geometry = c(near_lnd$geom, near_lnd$geom))
+plot(d_sf)
+```
+
+## Raster data in the tidyverse
+
+Raster data is not yet closely connected to the **tidyverse**, however:
+
+- Some functions from the **raster** package works well in `pipes`
+- You can convert vector data to the `Spatial*` form using `as(my_vector, "Spatial")`before working on raster-vector interactions
+- There are some initial efforts to bring raster data closer to the **tidyverse**, such as [tabularaster](https://github.com/hypertidy/tabularaster), [sfraster](https://github.com/mdsumner/sfraster), or [fasterize](https://github.com/ecohealthalliance/fasterize)
+- The development of the [stars](https://github.com/r-spatial/stars), package focused on multidimensional, large datasets should start soon. It will allow pipe-based workflows
+
+
+<!-- ## Practical exercises -->
+
+<!-- In groups of 2:4: -->
+
+<!-- -- Work-through section 3.2 in the handout -->
+
+<!-- -- Answer questions 1:3 -->
+
+<!-- -- -->
+
+<!-- A) Beginner/tidyverse consolidation: Tackle the exercises in [Chapter 3](http://geocompr.robinlovelace.net/attr.html) of Geocomputation with R -->
+
+<!-- -- -->
+
+<!-- B) Intermediate/advanced: Build on Edzer's [`breweries` analysis](https://edzer.github.io/UseR2017/) and answer the questions using tidyverse functions: -->
+
+<!-- 1. which was the earliest founded brewery? -->
+<!-- 2. which has the longest name? -->
+<!-- 3. group the breweries by the century they were founded: which has, on average, most beer types? -->
+<!-- 4. Join the breweries to a 5km buffer around the trails: which trail is the best for number/diversity of breweries? -->
+
+<!-- -- -->
