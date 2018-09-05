@@ -10,6 +10,11 @@ vignette: >
 bibliography: refs.bib
 ---
 
+```{r setup, include=FALSE}
+# set global chunk options
+library(knitr)
+opts_chunk$set(error = TRUE)
+```
 
 ## Prerequisites
 
