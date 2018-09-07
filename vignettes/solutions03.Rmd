@@ -37,8 +37,7 @@ The data comes from the US Census Bureau, and is documented in `?us_states` and 
 
 # Chapter 3
 
-<!-- Attribute subsetting -->
-1. Create a new object called `us_states_name` that contains only the `NAME` column from the `us_states` object. 
+1) Create a new object called `us_states_name` that contains only the `NAME` column from the `us_states` object. 
 What is the class of the new object and what makes it geographic? 
 
 ```{r}
@@ -55,8 +54,7 @@ attributes(us_states_name)
 attributes(us_states_name$geometry)
 ```
 
-
-2. Select columns from the `us_states` object which contain population data.
+2) Select columns from the `us_states` object which contain population data.
 Obtain the same result using a different command (bonus: try to find three ways of obtaining the same result).
 Hint: try to use helper functions, such as `contains` or `starts_with` from **dplyr** (see `?contains`).
 
@@ -70,7 +68,7 @@ us_states %>% dplyr::select(starts_with("total_pop"))
 us_states %>% dplyr::select(contains("total_pop"))
 ```
 
-3. Find all states with the following characteristics (bonus find *and* plot them):
+3) Find all states with the following characteristics (bonus find *and* plot them):
     - Belong to the Midwest region.
 ```{r}
 us_states %>% 
@@ -88,21 +86,23 @@ us_states %>% filter(REGION == "South", AREA > units::set_units(150000, km^2), t
 # or
 us_states %>% filter(REGION == "South", as.numeric(AREA) > 150000, total_pop_15 > 7000000)
 ```
-<!-- Attribute aggregation -->
-4. What was the total population in 2015 in the `us_states` dataset?
+
+4) What was the total population in 2015 in the `us_states` dataset?
 What was the minimum and maximum total population in 2015?
 ```{r}
 us_states %>% summarize(total_pop = sum(total_pop_15),
                         min_pop = min(total_pop_15),
                         max_pop = max(total_pop_15))
 ```
-5. How many states are there in each region?
+
+5) How many states are there in each region?
 ```{r}
 us_states %>%
   group_by(REGION) %>%
   summarize(nr_of_states = n())
 ```
-6. What was the minimum and maximum total population in 2015 in each region?
+
+6) What was the minimum and maximum total population in 2015 in each region?
 What was the total population in 2015 in each region?
 ```{r}
 us_states %>%
@@ -111,8 +111,8 @@ us_states %>%
             max_pop = max(total_pop_15),
             tot_pop = sum(total_pop_15))
 ```
-<!-- Attribute joining -->
-7. Add variables from `us_states_df` to `us_states`, and create a new object called `us_states_stats`.
+
+7) Add variables from `us_states_df` to `us_states`, and create a new object called `us_states_stats`.
 What function did you use and why?
 Which variable is the key in both datasets?
 What is the class of the new object?
@@ -121,21 +121,23 @@ us_states_stats = us_states %>%
   left_join(us_states_df, by = c("NAME" = "state"))
 class(us_states_stats)
 ```
-8. `us_states_df` has two more variables than `us_states`.
+
+8) `us_states_df` has two more variables than `us_states`.
 How can you find them? (hint: try to use the `dplyr::anti_join()` function)
 ```{r}
 us_states_df %>%
   anti_join(us_states, by = c("state" = "NAME"))
 ```
-<!-- Attribute creation -->
-9. What was the population density in 2015 in each state?
+
+9) What was the population density in 2015 in each state?
 What was the population density in 2010 in each state?
 ```{r}
 us_states2 = us_states %>%
   mutate(pop_dens_15 = total_pop_15/AREA,
          pop_dens_10 = total_pop_10/AREA)
 ```
-10. How much has population density changed between 2010 and 2015 in each state?
+
+10) How much has population density changed between 2010 and 2015 in each state?
 Calculate the change in percentages and map them.
 ```{r}
 us_popdens_change = us_states2 %>%
@@ -143,14 +145,14 @@ us_popdens_change = us_states2 %>%
          pop_dens_diff_10_15p = (pop_dens_diff_10_15/pop_dens_15) * 100)
 plot(us_popdens_change["pop_dens_diff_10_15p"])
 ```
-11. Change the columns names in `us_states` to lowercase. (Hint: helper functions - `tolower()` and `colnames()` may help).
+
+11) Change the columns names in `us_states` to lowercase. (Hint: helper functions - `tolower()` and `colnames()` may help).
 ```{r}
 us_states %>%
   set_names(tolower(colnames(.)))
 ```
-<!-- Mixed exercises -->
-<!-- combination of use of select, mutate, group_by, summarize, etc  -->
-12. Using `us_states` and `us_states_df` create a new object called `us_states_sel`.
+
+12) Using `us_states` and `us_states_df` create a new object called `us_states_sel`.
 The new object should have only two variables - `median_income_15` and `geometry`.
 Change the name of the `median_income_15` column to `Income`.
 ```{r}
@@ -158,7 +160,8 @@ us_states_sel = us_states %>%
   left_join(us_states_df, by = c("NAME" = "state")) %>%
   dplyr::select(Income = median_income_15)
 ```
-13. Calculate the change in median income between 2010 and 2015 for each state.
+
+13) Calculate the change in median income between 2010 and 2015 for each state.
 Bonus: what was the minimum, average and maximum median income in 2015 for each region?
 What is the region with the largest increase of the median income?
 ```{r}
@@ -178,8 +181,7 @@ us_income_change_reg %>%
   as.character()
 ```
 
-<!-- Raster exercises -->
-14. Create a raster from scratch with nine rows and columns and a resolution of 0.5 decimal degrees (WGS84).
+14) Create a raster from scratch with nine rows and columns and a resolution of 0.5 decimal degrees (WGS84).
 Fill it with random numbers.
 Extract the values of the four corner cells. 
 ```{r}
@@ -193,7 +195,7 @@ r[c(1, nrow(r)), c(1, ncol(r))]
 ```
 
 
-15. What is the most common class of our example raster `grain` (hint: `modal()`)?
+15) What is the most common class of our example raster `grain` (hint: `modal()`)?
 ```{r}
 grain_size = c("clay", "silt", "sand")
 grain = raster(nrow = 6, ncol = 6, res = 0.5, 
@@ -204,14 +206,16 @@ cellStats(grain, modal) %>%
   factorValues(grain, .)
 factorValues(grain, modal(values(grain)))
 ```
-16. Plot the histogram and the boxplot of the `data(dem, package = "RQGIS")` raster. 
+
+16) Plot the histogram and the boxplot of the `data(dem, package = "RQGIS")` raster. 
 ```{r}
 data(dem, package = "RQGIS")
 par(mfrow = c(1, 2))
 hist(dem)
 boxplot(dem)
 ```
-17. Now attach also `data(ndvi, package = "RQGIS")`. 
+
+17) Now attach also `data(ndvi, package = "RQGIS")`. 
 Create a raster stack using `dem` and `ndvi`, and make a `pairs()` plot.
 ```{r}
 data(ndvi, package = "RQGIS")

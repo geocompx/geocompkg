@@ -28,7 +28,7 @@ library(spData)
 
 <!-- CRS CONVERSION -->
 <!-- 1. vector reprojection exercise (e.g. modification of proj4) -->
-1. Create a new object called `nz_wgs` by transforming `nz` object into the WGS84 CRS.
+1) Create a new object called `nz_wgs` by transforming `nz` object into the WGS84 CRS.
     - Create an object of class `crs` for both and use this to query their CRSs.
     - With reference to the bounding box of each object, what units does each CRS use?
     - Remove the CRS from `nz_wgs` and plot the result: what is wrong with this map of New Zealand and why?
@@ -49,7 +49,8 @@ plot(st_geometry(nz_wgs_NULL_crs))
 # answer: it is fatter in the East-West direction
 # because New Zealand is close to the South Pole and meridians converge there
 ```
-2. Transform the `world` dataset to the transverse Mercator projection (`"+proj=tmerc"`) and plot the result.
+
+2) Transform the `world` dataset to the transverse Mercator projection (`"+proj=tmerc"`) and plot the result.
 What has changed and why?
 Try to transform it back into WGS 84 and plot the new object.
 Why does the new object differ from the original one?
@@ -60,7 +61,8 @@ plot(st_geometry(world_tmerc))
 world_4326 = st_transform(world_tmerc, 4326)
 plot(st_geometry(world_4326))
 ```
-3. Transform the continuous raster (`cat_raster`) into NAD83 / UTM zone 12N using the nearest neighbor interpolation method. 
+
+3) Transform the continuous raster (`cat_raster`) into NAD83 / UTM zone 12N using the nearest neighbor interpolation method. 
 What has changed?
 How does it influence the results?
 ```{r}
@@ -72,7 +74,8 @@ par(mfrow = c(1, 2))
 plot(con_raster)
 plot(con_raster_utm12n)
 ```
-4. Transform the categorical raster (`cat_raster`) into WGS 84 using the bilinear interpolation method.
+
+4) Transform the categorical raster (`cat_raster`) into WGS 84 using the bilinear interpolation method.
 What has changed?
 How does it influence the results?
 ```{r}
