@@ -135,3 +135,6 @@ Report the mean RMSE and use a boxplot to visualize all retrieved RMSEs.
 ```{r, eval=FALSE}
 
 ```
+
+5. Retrieve the bias-reduced RMSE of a simple linear model using spatial cross-validation. 
+Compare the result to the result of the random forest model by making RMSE boxplots for each modeling approach.
