@@ -81,18 +81,20 @@ recl = reclassify(dem, rcl = rcl)
 zonal(stack(dem, ndvi), recl, fun = "mean")
 ```
 
-5) Apply a line detection filter to `data(dem, package = "RQGIS")`.
+5) Apply a line detection filter to `r = raster("https://www.r-project.org/logo/Rlogo.png")`.
+Plot the result.
+Hint: Read `?raster::focal()`.
 ```{r}
-# from the focal help page (?raster::focal):
+# from the focal help page (?raster::focal()):
 # Laplacian filter: filter=matrix(c(0,1,0,1,-4,1,0,1,0), nrow=3)
 # Sobel filter: filter=matrix(c(1,2,1,0,0,0,-1,-2,-1) / 4, nrow=3)
+
+# just retrieve the first channel of the RGB R logo
+r = raster("https://www.r-project.org/logo/Rlogo.png")
 # compute the Sobel filter
-# check if there are NAs
-data("dem", package = "RQGIS")
-is.na(dem)  # just 0s, so no NAs
 filter = matrix(c(1, 2, 1, 0, 0, 0, -1, -2, -1) / 4, nrow = 3)
-sobel = focal(dem, w = filter)
-plot(sobel, col = gray(0:100 / 100))
+sobel = focal(r, w = filter)
+plot(sobel, col = c("black", "white"))
 ```
 
 6) Calculate the NDVI of a Landsat image. 
