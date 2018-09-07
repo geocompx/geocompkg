@@ -312,3 +312,6 @@ boxplot(result_rf$measures.test$rmse, result_lm$measures.test$rmse,
         col = c("lightblue2", "mistyrose2"),
         names = c("random forest", "lm"), ylab = "RMSE")
 ```
+
+In fact, `lm` performs better than a random forest model.
+But keep in mind that the used dataset is small in terms of observations and predictors and that the response-predictor relationships are also relatively linear.
