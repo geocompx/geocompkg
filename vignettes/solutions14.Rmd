@@ -55,18 +55,33 @@ One compromise would be to use a categorical scale such as the Londo scale.
 
 2. Compute catchment area and catchment slope using **RSAGA** (see this [section](https://geocompr.robinlovelace.net/gis.html#rsaga)).
 
+```{r, eval=FALSE}
+library("RSAGA")
+# check if rsaga.env can find the corresponding SAGA installation
+rsaga.env()
+rsaga.get.libraries()
+rsaga.get.modules(libs = "ta_hydrology")
+rsaga.get.usage(lib = "ta_hydrology", module = "SAGA Wetness Index")
+# RSAGA only accepts files living on disk, so we have to save dem 
+raster::writeRaster(dem, filename = file.path(tempdir(), "dem.sdat"),
+                    format = "SAGA")
+# construct a parameter-argument list
+params = list(DEM = file.path(tempdir(), "dem.sgrd"),
+              AREA = file.path(tempdir(), "carea.sdat"),
+              SLOPE = file.path(tempdir(), "cslope.sdata"),
+              AREA_TYPE = 0,
+              SLOPE_TYPE = 1)
+rsaga.geoprocessor(lib = "ta_hydrology", module = "SAGA Wetness Index",
+                   param = params)
+# load the output back into R again
+out = stack(file.path(tempdir(), "carea.sdat"), 
+            file.path(tempdir(), "cslope.sdat"))
+plot(out)
+```
 
 
-ep = run_qgis(alg = "saga:sagawetnessindex",
-              DEM = dem,
-              SLOPE_TYPE = 1, 
-              SLOPE = tempfile(fileext = ".sdat"),
-              AREA = tempfile(fileext = ".sdat"),
-              load_output = TRUE,
-              show_output_paths = FALSE)
-ep = c(dem, ndvi, ep) %>%
-  stack()
-names(ep) = c("dem", "ndvi", "carea", "cslope")
+
+
 ep$carea = log10(ep$carea)
 random_points[, names(ep)] = raster::extract(ep, as(random_points, "Spatial"))
 lev = dplyr::filter(random_points, id %in% rownames(pa)) %>% 
@@ -81,6 +96,23 @@ rp = data.frame(id = as.numeric(rownames(sc)),
 rp = inner_join(random_points, rp, by = "id")
 
 3. Use profile and tangential curvature as additional predictors for the spatial prediction of the floristic gradient (hint: `grass7:r.slope.aspect`).
+
+```{r, eval=FALSE}
+# first compute the terrain attributes we have also used in the chapter
+library(RQGIS)
+data("dem", package = "RQGIS")
+ep = run_qgis(alg = "saga:sagawetnessindex",
+              DEM = dem,
+              SLOPE_TYPE = 1, 
+              SLOPE = tempfile(fileext = ".sdat"),
+              AREA = tempfile(fileext = ".sdat"),
+              load_output = TRUE,
+              show_output_paths = FALSE)
+ep = c(dem, ndvi, ep) %>%
+  stack()
+names(ep) = c("dem", "ndvi", "carea", "cslope")
+```
+
 4. Retrieve the bias-reduced RMSE using spatial cross-validation including the estimation of optimal hyperparameter combinations (random search with 50 iterations) in an inner tuning loop (see [section](https://geocompr.robinlovelace.net/spatial-cv.html#svm)).
 Parallelize the tuning level (see section [section](https://geocompr.robinlovelace.net/spatial-cv.html#svm)).
 Report the mean RMSE and use a boxplot to visualize all retrieved RMSEs.
