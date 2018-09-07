@@ -79,27 +79,13 @@ out = stack(file.path(tempdir(), "carea.sdat"),
 plot(out)
 ```
 
-
-
-
-ep$carea = log10(ep$carea)
-random_points[, names(ep)] = raster::extract(ep, as(random_points, "Spatial"))
-lev = dplyr::filter(random_points, id %in% rownames(pa)) %>% 
-  dplyr::pull(dem)
-# rotating NMDS in accordance with altitude (proxy for humidity)
-rotnmds = MDSrotate(nmds, elev)
-# extracting the first two axes
-sc = scores(rotnmds, choices = 1:2)
-rp = data.frame(id = as.numeric(rownames(sc)),
-                sc = sc[, 1])
-# join the predictors (dem, ndvi and terrain attributes)
-rp = inner_join(random_points, rp, by = "id")
-
 3. Use profile and tangential curvature as additional predictors for the spatial prediction of the floristic gradient (hint: `grass7:r.slope.aspect`).
 
 ```{r, eval=FALSE}
 # first compute the terrain attributes we have also used in the chapter
 library(RQGIS)
+library(dplyr)
+library(raster)
 data("dem", package = "RQGIS")
 ep = run_qgis(alg = "saga:sagawetnessindex",
               DEM = dem,
@@ -111,8 +97,32 @@ ep = run_qgis(alg = "saga:sagawetnessindex",
 ep = c(dem, ndvi, ep) %>%
   stack()
 names(ep) = c("dem", "ndvi", "carea", "cslope")
+ep$carea = log10(ep$carea)
+# computing the curvatures
+get_usage("grass7:r.slope.aspect")
+curvs = run_qgis("grass7:r.slope.aspect",
+                 elevation = dem,
+                 pcurvature = file.path(tempdir(), "pcurvature.tif"),
+                 tcurvature = file.path(tempdir(), "tcurvature.tif"),
+                 load_output = TRUE)
+# adding curvatures to ep
+ep = c(ep, curvs)
 ```
 
 4. Retrieve the bias-reduced RMSE using spatial cross-validation including the estimation of optimal hyperparameter combinations (random search with 50 iterations) in an inner tuning loop (see [section](https://geocompr.robinlovelace.net/spatial-cv.html#svm)).
 Parallelize the tuning level (see section [section](https://geocompr.robinlovelace.net/spatial-cv.html#svm)).
 Report the mean RMSE and use a boxplot to visualize all retrieved RMSEs.
+
+```{r, eval=FALSE}
+random_points[, names(ep)] = raster::extract(ep, as(random_points, "Spatial"))
+elev = dplyr::filter(random_points, id %in% rownames(pa)) %>% 
+  dplyr::pull(dem)
+# rotating NMDS in accordance with altitude (proxy for humidity)
+rotnmds = MDSrotate(nmds, elev)
+# extracting the first two axes
+sc = scores(rotnmds, choices = 1:2)
+rp = data.frame(id = as.numeric(rownames(sc)),
+                sc = sc[, 1])
+# join the predictors (dem, ndvi and terrain attributes)
+rp = inner_join(random_points, rp, by = "id")
+```
