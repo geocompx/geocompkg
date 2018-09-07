@@ -21,16 +21,17 @@ The solutions assume the following packages are attached (other packages will be
 library(sf)
 library(raster)
 library(vegan)
+library(mlr)
+library(parallelMap)
 ```
 
 # Chapter 14
 
-1. Run a NMDS using the percentage data of the community matrix. 
+1) Run a NMDS using the percentage data of the community matrix. 
 Report the stress value and compare it to the stress value as retrieved from the NMDS using presence-absence data.
 What might explain the observed difference?
 
 ```{r, cache=TRUE}
-library(vegan)
 data("study_area", "random_points", "comm", "dem", "ndvi", package = "RQGIS")
 pa = decostand(comm, "pa")
 
@@ -54,38 +55,12 @@ This again introduces noise which in turn will worsen the ordination result.
 Still, it is a valuable information if one species had a higher frequency or coverage in one plot than another compared to just presence-absence data.
 One compromise would be to use a categorical scale such as the Londo scale.
 
-2. Compute catchment area and catchment slope using **RSAGA** (see this [section](https://geocompr.robinlovelace.net/gis.html#rsaga)).
-
-```{r, eval=FALSE}
-library("RSAGA")
-# check if rsaga.env can find the corresponding SAGA installation
-rsaga.env()
-rsaga.get.libraries()
-rsaga.get.modules(libs = "ta_hydrology")
-rsaga.get.usage(lib = "ta_hydrology", module = "SAGA Wetness Index")
-# RSAGA only accepts files living on disk, so we have to save dem 
-raster::writeRaster(dem, filename = file.path(tempdir(), "dem.sdat"),
-                    format = "SAGA")
-# construct a parameter-argument list
-params = list(DEM = file.path(tempdir(), "dem.sgrd"),
-              AREA = file.path(tempdir(), "carea.sdat"),
-              SLOPE = file.path(tempdir(), "cslope.sdata"),
-              AREA_TYPE = 0,
-              SLOPE_TYPE = 1)
-rsaga.geoprocessor(lib = "ta_hydrology", module = "SAGA Wetness Index",
-                   param = params)
-# load the output back into R again
-out = stack(file.path(tempdir(), "carea.sdat"), 
-            file.path(tempdir(), "cslope.sdat"))
-plot(out)
-```
-
-3. Compute all the predictor rasters we have used in the chapter (catchment slope, catchment area), and put them in a raster stack.
+2) Compute all the predictor rasters we have used in the chapter (catchment slope, catchment area), and put them into a raster stack.
 Add `dem` and `ndvi` to the raster stack.
-Next, compute profile and tangential curvature as additional predictor rasters and put them also in the raster stack (hint: `grass7:r.slope.aspect`).
+Next, compute profile and tangential curvature as additional predictor rasters and add them to the raster stack (hint: `grass7:r.slope.aspect`).
 Finally, construct a response-predictor matrix. 
-The scores of the first NMDS axis (which were the result when using the presence-absence community matrix) rotated in accordance with elevation  represent the response variable, and should be joined to `random_points` (use an inner join).
-Extract also the values of the environmental predictor raster stack to `random_points`.
+The scores of the first NMDS axis (which were the result when using the presence-absence community matrix) rotated in accordance with elevation represent the response variable, and should be joined to `random_points` (use an inner join).
+To complete the response-predictor matrix, extract the values of the environmental predictor raster stack to `random_points`.
 
 ```{r, eval=FALSE}
 # first compute the terrain attributes we have also used in the chapter
@@ -128,13 +103,212 @@ rp = data.frame(id = as.numeric(rownames(sc)),
 rp = inner_join(random_points, rp, by = "id")
 ```
 
-4. Retrieve the bias-reduced RMSE using spatial cross-validation including the estimation of optimal hyperparameter combinations (random search with 50 iterations) in an inner tuning loop (see [section](https://geocompr.robinlovelace.net/spatial-cv.html#svm)).
+3) Use the response-predictor matrix of the previous exercise to fit a random forest model. 
+Find the optimal hyperparameters and use them for making a prediction map.
+
+```{r, eval=FALSE}
+data("dem", "study_area", package = "RQGIS")
+# TUNING, MODELING AND PREDICTION
+#********************************
+
+# create a task
+task = makeRegrTask(data = rp, target = "sc", coordinates = coords)
+# define the learner
+lrn_rf = makeLearner(cl = "regr.ranger", predict.type = "response")
+# spatial partitioning
+perf_level = makeResampleDesc("SpCV", iters = 5)
+# specifying random search
+ctrl = makeTuneControlRandom(maxit = 50L)
+# specifying the search space
+ps = makeParamSet(
+  makeIntegerParam("mtry", lower = 1, upper = ncol(rp) - 1),
+  makeNumericParam("sample.fraction", lower = 0.2, upper = 0.9),
+  makeIntegerParam("min.node.size", lower = 1, upper = 10)
+)
+# hyperparamter tuning
+set.seed(07092018)
+tune = tuneParams(learner = lrn_rf,
+                  task = task,
+                  resampling = perf_level,
+                  par.set = ps,
+                  control = ctrl,
+                  measures = mlr::rmse)
+# saveRDS(tune, "extdata/rf_tune_50it.rds")
+# define a learner using the optimal hyperparameter combination
+lrn_rf = makeLearner(cl = "regr.ranger",
+                     predict.type = "response",
+                     mtry = tune$x$mtry,
+                     sample.fraction = tune$x$sample.fraction,
+                     min.node.size = tune$x$min.node.size)
+# doing the same more elegantly using setHyperPars()
+# lrn_rf = setHyperPars(makeLearner("regr.ranger", predict.type = "response"),
+#                       par.vals = tune$x)
+# train model
+model_rf = train(lrn_rf, task)
+
+# make the prediction, but before that check if there are NAs in our raster
+# stack...
+plot(is.na(ep))
+# there are, but these just correspond to the outer frame, hence we can delete
+# them safely. Otherwise, the predict function will complain later on
+ep = trim(ep$pcurvature, values = NaN) %>%
+  crop(ep, .)
+# check if it worked
+is.na(ep)  # no NAs, perfect
+# convert raster stack into a dataframe
+new_data = as.data.frame(as.matrix(ep))
+# apply the model to the dataframe
+pred_rf = predict(model_rf, newdata = new_data, na.rm = TRUE)
+
+# put the predicted values into a raster
+pred = ep$dem
+# replace altitudinal values by rf-prediction values
+pred[] = pred_rf$data$response
+
+# PREDICTION MAP
+#***************
+
+library("latticeExtra")
+library("grid")
+
+# create a color palette
+blue = rgb(0, 0, 146, maxColorValue = 255)
+lightblue = rgb(0, 129, 255, maxColorValue = 255)
+turquoise = rgb(0, 233, 255, maxColorValue = 255)
+green = rgb(142, 255, 11, maxColorValue = 255)
+yellow = rgb(245, 255, 8, maxColorValue = 255)
+orange = rgb(255, 173, 0, maxColorValue = 255)
+lightred = rgb(255, 67, 0, maxColorValue = 255)
+red = rgb(170, 0, 0, maxColorValue = 255)
+pal = colorRampPalette(c(blue, lightblue, turquoise, green, yellow,
+                         orange, lightred, red))
+
+# restrict the prediction to the study area
+pred = mask(pred, study_area) %>%
+  trim
+
+# create a hillshade
+hs = hillShade(terrain(dem), terrain(dem, "aspect")) %>%
+  mask(., study_area)
+spplot(extend(pred, 2), col.regions = pal(50), alpha.regions = 0.7,
+       scales = list(draw = TRUE,
+                     tck = c(1, 0),
+                     cex = 0.8),
+       colorkey = list(space = "right", width = 0.5, height = 0.5,
+                       axis.line = list(col = "black")),
+       sp.layout = list(
+         # list("sp.points", as(random_points, "Spatial"), pch = 16,
+         #      col = "black", cex = 0.8, first = FALSE),
+         list("sp.polygons", as(study_area, "Spatial"),
+              col = "black", first = FALSE, lwd = 3)
+       )
+) +
+  latticeExtra::as.layer(spplot(hs, col.regions = gray(0:100 / 100)),
+                         under = TRUE)
+```
+
+4) Retrieve the bias-reduced RMSE of a random forest model using spatial cross-validation including the estimation of optimal hyperparameter combinations (random search with 50 iterations) in an inner tuning loop (see [section](https://geocompr.robinlovelace.net/spatial-cv.html#svm)).
 Parallelize the tuning level (see section [section](https://geocompr.robinlovelace.net/spatial-cv.html#svm)).
 Report the mean RMSE and use a boxplot to visualize all retrieved RMSEs.
 
 ```{r, eval=FALSE}
+# extract the coordinates into a separate dataframe
+coords = sf::st_coordinates(rp) %>%
+  as.data.frame %>%
+  rename(x = X, y = Y)
+# only keep response and predictors which should be used for the modeling
+rp = dplyr::select(rp, -id, -spri) %>%
+  st_set_geometry(NULL)
 
+# create task
+task = makeRegrTask(data = rp, target = "sc", coordinates = coords)
+# learner
+lrn_rf = makeLearner(cl = "regr.ranger", predict.type = "response")
+# performance estimation level with 5 spatial partitions and 100 repetitions
+perf_level = makeResampleDesc(method = "SpRepCV", folds = 5, reps = 100)
+# five spatially disjoint partitions in the tune level (one repetition)
+tune_level = makeResampleDesc(method = "SpCV", iters = 5)
+# random search with 50 iterations
+ctrl = makeTuneControlRandom(maxit = 50)
+# specifying the search space
+ps = makeParamSet(
+  makeIntegerParam("mtry", lower = 1, upper = ncol(rp) - 1),
+  makeNumericParam("sample.fraction", lower = 0.2, upper = 0.9),
+  makeIntegerParam("min.node.size", lower = 1, upper = 10)
+)
+# wrap it all up
+wrapped_lrn_rf = makeTuneWrapper(learner = lrn_rf,
+                                   # inner loop (tunning level)
+                                   resampling = tune_level,
+                                   # hyperparameter seach space
+                                   par.set = ps,
+                                   # random search
+                                   control = ctrl,
+                                   show.info = TRUE,
+                                   # performance measure
+                                   measures = mlr::rmse)
+# make sure that the modeling goes on even if one model fails
+configureMlr(on.learner.error = "warn", on.error.dump = TRUE)
+
+# initialize parallelization
+if (Sys.info()["sysname"] %in% c("Linux", "Darwin")) {
+  parallelStart(mode = "multicore",
+                # parallelize the hyperparameter tuning level
+                level = "mlr.tuneParams",
+                # just use half of the available cores
+                cpus = round(parallel::detectCores() / 2),
+                mc.set.seed = TRUE)
+}
+
+if (Sys.info()["sysname"] == "Windows") {
+  parallelStartSocket(level = "mlr.tuneParams",
+                      cpus =  round(parallel::detectCores() / 2))
+}
+
+# run the spatial cross-validation
+set.seed(12345)
+result_rf = mlr::resample(learner = wrapped_lrn_rf,
+                          task = task,
+                          resampling = perf_level,
+                          extract = getTuneResult,
+                          measures = mlr::rmse)
+# stop parallelization
+parallelStop()
+# save your result, e.g.:
+# saveRDS(result_rf, file = "extdata/rf_sp_sp_50it.rds")
+
+# Visualization of non-spatial overfitting
+boxplot(result_rf$measures.test$rmse, ylab = "RMSE")
 ```
 
-5. Retrieve the bias-reduced RMSE of a simple linear model using spatial cross-validation. 
+5) Retrieve the bias-reduced RMSE of a simple linear model using spatial cross-validation. 
 Compare the result to the result of the random forest model by making RMSE boxplots for each modeling approach.
+
+```{r, eval=FALSE}
+# create a task
+task = makeRegrTask(data = rp, target = "sc",
+                    coordinates = coords)
+# run listLearners to find out which models could be thrown at our task
+# lrns = listLearners(task, warn.missing.packages = FALSE)
+# dplyr::select(lrns, class, name, short.name, package)
+
+# define a learner
+lrn = makeLearner(cl = "regr.lm", predict.type = "response")
+# simple lm of the stats package
+# getLearnerPackages(lrn)
+# helpLearner(lrn)
+# so the model being fitted is simply a lm
+# getLearnerModel(train(lrn, task))
+
+# performance level
+perf_level = makeResampleDesc(method = "SpRepCV", folds = 5, reps = 100)
+result_lm = mlr::resample(learner = lrn,
+                          task = task,
+                          resampling = perf_level,
+                          measures = mlr::rmse)
+# save your result, e.g.:
+# saveRDS(result_lm, "extdata/lm_sp.rds")
+boxplot(result_rf$measures.test$rmse, result_lm$measures.test$rmse,
+        col = c("lightblue2", "mistyrose2"),
+        names = c("random forest", "lm"), ylab = "RMSE")
+```
