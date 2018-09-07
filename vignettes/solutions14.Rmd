@@ -19,6 +19,8 @@ The solutions assume the following packages are attached (other packages will be
 
 ```{r packages, message=FALSE, warning=FALSE}
 library(sf)
+library(raster)
+library(vegan)
 ```
 
 # Chapter 14
@@ -26,7 +28,58 @@ library(sf)
 1. Run a NMDS using the percentage data of the community matrix. 
 Report the stress value and compare it to the stress value as retrieved from the NMDS using presence-absence data.
 What might explain the observed difference?
+
+```{r, cache=TRUE}
+data("study_area", "random_points", "comm", "dem", "ndvi", package = "RQGIS")
+pa = decostand(comm, "pa")
+
+set.seed(25072018)
+nmds_pa = metaMDS(comm = pa, k = 4, try = 500)
+nmds_per = metaMDS(comm = comm, k = 4, try = 500)
+nmds_pa$stress
+nmds_per$stress
+```
+
+The NMDS using the presence-absence values yields a better result (`nmds_pa$stress`) than the one using percentage data (`nmds_per$stress`).
+This might seem surprising at first sight.
+On the other hand, the percentag matrix contains both more information and more noise.
+Another aspect is how the data was collected.
+Imagine a botanist in the field.
+It might seem feasible to differentiate between a plant which has a cover of 5% and another species that covers 10%.
+However, what about a herbal species that was only detected three times and consequently has a very tiny cover, e.g., 0.0001%. 
+Maybe another herbal species was detected 6 times, is its cover then 0.0002%?
+The point here is that percentage data as specified during a field campaign might reflect a precision that the data does not have.
+This again introduces noise which in turn will worsen the ordination result.
+Still, it is a valuable information if one species had a higher frequency or coverage in one plot than another compared to just presence-absence data.
+One compromise would be to use a categorical scale such as the Londo scale.
+
 2. Compute catchment area and catchment slope using **RSAGA** (see this [section](https://geocompr.robinlovelace.net/gis.html#rsaga)).
+
+
+
+ep = run_qgis(alg = "saga:sagawetnessindex",
+              DEM = dem,
+              SLOPE_TYPE = 1, 
+              SLOPE = tempfile(fileext = ".sdat"),
+              AREA = tempfile(fileext = ".sdat"),
+              load_output = TRUE,
+              show_output_paths = FALSE)
+ep = c(dem, ndvi, ep) %>%
+  stack()
+names(ep) = c("dem", "ndvi", "carea", "cslope")
+ep$carea = log10(ep$carea)
+random_points[, names(ep)] = raster::extract(ep, as(random_points, "Spatial"))
+lev = dplyr::filter(random_points, id %in% rownames(pa)) %>% 
+  dplyr::pull(dem)
+# rotating NMDS in accordance with altitude (proxy for humidity)
+rotnmds = MDSrotate(nmds, elev)
+# extracting the first two axes
+sc = scores(rotnmds, choices = 1:2)
+rp = data.frame(id = as.numeric(rownames(sc)),
+                sc = sc[, 1])
+# join the predictors (dem, ndvi and terrain attributes)
+rp = inner_join(random_points, rp, by = "id")
+
 3. Use profile and tangential curvature as additional predictors for the spatial prediction of the floristic gradient (hint: `grass7:r.slope.aspect`).
 4. Retrieve the bias-reduced RMSE using spatial cross-validation including the estimation of optimal hyperparameter combinations (random search with 50 iterations) in an inner tuning loop (see [section](https://geocompr.robinlovelace.net/spatial-cv.html#svm)).
 Parallelize the tuning level (see section [section](https://geocompr.robinlovelace.net/spatial-cv.html#svm)).
