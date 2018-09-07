@@ -223,7 +223,34 @@ mapview(out, col = "white", map.type = "Esri.WorldImagery") +
   mapview(point)
 ```
 
-5. Use `gdalinfo` via a system call for a raster file stored on disk of your choice.
+5. Compute catchment area and catchment slope of `data("dem", package = "RQGIS")` using **RSAGA**.
+
+```{r, eval=FALSE}
+library("RSAGA")
+# check if rsaga.env can find the corresponding SAGA installation
+rsaga.env()
+rsaga.get.libraries()
+rsaga.get.modules(libs = "ta_hydrology")
+rsaga.get.usage(lib = "ta_hydrology", module = "SAGA Wetness Index")
+# RSAGA only accepts files living on disk, so we have to save dem 
+raster::writeRaster(dem, filename = file.path(tempdir(), "dem.sdat"),
+                    format = "SAGA")
+# construct a parameter-argument list
+params = list(DEM = file.path(tempdir(), "dem.sgrd"),
+              AREA = file.path(tempdir(), "carea.sdat"),
+              SLOPE = file.path(tempdir(), "cslope.sdata"),
+              AREA_TYPE = 0,
+              SLOPE_TYPE = 1)
+rsaga.geoprocessor(lib = "ta_hydrology", module = "SAGA Wetness Index",
+                   param = params)
+# load the output back into R again
+out = stack(file.path(tempdir(), "carea.sdat"), 
+            file.path(tempdir(), "cslope.sdat"))
+plot(out)
+```
+
+
+6. Use `gdalinfo` via a system call for a raster file stored on disk of your choice.
 
 ```{r, eval=FALSE}
 link2GI::linkGDAL()
@@ -234,7 +261,7 @@ cmd = paste("gdalinfo", file)
 system(cmd)
 ```
 
-6. Query all Californian highways from the PostgreSQL/PostGIS database living in the QGIS Cloud introduced in this chapter.
+7. Query all Californian highways from the PostgreSQL/PostGIS database living in the QGIS Cloud introduced in this chapter.
 
 ```{r, eval=FALSE}
 library(RPostgreSQL)
