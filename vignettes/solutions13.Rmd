@@ -139,7 +139,6 @@ Supposing you have already created `input_ras` in the first exercise, the analys
 ```{r}
 # attach packages
 library(leaflet)
-library(sp)
 # attach data
 data("metro_names", "shops", package = "spDataLarge")
 
