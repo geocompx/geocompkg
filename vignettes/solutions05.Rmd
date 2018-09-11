@@ -169,12 +169,9 @@ plot(ndvi_mask1)
 plot(ndvi_mask2)
 ```
 
-
 There are not any differences between the two output maps after cropping, but the outputs after masking are very different.
 In the first case, `ndvi` is cropped only to the extent of the bounding box, and both `random_points` and `ch` have exactly the same bounding box.
 In the second case, masking by `random_points` only keeps raster cells that are overlayed by these points, while masking by `ch` keeps all raster cells that are within the `ch` polygon.
-
-
 
 8) Firstly, extract values from `ndvi` at the points represented in `random_points`.
 Next, extract average values of `ndvi` using a 90 buffer around each point from `random_points` and compare these two sets of values. 
