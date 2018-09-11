@@ -81,7 +81,7 @@ recl = reclassify(dem, rcl = rcl)
 zonal(stack(dem, ndvi), recl, fun = "mean")
 ```
 
-5) Apply a line detection filter to `raster("https://www.r-project.org/logo/Rlogo.png")`.
+5) Apply a line detection filter to `raster(system.file("external/rlogo.grd", package = "raster"))`.
 Plot the result.
 Hint: Read `?raster::focal()`.
 ```{r}
@@ -90,7 +90,7 @@ Hint: Read `?raster::focal()`.
 # Sobel filter: filter=matrix(c(1,2,1,0,0,0,-1,-2,-1) / 4, nrow=3)
 
 # just retrieve the first channel of the R logo
-r = raster("https://www.r-project.org/logo/Rlogo.png")
+r = raster(system.file("external/rlogo.grd", package = "raster"))
 # compute the Sobel filter
 filter = matrix(c(1, 2, 1, 0, 0, 0, -1, -2, -1) / 4, nrow = 3)
 sobel = focal(r, w = filter)
