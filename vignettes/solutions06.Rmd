@@ -75,6 +75,8 @@ plot(con_raster)
 plot(con_raster_utm12n)
 ```
 
+There are several differences between the original and the transformed raster, including a different number of rows and columns (and subsequently cells), projection units, and slightly different distribution of values.
+
 4) Transform the categorical raster (`cat_raster`) into WGS 84 using the bilinear interpolation method.
 What has changed?
 How does it influence the results?
@@ -88,3 +90,6 @@ plot(cat_raster)
 plot(cat_raster_wgs84)
 ```
 
+There are several differences between the original and the transformed raster, including a different number of rows and columns (and subsequently cells), and projection units.
+The most important difference of the bilinear interpolation is a conversion of integer values in the original raster to float values in the output raster.
+This operation should be avoided because float values are not suitable to represent categorical values.
