@@ -169,6 +169,13 @@ plot(ndvi_mask1)
 plot(ndvi_mask2)
 ```
 
+
+There are not any differences between the two output maps after cropping, but the outputs after masking are very different.
+In the first case, `ndvi` is cropped only to the extent of the bounding box, and both `random_points` and `ch` have exactly the same bounding box.
+In the second case, masking by `random_points` only keeps raster cells that are overlayed by these points, while masking by `ch` keeps all raster cells that are within the `ch` polygon.
+
+
+
 8) Firstly, extract values from `ndvi` at the points represented in `random_points`.
 Next, extract average values of `ndvi` using a 90 buffer around each point from `random_points` and compare these two sets of values. 
 When would extracting values by buffers be more suitable than by points alone?
@@ -177,10 +184,13 @@ random_points_buf = st_buffer(random_points, dist = 90)
 plot(ndvi)
 plot(st_geometry(random_points_buf), add = TRUE)
 plot(ch, add = TRUE)
-random_points$ndvi = raster::extract(ndvi, as(random_points, "Spatial"), buffer = 90, fun = mean)
-random_points$ndvi2 = raster::extract(ndvi, as(random_points, "Spatial"))
-plot(random_points$ndvi, random_points$ndvi2)
+random_points$ndvi1 = raster::extract(ndvi, as(random_points, "Spatial"))
+random_points$ndvi2 = raster::extract(ndvi, as(random_points, "Spatial"), buffer = 90, fun = mean)
+plot(random_points$ndvi1, random_points$ndvi2)
 ```
+
+Extracting values by buffers is more suitable than by points alone, for example when we expect errors in single raster cells. 
+Average values can decrease an effect of erroneous values in some raster cells.
 
 9) Subset points higher than 3100 meters in New Zealand (the `nz_height` object) and create a template raster with a resolution of 3km. 
 Using these objects:
