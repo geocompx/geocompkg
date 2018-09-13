@@ -164,12 +164,12 @@ metro_names =
 pop_agg = aggregate(reclass$pop, fact = 20, fun = sum)
 pop_agg = pop_agg[pop_agg > 500000, drop = FALSE] 
 polys = pop_agg %>% 
-  clump %>%
-  rasterToPolygons %>%
+  clump() %>%
+  rasterToPolygons() %>%
   st_as_sf()
 metros = polys %>%
   group_by(clumps) %>%
-  summarize()
+  dplyr::summarize()
 metros$metro_names = metro_names
 
 # Create shop/poi density raster
