@@ -18,10 +18,11 @@ knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
 The solutions assume the following packages are attached (other packages will be attached when needed):
 
 ```{r packages, message=FALSE, warning=FALSE}
+library(leaflet)
 library(sf)
 library(sp)
-library(raster)
 library(tidyverse)
+library(raster)
 library(spData)
 ```
 
@@ -145,9 +146,7 @@ names(reclass) = names(input_ras)
 The rest of the analysis follows exactly the code presented in the book. 
 Supposing you have already created `input_ras` in the first exercise, the analysis would look something like this:
 
-```{r}
-# attach packages
-library(leaflet)
+```{r, eval=TRUE, warning=FALSE, error=FALSE}
 # attach data
 data("metro_names", "shops", package = "spDataLarge")
 
@@ -163,13 +162,15 @@ metro_names =
   pull(locality)
 pop_agg = aggregate(reclass$pop, fact = 20, fun = sum)
 pop_agg = pop_agg[pop_agg > 500000, drop = FALSE] 
+
 polys = pop_agg %>% 
-  clump %>%
-  rasterToPolygons %>%
-  st_as_sf()
+  raster::clump() %>%
+  rasterToPolygons() %>%
+  st_as_sf
+
 metros = polys %>%
   group_by(clumps) %>%
-  summarize()
+  dplyr::summarize()
 metros$metro_names = metro_names
 
 # Create shop/poi density raster
@@ -205,9 +206,9 @@ berlin_raster = berlin_raster > 9
 berlin_raster = berlin_raster == TRUE
 berlin_raster[berlin_raster == 0] = NA
 # make the plot
-# leaflet() %>% 
-#  addTiles() %>%
-#  addRasterImage(berlin_raster, colors = "darkgreen", opacity = 0.8) %>%
-#  addLegend("bottomright", colors = c("darkgreen"), 
-#            labels = c("potential locations"), title = "Legend")
+leaflet() %>% 
+  addTiles() %>%
+  addRasterImage(berlin_raster, colors = "darkgreen", opacity = 0.8) %>%
+  addLegend("bottomright", colors = c("darkgreen"), 
+            labels = c("potential locations"), title = "Legend")
 ```
