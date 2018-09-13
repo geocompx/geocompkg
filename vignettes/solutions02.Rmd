@@ -39,7 +39,8 @@ library(spData)
   
    - The geometry type: `MULTIPOLYGON`, there are 177 countries and the coordinate reference system (CRS) is WGS84 (EPSG 4326)
 
-2) Run the code that 'generated' the map of the world in this [Figure](https://geocompr.robinlovelace.net/spatial-class.html#fig:contpop) at the end of this [section](https://geocompr.robinlovelace.net/spatial-class.html#base-args). Find 2 similarities and 2 differences between the image on your computer and that in the book.
+2) Run the code that 'generated' the map of the world in this [Figure](https://geocompr.robinlovelace.net/spatial-class.html#fig:contpop) at the end of this [section](https://geocompr.robinlovelace.net/spatial-class.html#base-args).
+Find two similarities and two differences between the image on your computer and that in the book.
    - What does the `cex` argument do (see `?plot`)?
    - Why was `cex` set to the `sqrt(world$pop) / 10000`?
    - Bonus: experiment with different ways to visualize the global population.

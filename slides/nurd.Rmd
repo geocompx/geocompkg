@@ -1,0 +1,676 @@
+---
+title: "Geocomputation with R"
+subtitle: "Empowering yourself with open source software and geo* data"
+author: "Robin Lovelace"
+date: "GeoStat 2018. Source code: [github.com/geocompr/geocompkg](https://github.com/geocompr/geocompkg) "
+output:
+  xaringan::moon_reader:
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+bibliography: refs-geostat.bib
+---
+
+<!-- msg: Looks like I'll have a second change to demonstrate this code: 55% of people in the poll wanted sea level rise (SLR) to be the example dataset for the dplyr/sf integration workshop tomorrow. Watch this space -->
+<!-- 14:15 - 15:00 - 45 minute talk  -->
+<!-- Aims: show-off the book, provide overview, some useful things in it -->
+
+```{r setup, include = FALSE}
+options(htmltools.dir.version = FALSE)
+library(RefManageR)
+BibOptions(check.entries = FALSE, 
+           bib.style = "authoryear", 
+           cite.style = 'alphabetic', 
+           style = "markdown",
+           first.inits = FALSE,
+           hyperlink = FALSE, 
+           dashed = FALSE)
+my_bib = ReadBib("refs-geostat.bib", check = FALSE)
+```
+
+
+layout: true
+background-image: url(xaringan_stuff/img/r_geocomp_background.png)
+background-size: cover
+
+---
+
+# 'Team geocompr'
+
+<figure>
+<img align="right" src="https://geocompr.github.io/workshops/erum2018/img/globe.png" width = "60%", height = "60%"/>
+</figure>
+
+- [Jakub Nowosad](https://nowosad.github.io/): developer of GeoPAT + more. Lecturing 09:00 on Wednesday.
+
+- [Jannes Muenchow](http://www.geographie.uni-jena.de/en/Muenchow.html), creator of **RQGIS**. Lecturing  Weds 13:30 on GIS Bridges and Weds 15:30 on Spatial CV.
+
+--
+
+- [Robin Lovelace](https://www.robinlovelace.net/), creator of **stplanr**, co-author of Efficent R Programming. Lecturing 11:00 Weds on spatial data and the **tidyverse**.
+
+--
+
+- Front cover image competition! Submissions (code / ideas welcome) by Thursday evening. Prize: ~~$100~~ $150 CRC Press book voucher.
+
+---
+
+# Aim
+
+
+This workshop will introduce you to working with spatial data 'in the tidyverse'. By this we mean handling spatial datasets using functions (such as ` %>% ` and `filter()`) and concepts (such as type stability) from R packages that are part of the metapackage **tidyverse**, which can now be installed from CRAN with the following command:
+
+```{r, eval=FALSE}
+install.packages("tidyverse")
+```
+
+This functionality is possible thanks to **sf**, a recent package (first release in 2016) that implements the open standard data model *simple features*. Get **sf** with:
+
+```{r, eval=FALSE}
+install.packages("sf")
+```
+
+The workshop also uses a dataset from the **spData** package, which can be installed with:
+
+```{r, eval=FALSE}
+install.packages("spData")
+```
+
+For more on this see: [github.com/Robinlovelace/geocompr](https://github.com/Robinlovelace/geocompr). 
+
+---
+
+## Context
+
+- Software for 'data science' is evolving
+- In R, packages **ggplot2** and **dplyr** have become immensely popular and now they are a part of the **tidyverse**
+- These packages use the 'tidy data' principles for consistency and speed of processing (from `vignette("tidy-data")`):
+
+
+>    - Each variable forms a column.
+>    - Each observation forms a row.
+>    - Each type of observational unit forms a table
+
+- Historically spatial R packages have not been compatible with the **tidyverse**
+
+---
+background-image: url("https://pbs.twimg.com/media/CvzEQcfWIAAIs-N.jpg")
+background-size: cover
+
+---
+
+## Enter sf
+
+- **sf** is a recently developed package for spatial (vector) data
+- Combines the functionality of three previous packages: **sp**, **rgeos** and **rgdal**
+- Has many advantages, including:
+    - Faster data I/O
+    - More geometry types supported
+    - Compatibility with the *tidyverse*
+    
+That's the topic of this workshop
+
+---
+
+background-image: url("https://media1.giphy.com/media/Hw5LkPYy9yfVS/giphy.gif")
+
+## Geocomputation with R
+
+- A book we are working on for CRC Press (to be published in 2018)
+- Chapters 3 ~~and 4~~ of this book form the basis of the worked examples presented here
+
+---
+
+# Reproducibility + collaboration
+
+> Collaboration is most important aspect of science (and reprex the most important R package!) (Jakub Nowosad, 2018, GEOSTAT)
+
+<br> Slides: https://geocompr.github.io/presentations/
+<br> Source code: https://github.com/geocompr/geostats_18
+
+To install all packages used in the book:
+
+```{r, eval=FALSE}
+devtools::install_github("geocompr/geocompkg")
+```
+
+```{r}
+library(sf)
+library(raster)
+```
+
+
+---
+
+# Conflicting function names
+
+```{r}
+library(tidyverse)
+```
+
+
+---
+
+# Detour: System commands / console
+
+--
+
+- Option 1: use `system()`
+
+```{r}
+system("ls ", intern = TRUE)
+```
+
+--
+
+- Option 2: use *sh commands directly, e.g.:
+
+```{r, engine='zsh'}
+ls 
+```
+
+---
+
+# System commands are handy
+
+- Important step on path to programming
+- Will help your R programming career
+- Trick: shorten github URLs from the command-line:
+
+```{r, engine='zsh', eval=FALSE}
+curl -i https://git.io -F "url=https://github.com/geocompr/geostats_18/releases/download/0.1/data.zip" \
+    -F "code=spatial-tidyvers"
+# Date: Wed, 22 Aug 2018 04:09:48 GMT
+# Status: 201 Created
+# Content-Type: text/html;charset=utf-8
+# Location: https://git.io/spatial-tidyvers
+```
+
+---
+
+# Get the data
+
+Data for the sea level rise code in this presentation: see the releases in [geostats_18](https://github.com/geocompr/geostats_18/releases):
+
+
+```{r, eval=FALSE}
+download.file("https://git.io/spatial-tidyvers", "data.zip")
+unzip("data.zip")
+file.rename("pres/geocompr/data/", "data/")
+prague = raster::raster("data/prague_elev.tif")
+```
+
+---
+
+# Check it works
+
+```{r}
+prague = raster::raster("data/prague_elev.tif")
+plot(prague)
+p = stplanr::geo_code("Pruhonice") %>% st_point() %>% st_sfc()
+plot(p, add = TRUE, cex = 5, lwd = 3)
+```
+
+---
+
+# Ready to go?
+
+> Confusion is good (Roger Bivand 2018, GEOSTAT/OpenGeoHub)
+
+--
+
+![](https://media.giphy.com/media/OMeGDxdAsMPzW/giphy.gif)
+
+
+---
+
+## Reading and writing spatial data
+
+```{r}
+library(sf)
+library(spData)
+prague_sf = read_sf("data/prague.geojson")
+# same as:  st_read("data/prague.geojson")
+```
+
+`write_sf()/st_write()` writes data `st_write(prague_sf, 'data/prague_sf.gpkg')`. See supported formats with: `sf::st_drivers()`. Details: Chapter 6 of our book: [geocompr.robinlovelace.net/read-write.html](https://geocompr.robinlovelace.net/read-write.html)
+
+---
+
+## Structure of the sf objects 
+
+```{r, eval = FALSE}
+prague_sf
+```
+
+```{r}
+class(prague_sf)
+```
+
+
+
+```{r, eval=FALSE, echo=FALSE}
+# ---
+## Structure of the sf objects
+# world$name_long
+# ```
+# 
+# ```{r, echo=FALSE}
+# world$name_long[1:3]
+# ```
+# 
+# ```{r, eval=FALSE}
+# world$geom
+# ```
+# 
+# ```{r, echo=FALSE}
+# print(world$geom, n = 3)
+```
+
+---
+
+## sf vs sp in the tidyverse
+
+- **sp** precedes **sf**  
+- Together with the **rgdal** and **rgeos** package, it creates a powerful tool to works with spatial data
+- Many spatial R packages still depends on the **sp** package, therefore it is important to know how to convert **sp** to and from **sf** objects
+
+```{r}
+library(spData)
+world_sp = as(world, "Spatial")
+world_sf = st_as_sf(world_sp)
+```
+
+- The structures in the **sp** packages are more complicated - `str(world_sf)` vs `str(world_sp)`
+  
+--
+
+- **sp** doesn't play well with the **tidyverse**:
+
+```{r, eval = FALSE}
+world_sp %>% 
+  filter(name_long == "England")
+```
+
+`Error in UseMethod("filter_") : 
+  no applicable method for 'filter_' applied to an object of class "c('SpatialPolygonsDataFrame', 'SpatialPolygons', 'Spatial')"`
+
+---
+
+## Attribute operations: filtering
+
+```{r, warning=FALSE}
+world %>% 
+  filter(name_long == "United Kingdom")
+```
+
+--
+
+Base R equivalent:
+
+```{r, eval=FALSE}
+world[world$name_long == "United Kingdom", ]
+```
+
+--
+
+Question:
+
+```{r}
+identical(
+  world %>% filter(name_long == "United Kingdom"),
+  world[world$name_long == "United Kingdom", ]
+) # ?
+```
+
+# Detour: Row names
+
+- Usually don't matter but they can bite
+
+```{r, }
+u1 = world %>% filter(name_long == "United Kingdom")
+u2 = world[world$name_long == "United Kingdom", ]
+row.names(u2) = 1
+identical(u1, u2)
+```
+
+--
+
+- Advanced challenge: how to make u1 and u2 identical?
+
+```{r, eval=FALSE, echo=FALSE}
+attributes(u2) = attributes(u1)
+identical(u1, u2)
+attributes(u1$geom)
+```
+
+---
+
+# Regex
+
+- What does each of these produce?
+
+```{r, eval=FALSE}
+world %>% filter(grepl(pattern = "United", x = name_long))
+world[grepl(pattern = "United", x = world$name_long)]
+grepl(pattern = "United", x = world$name_long)
+world %>% filter(grepl(pattern = "^U", x = name_long))
+world %>% filter(grepl(pattern = "m$", x = name_long))
+world %>% filter(grepl(pattern = "Un|om", x = name_long))
+```
+
+---
+
+## Aggregation
+
+```{r}
+world_cont = world %>% 
+        group_by(continent) %>% 
+        summarize(pop_sum = sum(pop, na.rm = TRUE))
+```
+
+```{r, echo=FALSE}
+print(world_cont, n = 1)
+```
+
+
+- The `st_set_geometry` function can be used to remove the geometry column:
+
+```{r}
+world_df = st_set_geometry(world_cont, NULL)
+class(world_df)
+```
+
+---
+
+## Spatial operations
+
+It's a big topic which includes:
+
+- Spatial subsetting
+- Spatial joining/aggregation
+- Topological relations
+- Distances
+- Spatial geometry modification
+- Raster operations (map algebra)
+
+See [Chapter 4](http://geocompr.robinlovelace.net/spatial-operations.html) of *Geocomputation with R* 
+
+---
+
+## Spatial subsetting
+
+```{r, warning = FALSE, message = FALSE, fig.height = 4}
+lnd_buff = lnd[1, ] %>% 
+  st_transform(crs = 27700) %>%  # uk CRS
+  st_buffer(500000) %>%
+  st_transform(crs = 4326)
+near_lnd = world[lnd_buff, ]
+plot(near_lnd$geom)
+```
+
+- What is going with the country miles away?
+
+---
+
+## Multi-objects
+
+Some objects have multiple geometries:
+
+```{r}
+st_geometry_type(near_lnd)
+```
+
+Which have more than 1?
+
+```{r}
+data.frame(near_lnd$name_long,
+           sapply(near_lnd$geom, length))
+```
+
+---
+
+## Subsetting contiguous polygons
+
+```{r, message = FALSE, warning = FALSE, fig.height = 6}
+near_lnd_new = world %>% 
+  st_cast(to = "POLYGON") %>% 
+  filter(st_intersects(., lnd_buff, sparse = FALSE))
+plot(st_geometry(near_lnd_new))
+```
+
+---
+
+# Tidyverse pitfall 1: row names
+
+You can also do tidy spatial subsetting:
+
+```{r, message=FALSE}
+near_lnd_tidy = world %>% 
+  filter(st_intersects(., lnd_buff, sparse = FALSE))
+```
+
+But a) it's verbose and b) it boshes the row names!
+
+```{r}
+row.names(near_lnd_tidy)
+row.names(near_lnd)
+```
+
+- Consequences for joining - rownames can be useful! 
+
+Also affects non-spatial data - [tidyverse/dplyr#366](https://github.com/tidyverse/dplyr/issues/366)
+
+---
+
+# Tidyverse pitfall 2: Duplicate column names
+
+See [edzer/sf#544](https://github.com/r-spatial/sf/issues/544)
+
+```{r}
+names(world)
+names(lnd_buff)
+```
+
+```{r}
+lnd_buff$iso_a2 = NA
+```
+
+```{r, eval=FALSE}
+st_intersection(world, lnd_buff) # works
+world_tidy = st_as_sf(as_tibble(world))
+st_intersection(world_tidy, lnd_buff) # fails
+```
+
+```
+Error: Column `iso_a2` must have a unique name
+```
+
+---
+
+# Tidyverse pitfall 3: binding rows
+
+
+```{r, eval=FALSE}
+rbind(near_lnd, near_lnd) # works
+bind_rows(near_lnd, near_lnd)
+```
+
+```
+Error in .subset2(x, i, exact = exact) : 
+  attempt to select less than one element in get1index
+```
+
+But this does:
+
+```{r, warning=FALSE}
+near_lnd_data = st_set_geometry(near_lnd, NULL)
+d = bind_rows(near_lnd_data, near_lnd_data)
+d_sf = st_sf(d, geometry = c(near_lnd$geom, near_lnd$geom))
+plot(d_sf)
+```
+
+---
+
+## CRS
+
+```{r}
+na_2163 = world %>%
+  filter(continent == "North America") %>% 
+  st_transform(2163) #US National Atlas Equal Area
+st_crs(na_2163)
+```
+
+```{r, echo=FALSE, eval=FALSE}
+na = world %>%
+  filter(continent == "North America") 
+png('slides/figs/coord_compare.png', width = 1000, height = 250)
+par(mfrow = c(1, 2), mar=c(0,0,0,0))
+plot(na[0]);plot(na_2163[0])
+dev.off()
+```
+
+![](figs/coord_compare.png)
+
+---
+## Basic maps
+
+- Basic maps of `sf` objects can be quickly created using the `plot()` function:
+
+```{r, eval=FALSE}
+plot(world[0])
+```
+
+```{r, eval=FALSE}
+plot(world["pop"])
+```
+
+```{r, echo=FALSE, message=FALSE, eval=FALSE, warning=FALSE, results='hide'}
+png('slides/figs/plot_compare.png', width = 800, height = 300)
+par(mfrow = c(1, 2), mar=c(0,0,1,0))
+plot(world[0]);plot(world["pop"])
+dev.off()
+```
+
+![](figs/plot_compare.png)
+
+---
+## tmap
+
+https://cran.r-project.org/web/packages/tmap/vignettes/tmap-nutshell.html
+```{r, fig.align='center', fig.height=4, message=FALSE}
+library(tmap)
+tmap_mode("plot") #check the "view"
+tm_shape(world, projection = "+proj=moll") +
+        tm_polygons("lifeExp", title = "Life expactancy",
+          style = "pretty", palette = "RdYlGn") +
+        tm_style("grey")
+```
+
+---
+## leaflet
+
+```{r, eval=FALSE}
+library(leaflet)
+leaflet(world) %>%
+        addTiles() %>%
+        addPolygons(color = "#444444", weight = 1, fillOpacity = 0.5,
+                    fillColor = ~colorQuantile("YlOrRd", lifeExp)(lifeExp),
+                    popup = paste(round(world$lifeExp, 2)))
+```
+
+```{r, echo=FALSE, message=FALSE}
+library(widgetframe)
+library('leaflet')
+l = leaflet(world) %>%
+  addTiles() %>%
+  addPolygons(color = "#444444", weight = 1, fillOpacity = 0.5, fillColor = ~colorQuantile("YlOrRd", lifeExp)(lifeExp), popup = paste(round(world$lifeExp, 2)))
+frameWidget(l, height = '400')
+```
+
+---
+
+## Raster data in the tidyverse
+
+Raster data is not yet closely connected to the **tidyverse**, however:
+
+- Some functions from the **raster** package works well in `pipes`
+- You can convert vector data to the `Spatial*` form using `as(my_vector, "Spatial")`before working on raster-vector interactions
+- There are some initial efforts to bring raster data closer to the **tidyverse**, such as [tabularaster](https://github.com/hypertidy/tabularaster), [sfraster](https://github.com/mdsumner/sfraster), or [fasterize](https://github.com/ecohealthalliance/fasterize)
+- The development of the [stars](https://github.com/r-spatial/stars), package focused on multidimensional, large datasets should start soon. It will allow pipe-based workflows
+
+---
+
+# Practical exercises
+
+<!-- In groups of 2:4: -->
+
+<!-- -- Work-through section 3.2 in the handout -->
+
+<!-- -- Answer questions 1:3 -->
+
+<!-- -- -->
+
+<!-- A) Beginner/tidyverse consolidation: Tackle the exercises in [Chapter 3](http://geocompr.robinlovelace.net/attr.html) of Geocomputation with R -->
+
+<!-- -- -->
+
+<!-- B) Intermediate/advanced: Build on Edzer's [`breweries` analysis](https://edzer.github.io/UseR2017/) and answer the questions using tidyverse functions: -->
+
+<!-- 1. which was the earliest founded brewery? -->
+<!-- 2. which has the longest name? -->
+<!-- 3. group the breweries by the century they were founded: which has, on average, most beer types? -->
+<!-- 4. Join the breweries to a 5km buffer around the trails: which trail is the best for number/diversity of breweries? -->
+
+<!-- -- -->
+
+<!-- C) Advanced/raster: Build on the [SLR article in geocompr.github.io/geocompkg](https://geocompr.github.io/geocompkg/articles/sea-level-rise.html) and the Geocomputation with R [slides](https://geocompr.github.io/presentations/) to: -->
+
+<!-- 1. To find the % of Sczecin flooded under a 20m scenario of SLR? -->
+<!-- 1. What % of Prague area will be flooded by 200m of SLR?! -->
+<!-- 2. The % of another town that would be flooded by another SLR value. -->
+<!-- 3. Devise a research programme to do a 5 year study on geocomputation for sea level rise research. -->
+
+<!-- -- -->
+
+<!-- D) Solo working the geocompr chapter that's most interesting to you -->
+
+---
+
+# What next
+
+- Who wants to do A, B and C?
+- Get into groups (move around!)
+- Ask at least 1 question or help at least 1 person
+
+--
+
+- Bonus: create a reprex showing (part of) your analysis
+
+--
+
+Check the SLR science in refs here: [geocompr.github.io/presentations](https://geocompr.github.io/presentations/geostat18-geocomputation.html#64)
+
+--
+
+Have fun!
+
+![](https://media.giphy.com/media/OMeGDxdAsMPzW/giphy.gif)
+
+
+---
+
+
+
+<!-- ## Geocomputation with R -->
+
+<!-- The online version of the book is at http://geocompr.robinlovelace.net/ and its source code at https://github.com/robinlovelace/geocompr. -->
+
+<!-- We encourage contributions on any part of the book, including: -->
+
+<!-- - Improvements to the text, e.g. clarifying unclear sentences, fixing typos (see guidance from [Yihui Xie](https://yihui.name/en/2013/06/fix-typo-in-documentation/)) -->
+<!-- - Changes to the code, e.g. to do things in a more efficient way -->
+<!-- - Suggestions on content (see the project's [issue tracker](https://github.com/Robinlovelace/geocompr/issues) and the [work-in-progress](https://github.com/Robinlovelace/geocompr/tree/master/work-in-progress) folder for chapters in the pipeline) -->
+
+<!-- Please see [our-style.md](https://github.com/Robinlovelace/geocompr/blob/master/our-style.md) for the book's style. -->
