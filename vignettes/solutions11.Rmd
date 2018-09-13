@@ -30,13 +30,12 @@ library(tmap)
 
 # Chapter 11
 
-1. Compute the following terrain attributes from the `dem` datasets loaded with `data("landslides", package = "RSAGA")` with the help of R-GIS bridges (see this [Chapter](https://geocompr.robinlovelace.net/gis.html#gis)):
+1) Compute the following terrain attributes from the `dem` datasets loaded with `data("landslides", package = "RSAGA")` with the help of R-GIS bridges (see this [Chapter](https://geocompr.robinlovelace.net/gis.html#gis)):
     - Slope
     - Plan curvature
     - Profile curvature
     - Catchment area
-2. Extract the values from the corresponding output rasters to the `landslides` data frame (`data(landslides, package = "RSAGA"`) by adding new variables called `slope`, `cplan`, `cprof`, `elev` and `log_carea`. Keep all landslide initiation points and 175 randomly selected non-landslide points (see this [section](https://geocompr.robinlovelace.net/spatial-cv.html#case-landslide) for details).
-
+    
 ```{r, eval=FALSE}
 # attach data
 data("landslides", package = "RSAGA")
@@ -44,10 +43,15 @@ data("landslides", package = "RSAGA")
 # DATA PREPROCESSING
 #*******************
 
-# landslide points
-non = landslides[landslides$lslpts == FALSE, ]
-ind = sample(1:nrow(non), nrow(landslides[landslides$lslpts == TRUE, ]))
-lsl = rbind(non[ind, ], landslides[landslides$lslpts == TRUE, ])
+# select non-landslide points
+non_pts = filter(landslides, lslpts == FALSE)
+# select landslide points
+lsl_pts = filter(landslides, lslpts == TRUE)
+# randomly select 175 non-landslide points
+set.seed(11042018)
+non_pts_sub = sample_n(non_pts, size = nrow(lsl_pts))
+# create smaller landslide dataset (lsl)
+lsl = bind_rows(non_pts_sub, lsl_pts)
 
 # digital elevation model
 dem = 
@@ -91,19 +95,30 @@ names(log_carea) = "log_carea"
 names(dem) = "elev"
 # add log_carea
 ta = addLayer(x = ta, dem, log_carea)
+```
+
+2) Extract the values from the corresponding output rasters to the `landslides` data frame (`data(landslides, package = "RSAGA"`) by adding new variables called `slope`, `cplan`, `cprof`, `elev` and `log_carea`. Keep all landslide initiation points and 175 randomly selected non-landslide points (see this [section](https://geocompr.robinlovelace.net/spatial-cv.html#case-landslide) for details).
+
+```{r, eval=FALSE}
+# attach terrain attribute raster stack (in case you have skipped the previous
+# exercise)
+data("ta", package = "spDataLarge")
 # extract values to points, i.e., create predictors
 lsl[, names(ta)] = raster::extract(ta, lsl[, c("x", "y")])
 ```
 
-3. Use the derived terrain attribute rasters in combination with a GLM to make a spatial prediction map similar to that shown in this [Figure](https://geocompr.robinlovelace.net/spatial-cv.html#fig:lsl-susc).
+3) Use the derived terrain attribute rasters in combination with a GLM to make a spatial prediction map similar to that shown in this [Figure](https://geocompr.robinlovelace.net/spatial-cv.html#fig:lsl-susc).
 Running `data("study_mask", package = "spDataLarge")` attaches a mask of the study area.
 
 ```{r, eval=FALSE}
-# attach data (in case you have not computed the terrain attributes before)
-load("extdata/spatialcv.Rdata")
+# attach data (in case you have skipped exercises 1) and 2)
+# landslide points with terrain attributes
+data("lsl", package = "spDataLarge")
+# terrain attribute raster stack
+data("ta", package = "spDataLarge")
 
 # fit the model
-fit = glm(lslpts ~ slope + cplan + cprof + elev + log_carea, 
+fit = glm(lslpts ~ slope + cplan + cprof + elev + log10_carea, 
           data = lsl, family = binomial())
 
 # make the prediction
@@ -133,12 +148,12 @@ tm_shape(hs, bbox = bbx) +
 	          legend.title.size = 0.9)
 ```
 
-4. Compute a 100-repeated 5-fold non-spatial cross-validation and spatial CV based on the GLM learner and compare the AUROC values from both resampling strategies with the help of boxplots (see this [Figure](https://geocompr.robinlovelace.net/spatial-cv.html#fig:boxplot-cv).
+4) Compute a 100-repeated 5-fold non-spatial cross-validation and spatial CV based on the GLM learner and compare the AUROC values from both resampling strategies with the help of boxplots (see this [Figure](https://geocompr.robinlovelace.net/spatial-cv.html#fig:boxplot-cv).
 Hint: You need to specify a non-spatial task and a non-spatial resampling strategy.
 
 ```{r, eval=FALSE}
-# attach data (in case you have not computed the terrain attributes before)
-load("extdata/spatialcv.Rdata")
+# attach data (in case you have skipped exercises 1) and 2)
+data("lsl", package = "spDataLarge")  # landslide points with terrain attributes
 
 # put the coordinates in an additional dataframe
 coords = lsl[, c("x", "y")]
@@ -185,15 +200,14 @@ boxplot(sp_cv$measures.test$auc,
         names = c("spatial CV", "conventional CV"), ylab = "AUROC")
 ```
 
-5. Model landslide susceptibility using a quadratic discriminant analysis (QDA).
+5) Model landslide susceptibility using a quadratic discriminant analysis (QDA).
 Assess the predictive performance of the QDA. 
 What is the a difference between the spatially cross-validated mean AUROC value of the QDA and the GLM?
 Hint: Before running the spatial cross-validation for both learners set a seed to make sure that both use the same partitions which in turn guarantees comparability.
 
 ```{r, eval=FALSE}
-# attach packages
-# attach data (in case you have not computed the terrain attributes before)
-load("extdata/spatialcv.Rdata")
+# attach data (in case you have skipped exercises 1) and 2)
+data("lsl", package = "spDataLarge")  # landslide points with terrain attributes
 
 # put the coordinates in an additional dataframe
 coords = lsl[, c("x", "y")]
@@ -246,13 +260,13 @@ boxplot(sp_glm$measures.test$auc,
         names = c("GLM", "QDA"), ylab = "AUROC")
 ```
 
-6. Run the SVM without tuning the hyperparameters.
+6) Run the SVM without tuning the hyperparameters.
 Use the `rbfdot` kernel with $\sigma$ = 1 and *C* = 1. 
 Leaving the hyperparameters unspecified in **kernlab**'s `ksvm()` would otherwise initialize an automatic non-spatial hyperparameter tuning.
 
 ```{r, eval=FALSE}
-# attach data (in case you have not computed the terrain attributes before)
-load("extdata/spatialcv.Rdata")
+# attach data (in case you have skipped exercises 1) and 2)
+data("lsl", package = "spDataLarge")  # landslide points with terrain attributes
 
 # put the coordinates in an additional dataframe
 coords = lsl[, c("x", "y")]

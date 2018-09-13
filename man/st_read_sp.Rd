@@ -15,6 +15,6 @@ st_read_sp(dsn, ...)
 Wrapper function to read a file with \code{\link[sf:st_read]{sf::st_read()}} and the convert the result to a \code{Spatial} data class
 }
 \examples{
-x = st_read_sp(system.file("shapes/wrld.gpkg", package = "spData"))
+x = st_read_sp(system.file("shapes/world.gpkg", package = "spData"))
 class(x)
 }

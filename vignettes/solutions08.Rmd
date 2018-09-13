@@ -44,7 +44,7 @@ data(nlcd, package = "spDataLarge")
 
 # Chapter 8
 
-1. Create a map showing the geographic distribution of the Human Development Index (`HDI`) across Africa with 
+1) Create a map showing the geographic distribution of the Human Development Index (`HDI`) across Africa with 
 -base graphics (hint: use `plot()`) and
 -**tmap** (hint: use `tm_shape(africa) + ...`).
     - Name two advantages of each approach
@@ -57,7 +57,7 @@ plot(africa["HDI"])
 tm_shape(africa) + tm_polygons("HDI")
 ```
 
-2. Extend the map of Africa created with **tmap** for the previous exercise so the legend has three bins: "High" (`HDI` above 0.7), "Medium" (`HDI` between 0.55 and 0.7) and "Low" (`HDI` below 0.55).
+2) Extend the map of Africa created with **tmap** for the previous exercise so the legend has three bins: "High" (`HDI` above 0.7), "Medium" (`HDI` between 0.55 and 0.7) and "Low" (`HDI` below 0.55).
     - Bonus: improve the map aesthetics, for example by changing the legend title, class labels and color palette.
 ```{r}
 # >0.8 - Very high human development
@@ -74,7 +74,7 @@ sm1 = tm_shape(africa) +
 sm1
 ```
 
-3. Represent `africa`'s subregions on the map. 
+3) Represent `africa`'s subregions on the map. 
 Change the default color palette and legend title.
 Next, combine this map and the map created in the previous exercise into a single plot.
 ```{r}
@@ -85,7 +85,7 @@ sm2 = tm_shape(africa) +
 tmap_arrange(sm2, sm1)
 ```
 
-4. Create a land cover map of the Zion National Park.
+4) Create a land cover map of the Zion National Park.
     - Change the default colors to match your perception of the land cover categories
     - Add a scale bar and north arrow and change the position of both to improve the map's aesthetic appeal
     - Bonus: Add an inset map of the Zion National Park's location in the context of the Utah state. (Hint: an object representing Utah can be subsetted from the `us_states` dataset.) 
@@ -117,7 +117,7 @@ print(sm3, vp = grid::viewport(0.5, 0.5, width = 0.95, height = 0.95))
 print(im, vp = grid::viewport(0.2, 0.4, width = 0.35, height = 0.35))
 ```
 
-5. Create facet maps of countries in Eastern Africa:
+5) Create facet maps of countries in Eastern Africa:
     - with one facet showing HDI and the other representing population growth (hint: using variables `HDI` and `pop_growth` respectively)
     - with a 'small multiple' per country
 ```{r}
@@ -130,7 +130,7 @@ tm_shape(eastern_africa) +
   tm_facets(by = "name", drop.NA.facets = TRUE)
 ```
 
-6. Building on the previous facet map examples, create animated maps of East Africa:
+6) Building on the previous facet map examples, create animated maps of East Africa:
     - showing first the spatial distribution of HDI scores then population growth
     - showing each country in order
 ```{r}
@@ -146,20 +146,25 @@ m = tm_shape(eastern_africa) +
 tmap_animation(m, filename = "m.gif")
 browseURL("m.gif")
 ```
-7. Create an interactive map of Africa:
+
+7) Create an interactive map of Africa:
     - with **tmap**
     - with **mapview**
     - with **leaflet**
     - bonus: for each approach add a legend (if not automatically provided) and a scale bar
-8. Sketch on paper ideas for a web mapping app that could be used to make transport or land-use policies more evidence based:
+
+8) Sketch on paper ideas for a web mapping app that could be used to make transport or land-use policies more evidence based:
     - In the city you live in, for a couple of users per day
     - In the country you live in, for dozens of users per day
     - Worldwide for hundreds of users per day and large data serving requirements
-9. How would app design, deployment and project management decisions change as the scale of map deployment increases?
-10. Update the code in `coffeeApp/app.R` so that instead of centering on Brazil the user can select which country to focus on:
+
+9) How would app design, deployment and project management decisions change as the scale of map deployment increases?
+
+10) Update the code in `coffeeApp/app.R` so that instead of centering on Brazil the user can select which country to focus on:
     - Using `textInput()`
     - Using `selectInput()`
-11. Reproduce this [Figure](https://geocompr.robinlovelace.net/adv-map.html#fig:tmshape) and the 1st and 6th panel of this [Figure](https://geocompr.robinlovelace.net/adv-map.html#fig:break-styles) as closely as possible using the **ggplot2** package.
+
+11) Reproduce this [Figure](https://geocompr.robinlovelace.net/adv-map.html#fig:tmshape) and the 1st and 6th panel of this [Figure](https://geocompr.robinlovelace.net/adv-map.html#fig:break-styles) as closely as possible using the **ggplot2** package.
 ```{r}
 # fig 8.1 
 ggplot() + 
@@ -186,7 +191,8 @@ ggplot() +
   scale_fill_brewer(palette = "Set3") + 
   theme_void()
 ```
-12. Join `us_states` and `us_states_df` together and calculate a poverty rate for each state using the new dataset.
+
+12) Join `us_states` and `us_states_df` together and calculate a poverty rate for each state using the new dataset.
 Next, construct a continuous area cartogram based on total population. 
 Finally, create and compare two maps of the poverty rate: (1) a standard choropleth map and (2) a map using the created cartogram boundaries.
 What is the information provided by the first and the second map?
@@ -207,7 +213,8 @@ ecm2 = tm_shape(us_carto) + tm_polygons("poverty_rate", title = "Poverty rate")
 # combine two maps
 tmap_arrange(ecm1, ecm2)
 ```
-13. Visualize population growth in Africa. 
+
+13) Visualize population growth in Africa. 
 Next, compare it with the maps of a hexagonal and regular grid created using the **geogrid** package.
 ```{r, eval=FALSE}
 # devtools::install_github("jbaileyh/geogrid")

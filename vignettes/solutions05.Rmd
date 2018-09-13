@@ -37,7 +37,7 @@ ch = st_combine(random_points) %>%
 
 # Chapter 5
 
-1. Generate and plot simplified versions of the `nz` dataset.
+1) Generate and plot simplified versions of the `nz` dataset.
 Experiment with different values of `keep` (ranging from 0.5 to 0.00005) for `ms_simplify()` and `dTolerance` (from 100 to 100,000) `st_simplify()` .
     - At what value does the form of the result start to break-down for each method, making New Zealand unrecognizable?
     - Advanced: What is different about the geometry type of the results from `st_simplify()` compared with the geometry type of `ms_simplify()`? 
@@ -69,7 +69,8 @@ plot(nz_simple_poly)
 length(nz_simple_poly)
 nrow(nz)
 ```
-2. In the first exercise in this [Chapter](https://geocompr.robinlovelace.net/spatial-data-operations.html) it was established that Canterbury region had 70 of the 101 highest points in New Zealand.
+
+2) In the first exercise in this [Chapter](https://geocompr.robinlovelace.net/spatial-data-operations.html) it was established that Canterbury region had 70 of the 101 highest points in New Zealand.
 Using `st_buffer()`, how many points in `nz_height` are within 100 km of Canterbury?
 ```{r}
 canterbury = nz[nz$Name == "Canterbury", ]
@@ -77,14 +78,16 @@ cant_buff = st_buffer(canterbury, 100)
 nz_height_near_cant = nz_height[cant_buff, ]
 nrow(nz_height_near_cant) # 75 - 5 more
 ```
-3. Find the geographic centroid of New Zealand.
+
+3) Find the geographic centroid of New Zealand.
 How far is it from the geographic centroid of Canterbury?
 ```{r}
 cant_cent = st_centroid(canterbury)
 nz_centre = st_centroid(st_union(nz))
 st_distance(cant_cent, nz_centre) # 234 km
 ```
-4. Most world maps have a north-up orientation.
+
+4) Most world maps have a north-up orientation.
 A world map with a south-up orientation could be created by a reflection (one of the affine transformations not mentioned in this [section](https://geocompr.robinlovelace.net/geometric-operations.html#affine-transformations)) of the `world` object's geometry.
 Write code to do so.
 Hint: you need to use a two-element vector for this transformation.
@@ -111,7 +114,8 @@ plot(us_states_sfc_mirror)
 #   geom_text_repel(data = us_states_sfc_mirror_labels, mapping = aes(X, Y, label = name), size = 3, min.segment.length = 0) +
 #   theme_void() 
 ```
-5. Subset the point in `p` that is contained within `x` *and* `y` (see this [section](https://geocompr.robinlovelace.net/geometric-operations.html#clipping) and this [Figure](https://geocompr.robinlovelace.net/geometric-operations.html#fig:venn-clip)).
+
+5) Subset the point in `p` that is contained within `x` *and* `y` (see this [section](https://geocompr.robinlovelace.net/geometric-operations.html#clipping) and this [Figure](https://geocompr.robinlovelace.net/geometric-operations.html#fig:venn-clip)).
     - Using base subsetting operators.
     - Using an intermediary object created with `st_intersection()`.
 ```{r}
@@ -132,7 +136,8 @@ p_in_xy = p_in_y[x]
 x_and_y = st_intersection(x, y)
 p[x_and_y]
 ```
-6. Calculate the length of the boundary lines of US states in meters.
+
+6) Calculate the length of the boundary lines of US states in meters.
 Which state has the longest border and which has the shortest?
 Hint: The `st_length` function computes the length of a `LINESTRING` or `MULTILINESTRING` geometry.
 ```{r}
@@ -142,7 +147,8 @@ us_states_bor$borders = st_length(us_states_bor)
 arrange(us_states_bor, borders) %>% slice(1)
 arrange(us_states_bor, -borders) %>% slice(1)
 ```
-7. Crop the `ndvi` raster using (1) the `random_points` dataset and (2) the `ch` dataset.
+
+7) Crop the `ndvi` raster using (1) the `random_points` dataset and (2) the `ch` dataset.
 Are there any difference in the output maps?
 Next, mask `ndvi` using these two datasets.
 Can you see any difference now?
@@ -162,7 +168,12 @@ ndvi_mask2 = mask(ndvi, as(ch, "Spatial"))
 plot(ndvi_mask1)
 plot(ndvi_mask2)
 ```
-8. Firstly, extract values from `ndvi` at the points represented in `random_points`.
+
+There are not any differences between the two output maps after cropping, but the outputs after masking are very different.
+In the first case, `ndvi` is cropped only to the extent of the bounding box, and both `random_points` and `ch` have exactly the same bounding box.
+In the second case, masking by `random_points` only keeps raster cells that are overlayed by these points, while masking by `ch` keeps all raster cells that are within the `ch` polygon.
+
+8) Firstly, extract values from `ndvi` at the points represented in `random_points`.
 Next, extract average values of `ndvi` using a 90 buffer around each point from `random_points` and compare these two sets of values. 
 When would extracting values by buffers be more suitable than by points alone?
 ```{r}
@@ -170,11 +181,15 @@ random_points_buf = st_buffer(random_points, dist = 90)
 plot(ndvi)
 plot(st_geometry(random_points_buf), add = TRUE)
 plot(ch, add = TRUE)
-random_points$ndvi = raster::extract(ndvi, as(random_points, "Spatial"), buffer = 90, fun = mean)
-random_points$ndvi2 = raster::extract(ndvi, as(random_points, "Spatial"))
-plot(random_points$ndvi, random_points$ndvi2)
+random_points$ndvi1 = raster::extract(ndvi, as(random_points, "Spatial"))
+random_points$ndvi2 = raster::extract(ndvi, as(random_points, "Spatial"), buffer = 90, fun = mean)
+plot(random_points$ndvi1, random_points$ndvi2)
 ```
-9. Subset points higher than 3100 meters in New Zealand (the `nz_height` object) and create a template raster with a resolution of 3km. 
+
+Extracting values by buffers is more suitable than by points alone, for example when we expect errors in single raster cells. 
+Average values can decrease an effect of erroneous values in some raster cells.
+
+9) Subset points higher than 3100 meters in New Zealand (the `nz_height` object) and create a template raster with a resolution of 3km. 
 Using these objects:
     - Count numbers of the highest points in each grid cell.
     - Find the maximum elevation in each grid cell.
@@ -192,7 +207,7 @@ nz_raster2 = rasterize(nz_height3100, nz_template,
 plot(nz_raster2)
 ```
 
-10. Aggregate the raster counting high points in New Zealand (created in the previous exercise), reduce its geographic resolution by half (so cells are 6 by 6 km) and plot the result.
+10) Aggregate the raster counting high points in New Zealand (created in the previous exercise), reduce its geographic resolution by half (so cells are 6 by 6 km) and plot the result.
     - Resample the lower resolution raster back to a resolution of 3 km. How have the results changed?
     - Name two advantages and disadvantages of reducing raster resolution.
 ```{r, eval=FALSE}
@@ -210,7 +225,7 @@ advantage: good for viz in some cases
 disadvantage: removes geographic detail
 disadvantage: another processing step
 
-11. Polygonize the `grain` dataset and filter all squares representing clay.
+11) Polygonize the `grain` dataset and filter all squares representing clay.
     - Name two advantages and disadvantages of vector data over raster data.
     - At which points would it be useful to convert rasters to vectors in your work?
 
