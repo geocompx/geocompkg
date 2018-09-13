@@ -205,9 +205,9 @@ berlin_raster = berlin_raster > 9
 berlin_raster = berlin_raster == TRUE
 berlin_raster[berlin_raster == 0] = NA
 # make the plot
-leaflet() %>% 
-  addTiles() %>%
-  addRasterImage(berlin_raster, colors = "darkgreen", opacity = 0.8) %>%
-  addLegend("bottomright", colors = c("darkgreen"), 
-            labels = c("potential locations"), title = "Legend")
+# leaflet() %>% 
+#  addTiles() %>%
+#  addRasterImage(berlin_raster, colors = "darkgreen", opacity = 0.8) %>%
+#  addLegend("bottomright", colors = c("darkgreen"), 
+#            labels = c("potential locations"), title = "Legend")
 ```
