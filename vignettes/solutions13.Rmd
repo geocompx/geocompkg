@@ -166,7 +166,7 @@ pop_agg = pop_agg[pop_agg > 500000, drop = FALSE]
 polys = pop_agg %>% 
   raster::clump() %>%
   rasterToPolygons() %>%
-  st_as_sf
+  st_as_sf()
 
 metros = polys %>%
   group_by(clumps) %>%
