@@ -9,6 +9,7 @@ Description: Vignettes and solutions to supplement the book Geocomputation with 
 Imports:
     bookdown,
     cartogram,
+    classInt,
     dismo,
     geosphere,
     ggmap,
@@ -18,6 +19,7 @@ Imports:
     htmlwidgets,
     kableExtra,
     kernlab,
+    igraph,
     latticeExtra,
     leaflet,
     link2GI,
