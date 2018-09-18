@@ -52,7 +52,8 @@ Imports:
     tidyverse,
     tmap,
     tmaptools,
-    vegan
+    vegan,
+    xfun
 Remotes:
     nowosad/spDataLarge,
 URL: https://github.com/geocompr/geocompkg
