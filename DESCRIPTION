@@ -13,7 +13,6 @@ Imports:
     dismo,
     geosphere,
     ggplot2,
-    ggmap,
     gstat,
     historydata,
     htmlwidgets,
