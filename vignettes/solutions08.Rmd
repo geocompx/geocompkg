@@ -142,8 +142,8 @@ print(im, vp = grid::viewport(0.2, 0.4, width = 0.35, height = 0.35))
 ```
 
 5) Create facet maps of countries in Eastern Africa:
-    - with one facet showing HDI and the other representing population growth (hint: using variables `HDI` and `pop_growth` respectively)
-    - with a 'small multiple' per country
+    - With one facet showing HDI and the other representing population growth (hint: using variables `HDI` and `pop_growth` respectively)
+    - With a 'small multiple' per country
 ```{r}
 eastern_africa = filter(africa, subregion == "Eastern Africa")
 tm_shape(eastern_africa) +
@@ -155,8 +155,8 @@ tm_shape(eastern_africa) +
 ```
 
 6) Building on the previous facet map examples, create animated maps of East Africa:
-    - showing first the spatial distribution of HDI scores then population growth
-    - showing each country in order
+    - Showing first the spatial distribution of HDI scores then population growth
+    - Showing each country in order
 ```{r}
 m = tm_shape(eastern_africa) +
   tm_polygons(col = c("HDI", "pop_growth")) +
@@ -172,10 +172,10 @@ browseURL("m.gif")
 ```
 
 7) Create an interactive map of Africa:
-    - with **tmap**
-    - with **mapview**
-    - with **leaflet**
-    - bonus: for each approach add a legend (if not automatically provided) and a scale bar
+    - With **tmap**
+    - With **mapview**
+    - With **leaflet**
+    - Bonus: for each approach add a legend (if not automatically provided) and a scale bar
 
 8) Sketch on paper ideas for a web mapping app that could be used to make transport or land-use policies more evidence based:
     - In the city you live in, for a couple of users per day
