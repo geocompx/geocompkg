@@ -1,5 +1,5 @@
 ---
-title: "Geocomputation with R - Benchmark"
+title: "Geocomputation with R: benchmark"
 author: "Robin Lovelace, Jakub Nowosad, Jannes Muenchow"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
