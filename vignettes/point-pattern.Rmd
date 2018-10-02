@@ -31,6 +31,7 @@ i = pkgs[!pkgs %in% installed.packages()]
 if(length(i) > 0)
   install.packages(i)
 lapply(pkgs, library, character.only = TRUE)
+knitr::opts_chunk$set(eval = FALSE)
 ```
 
 # Data
