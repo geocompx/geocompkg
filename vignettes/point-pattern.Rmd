@@ -12,6 +12,13 @@ bibliography:
   - refs.bib
 ---
 
+**Note: we set this not to run for travis:**
+
+```{r}
+knitr::opts_chunk$set(eval = FALSE)
+```
+
+
 
 This vignette builds on the Raster-vector interactions section of Geocomputation with R (see [geocompr.robinlovelace.net/geometric-operations.html#raster-vector](https://geocompr.robinlovelace.net/geometric-operations.html#raster-vector)).
 It shows the the basics of point pattern analysis in R and how to make (raster) 'heatmaps' from (vector) point data.
@@ -19,7 +26,7 @@ It is influenced by the chapter on Spatial Point Pattern Analysis [@bivand_appli
 
 We will use the **sp** package for this rather than the newer **sf** package, as point pattern analysis is more established for the former `Spatial` class system than the latter's `sf` classes. We will also use **raster** as it has concise and well-designed functions for spatial data:
 
-```{r, message=FALSE, results='hide', eval=FALSE}
+```{r, message=FALSE, results='hide'}
 pkgs = c(
   "tmap",
   "raster",
@@ -31,7 +38,6 @@ i = pkgs[!pkgs %in% installed.packages()]
 if(length(i) > 0)
   install.packages(i)
 lapply(pkgs, library, character.only = TRUE)
-knitr::opts_chunk$set(eval = FALSE)
 ```
 
 # Data
