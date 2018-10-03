@@ -152,14 +152,10 @@ data("metro_names", "shops", package = "spDataLarge")
 
 # Add metro names to metros sf object
 #************************************
-metro_names = 
-  dplyr::select(metro_names, locality, administrative_area_level_2) %>%
-  # replace Wülfrath and umlaut ü
-  mutate(locality = ifelse(locality == "Wülfrath",
-                           administrative_area_level_2,
-                           locality),
-         locality = gsub("ü", "ue", locality)) %>%
-  pull(locality)
+metro_names = dplyr::pull(metro_names, city) %>% 
+  as.character() %>% 
+  ifelse(. == "Wülfrath", "Duesseldorf", .)
+
 pop_agg = aggregate(reclass$pop, fact = 20, fun = sum)
 pop_agg = pop_agg[pop_agg > 500000, drop = FALSE] 
 
