@@ -35,6 +35,7 @@ What might explain the observed difference?
 data("study_area", "random_points", "comm", "dem", "ndvi", package = "RQGIS")
 pa = decostand(comm, "pa")
 pa = pa[rowSums(pa) != 0, ]
+comm = comm[rowSums(comm) != 0, ]
 
 set.seed(25072018)
 nmds_pa = metaMDS(comm = pa, k = 4, try = 500)
