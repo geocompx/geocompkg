@@ -25,42 +25,30 @@ world = st_read(vector_filepath)
 
 To demonstrate this, we will use a function to compare `st_read()` with its **sp** equivalent, `rgdal::readOGR()`:
 
-```{r}
-bench_read = function(file, n) {
-  m = microbenchmark(times = n,
-                     rgdal::readOGR(vector_filepath),
-                     st_read(vector_filepath)
-  )
-  mean(m$time[1:n]) / mean(m$time[(n + 1):(n * 2)])
-}
+```{r, message=FALSE}
+b1 = bench::mark(iterations = 3, check = FALSE,
+            sf = st_read(vector_filepath),
+            sp = rgdal::readOGR(vector_filepath)
+)
+b1
 ```
 
-This function takes as arguments an input file (`file`) and a number of times to run each command (`n`) and returns how many times faster `st_read()` is than `readOGR()`.
-Let's run the benchmark for the `world.gpkg` file represented by the object `vector_filepath`:
+The benchmark ran on an input file (`file`) and a number of times.
+It shows that **sf** was `r round(as.numeric(b1$mean[2] / b1$mean[1]))` times faster than **rgdal** at loading this file.
 
-```{r, results='hide'}
-library(microbenchmark)
-read_world_gpkg = bench_read(file = vector_filepath, n = 5)
-```
-
-```{r}
-read_world_gpkg
-```
-
-The results demonstrate that **sf** was around `r round(read_world_gpkg)` times faster than **rgdal** at reading-in the world countries vector.
 The relative performance of `st_read()` compared with other functions will vary depending on file format and the nature of the data.
 To illustrate this point, we performed the same operation on a geojson file and found a greater speed saving:
 
 ```{r, results='hide'}
-vector_filepath_gj = system.file("shapes/cycle_hire_osm.geojson", package = "spData")
-read_lnd_geojson = bench_read(file = vector_filepath_gj, n = 5)
+vector_filepath = system.file("shapes/cycle_hire_osm.geojson", package = "spData")
+b2 = bench::mark(iterations = 3, check = FALSE,
+            sf = st_read(vector_filepath),
+            sp = rgdal::readOGR(vector_filepath)
+)
+b2
 ```
 
-```{r}
-read_lnd_geojson
-```
-
-In this case **sf** was around `r round(read_lnd_geojson)` times faster than **rgdal**.
+In this case **sf** was around `r round(as.numeric(b2$mean[2] / b2$mean[1]))` times faster than **rgdal**.
 
 # Writing vector data
 

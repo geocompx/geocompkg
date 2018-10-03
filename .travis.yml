@@ -25,6 +25,7 @@
 # Header
 language: r
 cache: packages
+latex: false
 dist: trusty
 sudo: required
 before_install:
