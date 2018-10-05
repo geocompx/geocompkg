@@ -183,6 +183,7 @@ tmap_mode("view")
 tm_shape(eastern_africa) +
   tm_polygons("pop_growth") +
   tm_scale_bar() # bonus scale bar
+tmap_mode("plot")
 ```
 
 ```{r}
@@ -275,7 +276,7 @@ ecm2 = tm_shape(us_carto) + tm_polygons("poverty_rate", title = "Poverty rate")
 tmap_arrange(ecm1, ecm2)
 ```
 
-13) Visualize population growth in Africa. 
+12) Visualize population growth in Africa. 
 Next, compare it with the maps of a hexagonal and regular grid created using the **geogrid** package.
 ```{r, eval=FALSE}
 # devtools::install_github("jbaileyh/geogrid")
