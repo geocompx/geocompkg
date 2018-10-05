@@ -28,7 +28,7 @@ library(cartogram)
 ```
 
 These exercises rely on a new object, `africa`.
-Create it using the `world` and `worldbank_df` datasets from the **spData** package as follows (see chapter \@ref(attr)):
+Create it using the `world` and `worldbank_df` datasets from the **spData** package as follows (see Chapter [3](https://geocompr.robinlovelace.net/attr.html)):
 
 ```{r, warning=FALSE}
 africa = world %>% 
@@ -157,7 +157,7 @@ tm_shape(eastern_africa) +
 6) Building on the previous facet map examples, create animated maps of East Africa:
     - Showing first the spatial distribution of HDI scores then population growth
     - Showing each country in order
-```{r}
+```{r, eval=FALSE}
 m = tm_shape(eastern_africa) +
   tm_polygons(col = c("HDI", "pop_growth")) +
   qtm(africa, fill = NULL) +
@@ -175,16 +175,47 @@ browseURL("m.gif")
     - With **tmap**
     - With **mapview**
     - With **leaflet**
-    - Bonus: for each approach add a legend (if not automatically provided) and a scale bar
+    - Bonus: for each approach add a legend (if not automatically provided) and a scale bar.
+    
+```{r}
+# with tmap:
+tmap_mode("view")
+tm_shape(eastern_africa) +
+  tm_polygons("pop_growth") +
+  tm_scale_bar() # bonus scale bar
+```
+
+```{r}
+# with mapview (auto scale + legend)
+library(mapview)
+mapview(eastern_africa, zcol = "pop_growth")
+```
+
+```{r}
+# with leaflet
+library(leaflet)
+eastern_africa_wgs = st_transform(eastern_africa, 4326)
+pal = colorNumeric("RdYlBu", domain = eastern_africa_wgs$pop_growth)
+leaflet(data = eastern_africa_wgs) %>% 
+  addProviderTiles(providers$OpenTopoMap) %>% 
+  addPolygons(fillColor = ~pal(pop_growth), fillOpacity = .8) %>% 
+  addLegend(pal = pal, values = ~pop_growth)
+```
 
 8) Sketch on paper ideas for a web mapping app that could be used to make transport or land-use policies more evidence based:
     - In the city you live in, for a couple of users per day
     - In the country you live in, for dozens of users per day
     - Worldwide for hundreds of users per day and large data serving requirements
+    
+Ideas could include identification of routes where many people currently drive short distances, ways to encourage access to parks, or prioritisation of new developments to reduce long-distance travel.
 
-9) How would app design, deployment and project management decisions change as the scale of map deployment increases?
+At the city level a web map would be sufficient.
 
-10) Update the code in `coffeeApp/app.R` so that instead of centering on Brazil the user can select which country to focus on:
+A the national level a mapping application, e.g. with shiny, would probably be needed.
+
+Worldwide, a database to serve the data would likely be needed. Then various front-ends could plug in to this.
+
+9) Update the code in `coffeeApp/app.R` so that instead of centering on Brazil the user can select which country to focus on:
     - Using `textInput()`
     - Using `selectInput()`
 
