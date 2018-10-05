@@ -218,8 +218,14 @@ Worldwide, a database to serve the data would likely be needed. Then various fro
 9) Update the code in `coffeeApp/app.R` so that instead of centering on Brazil the user can select which country to focus on:
     - Using `textInput()`
     - Using `selectInput()`
+    
 
-11) Reproduce this [Figure](https://geocompr.robinlovelace.net/adv-map.html#fig:tmshape) and the 1st and 6th panel of this [Figure](https://geocompr.robinlovelace.net/adv-map.html#fig:break-styles) as closely as possible using the **ggplot2** package.
+The answer can be found in the `shinymod` branch of the geocompr repo: https://github.com/Robinlovelace/geocompr/pull/318/files
+You create the new widget and then use it to set the center.
+Note: the input data must be fed into the map earlier to prevent the polygons disappearing when you change the center this way.
+
+
+10) Reproduce this [Figure](https://geocompr.robinlovelace.net/adv-map.html#fig:tmshape) and the 1st and 6th panel of this [Figure](https://geocompr.robinlovelace.net/adv-map.html#fig:break-styles) as closely as possible using the **ggplot2** package.
 ```{r}
 # fig 8.1 
 ggplot() + 
@@ -247,7 +253,7 @@ ggplot() +
   theme_void()
 ```
 
-12) Join `us_states` and `us_states_df` together and calculate a poverty rate for each state using the new dataset.
+11) Join `us_states` and `us_states_df` together and calculate a poverty rate for each state using the new dataset.
 Next, construct a continuous area cartogram based on total population. 
 Finally, create and compare two maps of the poverty rate: (1) a standard choropleth map and (2) a map using the created cartogram boundaries.
 What is the information provided by the first and the second map?
