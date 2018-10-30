@@ -1,8 +1,8 @@
 ---
 title: "Geocomputation with R"
-subtitle: "Empowering yourself with open source software and geo* data"
-author: "Robin Lovelace"
-date: "GeoStat 2018. Source code: [github.com/geocompr/geocompkg](https://github.com/geocompr/geocompkg) "
+subtitle: "Empower yourself with free software and geo* data"
+author: "Robin Lovelace, Northwest Universities R Day"
+date: "2018-10-31. Source code: [github.com/geocompr/geocompkg](https://github.com/geocompr/geocompkg/blob/master/slides/nurd.Rmd) "
 output:
   xaringan::moon_reader:
     nature:
@@ -12,9 +12,7 @@ output:
 bibliography: refs-geostat.bib
 ---
 
-<!-- msg: Looks like I'll have a second change to demonstrate this code: 55% of people in the poll wanted sea level rise (SLR) to be the example dataset for the dplyr/sf integration workshop tomorrow. Watch this space -->
-<!-- 14:15 - 15:00 - 45 minute talk  -->
-<!-- Aims: show-off the book, provide overview, some useful things in it -->
+# 'Team geocompr'
 
 ```{r setup, include = FALSE}
 options(htmltools.dir.version = FALSE)
@@ -28,15 +26,6 @@ BibOptions(check.entries = FALSE,
            dashed = FALSE)
 my_bib = ReadBib("refs-geostat.bib", check = FALSE)
 ```
-
-
-layout: true
-background-image: url(xaringan_stuff/img/r_geocomp_background.png)
-background-size: cover
-
----
-
-# 'Team geocompr'
 
 <figure>
 <img align="right" src="https://geocompr.github.io/workshops/erum2018/img/globe.png" width = "60%", height = "60%"/>
@@ -52,29 +41,108 @@ background-size: cover
 
 --
 
-- Front cover image competition! Submissions (code / ideas welcome) by Thursday evening. Prize: ~~$100~~ $150 CRC Press book voucher.
+- Still looking for input before publication in early 2019.
 
 ---
 
-# Aim
+# whoami
+
+.pull-left[
+- Environmental geographer
+
+- Learned R for PhD on energy and transport
+
+- Now work at the University of Leeds (ITS and LIDA)
+
+- Working on Geocomputation with R
+
+```{r, eval=FALSE}
+devtools::install_github("r-rust/gifski")
+system("youtube-dl https://youtu.be/CzxeJlgePV4 -o v.mp4")
+system("ffmpeg -i v.mp4 -t 00:00:03 -c copy out.mp4")
+system("ffmpeg -i out.mp4 frame%04d.png ")
+f = list.files(pattern = "frame")
+gifski::gifski(f, gif_file = "g.gif", width = 200, height = 200)
+```
+
+]
+
+--
+
+.pull-right[
+Image credit: Jeroen Ooms + others
+
+```{r, out.width="100%"}
+knitr::include_graphics("https://user-images.githubusercontent.com/1825120/39661313-534efd66-5047-11e8-8d99-a5597fe160ff.gif")
+```
+
+]
 
 
-This workshop will introduce you to working with spatial data 'in the tidyverse'. By this we mean handling spatial datasets using functions (such as ` %>% ` and `filter()`) and concepts (such as type stability) from R packages that are part of the metapackage **tidyverse**, which can now be installed from CRAN with the following command:
+---
+
+background-image: url(https://raw.githubusercontent.com/npct/pct-team/master/figures/Leeds-network.png)
+
+
+# Why geo*?
+
+
+
+## Geographic data is everywhere
+
+--
+
+## underlies some of society's biggest issues
+
+--
+
+## global analyses given local meaning
+
+
+---
+
+
+# Big issues?
+
+--
+
+```{r, echo=FALSE, out.width="50%"}
+knitr::include_graphics("https://media3.giphy.com/media/YkXNjAkG7CfEVx3gcy/giphy.gif?cid=3640f6095bd86a5e784739746ba086e4")
+```
+
+
+---
+
+# Code for geocomputation
+
+---
+
+# What packages work with spatial data?
 
 ```{r, eval=FALSE}
 install.packages("tidyverse")
 ```
 
-This functionality is possible thanks to **sf**, a recent package (first release in 2016) that implements the open standard data model *simple features*. Get **sf** with:
+The **tidyverse** now (mostly) works with spatial data.
+
+This is thanks to **sf**, a recent package (first release in 2016) that implements the open standard data model *simple features*. Get **sf** with:
 
 ```{r, eval=FALSE}
 install.packages("sf")
 ```
 
-The workshop also uses a dataset from the **spData** package, which can be installed with:
+Raster data is also supported, in the more mature package **raster**:
+
+```{r, eval=FALSE}
+install.packages("raster")
+```
+
+
+For datasets...:
 
 ```{r, eval=FALSE}
 install.packages("spData")
+install.packages("rnaturalearth")
 ```
 
 For more on this see: [github.com/Robinlovelace/geocompr](https://github.com/Robinlovelace/geocompr). 
@@ -129,11 +197,18 @@ background-image: url("https://media1.giphy.com/media/Hw5LkPYy9yfVS/giphy.gif")
 <br> Slides: https://geocompr.github.io/presentations/
 <br> Source code: https://github.com/geocompr/geostats_18
 
-To install all packages used in the book:
-
 ```{r, eval=FALSE}
-devtools::install_github("geocompr/geocompkg")
+reprex::reprex(2 + 2)
 ```
+
+``` r
+2 + 2
+#> [1] 4
+```
+
+<sup>Created on 2018-10-30 by the [reprex package](https://reprex.tidyverse.org) (v0.2.1)</sup>
+
+Attaching packages
 
 ```{r}
 library(sf)
