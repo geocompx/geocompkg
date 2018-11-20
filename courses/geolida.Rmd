@@ -161,17 +161,21 @@ ml
 
 ## Prerequisites
 
-### Prior reading/experience
+### Prior experience
 
-If you are new to R, ensure you have attempted a basic introductory course such as DataCamp's [introduction to R](https://www.datacamp.com/courses/free-introduction-to-r) free course or equivalent.
+**Attendees should already have experience with R.**
+In addition to being able to complete introductory course such as DataCamp's [introduction to R](https://www.datacamp.com/courses/free-introduction-to-r) free course or equivalent, attendees should **already be using R** for their work.
+This is not an introductory R course but a course for R users wanting to develop their geospatial analysis skills.
+If you do not have R experience but already use GIS software and have a strong understanding for geographic data types, and some programming experience, the course may also be appropriate.
 
-If you're interested in R for 'data science' and installing/updating/choosing R packages, these additional resources are recommended (these optional resources are all freely availble online):
+In preparation for the course we recommend reading and running the code in these free online resources:
 
 - The introductory chapter of [R for Data Science](https://r4ds.had.co.nz/introduction.html)
 - Chapter 2 on [setting-up R](https://csgillespie.github.io/efficientR/set-up.html) and section 4.4 on [package selection](https://csgillespie.github.io/efficientR/workflow.html#package-selection) in the book *Efficient R Programming*
+
 ### Computing requirements
 
-Attendees are expected to bring their own laptop with the following packages installed and working.
+**Attendees are expected to bring their own laptop with the following packages installed and working.**
 You can check these are all installed, and install those that are not installed, as follows (you can also just type `install.packages("sf")` etc):
 
 ```{r packages, message=FALSE, warning=FALSE, eval=FALSE}
