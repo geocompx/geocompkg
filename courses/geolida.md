@@ -1,18 +1,65 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
+## Geocomputation and Data Analysis with R
+
+Geocomputation and Data Analysis with R is a 2 day course to be held on
+the 25<sup>th</sup> and 26<sup>th</sup> April 2019 in the Leeds
+Institute for Data Analytics (LIDA).
+
 ## Aim
 
-The aim of Geocomputation and Data Analysis with R is to get you
-up-to-speed with high performance geographic processing, analysis,
-visualisation and modelling capabilities from the command-line. The
-course will be delivered in R, a statistical programming language
-popular in academia, industry and, increasing, the public sector. It
-will teach a range of techniques using recently developments in the
-package [**sf**](https://github.com/r-spatial/sf) and the ‘metapackage’
-[**tidyverse**](https://www.tidyverse.org/), based on the open source
-book [Geocomputation with R](https://geocompr.robinlovelace.net/)
-(Lovelace, Nowosad, and Meunchow 2019).
+The aim of the course is to get you up-to-speed with high performance
+geographic processing, analysis and visualisation capabilities from the
+command-line. The course will be delivered in R, a statistical
+programming language popular in academia, industry and, increasing, the
+public sector. It will teach a range of techniques using recently
+developments in the package [**sf**](https://github.com/r-spatial/sf)
+and the ‘metapackage’ [**tidyverse**](https://www.tidyverse.org/), based
+on the open source book [Geocomputation with
+R](https://geocompr.robinlovelace.net/) (Lovelace, Nowosad, and Meunchow
+2019).
+
+## Learning objectives
+
+By then end of the course participants should:
+
+  - Be able to use R and RStudio as a powerful Geographic Information
+    System (GIS)
+    <!-- What the different panels within RStudio are and how to use the view panel interactively -->
+  - Know how R’s spatial capabilities fit within the landscape of open
+    source GIS software <!-- What are the alternatives to R? -->
+    <!-- What are it's strengths/weaknesses? -->
+    <!-- How can R interface to dedicated GIS software like QGIS? -->
+  - Be confident with using R’s command-line interface (CLI) and
+    scripting capabilities for geographic data processing
+    <!-- autocompletion --> <!-- using help -->
+    <!-- knowing where to search and create a reproducible example to ask questions on a community forum -->
+    <!-- source vs console editor --> <!-- projects and scripts -->
+    <!-- functions / algorithms -->
+  - Understand how to import a range of data sources into R
+    <!-- read-in a shapefile --> <!-- write-out a geojson -->
+    <!-- 7.2 Retrieving open data -->
+    <!-- 7.3 Geographic data packages -->
+    <!-- 7.4 Geographic web services --> <!-- 7.5 File formats -->
+    <!-- 7.6 Data Input (I) --> <!-- 7.7 Data output (O) -->
+  - Be able to perform a range of attribute operations such as
+    subsetting and joining <!-- 3.2.1 Vector attribute subsetting -->
+    <!-- 3.2.2 Vector attribute aggregation -->
+    <!-- 3.2.3 Vector attribute joining -->
+    <!-- 3.2.4 Creating attributes and removing spatial information -->
+  - Understand how to implement a range of spatial data operations
+    including spatial subsetting and spatial aggregation
+    <!-- 4.2.1 Spatial subsetting -->
+    <!-- 4.2.2 Topological relations --> <!-- 4.2.3 Spatial joining -->
+    <!-- 4.2.4 Non-overlapping joins -->
+    <!-- 4.2.5 Spatial data aggregation -->
+  - Have the confidence to output the results of geographic research in
+    the form of static and interactive maps
+    <!--     8.2.1 tmap basics --> <!--     8.2.2 Map objects -->
+    <!--     8.2.3 Aesthetics --> <!--     8.2.4 Color settings -->
+    <!--     8.2.5 Layouts --> <!--     8.2.6 Faceted maps -->
+    <!-- 8.4 Interactive maps -->
 
 ## Location
 
