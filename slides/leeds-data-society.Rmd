@@ -1,0 +1,239 @@
+---
+title: "An introduction to"
+subtitle: "🌐<br/>  Geocomputation with R"
+author: "Robin Lovelace, Jannes Menchow and Jakub Nowosad"
+date: "For Leeds Data Society, University of Leeds, 2018. Source code: [github.com/geocompr/geocompkg](https://github.com/geocompr/geocompkg/) "
+output:
+  xaringan::moon_reader:
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+bibliography: refs-geostat.bib
+---
+
+<!-- msg: Looks like I'll have a second change to demonstrate this code: 55% of people in the poll wanted sea level rise (SLR) to be the example dataset for the dplyr/sf integration workshop tomorrow. Watch this space -->
+<!-- 14:15 - 15:00 - 45 minute talk  -->
+<!-- Aims: show-off the book, provide overview, some useful things in it -->
+
+```{r setup, include = FALSE}
+options(htmltools.dir.version = FALSE)
+library(RefManageR)
+BibOptions(check.entries = FALSE, 
+           bib.style = "authoryear", 
+           cite.style = 'alphabetic', 
+           style = "markdown",
+           first.inits = FALSE,
+           hyperlink = FALSE, 
+           dashed = FALSE)
+my_bib = ReadBib("refs-geostat.bib", check = FALSE)
+```
+
+
+layout: true
+background-image: url(xaringan_stuff/img/r_geocomp_background.png)
+background-size: cover
+
+---
+
+# Aim
+
+- What is R and what is it good for?
+- An introduction to the tidyverse
+- An introduction to the sf package
+- Spatial data and the tidyverse
+- Making maps with R
+
+
+```{r, eval=FALSE}
+install.packages("tidyverse")
+```
+
+**sf** (first release in 2016) implements the open standard data model *simple features*. Get **sf** with:
+
+```{r, eval=FALSE}
+install.packages("sf")
+```
+
+The workshop also uses a dataset from the **spData** package, which can be installed with:
+
+```{r, eval=FALSE}
+install.packages("spData")
+```
+
+For more on this see: [github.com/Robinlovelace/geocompr](https://github.com/Robinlovelace/geocompr). 
+
+---
+
+# Why R? (source: [stackoverflow.blog](https://stackoverflow.blog/2017/10/10/impressive-growth-r/))
+
+```{r, echo=FALSE, out.width="70%"}
+knitr::include_graphics("https://stackoverflow.blog/wp-content/uploads/2017/10/tag_growth_scatter-1-771x675.png")
+```
+
+---
+
+## Introduction to the tidyverse
+
+- Software for 'data science' is evolving
+- In R, packages **ggplot2** and **dplyr** are popular
+- Now integrated into a 'metapackage': the [**tidyverse**](https://www.tidyverse.org/)
+- Which works with 'tidy data' (from `vignette("tidy-data")`):
+
+
+>    - Each variable forms a column.
+>    - Each observation forms a row.
+>    - Each type of observational unit forms a table
+
+- Historically spatial R packages have not been compatible with the **tidyverse**
+
+---
+background-image: url("https://pbs.twimg.com/media/CvzEQcfWIAAIs-N.jpg")
+background-size: cover
+
+---
+
+## Enter sf
+
+- **sf** is a recently developed package for spatial (vector) data
+- Combines the functionality of three previous packages: **sp**, **rgeos** and **rgdal**
+- Has many advantages, including:
+    - Faster data I/O
+    - More geometry types supported
+    - Compatibility with the *tidyverse*
+    
+That's the topic of this workshop
+
+---
+
+background-image: url("https://media1.giphy.com/media/Hw5LkPYy9yfVS/giphy.gif")
+
+---
+
+
+# Geocomputation with R
+
+<figure>
+<img align="right" src="https://geocompr.github.io/workshops/erum2018/img/globe.png" width = "60%", height = "60%"/>
+</figure>
+
+- [Jakub Nowosad](https://nowosad.github.io/): developer of GeoPAT + more.
+
+- [Jannes Muenchow](http://www.geographie.uni-jena.de/en/Muenchow.html), creator of **RQGIS**. 
+
+--
+
+- [Robin Lovelace](https://www.robinlovelace.net/), creator of **stplanr**, co-author of Efficent R Programming. 
+
+--
+
+- Open source book available online from [geocompr.robinlovelace.net/](https://geocompr.robinlovelace.net/)
+
+--
+
+- Book now on sale! See [Amazon](https://www.amazon.co.uk/Geocomputation-Chapman-Hall-Robin-Lovelace/dp/1138304514/ref=sr_1_1?ie=UTF8&qid=1543422522&sr=8-1&keywords=geocomputation+with+r) or (cheaper) [Wordery](https://wordery.com/geocomputation-with-r-robin-lovelace-9781138304512)
+
+---
+
+## Attaching the packages
+
+- You can use packages with `packagename::functionname()`
+- But by usually they are loaded at the beginning of an R session:
+
+
+```{r, message=FALSE}
+library(sf)
+library(raster)
+library(spData)
+```
+
+---
+
+## The structure of spatial data in sf
+
+- Let's look at a dataset representing the United States:
+
+```{r}
+us_states[1:3, 1:2]
+```
+
+## Spatial data and the tidyverse
+
+- Works just like normal data in the tidyverse
+
+- Beware of name conflicts though:
+
+```{r}
+library(tidyverse)
+```
+
+---
+
+# Data manipulation in the tidyverse (dplyr)
+
+- **dplyr** provides a 'A grammar for data manipulation'
+- It allows arguments to be 'piped', e.g.:
+
+```{r}
+states1 = us_states %>%
+  slice(1)
+states2 = us_states %>% 
+  filter(grepl(pattern = "^A", x = NAME)) %>% 
+  top_n(n = 2, wt = total_pop_15)
+```
+
+
+---
+
+# Tidyverse pitfall example: binding rows
+
+
+```{r, eval=FALSE}
+rbind(states1, states2)     # works
+bind_rows(states1, states2) # fails
+```
+
+```
+Error in .subset2(x, i, exact = exact) : 
+  attempt to select less than one element in get1index
+```
+
+Work-around (see article in [geocompr.github.io/geocompkg](https://geocompr.github.io/geocompkg/articles/tidyverse-pitfalls.html) for more pitfalls):
+
+```{r, warning=FALSE}
+us_data = st_set_geometry(us_states, NULL)
+d = bind_rows(us_data, us_data)
+d_sf = st_sf(d, geometry = c(us_states$geom, us_states$geom))
+```
+
+---
+
+
+## Making maps with R
+
+- See Chapter 8 on Making maps with R, at: [geocompr.robinlovelace.net/adv-map.html](https://geocompr.robinlovelace.net/adv-map.html)
+
+
+---
+
+## Now over to you
+
+- Get into groups of 2-5 and say hello
+  - What is each person's name?
+  - How much R experience do you have?
+  - What do you hope to get out of today?
+
+- Take a look around RStudio
+  - Create a new project
+  - Try in install a new package
+  - Load the packages we'll use in this practical
+
+- The practical
+  - Navigate to [geocompr.robinlovelace.net](https://geocompr.robinlovelace.net/adv-map.html)
+  - Answer the first 3 questions of Chapter 3
+  - Take a look at chapter 2
+  - Answer questions 4:6 in Chapter 3
+  - Take a look at Chapter 8 and make some maps!
+  - Challenge: answer all questions in Chapter 3
+  - Bonus (advanced): make a pull request that improves the book
+  
