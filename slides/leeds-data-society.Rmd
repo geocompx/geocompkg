@@ -237,3 +237,14 @@ d_sf = st_sf(d, geometry = c(us_states$geom, us_states$geom))
   - Challenge: answer all questions in Chapter 3
   - Bonus (advanced): make a pull request that improves the book
   
+---
+  
+## Final thing
+
+A group of us are thinking about starting-up the Leeds R Users group.
+
+- For academic and non-academic researchers
+- Interested in getting involved?
+
+Email: r.users.leeds@gmail.com
+  
