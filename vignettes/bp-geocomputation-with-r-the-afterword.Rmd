@@ -87,7 +87,7 @@ The book has been greatly improved by countless interactions with members of the
 Even the cover was provided by the community:
 we launched an open book cover image competition, which was won by [Marco Sciaini](https://twitter.com/msciain)^[The creation of book cover image is fully reproducible. The code can be found at https://github.com/Robinlovelace/geocompr/blob/master/code/frontcover.R.].
 
-```{r echo=FALSE, eval=TRUE}
+```{r echo=FALSE, eval=TFALS}
 blogdown::shortcode("tweet", "1031565482397196289")
 ```
 
