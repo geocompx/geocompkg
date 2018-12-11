@@ -47,12 +47,12 @@ pkgdown::build_home()
 # build vignettes one by one, e.g.
 pkgdown::build_article("sea-level-rise")
 
-# pkgdown::build_articles()
-# # build all articles
-# articles = list.files(path = "vignettes/", pattern = ".Rmd")
-# articles = gsub(pattern = ".Rmd", replacement = "", articles)
-# for(i in articles) {
-#   pkgdown::build_article(i)
-# }
+pkgdown::build_articles()
+# build all articles
+articles = list.files(path = "vignettes/", pattern = ".Rmd")
+articles = gsub(pattern = ".Rmd", replacement = "", articles)
+for(i in articles) {
+  pkgdown::build_article(i)
+}
 ```
 
