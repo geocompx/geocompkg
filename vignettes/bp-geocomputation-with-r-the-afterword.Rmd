@@ -1,0 +1,121 @@
+---
+title: "Geocomputation with R - the afterword"
+subtitle: "For [Geocomputation with R](https://github.com/Robinlovelace/geocompr)"
+author: "Robin Lovelace, Jakub Nowosad, Jannes Muenchow"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, echo = FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
+```
+
+I am extremely proud to announce that [Geocomputation with R](https://geocompr.robinlovelace.net/) is complete. 
+It took [Robin](https://twitter.com/robinlovelace), [Jannes](http://www.geographie.uni-jena.de/en/Muenchow.html), and me almost 2 years of collaborative planning, writing, refinement, and deployment to make the book available for anyone interested in open source, command-line approaches for handling geographic data.
+We're very happy that it's now ready to present to the world (and that physical copies of the book can be pre-ordered already from [Amazon](https://www.amazon.com/Geocomputation-Chapman-Hall-Robin-Lovelace/dp/1138304514/), [Wordery](https://wordery.com/geocomputation-with-r-robin-lovelace-9781138304512) and direct from the publisher, [CRC Press](https://www.crcpress.com/Geocomputation-with-R/Lovelace-Nowosad-Munchow/p/book/9781138304512)).
+
+In addition to celebrating this achievement (🎉) the purpose of this blog post is to share important information about extra materials and how to get involved.
+I also want to provide some context: how and why did we end-up writing an open source book (the front cover of which is shown below)?
+
+<!-- ![](book_cover.jpg) -->
+
+# The book's beginnings
+
+During my PhD, I spent a lot of time learning R and applying it to my research. 
+That was also a period when I had an opportunity to teach several courses, and some of them, including Geostatistics, where heavily based on R and its spatial components.
+
+I had met Robin Lovelace in June 2016.
+He was in Poznan, Poland to give a short course on spatial data analysis in R for undergraduate and graduate students at the Adam Mickiewicz University, while at that time I was just a few weeks before my PhD thesis defense.
+We spent some time exchanging our own experiences about spatial R and our approaches to teaching it. 
+During this talks, we found that we shared an idea of writing a book.
+A book explaining how to use R for spatial data analysis, where the main audience is ourselves just a few years before.
+
+Less than a year later, we have signed a contract and formally started writing the Geocomputation with R book (aka #geocompr).
+You can read about it more in [my first blog post about the book](/post/2017/geocompr/).
+
+# Geocompr team
+
+A few months into making the book, Robin and I were contacted by a person we never met before, a postdoc at Friedrich-Schiller-University Jena and an author of [the RQGIS package](https://cran.r-project.org/web/packages/RQGIS/index.html). 
+The 'first contact' seems to have been in the [RQGIS](https://github.com/jannes-m/RQGIS/issues/66#issuecomment-304695465) issue tracker, where Robin and I commented saying that we'd like to mention the package in the book, hoping for feedback.
+We ended up with much more than that!
+
+Jannes Muenchow, the mysterious figure mentioned above, firstly gave us a concise idea about a chapter showing how to bridge R with traditional geographic information system software and next he wrote a high-quality piece of text and code. 
+You can read about it more in [a blog post about from about a year ago](/post/geocomputation-with-r-the-intermission/).
+
+# International collaboration
+
+An interesting feature of working on Geocomputation with R was that it was coordinated remotely across 3 countries and between 3 people who had never previously worked together.
+We worked as a very close team though, using [github](https://github.com/Robinlovelace/geocompr) to track our progress,  [gitter](https://gitter.im/) for almost daily communication, and [Skype](https://www.skype.com/en/) to have a group chat every several weeks. 
+The whole team finally met during [the GEOSTAT 2018 summer school](http://geostat-course.org/2018).
+
+<!-- ![](authors-in-czech-republic.jpg) -->
+
+# The book structure
+
+Our ideas about the geocompr structure evolved over time. 
+Finally, we ended up with 15 chapters divided into three parts.
+
+The first part is [Foundations](https://geocompr.robinlovelace.net/spatial-class.html), which focuses on information needed to get a firm grasp on reading and writing spatial data, its representations, and how to operate it.
+It is aimed at intermediate-to-advanced R users interested in spatial data analysis and R beginners who have prior experience with geographic data.
+
+The second part is [Extensions](https://geocompr.robinlovelace.net/adv-map.html).
+These chapters are aimed at people who feel relatively confident about spatial R and wants to extend their skills to new areas.
+It shows how to make static and interactive maps, connect R to GIS software, write spatial functions, and apply robust machine learning methods on spatial data.
+
+The third part is Applications.
+In these chapters, we show how spatial R skills can be used to solve practical problems: how to generate strong evidence for investment in sustainable transport in cities? How to locate stores most effectively using open access data? And how to spatially predict the spatial distribution of plants while accounting for spatial autocorrelation? 
+Each chapter is based on a concrete case study using real data from England, Germany, and Peru, to demonstrate how the methods are applicable to a wide range of problems across the world.
+
+# Additional materials
+
+As a bonus, there is much additional material, providing additional depth in particular topic areas and solutions to the exercises at the end of each chapter.
+These can all be found at [geocompr.github.io/](https://geocompr.github.io/), which contains links to presentations, [articles](https://geocompr.github.io/geocompkg/articles/) and more content related to Geocomputation with R.
+Of particular interest may be [the geocompr workshop at eRum 2018](https://geocompr.github.io/workshops/) and an extended article on [geographic data and the tidyverse: pitfalls to avoid](https://geocompr.github.io/geocompkg/articles/tidyverse-pitfalls.html).
+
+Key features of the book are exercises at the end of each chapter.
+Solutions to these can be found as [vignettes](https://geocompr.github.io/geocompkg/articles/) in our metapackage **geocompkg**.
+It is also a place for extended examples for several methods and functions mentioned in Geocomputation with R, and other miscellaneous materials related to Geocomputation with R.
+
+# Community
+
+The book has been greatly improved by countless interactions with members of the wider R/geo communities.
+32 people (including ourselves) have so far contributed directly via pull requests (see the [contributors page on GitHub](https://github.com/Robinlovelace/geocompr/graphs/contributors)). 
+Even the cover was provided by the community:
+we launched an open book cover image competition, which was won by [Marco Sciaini](https://twitter.com/msciain)^[The creation of book cover image is fully reproducible. The code can be found at https://github.com/Robinlovelace/geocompr/blob/master/code/frontcover.R.].
+
+```{r echo=FALSE, eval=TRUE}
+blogdown::shortcode("tweet", "1031565482397196289")
+```
+
+A vital part of any rigorous work is a review.
+Our publisher CRC Press organized 4 rounds of technical review, for each of the book's 3 parts, and then a final round for the last chapters.
+These are documented in the following GitHub issues:
+
+1. The first review process, for (old) chapters 1 to 5 ([#222](https://github.com/Robinlovelace/geocompr/issues/222))
+1. The second round of reviews, for (old) chapters 5, 7 and 8 ([#221](https://github.com/Robinlovelace/geocompr/issues/221))
+1. The third round of reviews, for (old) chapters 9, 11 and 13 ([#244](https://github.com/Robinlovelace/geocompr/issues/244), with 95 specific issues addressed!)
+1. The fourth and final round of reviews for the remaining chapters ([#302](https://github.com/Robinlovelace/geocompr/issues/302))
+
+As can be seen from the reviewer comments, and our responses to them, the technical review process had a major impact on the book.
+For anyone else writing a book: we recommend you implement a review process, even if it is an internal review process, as illustrated by our [internal review](https://github.com/robinlovelace/geocompr/issues?utf8=%E2%9C%93&q=is%3Aissue+review) of the geomarketing chapter.
+We think putting reviews out there in the open has advantages from learning and accountability perspectives, similar to those achieved by rOpenSci's peer review process (see [github.com/ropensci/software-review](https://github.com/ropensci/software-review/issues)).
+
+Our work was also heavily influenced by important figures in the community, including Roger Bivand (who wrote the book's [foreword](https://geocompr.robinlovelace.net/foreword.html)), Edzer Pebesma, Robert Hijmans, just to mentioned a few.
+We heartily thank more people, and the community as a whole, in the [acknowledgments](https://geocompr.robinlovelace.net/preface.html#acknowledgements).
+Equally, we try to contribute to the community.
+This is documented in a list of [contributions including pointing issue reports and pull requests that resulted from the book](https://github.com/Robinlovelace/geocompr/blob/master/our-impact.csv). 
+
+# Where to find the book
+
+Geocomputation with R is hosted by netlify at [geocompr.robinlovelace.net/](https://geocompr.robinlovelace.net/), which is free for anyone around the world to use non-commercially, under the terms of the [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License](https://creativecommons.org/licenses/by-nc-nd/4.0/).
+Nothing beats a physical book though, and a hardback copy of the book will be published in March 2019.
+Pre-order it in hardback from [CRC Press](https://www.crcpress.com/Geocomputation-with-R/Lovelace-Nowosad-Munchow/p/book/9781138304512), [Amazon.com](https://www.amazon.com/Geocomputation-Chapman-Hall-Robin-Lovelace/dp/1138304514/">Amazon.com), [Amazon.co.uk](https://www.amazon.co.uk/Geocomputation-Chapman-Hall-Robin-Lovelace/dp/1138304514/">Amazon.co.uk).
+
+Overall, writing this book has been an amazing experience.
+All three authors, and I think many others, have learned a huge amount, and advocate other would-be authors to see what is possible using new technologies such as **bookdown** (and the [accompanying website which hosts Geocomputation with R alongside other open source books](https://bookdown.org/)) and GitHub/GitLab.
+Removing barriers to information, especially teaching materials on how to use open source software, is an important task for progress.
+We hope that Geocomputation with R contributes to this objective and encourages others to get involved.
