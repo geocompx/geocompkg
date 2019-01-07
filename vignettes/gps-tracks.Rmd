@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
 
 ## Introduction
 
-Perhaps the most ubiquitous type of geographic information is the continuous stream of data churned-out by GPS devices.
+Perhaps the most ubiquitous type of geographic information is the continuous stream of data produced by GPS devices.
 Global Positioning System (GPS) devices are now in everything from watches to cars and, of course, smartphones.
 This means that GPS datasets have the ability to track a large proportion of the world's population.
 Although there are privacy concerns, when appropriately anonymized and aggregated, GPS datasets have the potential to help tackle the issues raised in Chapter [12](http://geocompr.robinlovelace.net/transport.html) of Gecomputation with R:
@@ -26,23 +26,31 @@ to design healthy transport systems in which walking and cycling overtake cars a
 
 ## Loading GPS data
 
-But how to load GPS data?
-Because GPS traces are vector datasets, we use **sf** to load them:
+The standard format of GPS data is the [.gpx file](https://en.wikipedia.org/wiki/GPS_Exchange_Format).
+GPS traces are vector datasets that are well-support by **sf** (see Chapter [2](https://geocompr.robinlovelace.net/spatial-class.html) of the book), so we'll use this package to process them:
 
 ```{r}
 library(sf)
 ```
 
-
 As with any dataset the first stage is to identify the source.
-For my own GPS data I use the open source Android app Orux to log my routes which I then transfer onto my computer, into the `Gps` folder in my home directory.
-The following code allows me to load the route I took on the 30^th^ August 2018, for example (not run):
+A great source of GPS data is OpenStreetMap (OSM).
+We'll use publicly available .gpx files uploaded to OSM as the basis of this tutorial.^[
+For saving your own GPS data, we recommend using an open source Android app such as [Orux](https://www.oruxmaps.com/cs/en/), [owntracks](https://github.com/owntracks/android) or [osmand](https://osmand.net/features/trip-recording-plugin).
+These can then be transferred onto your computer and, if you want to support the community, uploaded to OSM.
+]
+For the purpose of this tutorial we will use a .gpx file uploaded to OSM, that represents travel to the [Institute for Geoinformatics, Universität Münster](https://www.uni-muenster.de/Geoinformatics/en/):
 
-```{r, eval=FALSE}
-file_gps = "~/Gps/2018-08-30 1515__20180830_1515.gpx"
-st_layers(file_gps)
-r = st_read(file_gps, layer = "tracks")
-plot(r)
-mapview::mapview(r)
+```{r}
+u = "https://www.openstreetmap.org/trace/2886173/data"
+download.file(url = u, destfile = "trace.gpx")
+st_layers("trace.gpx")
+```
+
+The previous code code chunk downloads the trace from OSM and queries the 'layers' that can be imported (note there are 5, but only 'tracks' and 'track_points' are available).
+
+```{r}
+r = st_read("trace.gpx", layer = "tracks")
+plot(r$geometry)
 ```
 
