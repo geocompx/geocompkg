@@ -65,7 +65,7 @@
       <h1>Chapter 5: Geometric operations</h1>
                         <h4 class="author">Robin Lovelace, Jakub Nowosad, Jannes Muenchow</h4>
             
-            <h4 class="date">2018-12-10</h4>
+            <h4 class="date">2019-01-07</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/geocompr/geocompkg/blob/master/vignettes/solutions05.Rmd"><code>vignettes/solutions05.Rmd</code></a></small>
       <div class="hidden name"><code>solutions05.Rmd</code></div>
@@ -101,7 +101,9 @@
 </ul>
 </li>
 </ol>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(rmapshaper<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/rmapshaper/topics/ms_simplify">ms_simplify</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(nz), <span class="dt">keep =</span> <span class="fl">0.5</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(rmapshaper<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/rmapshaper/topics/ms_simplify">ms_simplify</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(nz), <span class="dt">keep =</span> <span class="fl">0.5</span>))</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co">#&gt; Warning in fun(libname, pkgname): rgeos: versions of GEOS runtime 3.7.0-CAPI-1.11.0</span></a>
+<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="co">#&gt; and GEOS at installation 3.6.2-CAPI-1.10.2differ</span></a></code></pre></div>
 <p><img src="solutions05_files/figure-html/unnamed-chunk-2-1.png" width="700"></p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(rmapshaper<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/rmapshaper/topics/ms_simplify">ms_simplify</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(nz), <span class="dt">keep =</span> <span class="fl">0.05</span>))</a></code></pre></div>
 <p><img src="solutions05_files/figure-html/unnamed-chunk-2-2.png" width="700"></p>
@@ -130,12 +132,11 @@
 <a class="sourceLine" id="cb12-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/sfc">st_sfc</a></span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb12-6" data-line-number="6"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_cast">st_cast</a></span>(<span class="st">"POLYGON"</span>)</a>
 <a class="sourceLine" id="cb12-7" data-line-number="7"><span class="co">#&gt; Warning in st_cast.MULTIPOLYGON(X[[i]], ...): polygon from first part only</span></a>
-<a class="sourceLine" id="cb12-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb12-9" data-line-number="9"><span class="co">#&gt; Warning in st_cast.MULTIPOLYGON(X[[i]], ...): polygon from first part only</span></a>
-<a class="sourceLine" id="cb12-10" data-line-number="10">nz_simple_multipoly =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/geos_unary">st_simplify</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(nz), <span class="dt">dTolerance =</span> <span class="dv">10000</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb12-11" data-line-number="11"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/sfc">st_sfc</a></span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb12-12" data-line-number="12"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_cast">st_cast</a></span>(<span class="st">"MULTIPOLYGON"</span>)</a>
-<a class="sourceLine" id="cb12-13" data-line-number="13"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(nz_simple_poly)</a></code></pre></div>
+<a class="sourceLine" id="cb12-8" data-line-number="8"><span class="co">#&gt; Warning in st_cast.MULTIPOLYGON(X[[i]], ...): polygon from first part only</span></a>
+<a class="sourceLine" id="cb12-9" data-line-number="9">nz_simple_multipoly =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/geos_unary">st_simplify</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(nz), <span class="dt">dTolerance =</span> <span class="dv">10000</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb12-10" data-line-number="10"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/sfc">st_sfc</a></span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb12-11" data-line-number="11"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_cast">st_cast</a></span>(<span class="st">"MULTIPOLYGON"</span>)</a>
+<a class="sourceLine" id="cb12-12" data-line-number="12"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(nz_simple_poly)</a></code></pre></div>
 <p><img src="solutions05_files/figure-html/unnamed-chunk-2-10.png" width="700"></p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/length">length</a></span>(nz_simple_poly)</a>
 <a class="sourceLine" id="cb13-2" data-line-number="2"><span class="co">#&gt; [1] 16</span></a>
@@ -169,14 +170,18 @@
 </ol>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1">world_sfc =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(world)</a>
 <a class="sourceLine" id="cb16-2" data-line-number="2">world_sfc_mirror =<span class="st"> </span>world_sfc <span class="op">*</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span>, <span class="dv">-1</span>)</a>
-<a class="sourceLine" id="cb16-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(world_sfc)</a></code></pre></div>
+<a class="sourceLine" id="cb16-3" data-line-number="3"><span class="co">#&gt; Warning in mapply(function(x, y) {: longer argument not a multiple of</span></a>
+<a class="sourceLine" id="cb16-4" data-line-number="4"><span class="co">#&gt; length of shorter</span></a>
+<a class="sourceLine" id="cb16-5" data-line-number="5"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(world_sfc)</a></code></pre></div>
 <p><img src="solutions05_files/figure-html/unnamed-chunk-5-1.png" width="700"></p>
 <div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(world_sfc_mirror)</a></code></pre></div>
 <p><img src="solutions05_files/figure-html/unnamed-chunk-5-2.png" width="700"></p>
 <div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1"></a>
 <a class="sourceLine" id="cb18-2" data-line-number="2">us_states_sfc =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(us_states)</a>
 <a class="sourceLine" id="cb18-3" data-line-number="3">us_states_sfc_mirror =<span class="st"> </span>us_states_sfc <span class="op">*</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span>, <span class="dv">-1</span>)</a>
-<a class="sourceLine" id="cb18-4" data-line-number="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(us_states_sfc)</a></code></pre></div>
+<a class="sourceLine" id="cb18-4" data-line-number="4"><span class="co">#&gt; Warning in mapply(function(x, y) {: longer argument not a multiple of</span></a>
+<a class="sourceLine" id="cb18-5" data-line-number="5"><span class="co">#&gt; length of shorter</span></a>
+<a class="sourceLine" id="cb18-6" data-line-number="6"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(us_states_sfc)</a></code></pre></div>
 <p><img src="solutions05_files/figure-html/unnamed-chunk-5-3.png" width="700"></p>
 <div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(us_states_sfc_mirror)</a></code></pre></div>
 <p><img src="solutions05_files/figure-html/unnamed-chunk-5-4.png" width="700"></p>
@@ -230,7 +235,7 @@
 <a class="sourceLine" id="cb23-5" data-line-number="5"><span class="co">#&gt; Simple feature collection with 1 feature and 7 fields</span></a>
 <a class="sourceLine" id="cb23-6" data-line-number="6"><span class="co">#&gt; geometry type:  MULTILINESTRING</span></a>
 <a class="sourceLine" id="cb23-7" data-line-number="7"><span class="co">#&gt; dimension:      XY</span></a>
-<a class="sourceLine" id="cb23-8" data-line-number="8"><span class="co">#&gt; bbox:           xmin: -2031905 ymin: -2116610 xmax: 2514262 ymax: 731601.3</span></a>
+<a class="sourceLine" id="cb23-8" data-line-number="8"><span class="co">#&gt; bbox:           xmin: 1950825 ymin: -415971.5 xmax: 1969385 ymax: -393947.3</span></a>
 <a class="sourceLine" id="cb23-9" data-line-number="9"><span class="co">#&gt; epsg (SRID):    2163</span></a>
 <a class="sourceLine" id="cb23-10" data-line-number="10"><span class="co">#&gt; proj4string:    +proj=laea +lat_0=45 +lon_0=-100 +x_0=0 +y_0=0 +a=6370997 +b=6370997 +units=m +no_defs</span></a>
 <a class="sourceLine" id="cb23-11" data-line-number="11"><span class="co">#&gt;   GEOID                 NAME REGION          AREA total_pop_10</span></a>
@@ -241,7 +246,7 @@
 <a class="sourceLine" id="cb23-16" data-line-number="16"><span class="co">#&gt; Simple feature collection with 1 feature and 7 fields</span></a>
 <a class="sourceLine" id="cb23-17" data-line-number="17"><span class="co">#&gt; geometry type:  MULTILINESTRING</span></a>
 <a class="sourceLine" id="cb23-18" data-line-number="18"><span class="co">#&gt; dimension:      XY</span></a>
-<a class="sourceLine" id="cb23-19" data-line-number="19"><span class="co">#&gt; bbox:           xmin: -2031905 ymin: -2116610 xmax: 2514262 ymax: 731601.3</span></a>
+<a class="sourceLine" id="cb23-19" data-line-number="19"><span class="co">#&gt; bbox:           xmin: -630041.5 ymin: -2116610 xmax: 621671.6 ymax: -939313.8</span></a>
 <a class="sourceLine" id="cb23-20" data-line-number="20"><span class="co">#&gt; epsg (SRID):    2163</span></a>
 <a class="sourceLine" id="cb23-21" data-line-number="21"><span class="co">#&gt; proj4string:    +proj=laea +lat_0=45 +lon_0=-100 +x_0=0 +y_0=0 +a=6370997 +b=6370997 +units=m +no_defs</span></a>
 <a class="sourceLine" id="cb23-22" data-line-number="22"><span class="co">#&gt;   GEOID  NAME REGION            AREA total_pop_10 total_pop_15     borders</span></a>
@@ -290,7 +295,7 @@
 </ul>
 </li>
 </ol>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" data-line-number="1">nz_height3100 =<span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(nz_height, elevation <span class="op">&gt;</span><span class="st"> </span><span class="dv">3100</span>)</a>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" data-line-number="1">nz_height3100 =<span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(nz_height, elevation <span class="op">&gt;</span><span class="st"> </span><span class="dv">3100</span>)</a>
 <a class="sourceLine" id="cb30-2" data-line-number="2">new_graticule =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_graticule">st_graticule</a></span>(nz_height3100, <span class="dt">datum =</span> <span class="dv">2193</span>)</a>
 <a class="sourceLine" id="cb30-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(nz_height3100), <span class="dt">graticule =</span> new_graticule, <span class="dt">axes =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 <p><img src="solutions05_files/figure-html/unnamed-chunk-11-1.png" width="700"></p>
@@ -335,7 +340,7 @@
 <a class="sourceLine" id="cb34-6" data-line-number="6"><span class="co">#&gt; 1  1  clay</span></a>
 <a class="sourceLine" id="cb34-7" data-line-number="7"><span class="co">#&gt; 2  2  silt</span></a>
 <a class="sourceLine" id="cb34-8" data-line-number="8"><span class="co">#&gt; 3  3  sand</span></a>
-<a class="sourceLine" id="cb34-9" data-line-number="9">clay =<span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(grain_poly, layer <span class="op">==</span><span class="st"> </span><span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb34-9" data-line-number="9">clay =<span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(grain_poly, layer <span class="op">==</span><span class="st"> </span><span class="dv">1</span>)</a>
 <a class="sourceLine" id="cb34-10" data-line-number="10"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(clay)</a></code></pre></div>
 <p><img src="solutions05_files/figure-html/unnamed-chunk-13-1.png" width="700"></p>
 <p>advantages: - can be used to subset other vector objects - can do affine transformations and use sf/dplyr verbs disadvantages: - better consistency, fast processing on some operations, functions developed for some domains</p>

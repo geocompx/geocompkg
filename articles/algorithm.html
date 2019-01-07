@@ -65,7 +65,7 @@
       <h1>Algorithms Extended</h1>
                         <h4 class="author">Robin Lovelace</h4>
             
-            <h4 class="date">2018-12-10</h4>
+            <h4 class="date">2019-01-07</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/geocompr/geocompkg/blob/master/vignettes/algorithm.Rmd"><code>vignettes/algorithm.Rmd</code></a></small>
       <div class="hidden name"><code>algorithm.Rmd</code></div>
@@ -107,8 +107,8 @@
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">ind =<span class="st"> </span>decido<span class="op">::</span><span class="kw">earcut</span>(poly_mat)</a>
 <a class="sourceLine" id="cb8-2" data-line-number="2">decido<span class="op">::</span><span class="kw">plot_ears</span>(poly_mat, <span class="dt">idx =</span> ind)</a>
 <a class="sourceLine" id="cb8-3" data-line-number="3">i =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/seq">seq</a></span>(<span class="dv">1</span>, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/length">length</a></span>(ind), <span class="dt">by =</span> <span class="dv">3</span>)</a>
-<a class="sourceLine" id="cb8-4" data-line-number="4">i_list =<span class="st"> </span>purrr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/purrr/topics/map">map</a></span>(i, <span class="op">~</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(.<span class="op">:</span>(.<span class="op">+</span><span class="dv">2</span>), .))</a>
-<a class="sourceLine" id="cb8-5" data-line-number="5">T_all =<span class="st"> </span>purrr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/purrr/topics/map">map</a></span>(i_list, <span class="op">~</span>poly_mat[ind[.], ])</a></code></pre></div>
+<a class="sourceLine" id="cb8-4" data-line-number="4">i_list =<span class="st"> </span>purrr<span class="op">::</span><span class="kw"><a href="https://purrr.tidyverse.org/reference/map.html">map</a></span>(i, <span class="op">~</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(.<span class="op">:</span>(.<span class="op">+</span><span class="dv">2</span>), .))</a>
+<a class="sourceLine" id="cb8-5" data-line-number="5">T_all =<span class="st"> </span>purrr<span class="op">::</span><span class="kw"><a href="https://purrr.tidyverse.org/reference/map.html">map</a></span>(i_list, <span class="op">~</span>poly_mat[ind[.], ])</a></code></pre></div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

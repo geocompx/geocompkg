@@ -65,7 +65,7 @@
       <h1>Geocomputation for sea level research</h1>
                         <h4 class="author">Robin Lovelace, Jakub Nowosad, Jannes Muenchow</h4>
             
-            <h4 class="date">2018-12-10</h4>
+            <h4 class="date">2019-01-07</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/geocompr/geocompkg/blob/master/vignettes/sea-level-rise.Rmd"><code>vignettes/sea-level-rise.Rmd</code></a></small>
       <div class="hidden name"><code>sea-level-rise.Rmd</code></div>
@@ -97,7 +97,7 @@
 <a class="sourceLine" id="cb1-8" data-line-number="8"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(raster)</a></code></pre></div>
 <pre><code>## Loading required package: sp</code></pre>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(sf)</a></code></pre></div>
-<pre><code>## Linking to GEOS 3.6.2, GDAL 2.2.3, PROJ 4.9.3</code></pre>
+<pre><code>## Linking to GEOS 3.7.0, GDAL 2.3.2, PROJ 5.2.0</code></pre>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="co"># load data</span></a>
 <a class="sourceLine" id="cb5-2" data-line-number="2"><span class="cf">if</span>(<span class="op">!</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/files2">dir.exists</a></span>(<span class="st">"data"</span>)) {</a>
 <a class="sourceLine" id="cb5-3" data-line-number="3">  <span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/download.file">download.file</a></span>(<span class="st">"https://github.com/geocompr/geostats_18/releases/download/0.1/data.zip"</span>, <span class="st">"data.zip"</span>)</a>
@@ -109,7 +109,7 @@
 <pre><code>## Warning: plotting the first 9 out of 10 attributes; use max.plot = 10 to
 ## plot all</code></pre>
 <p><img src="sea-level-rise_files/figure-html/unnamed-chunk-5-1.png" width="700"></p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">poland =<span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(spData<span class="op">::</span>world, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/grep">grepl</a></span>(<span class="dt">pattern =</span> <span class="st">"Pola"</span>, name_long))</a>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">poland =<span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(spData<span class="op">::</span>world, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/grep">grepl</a></span>(<span class="dt">pattern =</span> <span class="st">"Pola"</span>, name_long))</a>
 <a class="sourceLine" id="cb8-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(poland))</a></code></pre></div>
 <p><img src="sea-level-rise_files/figure-html/unnamed-chunk-5-2.png" width="700"></p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="co"># testing elevatr (from readme / vignette)</span></a>

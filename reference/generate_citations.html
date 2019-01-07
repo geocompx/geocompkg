@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • geocompkg | metapackage for the book Gecomputation with R</title>
+<title>Cite R packages — generate_citations • geocompkg | metapackage for the book Gecomputation with R</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,7 +30,10 @@
 
 
 
-<meta property="og:title" content="Function reference" />
+<meta property="og:title" content="Cite R packages — generate_citations" />
+
+<meta property="og:description" content="See https://github.com/csgillespie/efficientR/blob/master/appendix.Rmd" />
+<meta name="twitter:card" content="summary" />
 
 
 
@@ -47,7 +50,7 @@
   </head>
 
   <body>
-    <div class="container template-reference-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -91,86 +94,28 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Reference</h1>
+    <h1>Cite R packages</h1>
+    <small class="dont-index">Source: <a href='https://github.com/geocompr/geocompkg/blob/master/R/generate-citations.R'><code>R/generate-citations.R</code></a></small>
+    <div class="hidden name"><code>generate_citations.Rd</code></div>
     </div>
 
-    <table class="ref-index">
+    <div class="ref-description">
+    
+    <p>See https://github.com/csgillespie/efficientR/blob/master/appendix.Rmd</p>
+    
+    </div>
 
-    <colgroup>
-      
-      <col class="alias" />
-      <col class="title" />
-    </colgroup>
+    <pre class="usage"><span class='fu'>generate_citations</span>()</pre>
+        
 
-    <tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      <tr>
-        
-        <td>
-          <p><code><a href="add_impact.html">add_impact()</a></code> </p>
-        </td>
-        <td><p>Return details of issues, with input an GitHub issue URL</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="dl_citations.html">dl_citations()</a></code> </p>
-        </td>
-        <td><p>Download citations
-# Dependes on a zotero API key (e.g. stored in Sys.getenv("ZOTERO")):
-# dl_citations(f = "refs.bib", 216746, Sys.getenv("ZOTERO"), collection = "VJS7CTCC")</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="generate_book_stats.html">generate_book_stats()</a></code> </p>
-        </td>
-        <td><p>Generate a data frame of book statistics per chapter</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="generate_chapter_code.html">generate_chapter_code()</a></code> </p>
-        </td>
-        <td><p>Extracts R code from each chapter and dumps it in the code folder</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="generate_citations.html">generate_citations()</a></code> </p>
-        </td>
-        <td><p>Cite R packages</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="save_print_quality.html">save_print_quality()</a></code> </p>
-        </td>
-        <td><p># example for tmap
-library(tmap)
-m = qtm(world) +
-  tm_shape(urban_agglomerations) +
-  tm_dots(size = "population_millions") +
-  tm_facets(by = "year")
-f = "/tmp/urban-animated-print.png"</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="st_read_sp.html">st_read_sp()</a></code> </p>
-        </td>
-        <td><p>Fast reading of spatial data into Spatial classes</p></td>
-      </tr>
-    </tbody>
-    </table>
   </div>
-
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#section-all-functions">All functions</a></li>
-    </ul>
+                </ul>
+
   </div>
 </div>
 
