@@ -138,12 +138,12 @@
 <a class="sourceLine" id="cb2-48" data-line-number="48"><span class="co">#&gt; It has 10 fields</span></a>
 <a class="sourceLine" id="cb2-49" data-line-number="49">b1</a>
 <a class="sourceLine" id="cb2-50" data-line-number="50"><span class="co">#&gt; # A tibble: 2 x 10</span></a>
-<a class="sourceLine" id="cb2-51" data-line-number="51"><span class="co">#&gt;   expression      min     mean   median      max `itr/sec` mem_alloc  n_gc</span></a>
-<a class="sourceLine" id="cb2-52" data-line-number="52"><span class="co">#&gt;   &lt;bch:expr&gt; &lt;bch:tm&gt; &lt;bch:tm&gt; &lt;bch:tm&gt; &lt;bch:tm&gt;     &lt;dbl&gt; &lt;bch:byt&gt; &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb2-53" data-line-number="53"><span class="co">#&gt; 1 sf           7.83ms   7.86ms   7.87ms   7.88ms    127.     508.8KB     0</span></a>
-<a class="sourceLine" id="cb2-54" data-line-number="54"><span class="co">#&gt; 2 sp         307.64ms  324.1ms  323.1ms 341.56ms      3.09    17.5MB     0</span></a>
-<a class="sourceLine" id="cb2-55" data-line-number="55"><span class="co">#&gt; # … with 2 more variables: n_itr &lt;int&gt;, total_time &lt;bch:tm&gt;</span></a></code></pre></div>
-<p>The benchmark ran on an input file (<code>file</code>) and a number of times. It shows that <strong>sf</strong> was 41 times faster than <strong>rgdal</strong> at loading this file.</p>
+<a class="sourceLine" id="cb2-51" data-line-number="51"><span class="co">#&gt;   expression      min    mean  median   max `itr/sec` mem_alloc  n_gc n_itr</span></a>
+<a class="sourceLine" id="cb2-52" data-line-number="52"><span class="co">#&gt;   &lt;bch:expr&gt; &lt;bch:tm&gt; &lt;bch:t&gt; &lt;bch:t&gt; &lt;bch&gt;     &lt;dbl&gt; &lt;bch:byt&gt; &lt;dbl&gt; &lt;int&gt;</span></a>
+<a class="sourceLine" id="cb2-53" data-line-number="53"><span class="co">#&gt; 1 sf           8.42ms  11.9ms  10.3ms  17ms     83.9    508.8KB     0     3</span></a>
+<a class="sourceLine" id="cb2-54" data-line-number="54"><span class="co">#&gt; 2 sp         301.23ms 312.6ms 312.2ms 324ms      3.20    17.5MB     0     3</span></a>
+<a class="sourceLine" id="cb2-55" data-line-number="55"><span class="co">#&gt; # … with 1 more variable: total_time &lt;bch:tm&gt;</span></a></code></pre></div>
+<p>The benchmark ran on an input file (<code>file</code>) and a number of times. It shows that <strong>sf</strong> was 26 times faster than <strong>rgdal</strong> at loading this file.</p>
 <p>The relative performance of <code><a href="https://www.rdocumentation.org/packages/sf/topics/st_read">st_read()</a></code> compared with other functions will vary depending on file format and the nature of the data. To illustrate this point, we performed the same operation on a geojson file and found a greater speed saving:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">vector_filepath =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">"shapes/cycle_hire_osm.geojson"</span>, <span class="dt">package =</span> <span class="st">"spData"</span>)</a>
 <a class="sourceLine" id="cb3-2" data-line-number="2">b2 =<span class="st"> </span>bench<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/bench/topics/mark">mark</a></span>(<span class="dt">iterations =</span> <span class="dv">3</span>, <span class="dt">check =</span> <span class="ot">FALSE</span>,</a>
@@ -151,7 +151,7 @@
 <a class="sourceLine" id="cb3-4" data-line-number="4">            <span class="dt">sp =</span> rgdal<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/rgdal/topics/readOGR">readOGR</a></span>(vector_filepath)</a>
 <a class="sourceLine" id="cb3-5" data-line-number="5">)</a>
 <a class="sourceLine" id="cb3-6" data-line-number="6">b2</a></code></pre></div>
-<p>In this case <strong>sf</strong> was around 14 times faster than <strong>rgdal</strong>.</p>
+<p>In this case <strong>sf</strong> was around 13 times faster than <strong>rgdal</strong>.</p>
 </div>
 <div id="writing-vector-data" class="section level1">
 <h1 class="hasAnchor">
@@ -160,22 +160,22 @@
 <a class="sourceLine" id="cb4-2" data-line-number="2">world_sp =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/coerce-methods">as</a></span>(world, <span class="st">"Spatial"</span>)</a></code></pre></div>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.time">system.time</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/rgdal/topics/writeOGR">writeOGR</a></span>(world_sp, <span class="dt">dsn =</span> <span class="st">"world_sp.geojson"</span>, <span class="dt">layer =</span> <span class="st">"world_sp.geojson"</span>, <span class="dt">driver =</span> <span class="st">"GeoJSON"</span>))</a>
 <a class="sourceLine" id="cb5-2" data-line-number="2"><span class="co">#&gt;    user  system elapsed </span></a>
-<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="co">#&gt;   0.052   0.000   0.052</span></a>
+<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="co">#&gt;   0.053   0.000   0.053</span></a>
 <a class="sourceLine" id="cb5-4" data-line-number="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.time">system.time</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/rgdal/topics/writeOGR">writeOGR</a></span>(world_sp, <span class="dt">dsn =</span> <span class="st">"."</span>, <span class="dt">layer =</span> <span class="st">"world_sp"</span>, <span class="dt">driver =</span> <span class="st">"ESRI Shapefile"</span>)) </a>
 <a class="sourceLine" id="cb5-5" data-line-number="5"><span class="co">#&gt;    user  system elapsed </span></a>
-<a class="sourceLine" id="cb5-6" data-line-number="6"><span class="co">#&gt;   0.021   0.005   0.025</span></a>
+<a class="sourceLine" id="cb5-6" data-line-number="6"><span class="co">#&gt;   0.006   0.004   0.010</span></a>
 <a class="sourceLine" id="cb5-7" data-line-number="7"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.time">system.time</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/rgdal/topics/writeOGR">writeOGR</a></span>(world_sp, <span class="dt">dsn =</span> <span class="st">"world_sp.gpkg"</span>, <span class="dt">layer =</span> <span class="st">"world_sp.gpkg"</span>, <span class="dt">driver =</span> <span class="st">"GPKG"</span>))</a>
 <a class="sourceLine" id="cb5-8" data-line-number="8"><span class="co">#&gt;    user  system elapsed </span></a>
 <a class="sourceLine" id="cb5-9" data-line-number="9"><span class="co">#&gt;   0.011   0.000   0.011</span></a>
 <a class="sourceLine" id="cb5-10" data-line-number="10"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.time">system.time</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_write">st_write</a></span>(world, <span class="st">"world_sf.geojson"</span>, <span class="dt">quiet =</span> <span class="ot">TRUE</span>))</a>
 <a class="sourceLine" id="cb5-11" data-line-number="11"><span class="co">#&gt;    user  system elapsed </span></a>
-<a class="sourceLine" id="cb5-12" data-line-number="12"><span class="co">#&gt;    0.06    0.00    0.06</span></a>
+<a class="sourceLine" id="cb5-12" data-line-number="12"><span class="co">#&gt;   0.059   0.000   0.059</span></a>
 <a class="sourceLine" id="cb5-13" data-line-number="13"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.time">system.time</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_write">st_write</a></span>(world, <span class="st">"world_sf.shp"</span>, <span class="dt">quiet =</span> <span class="ot">TRUE</span>)) </a>
 <a class="sourceLine" id="cb5-14" data-line-number="14"><span class="co">#&gt;    user  system elapsed </span></a>
-<a class="sourceLine" id="cb5-15" data-line-number="15"><span class="co">#&gt;   0.010   0.000   0.011</span></a>
+<a class="sourceLine" id="cb5-15" data-line-number="15"><span class="co">#&gt;   0.007   0.003   0.011</span></a>
 <a class="sourceLine" id="cb5-16" data-line-number="16"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.time">system.time</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_write">st_write</a></span>(world, <span class="st">"world_sf.gpkg"</span>, <span class="dt">quiet =</span> <span class="ot">TRUE</span>))</a>
 <a class="sourceLine" id="cb5-17" data-line-number="17"><span class="co">#&gt;    user  system elapsed </span></a>
-<a class="sourceLine" id="cb5-18" data-line-number="18"><span class="co">#&gt;   0.013   0.000   0.013</span></a></code></pre></div>
+<a class="sourceLine" id="cb5-18" data-line-number="18"><span class="co">#&gt;   0.008   0.004   0.013</span></a></code></pre></div>
 </div>
   </div>
 

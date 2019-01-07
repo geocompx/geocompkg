@@ -65,7 +65,7 @@
       <h1>Spatial data and the tidyverse: pitfalls to avoid</h1>
                         <h4 class="author">Robin Lovelace, Jakub Nowosad, Jannes Muenchow</h4>
             
-            <h4 class="date">2018-12-10</h4>
+            <h4 class="date">2019-01-07</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/geocompr/geocompkg/blob/master/vignettes/tidyverse-pitfalls.Rmd"><code>vignettes/tidyverse-pitfalls.Rmd</code></a></small>
       <div class="hidden name"><code>tidyverse-pitfalls.Rmd</code></div>
@@ -112,7 +112,7 @@
 <a href="#loading-spatial-packages" class="anchor"></a>Loading spatial packages</h2>
 <p>Now you know the context and have your R setup sorted, it’s time to begin the practical. Execute the following 2 commands to attach spatial data libraries:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(sf)</a></code></pre></div>
-<pre><code>## Linking to GEOS 3.6.2, GDAL 2.2.3, PROJ 4.9.3</code></pre>
+<pre><code>## Linking to GEOS 3.7.0, GDAL 2.3.2, PROJ 5.2.0</code></pre>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(raster)</a></code></pre></div>
 <pre><code>## Loading required package: sp</code></pre>
 <p>Notice the messages: <strong>sf</strong> uses some C libraries behind the scenes. <strong>raster</strong> depends on the older <strong>sp</strong> package which <strong>sf</strong> replaces (confusing I know!).</p>
@@ -123,18 +123,18 @@
 <a href="#pitfall-name-clashes" class="anchor"></a>Pitfall: name clashes</h2>
 <p>Just loading the tidyverse reveals a pitfall of using spatial data with the tidyverse that affects the <strong>raster</strong> package in particular:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(tidyverse)</a></code></pre></div>
-<pre><code>## ── Attaching packages ──────────────────────────────────────────────────── tidyverse 1.2.1 ──</code></pre>
-<pre><code>## ✔ ggplot2 3.1.0     ✔ purrr   0.2.5
-## ✔ tibble  1.4.2     ✔ dplyr   0.7.8
-## ✔ tidyr   0.8.2     ✔ stringr 1.3.1
-## ✔ readr   1.2.1     ✔ forcats 0.3.0</code></pre>
-<pre><code>## ── Conflicts ─────────────────────────────────────────────────────── tidyverse_conflicts() ──
+<pre><code>## ── Attaching packages ──────────────────────────────────── tidyverse 1.2.1 ──</code></pre>
+<pre><code>## ✔ ggplot2 3.1.0          ✔ purrr   0.2.5     
+## ✔ tibble  2.0.0          ✔ dplyr   0.8.0.9000
+## ✔ tidyr   0.8.2          ✔ stringr 1.3.1     
+## ✔ readr   1.3.1          ✔ forcats 0.3.0</code></pre>
+<pre><code>## ── Conflicts ─────────────────────────────────────── tidyverse_conflicts() ──
 ## ✖ tidyr::extract() masks raster::extract()
 ## ✖ dplyr::filter()  masks stats::filter()
 ## ✖ dplyr::lag()     masks stats::lag()
 ## ✖ dplyr::select()  masks raster::select()</code></pre>
 <p>The first chunk of output shows that the tidyverse is attaching its packages. ✔ yes we want <strong>ggplot2</strong>, ✔ we want <strong>dplyr</strong> etc. But we also get less positive messages. ✖ Doh! there are many conflicts.</p>
-<p>In the context of spatial data this may only be a problem if you use the <strong>raster</strong> package. The final ✖ shows that <strong>dplyr</strong>’s <code><a href="https://www.rdocumentation.org/packages/raster/topics/select">select()</a></code> function has boshed (technically speaking, masked) <strong>raster</strong>’s select function. This can cause issues. To avoid this pitfall we suggest using <code><a href="http://dplyr.tidyverse.org/reference/select.html">dplyr::select()</a></code> and <code><a href="https://www.rdocumentation.org/packages/raster/topics/select">raster::select()</a></code> rather than just <code><a href="https://www.rdocumentation.org/packages/raster/topics/select">select()</a></code> when using this conflicted function name if you use <strong>raster</strong> and the <strong>tidyverse</strong>.</p>
+<p>In the context of spatial data this may only be a problem if you use the <strong>raster</strong> package. The final ✖ shows that <strong>dplyr</strong>’s <code><a href="https://www.rdocumentation.org/packages/raster/topics/select">select()</a></code> function has boshed (technically speaking, masked) <strong>raster</strong>’s select function. This can cause issues. To avoid this pitfall we suggest using <code><a href="https://dplyr.tidyverse.org/reference/select.html">dplyr::select()</a></code> and <code><a href="https://www.rdocumentation.org/packages/raster/topics/select">raster::select()</a></code> rather than just <code><a href="https://www.rdocumentation.org/packages/raster/topics/select">select()</a></code> when using this conflicted function name if you use <strong>raster</strong> and the <strong>tidyverse</strong>.</p>
 </div>
 <div id="pitfall-tidyverse-and-sp-dont-play" class="section level2">
 <h2 class="hasAnchor">

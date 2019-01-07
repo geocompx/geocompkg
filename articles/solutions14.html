@@ -65,7 +65,7 @@
       <h1>Chapter 14: Ecology</h1>
                         <h4 class="author">Robin Lovelace, Jakub Nowosad, Jannes Muenchow</h4>
             
-            <h4 class="date">2018-12-10</h4>
+            <h4 class="date">2019-01-07</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/geocompr/geocompkg/blob/master/vignettes/solutions14.Rmd"><code>vignettes/solutions14.Rmd</code></a></small>
       <div class="hidden name"><code>solutions14.Rmd</code></div>
@@ -1612,8 +1612,8 @@
 <a class="sourceLine" id="cb3-26" data-line-number="26"><span class="co"># adding curvatures to ep</span></a>
 <a class="sourceLine" id="cb3-27" data-line-number="27">ep =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/addLayer">addLayer</a></span>(ep, curvs<span class="op">$</span>pcurvature, curvs<span class="op">$</span>tcurvature)</a>
 <a class="sourceLine" id="cb3-28" data-line-number="28">random_points[, <span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/names">names</a></span>(ep)] =<span class="st"> </span>raster<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/extract">extract</a></span>(ep, <span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/coerce-methods">as</a></span>(random_points, <span class="st">"Spatial"</span>))</a>
-<a class="sourceLine" id="cb3-29" data-line-number="29">elev =<span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(random_points, id <span class="op">%in%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/colnames">rownames</a></span>(pa)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb3-30" data-line-number="30"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>(dem)</a>
+<a class="sourceLine" id="cb3-29" data-line-number="29">elev =<span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(random_points, id <span class="op">%in%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/colnames">rownames</a></span>(pa)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb3-30" data-line-number="30"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/pull.html">pull</a></span>(dem)</a>
 <a class="sourceLine" id="cb3-31" data-line-number="31"><span class="co"># rotating NMDS in accordance with altitude (proxy for humidity)</span></a>
 <a class="sourceLine" id="cb3-32" data-line-number="32">rotnmds =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/vegan/topics/MDSrotate">MDSrotate</a></span>(nmds_pa, elev)</a>
 <a class="sourceLine" id="cb3-33" data-line-number="33"><span class="co"># extracting the first two axes</span></a>
@@ -1621,7 +1621,7 @@
 <a class="sourceLine" id="cb3-35" data-line-number="35">rp =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/data.frame">data.frame</a></span>(<span class="dt">id =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/numeric">as.numeric</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/colnames">rownames</a></span>(sc)),</a>
 <a class="sourceLine" id="cb3-36" data-line-number="36">                <span class="dt">sc =</span> sc[, <span class="dv">1</span>])</a>
 <a class="sourceLine" id="cb3-37" data-line-number="37"><span class="co"># join the predictors (dem, ndvi and terrain attributes)</span></a>
-<a class="sourceLine" id="cb3-38" data-line-number="38">rp =<span class="st"> </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/join.html">inner_join</a></span>(random_points, rp, <span class="dt">by =</span> <span class="st">"id"</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb3-38" data-line-number="38">rp =<span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/join.html">inner_join</a></span>(random_points, rp, <span class="dt">by =</span> <span class="st">"id"</span>)</a></code></pre></div>
 <ol start="3" style="list-style-type: decimal">
 <li>Use the response-predictor matrix of the previous exercise to fit a random forest model. Find the optimal hyperparameters and use them for making a prediction map.</li>
 </ol>
@@ -1729,9 +1729,9 @@
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="co"># extract the coordinates into a separate dataframe</span></a>
 <a class="sourceLine" id="cb5-2" data-line-number="2">coords =<span class="st"> </span>sf<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_coordinates">st_coordinates</a></span>(rp) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb5-3" data-line-number="3"><span class="st">  </span>as.data.frame <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">rename</a></span>(<span class="dt">x =</span> X, <span class="dt">y =</span> Y)</a>
+<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">rename</a></span>(<span class="dt">x =</span> X, <span class="dt">y =</span> Y)</a>
 <a class="sourceLine" id="cb5-5" data-line-number="5"><span class="co"># only keep response and predictors which should be used for the modeling</span></a>
-<a class="sourceLine" id="cb5-6" data-line-number="6">rp =<span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(rp, <span class="op">-</span>id, <span class="op">-</span>spri) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb5-6" data-line-number="6">rp =<span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(rp, <span class="op">-</span>id, <span class="op">-</span>spri) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb5-7" data-line-number="7"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_geometry">st_set_geometry</a></span>(<span class="ot">NULL</span>)</a>
 <a class="sourceLine" id="cb5-8" data-line-number="8"></a>
 <a class="sourceLine" id="cb5-9" data-line-number="9"><span class="co"># create task</span></a>
