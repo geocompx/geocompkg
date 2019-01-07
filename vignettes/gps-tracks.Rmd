@@ -73,3 +73,103 @@ p = read_sf("trace.gpx", layer = "track_points")
 plot(p)
 ```
 
+## Time series
+
+When did the track take place?
+
+```{r}
+summary(p$time)
+```
+
+It started from just after 9:00 in the morning and ended just after 09:30.
+Let's check if they happened at regular intervals:
+
+```{r}
+plot(p$time, 1:nrow(p))
+```
+
+And the temporal resolution:
+
+```{r}
+difftime(p$time[11], p$time[10])
+```
+
+## Converting points to lines
+
+The plot of points is useful, but it would be better to have a line representation *that contains the rich point-level data*.
+This can be done by converting the points to lines, as follows for the the first 2 points:
+
+```{r}
+c = st_coordinates(p)
+l1 = sf::st_linestring(c[1:2, ])
+plot(l1)
+lsf = st_sf(st_set_geometry(p[2, ], NULL), st_sfc(l1))
+plot(p$geometry[1:2], add = T)
+```
+
+For all points we can do:
+
+```{r}
+points2line_trajectory = function(p) {
+  c = st_coordinates(p)
+  i = seq(nrow(p) - 2)
+  l = purrr::map(i, ~ sf::st_linestring(c[.x:(.x + 1), ]))
+  s = purrr::map_dbl(i, function(x) {
+    geosphere::distHaversine(c[x, ], c[(x + 1), ]) /
+      as.numeric(p$time[x + 1] - p$time[x])
+  }
+  )
+  lfc = sf::st_sfc(l)
+  a = seq(length(lfc)) + 1 # sequence to subset
+  p_data = cbind(sf::st_set_geometry(p[a, ], NULL), s)
+  sf::st_sf(p_data, geometry = lfc)
+}
+```
+
+Let's test it out:
+
+```{r}
+l = points2line_trajectory(p)
+plot(l)
+```
+
+We now have lots more variables to play with and, unlike with the point dataset, the look good (and like traces) when plotted.
+Note that in the previous function definition we calculated speed.
+Plot the resulting 'speed profile trace' as follows:
+
+```{r}
+plot(l["s"], lwd = l$s)
+```
+
+## Further resources
+
+- Content on trajectories by Edzer Pebesma: http://edzer.github.io/astd/lec8.html
+- The trajectories package: 
+https://cran.r-project.org/package=trajectories
+- The trajr package: https://cran.rstudio.com/web/packages/trajr/vignettes/trajr-vignette.html
+- The trackeR package: https://github.com/trackerproject/trackeR
+- The SpatioTemporal taskview: https://cran.r-project.org/web/views/SpatioTemporal.html
+
+<!-- # Larger track datasets -->
+
+<!-- 6 MB -->
+
+```{r, echo=FALSE, eval=FALSE}
+library(sf)
+u = "https://github.com/geocompr/geocompkg/releases/download/0.1/munster.gpx"
+download.file(url = u, destfile = "munster.gpx")
+st_layers(f)
+r_munster = read_sf(u, "tracks")
+head(r_munster)
+plot(r_munster[1:9, ])
+plot(r_munster)
+
+p_munster = read_sf(f, "track_points")
+f = "munster.gpx"
+
+plot(r_munster$geometry)
+plot(p_munster$time)
+plot(p_munster$geometry)
+```
+
+
