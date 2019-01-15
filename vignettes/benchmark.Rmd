@@ -15,6 +15,33 @@ editor_options:
 knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
 ```
 
+## Datasets used
+
+The following filepaths datasets will be used:
+
+```{r}
+f1 = system.file("shapes/world.gpkg", package = "spData")
+f2 = "promenade-all.geojson"
+```
+
+To run, this article relies on downloading files onto your computer:
+
+```{r}
+suppressPackageStartupMessages(library(dplyr))
+suppressPackageStartupMessages(library(data.table))
+suppressPackageStartupMessages(library(sf))
+f2 = "promenade-all.geojson"
+u = "https://github.com/spnethack/spnethack/releases/download/0.1/promenade-all.geojson"
+download.file(u, destfile = f2)
+
+system.time({b = read_sf(f2)})
+system.time({d = b  %>% data.table::as.data.table()})
+system.time(d[,geometry:=sf::st_as_text(geometry),])
+system.time(d %>% readr::write_tsv("tmp.tsv"))
+
+```
+
+
 # Reading vector data
 
 ```{r, message=FALSE}
