@@ -53,6 +53,7 @@ Imports:
 Remotes:
     nowosad/spDataLarge,
     jannes-m/RQGIS,
+    rspatial/raster
 URL: https://github.com/geocompr/geocompkg
 BugReports: https://github.com/Robinlovelace/geocompr/issues
 LazyData: TRUE
