@@ -1,0 +1,338 @@
+---
+title: "The future of transport planning software"
+subtitle: "data-driven, modular and open"
+author: "Robin Lovelace, University of Leeds"
+date: "2018-01-08, [Institute for Geoinformatics - Universität Münster](https://www.uni-muenster.de/Geoinformatics/en/GI-Forum/)"
+output:
+  xaringan::moon_reader:
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+# bibliography: /home/robin/allrefs.bib
+---
+
+# Abstract
+
+Transport modelling software is a vital component of modern transport planning.
+
+- They generate the evidence base on which strategic investments are made and, furthermore,
+- provide a powerful mechanism for researching alternative futures.
+
+--
+
+It would not be an overstatement to say that software determines the range of futures that are visible to policymakers. The focus of this talk is on the status of transport modelling software and how it may evolve in the future. What will they look like? What will their capabilities be? And who will control? Answers to each of these questions will affect the future of transport systems. With reference to my own experience developing R packages for transport planning (notably stplanr, cyclestreets and stats19) and using other tools, 
+
+--
+
+- this talk will make the case that transport modelling software used in practice ~~will become~~ is becoming increasingly data-driven, modular and open. 
+
+---
+
+
+background-image: url(https://raw.githubusercontent.com/npct/pct-team/master/figures/sdna-san-fran.png)
+background-size: cover
+class: center, middle
+
+# Current transport software
+
+--
+
+(Source: Crispin Cooper, author of sDNA)
+
+---
+
+.pull-left[
+
+### The four stage model
+
+```{r, echo=FALSE}
+knitr::include_graphics("fourstage.png")
+```
+
+Still dominates transport planning models (Boyce and Williams 2015)
+]
+
+
+--
+
+
+### Impacting the durrent software landscape
+
+- Dominated by a few proprietary products
+
+- Limited support community online 
+
+- High degree of lock-in
+
+- Limited cross-department collaboration
+
+---
+
+# Existing products
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+f = "~/uaf/potential-projects/ercStarting/transport-software.csv"
+tms = readr::read_csv(f)[1:5]
+tms = dplyr::arrange(tms, dplyr::desc(Citations))
+knitr::kable(tms, booktabs = TRUE, caption = "Sample of transport modelling software in use by practitioners. Note: citation counts based on searches for company/developer name, the product name and 'transport'. Data source: Google Scholar searches, October 2018.", format = "html")
+```
+
+---
+
+# User support
+
+Getting help is vital for leaning/improving software
+
+--
+
+![](https://media.giphy.com/media/6HtgBlXu1TIac/giphy.gif)
+
+--
+
+"10-Hour Service Pack $2,000" (source: [caliper.com/tcprice.htm](https://www.caliper.com/tcprice.htm))
+
+---
+
+# Online communities
+
+- [gis.stackexchange.com](https://gis.stackexchange.com/questions) has 21,314 questions 
+
+- [r-sig-geo](http://r-sig-geo.2731867.n2.nabble.com/) has 1000s of posts
+
+- RStudio's Discourse community has 65,000+ posts already!
+
+--
+
+- No transport equivalent (e.g. earthscience.stackexchange.com is in beta)
+
+- Potential for a Discourse forum or similar: transport is not (just) GIS
+
+---
+
+# Best way to get support is peer-to-peer:
+
+![](rstudio-community.png)
+
+Source: https://community.rstudio.com/about
+
+---
+
+# A few prices
+
+```{r, echo=FALSE}
+knitr::include_graphics("price-transcad.png")
+```
+
+Source: [google.com/search?q=transcad+price](https://www.google.com/search?q=transcad+price)
+
+---
+
+background-image: url(https://media.giphy.com/media/YlQQYUIEAZ76o/giphy.gif)
+background-size: cover
+class: center, middle
+
+
+# Future transport software
+
+---
+
+# Is already here I
+
+- Example: the Propensity to Cycle Tool ([PCT.bike](http://www.pct.bike/)) (Lovelace et al. 2017)
+
+```{r, echo=FALSE}
+knitr::include_graphics("https://raw.githubusercontent.com/npct/pct-team/master/figures/early.png")
+```
+
+---
+
+# Is already here II
+
+- Example: the Cycling Infrastructure Prioritisation Toolkit ([CyIPT.bike](https://www.cyipt.bike))
+
+```{r, echo=FALSE}
+knitr::include_graphics("https://www.cyipt.bike/images/existing-edit.png")
+```
+
+---
+
+# Is already here III
+
+- Example: StreetMix ([streetmix.net](https://streetmix.net/))
+
+```{r, echo=FALSE, out.width="60%"}
+knitr::include_graphics("http://1p40p3gwj70rhpc423s8rzjaz-wpengine.netdna-ssl.com/wp-content/uploads/2016/03/2016_0211_2ndAvePioneerSquareFlyer-streetmix.jpg")
+```
+
+---
+
+# Sumo vs netlogo
+
+```{r, echo=FALSE, out.width="70%"}
+knitr::include_graphics("https://user-images.githubusercontent.com/1825120/46748345-41c98580-ccab-11e8-8093-b265bd36f639.gif")
+```
+
+Source: [github.com/eclipse/sumo](https://github.com/eclipse/sumo/issues/2409)
+
+.pull-left[
+
+```{r, echo=FALSE, out.width="20%"}
+knitr::include_graphics("https://raw.githubusercontent.com/nldoc/nlrx/master/man/figures/logo.png")
+```
+
+]
+
+Source: [github.com/nldoc/nlrx](https://github.com/nldoc/nlrx)
+
+---
+
+### Gamification
+
+```{r, echo=FALSE}
+knitr::include_graphics("citybound.png")
+```
+
+- Completely open source, written in [rust](https://github.com/citybound/citybound)
+- Source: video at https://aeplay.org/citybound
+
+---
+
+
+background-image: url(https://media.giphy.com/media/OMeGDxdAsMPzW/giphy.gif)
+background-size: cover
+class: center, middle, inverse
+
+# Code example / questions
+
+--
+
+# Talk is cheap, show me the (working) code
+
+--
+
+# Source: Linus Torvalds ([lkml.org](https://lkml.org/lkml/2000/8/25/132))
+
+---
+
+# Context: trip to Tecklenburg
+
+<a data-flickr-embed="true" data-context="true"  href="https://www.flickr.com/photos/97888609@N02/32709087448/in/dateposted/" title="IMG_20190103_110055941"><img src="https://farm8.staticflickr.com/7877/32709087448_fbeafcc59c_z.jpg" width="640" height="360" alt="IMG_20190103_110055941"></a><script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
+
+---
+
+# That we recorded on phone GPS
+
+And uploaded to OpenStreetMap
+
+- https://www.openstreetmap.org/user/RobinLovelace/traces/2882954
+
+--
+
+```{r gif, echo=FALSE}
+knitr::include_graphics("https://user-images.githubusercontent.com/1825120/50651877-a62f7480-0f7c-11e9-96f2-b13fd6bbed76.gif")
+```
+
+---
+
+# Loading the tracks
+
+```{r}
+library(sf)
+```
+
+
+```{r dl, eval=FALSE}
+u = "https://www.openstreetmap.org/trace/2882954/data"
+download.file(u, "trace.gpx")
+```
+
+```{r read}
+st_layers("trace.gpx")
+track = read_sf("trace.gpx", "tracks")
+track_points = read_sf("trace.gpx", "track_points")
+```
+
+---
+
+### Static plotting
+
+```{r, out.width="50%", fig.show='hold', warning=FALSE}
+plot(track[1])
+plot(track_points)
+```
+
+---
+
+### 'Data science' approach to transport modelling
+
+- Problem: gpx files do not always contain speed
+
+```{r}
+points2line_trajectory = function(p) {
+  c = st_coordinates(p)
+  i = seq(nrow(p) - 2)
+  l = purrr::map(i, ~ sf::st_linestring(c[.x:(.x + 1), ]))
+  s = purrr::map_dbl(i, function(x) {
+    geosphere::distHaversine(c[x, ], c[(x + 1), ]) /
+      as.numeric(p$time[x + 1] - p$time[x])
+  }
+  )
+  lfc = sf::st_sfc(l)
+  a = seq(length(lfc)) + 1 # sequence to subset
+  p_data = cbind(sf::st_set_geometry(p[a, ], NULL), s)
+  sf::st_sf(p_data, geometry = lfc)
+}
+```
+
+Source: [geocompr.github.io](https://geocompr.github.io/geocompkg/articles/gps-tracks.html)
+
+---
+
+## Creating lines with attributes
+
+```{r}
+l = points2line_trajectory(p = track_points)
+plot(l["s"])
+```
+
+---
+
+## All slow sections
+
+```{r}
+l_slow = l[l$s < 20, ]
+plot(l_slow["s"])
+```
+
+---
+
+## Interactive plot!
+
+```{r, warning=FALSE, message=FALSE}
+library(tmap)
+ttm()
+tm_shape(l_slow) +
+  tm_lines(col = "s", palette = "magma", n = 9)
+```
+
+
+---
+
+# Thanks for listening!
+
+--
+
+A few links and references
+
+- Boyce, D.E., Williams, H.C.W.L., 2015. Forecasting Urban Travel: Past, Present and Future. Edward Elgar Publishing.
+
+- The Propensity to Cycle Tool: http://www.pct.bike/ - Lovelace, R., Goodman, A., Aldred, R., Berkoff, N., Abbas, A., Woodcock, J., 2017. The Propensity to Cycle Tool: An open source online system for sustainable transport planning. Journal of Transport and Land Use 10. https://doi.org/10.5198/jtlu.2016.862
+
+- Open source 'geocompr' book: Lovelace, R., Nowosad, J., Meunchow, J., 2019. Geocomputation with R. CRC Press.
+
+
+- The Cycling Infrastructure Prioritisation Toolkit: https://www.cyipt.bike/
+
+- Pebesma, E., 2018. Simple Features for R: Standardized Support for Spatial Vector Data. The R Journal.
+
