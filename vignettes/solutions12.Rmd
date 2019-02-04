@@ -19,8 +19,10 @@ The solutions assume the following packages are attached (other packages will be
 
 ```{r packages, message=FALSE, warning=FALSE}
 library(sf)
-library(tidyverse)
-library(spData)
+library(dplyr)
+library(spDataLarge)
+library(stplanr)
+library(tmap) 
 ```
 
 # Chapter 12
