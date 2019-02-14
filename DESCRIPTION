@@ -24,7 +24,7 @@ Imports:
     lwgeom,
     mapview,    
     mlr,
-    obdc,
+    odbc,
     osmdata,
     pool,
     pROC,
