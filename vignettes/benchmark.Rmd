@@ -38,9 +38,7 @@ system.time({b = read_sf(f2)})
 system.time({d = b  %>% data.table::as.data.table()})
 system.time(d[,geometry:=sf::st_as_text(geometry),])
 system.time(d %>% readr::write_tsv("tmp.tsv"))
-
 ```
-
 
 # Reading vector data
 
@@ -83,7 +81,6 @@ In this case **sf** was around `r round(as.numeric(b2$mean[2] / b2$mean[1]))` ti
 library(rgdal)
 world_sp = as(world, "Spatial")
 ```
-
 
 ```{r, warning=FALSE}
 system.time(writeOGR(world_sp, dsn = "world_sp.geojson", layer = "world_sp.geojson", driver = "GeoJSON"))
