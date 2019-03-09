@@ -9,16 +9,16 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-This vignette provides some further detail on the chapter Scripts, algorithms and functions (see https://geocompr.robinlovelace.net/algorithms.html ).
+This vignette provides some further detail on the chapter Scripts, algorithms and functions (see https://geocompr.robinlovelace.net/algorithms.html).
 It starts with the same input data:
 
 ```{r}
 x_coords = c(10, 0, 0, 12, 20, 10)
 y_coords = c(0, 0, 10, 20, 15, 0)
 poly_mat = cbind(x_coords, y_coords)
-O = poly_mat[1, ] # create a point representing the origin
-T1 = rbind(O, poly_mat[2:3, ], O) # create 'triangle matrix'
-C1 = (T1[1, ] + T1[2, ] + T1[3, ]) / 3 # find centroid
+Origin = poly_mat[1, ] # create a point representing the origin
+T1 = rbind(Origin, poly_mat[2:3, ], Origin) # create 'triangle matrix'
+C1 = (T1[1, , drop = FALSE] + T1[2, , drop = FALSE] + T1[3, , drop = FALSE]) / 3 # find centroid
 ```
 
 ```{r}
@@ -51,7 +51,7 @@ The next stage is to create the second triangle and calculate its area and centr
 This is done in the code chunk below, which binds the 3^rd^ and 4^th^ coordinates onto the 1^st^, and uses the same functions we created above to calculate its area and width:
 
 ```{r}
-T2 = rbind(O, poly_mat[3:4, ], O)
+T2 = rbind(Origin, poly_mat[3:4, ], Origin)
 A2 = t_area(T2)
 C2 = t_centroid(T2)
 ```
