@@ -25,12 +25,54 @@ library(stplanr)
 library(tmap) 
 ```
 
+You must have run the following code chunks to answer the questions:
+
+```{r}
+zones_attr = bristol_od %>% 
+  group_by(o) %>% 
+  summarize_if(is.numeric, sum) %>% 
+  dplyr::rename(geo_code = o)
+
+zones_joined = left_join(bristol_zones, zones_attr, by = "geo_code")
+
+zones_od = bristol_od %>% 
+  group_by(d) %>% 
+  summarize_if(is.numeric, sum) %>% 
+  dplyr::select(geo_code = d, all_dest = all) %>% 
+  inner_join(zones_joined, ., by = "geo_code")
+
+od_top5 = bristol_od %>% 
+  arrange(desc(all)) %>% 
+  top_n(5, wt = all)
+
+bristol_od$Active = (bristol_od$bicycle + bristol_od$foot) /
+  bristol_od$all * 100
+
+od_intra = filter(bristol_od, o == d)
+od_inter = filter(bristol_od, o != d)
+
+desire_lines = od2line(od_inter, zones_od)
+
+desire_lines$distance = as.numeric(st_length(desire_lines))
+desire_carshort = dplyr::filter(desire_lines, car_driver > 300 & distance < 5000)
+desire_carshort$geom_car = st_geometry(route_carshort)
+
+desire_rail = top_n(desire_lines, n = 3, wt = train)
+desire_rail = line_via(desire_rail, bristol_stations)
+
+ways_freeway = bristol_ways %>% filter(maxspeed == "70 mph") 
+ways_sln = SpatialLinesNetwork(ways_freeway)
+
+route_cycleway = rbind(route_rail, route_carshort)
+route_cycleway$all = c(desire_rail$all, desire_carshort$all)
+```
+
 # Chapter 12
 
 1) What is the total distance of cycleways that would be constructed if all the routes presented in this [Figure](https://geocompr.robinlovelace.net/transport.html#fig:cycleways) were to be constructed?
     - Bonus: find two ways of arriving at the same answer.
 
-```{r, eval=FALSE}
+```{r}
 sum(route_cycleway$distance)
 sum(st_length(route_cycleway))
 ```
@@ -42,12 +84,26 @@ sum(st_length(route_cycleway))
 ```{r, echo=FALSE, eval=FALSE}
 sum(route_cycleway$all) / sum(desire_lines$all) # around 2%
 d_intersect = desire_lines[route_cycleway, , op = st_crosses]
-sum(d_intersect$all) / sum(desire_lines$all) # around 2%
+sum(d_intersect$all) / sum(desire_lines$all) # around 22%
+```
+
+To increase the proportion of trips that cross the proposed route, you could reduce the threshold for the number of cars in the 'carshort' object, e.g., by reducing the `car_driver` threshold to 200 as follows (code not run to avoid over-loading the OSRM demo server):
+
+```{r, eval=FALSE}
+desire_carshort2 = dplyr::filter(desire_lines, car_driver > 200 & distance < 5000)
+route_carshort2 = line2route(desire_carshort2, route_fun = route_osrm) 
+route_cycleway2 = rbind(route_rail, route_carshort2)
+route_cycleway2$all = c(desire_rail$all, desire_carshort2$all)
+
+sum(route_cycleway2$all) / sum(desire_lines$all) # around 7%
+d_intersect = desire_lines[route_cycleway2, , op = st_crosses]
+sum(d_intersect$all) / sum(desire_lines$all) # around 62%
 ```
 
 3) The analysis presented in this chapter is designed for teaching how geocomputation methods can be applied to transport research. If you were to do this 'for real' for local government or a transport consultancy what top 3 things would you do differently?
 
 Answers:
+
 - Higher level of geographic resolution.
 - Use cycle-specific routing services.
 - Identify key walking routes.
@@ -55,5 +111,30 @@ Answers:
 
 4) Clearly the routes identified in this [Figure](https://geocompr.robinlovelace.net/transport.html#fig:cycleways) only provide part of the picture. How would you extend the analysis to incorporate more trips that could potentially be cycled?
 
+There are many ways to extend the analysis.
+Some promising lines of research could include:
+
+- Prioritising areas that already have high cycling levels, to get maximium 'positive feedback' loops. This may be a sensible near-term strategy.
+- Identify datasets representing, or model, other trip purposes to identify where most short trips are taking place. Spatial interaction models could help here.
+- Identify 'near market' populations who are most willing to switch using techniques covered in Chapter [13](https://geocompr.robinlovelace.net/location.html).
+
 5) Imagine that you want to extend the scenario by creating key *areas* (not routes) for investment in place-based cycling policies such as car-free zones, cycle parking points and reduced car parking strategy. How could raster data assist with this work? 
-    - Bonus: develop a raster layer that divides the Bristol region into 100 cells (10 by 10) and provide a metric related to transport policy, such as number of people trips that pass through each cell by walking or the average speed limit of roads, from the `bristol_ways` dataset (the approach taken in this [Chapter](https://geocompr.robinlovelace.net/location.html#location)).
+
+Raster data analysis could help by providing useful aggregates of cycling potential (as estimated using previous methods) at a constant level of geographic resolution.
+The raster cells with the highest estimated potential would be prioritised.
+
+Bonus: develop a raster layer that divides the Bristol region into 100 cells (10 by 10) and provide a metric related to transport policy, such as number of people trips that pass through each cell by walking or the average speed limit of roads, from the `bristol_ways` dataset (the approach taken in this [Chapter](https://geocompr.robinlovelace.net/location.html#location)).
+
+This exercise can be tackled in many ways.
+The code chunk below provides an example of how rasters could focus attention on important 'hotspots', by calculating the cells where most people may walk (using an illustrative sample of the top 20 most walked desire lines):
+
+```{r}
+bristol_raster100 = raster::raster(bristol_region, ncols = 100, nrows = 100)
+bristol_walking = raster::rasterize(
+  top_n(desire_lines, n = 20, wt = foot),
+  y = bristol_raster100,
+  field = "foot",
+  fun = sum
+  )
+plot(bristol_walking)
+```
