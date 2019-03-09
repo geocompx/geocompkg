@@ -13,6 +13,8 @@ vignette: >
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 ```
 
+This vignette provides some further detail on the section Type transformations (see https://geocompr.robinlovelace.net/geometric-operations.html#type-trans ).
+
 # Load libraries
 
 ```{r}
@@ -21,58 +23,6 @@ library(purrr)
 library(tibble)
 library(dplyr)
 library(tidyr)
-```
-
-# Create a st_cast summary function
-
-```{r}
-st_type = function(x){
-  if (all(is.na(x))){
-    return(NA)
-  } 
-  x_class = class(x)
-  if ("sfg" %in% x_class){
-    return("sfg")
-  } else if ("sfc" %in% x_class){
-    return("sfc")
-  } else if ("sf" %in% x_class){
-    return("sf")
-  }
-}
-st_geometry_type_s = function(x){
-  if (is.null(x)){
-    return(NULL)
-  } else {
-    return(as.character(st_geometry_type(x)))
-  }
-}
-st_cast_s = possibly(st_cast, NULL)
-unique_s = function(x) ifelse(is.null(x), "NA", unique(x))
-st_caster = function(x){
-  geometries_df = data_frame(to = c("POINT", "MULTIPOINT", 
-                                    "LINESTRING", "MULTILINESTRING",
-                                    "POLYGON", "MULTIPOLYGON",
-                                    "GEOMETRYCOLLECTION"))
-  
-  geo_df = geometries_df %>% 
-    mutate(result = map(to, st_cast_s, x = x)) %>% 
-    mutate(result_geom = map(result, st_geometry_type_s)) %>% 
-    mutate(result_geom_length = map_int(result_geom, length)) %>% 
-    mutate(result_geom = map_chr(result_geom, unique_s)) %>% 
-    mutate(result_type = map_chr(result, st_type)) %>% 
-    mutate(input = list(x)) %>% 
-    mutate(input_geom = st_geometry_type_s(x)) %>% 
-    mutate(input_geom_length = map_int(input_geom, length)) %>% 
-    mutate(input_geom = map_chr(input_geom, unique_s)) %>% 
-    mutate(input_type = st_type(x)) %>% 
-    mutate(input_geom = paste0(input_geom, "(", input_geom_length, ")"),
-           result_geom = paste0(result_geom, "(", result_geom_length, ")")) %>% 
-    select(input_geom, to, result_geom_length) %>% 
-    mutate(result_geom_length = if_else(result_geom_length == 0, NA_integer_, result_geom_length)) %>% 
-    spread(to, result_geom_length)
-  
-  geo_df
-}
 ```
 
 # Create a set of sfg objects
@@ -144,7 +94,7 @@ sfs = list(pts_sf = pts_sf, mpts_sf = mpts_sf,
 
 # Plot example objects
 
-```{r}
+```{r, fig.width=5, fig.height=5}
 par(mfrow = c(3, 3))
 par(mar = c(3, 3, 1, 0))
 plot(pts_sfc, axes = TRUE, main = "POINT")
@@ -156,6 +106,59 @@ plot(mpoly_sfc, axes = TRUE, main = "MULTIPOLYGON")
 plot(geoc_sfc, axes = TRUE, main = "GEOMETRYCOLLECTION")
 ```
 
+# Create a st_cast summary function
+
+```{r}
+st_type = function(x){
+  if (all(is.na(x))){
+    return(NA)
+  } 
+  x_class = class(x)
+  if ("sfg" %in% x_class){
+    return("sfg")
+  } else if ("sfc" %in% x_class){
+    return("sfc")
+  } else if ("sf" %in% x_class){
+    return("sf")
+  }
+}
+st_geometry_type_s = function(x){
+  if (is.null(x)){
+    return(NULL)
+  } else {
+    return(as.character(st_geometry_type(x)))
+  }
+}
+st_cast_s = possibly(st_cast, NULL)
+unique_s = function(x) ifelse(is.null(x), "NA", unique(x))
+st_caster = function(x){
+  geometries_df = data_frame(to = c("POINT", "MULTIPOINT", 
+                                    "LINESTRING", "MULTILINESTRING",
+                                    "POLYGON", "MULTIPOLYGON",
+                                    "GEOMETRYCOLLECTION"))
+  
+  geo_df = geometries_df %>% 
+    mutate(result = map(to, st_cast_s, x = x)) %>% 
+    mutate(result_geom = map(result, st_geometry_type_s)) %>% 
+    mutate(result_geom_length = map_int(result_geom, length)) %>% 
+    mutate(result_geom = map_chr(result_geom, unique_s)) %>% 
+    mutate(result_type = map_chr(result, st_type)) %>% 
+    mutate(input = list(x)) %>% 
+    mutate(input_geom = st_geometry_type_s(x)) %>% 
+    mutate(input_geom_length = map_int(input_geom, length)) %>% 
+    mutate(input_geom = map_chr(input_geom, unique_s)) %>% 
+    mutate(input_type = st_type(x)) %>% 
+    mutate(input_geom = paste0(input_geom, "(", input_geom_length, ")"),
+           result_geom = paste0(result_geom, "(", result_geom_length, ")")) %>% 
+    select(input_geom, to, result_geom_length) %>% 
+    mutate(result_geom_length = if_else(result_geom_length == 0, NA_integer_, result_geom_length)) %>% 
+    spread(to, result_geom_length)
+  
+  geo_df
+}
+```
+
+
 # Prepare summary tables
 
 ```{r}
@@ -164,22 +167,30 @@ sfcs_st_cast = sfcs %>% map_dfr(st_caster)
 sfs_st_cast = sfs %>% map_dfr(st_caster)
 ```
 
-# st_cast on the sfg objects
+# Summary tables
+
+## sfg
 
 ```{r, echo=FALSE}
-knitr::kable(sfgs_st_cast)
+sfgs_st_cast %>% 
+  dplyr::select(input_geom, POINT, MULTIPOINT, LINESTRING, MULTILINESTRING, POLYGON, MULTIPOLYGON, GEOMETRYCOLLECTION) %>% 
+  knitr::kable(caption = "Geometry casting on simple feature geometries with input type by row and output type by column. Values like (1) represent the number of features; NA means the operation is not possible.")
 ```
 
-# st_cast on the sfc objects
+## sfc
 
 ```{r, echo=FALSE}
-knitr::kable(sfcs_st_cast)
+sfcs_st_cast %>% 
+  dplyr::select(input_geom, POINT, MULTIPOINT, LINESTRING, MULTILINESTRING, POLYGON, MULTIPOLYGON, GEOMETRYCOLLECTION) %>% 
+  knitr::kable(caption = "Geometry casting on simple feature geometry list columns with input type by row and output type by column. Values like (1) represent the number of features; NA means the operation is not possible.")
 ```
 
-# st_cast on the sf objects
+## sf
 
 ```{r, echo=FALSE}
-knitr::kable(sfs_st_cast)
+sfs_st_cast %>% 
+  dplyr::select(input_geom, POINT, MULTIPOINT, LINESTRING, MULTILINESTRING, POLYGON, MULTIPOLYGON, GEOMETRYCOLLECTION) %>% 
+  knitr::kable(caption = "Geometry casting on simple features with input type by row and output type by column. Values like (1) represent the number of features; NA means the operation is not possible.")
 ```
 
 ```{r, include=FALSE, eval=FALSE}
