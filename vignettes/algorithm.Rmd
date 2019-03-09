@@ -9,7 +9,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-This vignette provides some further detail on the chapter Scripts, algorithms and functions (see https://geocompr.robinlovelace.net/algorithms.html).
+This vignette provides some further detail on the chapter Scripts, algorithms and functions (see https://geocompr.robinlovelace.net/algorithms.html ).
 It starts with the same input data:
 
 ```{r}
