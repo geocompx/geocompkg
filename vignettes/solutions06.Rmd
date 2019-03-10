@@ -57,9 +57,9 @@ Why does the new object differ from the original one?
 ```{r}
 # see https://github.com/r-spatial/sf/issues/509
 library(sf)
-library(spData)
+library(spData)s
 world_tmerc = st_transform(world, "+proj=tmerc")
-plot(st_geometry(world_tmerc))
+# plot(st_geometry(world_tmerc)) # fails on old versions of geos
 world_4326 = st_transform(world_tmerc, 4326)
 # plot(st_geometry(world_4326))
 ```
