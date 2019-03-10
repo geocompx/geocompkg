@@ -30,7 +30,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">geocompkg | metapackage for the book Gecomputation with R</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.73</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.75</span>
       </span>
     </div>
 
@@ -65,7 +65,7 @@
       <h1>Casting Geometries Extended</h1>
                         <h4 class="author">Robin Lovelace, Jakub Nowosad, Jannes Muenchow</h4>
             
-            <h4 class="date">2019-01-07</h4>
+            <h4 class="date">2019-03-10</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/geocompr/geocompkg/blob/master/vignettes/cast.Rmd"><code>vignettes/cast.Rmd</code></a></small>
       <div class="hidden name"><code>cast.Rmd</code></div>
@@ -74,185 +74,180 @@
 
     
     
-<!-- Old header (commented by RL) -->
-<!-- --- -->
-<!-- title: "Different pathways using st_cast" -->
-<!-- output:  -->
-<!--   html_document:  -->
-<!--     code_folding: show -->
-<!--     fig_height: 7 -->
-<!--     number_sections: yes -->
-<!--     toc: yes -->
-<!-- --- -->
+<p>This vignette provides some further detail on the section Type transformations (see <a href="https://geocompr.robinlovelace.net/geometric-operations.html#type-trans" class="uri">https://geocompr.robinlovelace.net/geometric-operations.html#type-trans</a> ).</p>
 <div id="load-libraries" class="section level1">
 <h1 class="hasAnchor">
 <a href="#load-libraries" class="anchor"></a>Load libraries</h1>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(sf)</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(purrr)</a>
-<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(tibble)</a>
-<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(dplyr)</a>
-<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(tidyr)</a></code></pre></div>
-</div>
-<div id="create-a-st_cast-summary-function" class="section level1">
-<h1 class="hasAnchor">
-<a href="#create-a-st_cast-summary-function" class="anchor"></a>Create a st_cast summary function</h1>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">st_type =<span class="st"> </span><span class="cf">function</span>(x){</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2">  <span class="cf">if</span> (<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/all">all</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/NA">is.na</a></span>(x))){</a>
-<a class="sourceLine" id="cb2-3" data-line-number="3">    <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/function">return</a></span>(<span class="ot">NA</span>)</a>
-<a class="sourceLine" id="cb2-4" data-line-number="4">  } </a>
-<a class="sourceLine" id="cb2-5" data-line-number="5">  x_class =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/class">class</a></span>(x)</a>
-<a class="sourceLine" id="cb2-6" data-line-number="6">  <span class="cf">if</span> (<span class="st">"sfg"</span> <span class="op">%in%</span><span class="st"> </span>x_class){</a>
-<a class="sourceLine" id="cb2-7" data-line-number="7">    <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/function">return</a></span>(<span class="st">"sfg"</span>)</a>
-<a class="sourceLine" id="cb2-8" data-line-number="8">  } <span class="cf">else</span> <span class="cf">if</span> (<span class="st">"sfc"</span> <span class="op">%in%</span><span class="st"> </span>x_class){</a>
-<a class="sourceLine" id="cb2-9" data-line-number="9">    <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/function">return</a></span>(<span class="st">"sfc"</span>)</a>
-<a class="sourceLine" id="cb2-10" data-line-number="10">  } <span class="cf">else</span> <span class="cf">if</span> (<span class="st">"sf"</span> <span class="op">%in%</span><span class="st"> </span>x_class){</a>
-<a class="sourceLine" id="cb2-11" data-line-number="11">    <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/function">return</a></span>(<span class="st">"sf"</span>)</a>
-<a class="sourceLine" id="cb2-12" data-line-number="12">  }</a>
-<a class="sourceLine" id="cb2-13" data-line-number="13">}</a>
-<a class="sourceLine" id="cb2-14" data-line-number="14">st_geometry_type_s =<span class="st"> </span><span class="cf">function</span>(x){</a>
-<a class="sourceLine" id="cb2-15" data-line-number="15">  <span class="cf">if</span> (<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/NULL">is.null</a></span>(x)){</a>
-<a class="sourceLine" id="cb2-16" data-line-number="16">    <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/function">return</a></span>(<span class="ot">NULL</span>)</a>
-<a class="sourceLine" id="cb2-17" data-line-number="17">  } <span class="cf">else</span> {</a>
-<a class="sourceLine" id="cb2-18" data-line-number="18">    <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/function">return</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/character">as.character</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_geometry_type">st_geometry_type</a></span>(x)))</a>
-<a class="sourceLine" id="cb2-19" data-line-number="19">  }</a>
-<a class="sourceLine" id="cb2-20" data-line-number="20">}</a>
-<a class="sourceLine" id="cb2-21" data-line-number="21">st_cast_s =<span class="st"> </span><span class="kw"><a href="https://purrr.tidyverse.org/reference/safely.html">possibly</a></span>(st_cast, <span class="ot">NULL</span>)</a>
-<a class="sourceLine" id="cb2-22" data-line-number="22">unique_s =<span class="st"> </span><span class="cf">function</span>(x) <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/ifelse">ifelse</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/NULL">is.null</a></span>(x), <span class="st">"NA"</span>, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/unique">unique</a></span>(x))</a>
-<a class="sourceLine" id="cb2-23" data-line-number="23">st_caster =<span class="st"> </span><span class="cf">function</span>(x){</a>
-<a class="sourceLine" id="cb2-24" data-line-number="24">  geometries_df =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/tibble/topics/deprecated">data_frame</a></span>(<span class="dt">to =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"POINT"</span>, <span class="st">"MULTIPOINT"</span>, </a>
-<a class="sourceLine" id="cb2-25" data-line-number="25">                                    <span class="st">"LINESTRING"</span>, <span class="st">"MULTILINESTRING"</span>,</a>
-<a class="sourceLine" id="cb2-26" data-line-number="26">                                    <span class="st">"POLYGON"</span>, <span class="st">"MULTIPOLYGON"</span>,</a>
-<a class="sourceLine" id="cb2-27" data-line-number="27">                                    <span class="st">"GEOMETRYCOLLECTION"</span>))</a>
-<a class="sourceLine" id="cb2-28" data-line-number="28">  </a>
-<a class="sourceLine" id="cb2-29" data-line-number="29">  geo_df =<span class="st"> </span>geometries_df <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb2-30" data-line-number="30"><span class="st">    </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">result =</span> <span class="kw"><a href="https://purrr.tidyverse.org/reference/map.html">map</a></span>(to, st_cast_s, <span class="dt">x =</span> x)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb2-31" data-line-number="31"><span class="st">    </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">result_geom =</span> <span class="kw"><a href="https://purrr.tidyverse.org/reference/map.html">map</a></span>(result, st_geometry_type_s)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb2-32" data-line-number="32"><span class="st">    </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">result_geom_length =</span> <span class="kw"><a href="https://purrr.tidyverse.org/reference/map.html">map_int</a></span>(result_geom, length)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb2-33" data-line-number="33"><span class="st">    </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">result_geom =</span> <span class="kw"><a href="https://purrr.tidyverse.org/reference/map.html">map_chr</a></span>(result_geom, unique_s)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb2-34" data-line-number="34"><span class="st">    </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">result_type =</span> <span class="kw"><a href="https://purrr.tidyverse.org/reference/map.html">map_chr</a></span>(result, st_type)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb2-35" data-line-number="35"><span class="st">    </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">input =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(x)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb2-36" data-line-number="36"><span class="st">    </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">input_geom =</span> <span class="kw">st_geometry_type_s</span>(x)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb2-37" data-line-number="37"><span class="st">    </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">input_geom_length =</span> <span class="kw"><a href="https://purrr.tidyverse.org/reference/map.html">map_int</a></span>(input_geom, length)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb2-38" data-line-number="38"><span class="st">    </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">input_geom =</span> <span class="kw"><a href="https://purrr.tidyverse.org/reference/map.html">map_chr</a></span>(input_geom, unique_s)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb2-39" data-line-number="39"><span class="st">    </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">input_type =</span> <span class="kw">st_type</span>(x)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb2-40" data-line-number="40"><span class="st">    </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">input_geom =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste0</a></span>(input_geom, <span class="st">"("</span>, input_geom_length, <span class="st">")"</span>),</a>
-<a class="sourceLine" id="cb2-41" data-line-number="41">           <span class="dt">result_geom =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste0</a></span>(result_geom, <span class="st">"("</span>, result_geom_length, <span class="st">")"</span>)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb2-42" data-line-number="42"><span class="st">    </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(input_geom, to, result_geom_length) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb2-43" data-line-number="43"><span class="st">    </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">result_geom_length =</span> <span class="kw"><a href="https://dplyr.tidyverse.org/reference/if_else.html">if_else</a></span>(result_geom_length <span class="op">==</span><span class="st"> </span><span class="dv">0</span>, <span class="ot">NA_integer_</span>, result_geom_length)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb2-44" data-line-number="44"><span class="st">    </span><span class="kw"><a href="https://tidyr.tidyverse.org/reference/spread.html">spread</a></span>(to, result_geom_length)</a>
-<a class="sourceLine" id="cb2-45" data-line-number="45">  </a>
-<a class="sourceLine" id="cb2-46" data-line-number="46">  geo_df</a>
-<a class="sourceLine" id="cb2-47" data-line-number="47">}</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(sf)
+<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(purrr)
+<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(tibble)
+<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(dplyr)
+<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(tidyr)</code></pre></div>
 </div>
 <div id="create-a-set-of-sfg-objects" class="section level1">
 <h1 class="hasAnchor">
 <a href="#create-a-set-of-sfg-objects" class="anchor"></a>Create a set of sfg objects</h1>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">pts_sfg =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st">st_point</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">5</span>, <span class="dv">2</span>))</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb3-3" data-line-number="3">multipoint_matrix =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cbind">rbind</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">5</span>, <span class="dv">2</span>), <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span>, <span class="dv">3</span>), <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">3</span>, <span class="dv">4</span>), <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">3</span>, <span class="dv">2</span>))</a>
-<a class="sourceLine" id="cb3-4" data-line-number="4">mpts_sfg =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st">st_multipoint</a></span>(multipoint_matrix)</a>
-<a class="sourceLine" id="cb3-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb3-6" data-line-number="6">linestring_matrix =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cbind">rbind</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span>, <span class="dv">5</span>), <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">4</span>, <span class="dv">4</span>), <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">4</span>, <span class="dv">1</span>), <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">2</span>, <span class="dv">2</span>), <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">3</span>, <span class="dv">2</span>))</a>
-<a class="sourceLine" id="cb3-7" data-line-number="7">line_sfg =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st">st_linestring</a></span>(linestring_matrix)</a>
-<a class="sourceLine" id="cb3-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb3-9" data-line-number="9">multilinestring_list =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cbind">rbind</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span>, <span class="dv">5</span>), <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">4</span>, <span class="dv">4</span>), <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">4</span>, <span class="dv">1</span>), <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">2</span>, <span class="dv">2</span>), <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">3</span>, <span class="dv">2</span>)), </a>
-<a class="sourceLine" id="cb3-10" data-line-number="10">                            <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cbind">rbind</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">2</span>, <span class="dv">4</span>)))</a>
-<a class="sourceLine" id="cb3-11" data-line-number="11">mline_sfg =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st">st_multilinestring</a></span>((multilinestring_list))</a>
-<a class="sourceLine" id="cb3-12" data-line-number="12"></a>
-<a class="sourceLine" id="cb3-13" data-line-number="13">polygon_list =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cbind">rbind</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span>, <span class="dv">5</span>), <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">2</span>, <span class="dv">2</span>), <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">4</span>, <span class="dv">1</span>), <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">4</span>, <span class="dv">4</span>), <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span>, <span class="dv">5</span>)))</a>
-<a class="sourceLine" id="cb3-14" data-line-number="14">poly_sfg =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st">st_polygon</a></span>(polygon_list)</a>
-<a class="sourceLine" id="cb3-15" data-line-number="15"></a>
-<a class="sourceLine" id="cb3-16" data-line-number="16">multipolygon_list =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cbind">rbind</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span>, <span class="dv">5</span>), <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">2</span>, <span class="dv">2</span>), <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">4</span>, <span class="dv">1</span>), <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">4</span>, <span class="dv">4</span>), <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span>, <span class="dv">5</span>))),</a>
-<a class="sourceLine" id="cb3-17" data-line-number="17">                         <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cbind">rbind</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>, <span class="dv">2</span>), <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span>, <span class="dv">3</span>), <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>, <span class="dv">3</span>), <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>, <span class="dv">2</span>))))</a>
-<a class="sourceLine" id="cb3-18" data-line-number="18">mpoly_sfg =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st">st_multipolygon</a></span>(multipolygon_list)</a>
-<a class="sourceLine" id="cb3-19" data-line-number="19"></a>
-<a class="sourceLine" id="cb3-20" data-line-number="20">gemetrycollection_list =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st">st_multipoint</a></span>(multipoint_matrix),</a>
-<a class="sourceLine" id="cb3-21" data-line-number="21">                              <span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st">st_linestring</a></span>(linestring_matrix))</a>
-<a class="sourceLine" id="cb3-22" data-line-number="22">geoc_sfg =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st">st_geometrycollection</a></span>(gemetrycollection_list)</a>
-<a class="sourceLine" id="cb3-23" data-line-number="23"></a>
-<a class="sourceLine" id="cb3-24" data-line-number="24">sfgs =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">pts_sfg =</span> pts_sfg, <span class="dt">mpts_sfg =</span> mpts_sfg,</a>
-<a class="sourceLine" id="cb3-25" data-line-number="25">            <span class="dt">line_sfg =</span> line_sfg, <span class="dt">mline_sfg =</span> mline_sfg, </a>
-<a class="sourceLine" id="cb3-26" data-line-number="26">            <span class="dt">poly_sfg =</span> poly_sfg, <span class="dt">mpoly_sfg =</span> mpoly_sfg,</a>
-<a class="sourceLine" id="cb3-27" data-line-number="27">            <span class="dt">geoc_sfg =</span> geoc_sfg)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pts_sfg =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st">st_point</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">5</span>, <span class="dv">2</span>))
+
+multipoint_matrix =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cbind">rbind</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">5</span>, <span class="dv">2</span>), <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span>, <span class="dv">3</span>), <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">3</span>, <span class="dv">4</span>), <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">3</span>, <span class="dv">2</span>))
+mpts_sfg =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st">st_multipoint</a></span>(multipoint_matrix)
+
+linestring_matrix =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cbind">rbind</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span>, <span class="dv">5</span>), <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">4</span>, <span class="dv">4</span>), <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">4</span>, <span class="dv">1</span>), <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">2</span>, <span class="dv">2</span>), <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">3</span>, <span class="dv">2</span>))
+line_sfg =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st">st_linestring</a></span>(linestring_matrix)
+
+multilinestring_list =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cbind">rbind</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span>, <span class="dv">5</span>), <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">4</span>, <span class="dv">4</span>), <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">4</span>, <span class="dv">1</span>), <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">2</span>, <span class="dv">2</span>), <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">3</span>, <span class="dv">2</span>)), 
+                            <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cbind">rbind</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">2</span>, <span class="dv">4</span>)))
+mline_sfg =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st">st_multilinestring</a></span>((multilinestring_list))
+
+polygon_list =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cbind">rbind</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span>, <span class="dv">5</span>), <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">2</span>, <span class="dv">2</span>), <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">4</span>, <span class="dv">1</span>), <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">4</span>, <span class="dv">4</span>), <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span>, <span class="dv">5</span>)))
+poly_sfg =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st">st_polygon</a></span>(polygon_list)
+
+multipolygon_list =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cbind">rbind</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span>, <span class="dv">5</span>), <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">2</span>, <span class="dv">2</span>), <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">4</span>, <span class="dv">1</span>), <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">4</span>, <span class="dv">4</span>), <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span>, <span class="dv">5</span>))),
+                         <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cbind">rbind</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>, <span class="dv">2</span>), <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span>, <span class="dv">3</span>), <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>, <span class="dv">3</span>), <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>, <span class="dv">2</span>))))
+mpoly_sfg =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st">st_multipolygon</a></span>(multipolygon_list)
+
+gemetrycollection_list =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st">st_multipoint</a></span>(multipoint_matrix),
+                              <span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st">st_linestring</a></span>(linestring_matrix))
+geoc_sfg =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st">st_geometrycollection</a></span>(gemetrycollection_list)
+
+sfgs =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">pts_sfg =</span> pts_sfg, <span class="dt">mpts_sfg =</span> mpts_sfg,
+            <span class="dt">line_sfg =</span> line_sfg, <span class="dt">mline_sfg =</span> mline_sfg, 
+            <span class="dt">poly_sfg =</span> poly_sfg, <span class="dt">mpoly_sfg =</span> mpoly_sfg,
+            <span class="dt">geoc_sfg =</span> geoc_sfg)</code></pre></div>
 </div>
 <div id="create-a-set-of-sfc-objects" class="section level1">
 <h1 class="hasAnchor">
 <a href="#create-a-set-of-sfc-objects" class="anchor"></a>Create a set of sfc objects</h1>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">pts_sfc =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/sfc">st_sfc</a></span>(pts_sfg)</a>
-<a class="sourceLine" id="cb4-2" data-line-number="2">mpts_sfc =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/sfc">st_sfc</a></span>(mpts_sfg)</a>
-<a class="sourceLine" id="cb4-3" data-line-number="3">line_sfc =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/sfc">st_sfc</a></span>(line_sfg)</a>
-<a class="sourceLine" id="cb4-4" data-line-number="4">mline_sfc =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/sfc">st_sfc</a></span>((mline_sfg))</a>
-<a class="sourceLine" id="cb4-5" data-line-number="5">poly_sfc =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/sfc">st_sfc</a></span>(poly_sfg)</a>
-<a class="sourceLine" id="cb4-6" data-line-number="6">mpoly_sfc =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/sfc">st_sfc</a></span>(mpoly_sfg)</a>
-<a class="sourceLine" id="cb4-7" data-line-number="7">geoc_sfc =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/sfc">st_sfc</a></span>(geoc_sfg)</a>
-<a class="sourceLine" id="cb4-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb4-9" data-line-number="9">sfcs =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">pts_sfc =</span> pts_sfc, <span class="dt">mpts_sfc =</span> mpts_sfc,</a>
-<a class="sourceLine" id="cb4-10" data-line-number="10">            <span class="dt">line_sfc =</span> line_sfc, <span class="dt">mline_sfc =</span> mline_sfc, </a>
-<a class="sourceLine" id="cb4-11" data-line-number="11">            <span class="dt">poly_sfc =</span> poly_sfc, <span class="dt">mpoly_sfc =</span> mpoly_sfc,</a>
-<a class="sourceLine" id="cb4-12" data-line-number="12">            <span class="dt">geoc_sfc =</span> geoc_sfc)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pts_sfc =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/sfc">st_sfc</a></span>(pts_sfg)
+mpts_sfc =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/sfc">st_sfc</a></span>(mpts_sfg)
+line_sfc =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/sfc">st_sfc</a></span>(line_sfg)
+mline_sfc =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/sfc">st_sfc</a></span>((mline_sfg))
+poly_sfc =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/sfc">st_sfc</a></span>(poly_sfg)
+mpoly_sfc =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/sfc">st_sfc</a></span>(mpoly_sfg)
+geoc_sfc =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/sfc">st_sfc</a></span>(geoc_sfg)
+
+sfcs =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">pts_sfc =</span> pts_sfc, <span class="dt">mpts_sfc =</span> mpts_sfc,
+            <span class="dt">line_sfc =</span> line_sfc, <span class="dt">mline_sfc =</span> mline_sfc, 
+            <span class="dt">poly_sfc =</span> poly_sfc, <span class="dt">mpoly_sfc =</span> mpoly_sfc,
+            <span class="dt">geoc_sfc =</span> geoc_sfc)</code></pre></div>
 </div>
 <div id="create-a-set-of-sf-objects" class="section level1">
 <h1 class="hasAnchor">
 <a href="#create-a-set-of-sf-objects" class="anchor"></a>Create a set of sf objects</h1>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">my_df =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/data.frame">data.frame</a></span>(<span class="dt">col =</span> <span class="st">"a"</span>)</a>
-<a class="sourceLine" id="cb5-2" data-line-number="2">pts_sf =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/sf">st_sf</a></span>(my_df, pts_sfc)</a>
-<a class="sourceLine" id="cb5-3" data-line-number="3">mpts_sf =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/sf">st_sf</a></span>(my_df, mpts_sfc)</a>
-<a class="sourceLine" id="cb5-4" data-line-number="4">line_sf =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/sf">st_sf</a></span>(my_df, <span class="dt">geom =</span> line_sfc)</a>
-<a class="sourceLine" id="cb5-5" data-line-number="5">mline_sf =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/sf">st_sf</a></span>(my_df, <span class="dt">geom =</span> mline_sfc)</a>
-<a class="sourceLine" id="cb5-6" data-line-number="6">poly_sf =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/sf">st_sf</a></span>(my_df, <span class="dt">geom =</span> poly_sfc)</a>
-<a class="sourceLine" id="cb5-7" data-line-number="7">mpoly_sf =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/sf">st_sf</a></span>(my_df, <span class="dt">geom =</span> mpoly_sfc)</a>
-<a class="sourceLine" id="cb5-8" data-line-number="8">geoc_sf =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/sf">st_sf</a></span>(my_df, <span class="dt">geom =</span> geoc_sfc)</a>
-<a class="sourceLine" id="cb5-9" data-line-number="9"></a>
-<a class="sourceLine" id="cb5-10" data-line-number="10">sfs =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">pts_sf =</span> pts_sf, <span class="dt">mpts_sf =</span> mpts_sf,</a>
-<a class="sourceLine" id="cb5-11" data-line-number="11">           <span class="dt">line_sf =</span> line_sf, <span class="dt">mline_sf =</span> mline_sf, </a>
-<a class="sourceLine" id="cb5-12" data-line-number="12">           <span class="dt">poly_sf =</span> poly_sf, <span class="dt">mpoly_sf =</span> mpoly_sf,</a>
-<a class="sourceLine" id="cb5-13" data-line-number="13">           <span class="dt">geoc_sf =</span> geoc_sf)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_df =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/data.frame">data.frame</a></span>(<span class="dt">col =</span> <span class="st">"a"</span>)
+pts_sf =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/sf">st_sf</a></span>(my_df, pts_sfc)
+mpts_sf =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/sf">st_sf</a></span>(my_df, mpts_sfc)
+line_sf =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/sf">st_sf</a></span>(my_df, <span class="dt">geom =</span> line_sfc)
+mline_sf =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/sf">st_sf</a></span>(my_df, <span class="dt">geom =</span> mline_sfc)
+poly_sf =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/sf">st_sf</a></span>(my_df, <span class="dt">geom =</span> poly_sfc)
+mpoly_sf =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/sf">st_sf</a></span>(my_df, <span class="dt">geom =</span> mpoly_sfc)
+geoc_sf =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/sf">st_sf</a></span>(my_df, <span class="dt">geom =</span> geoc_sfc)
+
+sfs =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">pts_sf =</span> pts_sf, <span class="dt">mpts_sf =</span> mpts_sf,
+           <span class="dt">line_sf =</span> line_sf, <span class="dt">mline_sf =</span> mline_sf, 
+           <span class="dt">poly_sf =</span> poly_sf, <span class="dt">mpoly_sf =</span> mpoly_sf,
+           <span class="dt">geoc_sf =</span> geoc_sf)</code></pre></div>
 </div>
 <div id="plot-example-objects" class="section level1">
 <h1 class="hasAnchor">
 <a href="#plot-example-objects" class="anchor"></a>Plot example objects</h1>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/par">par</a></span>(<span class="dt">mfrow =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">3</span>, <span class="dv">3</span>))</a>
-<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/par">par</a></span>(<span class="dt">mar =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">0</span>))</a>
-<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(pts_sfc, <span class="dt">axes =</span> <span class="ot">TRUE</span>, <span class="dt">main =</span> <span class="st">"POINT"</span>)</a>
-<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(mpts_sfc, <span class="dt">axes =</span> <span class="ot">TRUE</span>, <span class="dt">main =</span> <span class="st">"MULTIPOINT"</span>)</a>
-<a class="sourceLine" id="cb6-5" data-line-number="5"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(line_sfc, <span class="dt">axes =</span> <span class="ot">TRUE</span>, <span class="dt">main =</span> <span class="st">"LINESTRING"</span>)</a>
-<a class="sourceLine" id="cb6-6" data-line-number="6"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(mline_sfc, <span class="dt">axes =</span> <span class="ot">TRUE</span>, <span class="dt">main =</span> <span class="st">"MULTILINESTRING"</span>)</a>
-<a class="sourceLine" id="cb6-7" data-line-number="7"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(poly_sfc, <span class="dt">axes =</span> <span class="ot">TRUE</span>, <span class="dt">main =</span> <span class="st">"POLYGON"</span>)</a>
-<a class="sourceLine" id="cb6-8" data-line-number="8"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(mpoly_sfc, <span class="dt">axes =</span> <span class="ot">TRUE</span>, <span class="dt">main =</span> <span class="st">"MULTIPOLYGON"</span>)</a>
-<a class="sourceLine" id="cb6-9" data-line-number="9"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(geoc_sfc, <span class="dt">axes =</span> <span class="ot">TRUE</span>, <span class="dt">main =</span> <span class="st">"GEOMETRYCOLLECTION"</span>)</a></code></pre></div>
-<p><img src="cast_files/figure-html/unnamed-chunk-6-1.png" width="700"></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/par">par</a></span>(<span class="dt">mfrow =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">3</span>, <span class="dv">3</span>))
+<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/par">par</a></span>(<span class="dt">mar =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">0</span>))
+<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(pts_sfc, <span class="dt">axes =</span> <span class="ot">TRUE</span>, <span class="dt">main =</span> <span class="st">"POINT"</span>)
+<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(mpts_sfc, <span class="dt">axes =</span> <span class="ot">TRUE</span>, <span class="dt">main =</span> <span class="st">"MULTIPOINT"</span>)
+<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(line_sfc, <span class="dt">axes =</span> <span class="ot">TRUE</span>, <span class="dt">main =</span> <span class="st">"LINESTRING"</span>)
+<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(mline_sfc, <span class="dt">axes =</span> <span class="ot">TRUE</span>, <span class="dt">main =</span> <span class="st">"MULTILINESTRING"</span>)
+<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(poly_sfc, <span class="dt">axes =</span> <span class="ot">TRUE</span>, <span class="dt">main =</span> <span class="st">"POLYGON"</span>)
+<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(mpoly_sfc, <span class="dt">axes =</span> <span class="ot">TRUE</span>, <span class="dt">main =</span> <span class="st">"MULTIPOLYGON"</span>)
+<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(geoc_sfc, <span class="dt">axes =</span> <span class="ot">TRUE</span>, <span class="dt">main =</span> <span class="st">"GEOMETRYCOLLECTION"</span>)</code></pre></div>
+<p><img src="cast_files/figure-html/unnamed-chunk-5-1.png" width="480"></p>
+</div>
+<div id="create-a-st_cast-summary-function" class="section level1">
+<h1 class="hasAnchor">
+<a href="#create-a-st_cast-summary-function" class="anchor"></a>Create a st_cast summary function</h1>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">st_type =<span class="st"> </span><span class="cf">function</span>(x){
+  <span class="cf">if</span> (<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/all">all</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/NA">is.na</a></span>(x))){
+    <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/function">return</a></span>(<span class="ot">NA</span>)
+  } 
+  x_class =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/class">class</a></span>(x)
+  <span class="cf">if</span> (<span class="st">"sfg"</span> <span class="op">%in%</span><span class="st"> </span>x_class){
+    <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/function">return</a></span>(<span class="st">"sfg"</span>)
+  } <span class="cf">else</span> <span class="cf">if</span> (<span class="st">"sfc"</span> <span class="op">%in%</span><span class="st"> </span>x_class){
+    <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/function">return</a></span>(<span class="st">"sfc"</span>)
+  } <span class="cf">else</span> <span class="cf">if</span> (<span class="st">"sf"</span> <span class="op">%in%</span><span class="st"> </span>x_class){
+    <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/function">return</a></span>(<span class="st">"sf"</span>)
+  }
+}
+st_geometry_type_s =<span class="st"> </span><span class="cf">function</span>(x){
+  <span class="cf">if</span> (<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/NULL">is.null</a></span>(x)){
+    <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/function">return</a></span>(<span class="ot">NULL</span>)
+  } <span class="cf">else</span> {
+    <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/function">return</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/character">as.character</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_geometry_type">st_geometry_type</a></span>(x)))
+  }
+}
+st_cast_s =<span class="st"> </span><span class="kw"><a href="https://purrr.tidyverse.org/reference/safely.html">possibly</a></span>(st_cast, <span class="ot">NULL</span>)
+unique_s =<span class="st"> </span><span class="cf">function</span>(x) <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/ifelse">ifelse</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/NULL">is.null</a></span>(x), <span class="st">"NA"</span>, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/unique">unique</a></span>(x))
+st_caster =<span class="st"> </span><span class="cf">function</span>(x){
+  geometries_df =<span class="st"> </span><span class="kw"><a href="https://tibble.tidyverse.org/reference/deprecated.html">data_frame</a></span>(<span class="dt">to =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"POINT"</span>, <span class="st">"MULTIPOINT"</span>, 
+                                    <span class="st">"LINESTRING"</span>, <span class="st">"MULTILINESTRING"</span>,
+                                    <span class="st">"POLYGON"</span>, <span class="st">"MULTIPOLYGON"</span>,
+                                    <span class="st">"GEOMETRYCOLLECTION"</span>))
+  
+  geo_df =<span class="st"> </span>geometries_df <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">    </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">result =</span> <span class="kw"><a href="https://purrr.tidyverse.org/reference/map.html">map</a></span>(to, st_cast_s, <span class="dt">x =</span> x)) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">    </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">result_geom =</span> <span class="kw"><a href="https://purrr.tidyverse.org/reference/map.html">map</a></span>(result, st_geometry_type_s)) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">    </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">result_geom_length =</span> <span class="kw"><a href="https://purrr.tidyverse.org/reference/map.html">map_int</a></span>(result_geom, length)) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">    </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">result_geom =</span> <span class="kw"><a href="https://purrr.tidyverse.org/reference/map.html">map_chr</a></span>(result_geom, unique_s)) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">    </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">result_type =</span> <span class="kw"><a href="https://purrr.tidyverse.org/reference/map.html">map_chr</a></span>(result, st_type)) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">    </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">input =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(x)) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">    </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">input_geom =</span> <span class="kw">st_geometry_type_s</span>(x)) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">    </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">input_geom_length =</span> <span class="kw"><a href="https://purrr.tidyverse.org/reference/map.html">map_int</a></span>(input_geom, length)) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">    </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">input_geom =</span> <span class="kw"><a href="https://purrr.tidyverse.org/reference/map.html">map_chr</a></span>(input_geom, unique_s)) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">    </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">input_type =</span> <span class="kw">st_type</span>(x)) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">    </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">input_geom =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste0</a></span>(input_geom, <span class="st">"("</span>, input_geom_length, <span class="st">")"</span>),
+           <span class="dt">result_geom =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste0</a></span>(result_geom, <span class="st">"("</span>, result_geom_length, <span class="st">")"</span>)) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">    </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(input_geom, to, result_geom_length) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">    </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">result_geom_length =</span> <span class="kw"><a href="https://dplyr.tidyverse.org/reference/if_else.html">if_else</a></span>(result_geom_length <span class="op">==</span><span class="st"> </span><span class="dv">0</span>, <span class="ot">NA_integer_</span>, result_geom_length)) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">    </span><span class="kw"><a href="https://tidyr.tidyverse.org/reference/spread.html">spread</a></span>(to, result_geom_length)
+  
+  geo_df
+}</code></pre></div>
 </div>
 <div id="prepare-summary-tables" class="section level1">
 <h1 class="hasAnchor">
 <a href="#prepare-summary-tables" class="anchor"></a>Prepare summary tables</h1>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">sfgs_st_cast =<span class="st"> </span>sfgs <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://purrr.tidyverse.org/reference/map.html">map_dfr</a></span>(st_caster)</a>
-<a class="sourceLine" id="cb7-2" data-line-number="2">sfcs_st_cast =<span class="st"> </span>sfcs <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://purrr.tidyverse.org/reference/map.html">map_dfr</a></span>(st_caster)</a>
-<a class="sourceLine" id="cb7-3" data-line-number="3">sfs_st_cast =<span class="st"> </span>sfs <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://purrr.tidyverse.org/reference/map.html">map_dfr</a></span>(st_caster)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sfgs_st_cast =<span class="st"> </span>sfgs <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://purrr.tidyverse.org/reference/map.html">map_dfr</a></span>(st_caster)
+sfcs_st_cast =<span class="st"> </span>sfcs <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://purrr.tidyverse.org/reference/map.html">map_dfr</a></span>(st_caster)
+sfs_st_cast =<span class="st"> </span>sfs <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://purrr.tidyverse.org/reference/map.html">map_dfr</a></span>(st_caster)</code></pre></div>
 </div>
-<div id="st_cast-on-the-sfg-objects" class="section level1">
+<div id="summary-tables" class="section level1">
 <h1 class="hasAnchor">
-<a href="#st_cast-on-the-sfg-objects" class="anchor"></a>st_cast on the sfg objects</h1>
+<a href="#summary-tables" class="anchor"></a>Summary tables</h1>
+<div id="sfg" class="section level2">
+<h2 class="hasAnchor">
+<a href="#sfg" class="anchor"></a>sfg</h2>
 <table class="table">
+<caption>Geometry casting on simple feature geometries with input type by row and output type by column. Values like (1) represent the number of features; NA means the operation is not possible.</caption>
 <thead><tr class="header">
 <th align="left">input_geom</th>
-<th align="right">GEOMETRYCOLLECTION</th>
+<th align="right">POINT</th>
+<th align="right">MULTIPOINT</th>
 <th align="right">LINESTRING</th>
 <th align="right">MULTILINESTRING</th>
-<th align="right">MULTIPOINT</th>
-<th align="right">MULTIPOLYGON</th>
-<th align="right">POINT</th>
 <th align="right">POLYGON</th>
+<th align="right">MULTIPOLYGON</th>
+<th align="right">GEOMETRYCOLLECTION</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
 <td align="left">POINT(1)</td>
 <td align="right">1</td>
+<td align="right">1</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="right">NA</td>
 <td align="right">NA</td>
 <td align="right">1</td>
-<td align="right">NA</td>
-<td align="right">1</td>
-<td align="right">NA</td>
 </tr>
 <tr class="even">
 <td align="left">MULTIPOINT(1)</td>
@@ -281,8 +276,8 @@
 <td align="right">1</td>
 <td align="right">1</td>
 <td align="right">NA</td>
-<td align="right">1</td>
 <td align="right">NA</td>
+<td align="right">1</td>
 </tr>
 <tr class="odd">
 <td align="left">POLYGON(1)</td>
@@ -317,181 +312,184 @@
 </tbody>
 </table>
 </div>
-<div id="st_cast-on-the-sfc-objects" class="section level1">
-<h1 class="hasAnchor">
-<a href="#st_cast-on-the-sfc-objects" class="anchor"></a>st_cast on the sfc objects</h1>
+<div id="sfc" class="section level2">
+<h2 class="hasAnchor">
+<a href="#sfc" class="anchor"></a>sfc</h2>
 <table class="table">
+<caption>Geometry casting on simple feature geometry list columns with input type by row and output type by column. Values like (1) represent the number of features; NA means the operation is not possible.</caption>
 <thead><tr class="header">
 <th align="left">input_geom</th>
-<th align="right">GEOMETRYCOLLECTION</th>
+<th align="right">POINT</th>
+<th align="right">MULTIPOINT</th>
 <th align="right">LINESTRING</th>
 <th align="right">MULTILINESTRING</th>
-<th align="right">MULTIPOINT</th>
-<th align="right">MULTIPOLYGON</th>
-<th align="right">POINT</th>
 <th align="right">POLYGON</th>
+<th align="right">MULTIPOLYGON</th>
+<th align="right">GEOMETRYCOLLECTION</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
 <td align="left">POINT(1)</td>
-<td align="right">NA</td>
+<td align="right">1</td>
+<td align="right">1</td>
 <td align="right">1</td>
 <td align="right">NA</td>
-<td align="right">1</td>
 <td align="right">NA</td>
-<td align="right">1</td>
+<td align="right">NA</td>
 <td align="right">NA</td>
 </tr>
 <tr class="even">
 <td align="left">MULTIPOINT(1)</td>
-<td align="right">NA</td>
-<td align="right">1</td>
-<td align="right">1</td>
-<td align="right">1</td>
-<td align="right">NA</td>
 <td align="right">4</td>
 <td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 </tr>
 <tr class="odd">
 <td align="left">LINESTRING(1)</td>
-<td align="right">NA</td>
-<td align="right">1</td>
-<td align="right">1</td>
-<td align="right">1</td>
-<td align="right">NA</td>
 <td align="right">5</td>
 <td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 </tr>
 <tr class="even">
 <td align="left">MULTILINESTRING(1)</td>
-<td align="right">NA</td>
+<td align="right">7</td>
+<td align="right">2</td>
 <td align="right">2</td>
 <td align="right">1</td>
-<td align="right">2</td>
 <td align="right">NA</td>
-<td align="right">7</td>
+<td align="right">NA</td>
 <td align="right">NA</td>
 </tr>
 <tr class="odd">
 <td align="left">POLYGON(1)</td>
-<td align="right">NA</td>
-<td align="right">1</td>
-<td align="right">1</td>
-<td align="right">1</td>
-<td align="right">1</td>
 <td align="right">5</td>
 <td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">NA</td>
 </tr>
 <tr class="even">
 <td align="left">MULTIPOLYGON(1)</td>
+<td align="right">10</td>
 <td align="right">1</td>
 <td align="right">NA</td>
 <td align="right">1</td>
-<td align="right">1</td>
-<td align="right">1</td>
-<td align="right">10</td>
 <td align="right">2</td>
+<td align="right">1</td>
+<td align="right">1</td>
 </tr>
 <tr class="odd">
 <td align="left">GEOMETRYCOLLECTION(1)</td>
-<td align="right">1</td>
-<td align="right">NA</td>
-<td align="right">NA</td>
-<td align="right">1</td>
-<td align="right">NA</td>
 <td align="right">9</td>
+<td align="right">1</td>
 <td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">1</td>
 </tr>
 </tbody>
 </table>
 </div>
-<div id="st_cast-on-the-sf-objects" class="section level1">
-<h1 class="hasAnchor">
-<a href="#st_cast-on-the-sf-objects" class="anchor"></a>st_cast on the sf objects</h1>
+<div id="sf" class="section level2">
+<h2 class="hasAnchor">
+<a href="#sf" class="anchor"></a>sf</h2>
 <table class="table">
+<caption>Geometry casting on simple features with input type by row and output type by column. Values like (1) represent the number of features; NA means the operation is not possible.</caption>
 <thead><tr class="header">
 <th align="left">input_geom</th>
-<th align="right">GEOMETRYCOLLECTION</th>
+<th align="right">POINT</th>
+<th align="right">MULTIPOINT</th>
 <th align="right">LINESTRING</th>
 <th align="right">MULTILINESTRING</th>
-<th align="right">MULTIPOINT</th>
-<th align="right">MULTIPOLYGON</th>
-<th align="right">POINT</th>
 <th align="right">POLYGON</th>
+<th align="right">MULTIPOLYGON</th>
+<th align="right">GEOMETRYCOLLECTION</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
 <td align="left">POINT(1)</td>
-<td align="right">NA</td>
+<td align="right">1</td>
+<td align="right">1</td>
 <td align="right">1</td>
 <td align="right">NA</td>
-<td align="right">1</td>
 <td align="right">NA</td>
-<td align="right">1</td>
+<td align="right">NA</td>
 <td align="right">NA</td>
 </tr>
 <tr class="even">
 <td align="left">MULTIPOINT(1)</td>
-<td align="right">NA</td>
-<td align="right">1</td>
-<td align="right">1</td>
-<td align="right">1</td>
-<td align="right">NA</td>
 <td align="right">4</td>
 <td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 </tr>
 <tr class="odd">
 <td align="left">LINESTRING(1)</td>
-<td align="right">NA</td>
-<td align="right">1</td>
-<td align="right">1</td>
-<td align="right">1</td>
-<td align="right">NA</td>
 <td align="right">5</td>
 <td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 </tr>
 <tr class="even">
 <td align="left">MULTILINESTRING(1)</td>
-<td align="right">NA</td>
+<td align="right">7</td>
+<td align="right">2</td>
 <td align="right">2</td>
 <td align="right">1</td>
-<td align="right">2</td>
 <td align="right">NA</td>
-<td align="right">7</td>
+<td align="right">NA</td>
 <td align="right">NA</td>
 </tr>
 <tr class="odd">
 <td align="left">POLYGON(1)</td>
-<td align="right">NA</td>
-<td align="right">1</td>
-<td align="right">1</td>
-<td align="right">1</td>
-<td align="right">1</td>
 <td align="right">5</td>
 <td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">NA</td>
 </tr>
 <tr class="even">
 <td align="left">MULTIPOLYGON(1)</td>
+<td align="right">10</td>
 <td align="right">1</td>
 <td align="right">NA</td>
 <td align="right">1</td>
-<td align="right">1</td>
-<td align="right">1</td>
-<td align="right">10</td>
 <td align="right">2</td>
+<td align="right">1</td>
+<td align="right">1</td>
 </tr>
 <tr class="odd">
 <td align="left">GEOMETRYCOLLECTION(1)</td>
-<td align="right">1</td>
-<td align="right">NA</td>
-<td align="right">NA</td>
-<td align="right">1</td>
-<td align="right">NA</td>
 <td align="right">9</td>
+<td align="right">1</td>
 <td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">1</td>
 </tr>
 </tbody>
 </table>
+</div>
 </div>
   </div>
 
@@ -501,15 +499,19 @@
 <a href="#tocnav" class="anchor"></a>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
 <li><a href="#load-libraries">Load libraries</a></li>
-      <li><a href="#create-a-st_cast-summary-function">Create a st_cast summary function</a></li>
       <li><a href="#create-a-set-of-sfg-objects">Create a set of sfg objects</a></li>
       <li><a href="#create-a-set-of-sfc-objects">Create a set of sfc objects</a></li>
       <li><a href="#create-a-set-of-sf-objects">Create a set of sf objects</a></li>
       <li><a href="#plot-example-objects">Plot example objects</a></li>
+      <li><a href="#create-a-st_cast-summary-function">Create a st_cast summary function</a></li>
       <li><a href="#prepare-summary-tables">Prepare summary tables</a></li>
-      <li><a href="#st_cast-on-the-sfg-objects">st_cast on the sfg objects</a></li>
-      <li><a href="#st_cast-on-the-sfc-objects">st_cast on the sfc objects</a></li>
-      <li><a href="#st_cast-on-the-sf-objects">st_cast on the sf objects</a></li>
+      <li>
+<a href="#summary-tables">Summary tables</a><ul class="nav nav-pills nav-stacked">
+<li><a href="#sfg">sfg</a></li>
+      <li><a href="#sfc">sfc</a></li>
+      <li><a href="#sf">sf</a></li>
+      </ul>
+</li>
       </ul>
 </div>
       </div>

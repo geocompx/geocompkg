@@ -30,7 +30,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">geocompkg | metapackage for the book Gecomputation with R</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.73</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.75</span>
       </span>
     </div>
 
@@ -65,7 +65,7 @@
       <h1>Chapter 10: Scripts, algorithms and functions</h1>
                         <h4 class="author">Robin Lovelace, Jakub Nowosad, Jannes Muenchow</h4>
             
-            <h4 class="date">2019-01-07</h4>
+            <h4 class="date">2019-03-10</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/geocompr/geocompkg/blob/master/vignettes/solutions10.Rmd"><code>vignettes/solutions10.Rmd</code></a></small>
       <div class="hidden name"><code>solutions10.Rmd</code></div>
@@ -78,34 +78,8 @@
 <h2 class="hasAnchor">
 <a href="#prerequisites" class="anchor"></a>Prerequisites</h2>
 <p>The solutions assume the following packages are attached (other packages will be attached when needed):</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(sf)</a></code></pre></div>
-<p>They also require a few objects and functions from Chapter 10:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="co"># data preparation</span></a>
-<a class="sourceLine" id="cb2-2" data-line-number="2">poly_mat =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cbind">cbind</a></span>(</a>
-<a class="sourceLine" id="cb2-3" data-line-number="3">  <span class="dt">x =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">9</span>, <span class="dv">9</span>, <span class="dv">0</span>),</a>
-<a class="sourceLine" id="cb2-4" data-line-number="4">  <span class="dt">y =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>, <span class="dv">9</span>, <span class="dv">9</span>, <span class="dv">0</span>, <span class="dv">0</span>)</a>
-<a class="sourceLine" id="cb2-5" data-line-number="5">)</a>
-<a class="sourceLine" id="cb2-6" data-line-number="6">O =<span class="st"> </span>poly_mat[<span class="dv">1</span>, ] <span class="co"># create a point representing the origin</span></a>
-<a class="sourceLine" id="cb2-7" data-line-number="7">t_centroid =<span class="st"> </span><span class="cf">function</span>(x) {</a>
-<a class="sourceLine" id="cb2-8" data-line-number="8">  (x[<span class="dv">1</span>, ] <span class="op">+</span><span class="st"> </span>x[<span class="dv">2</span>, ] <span class="op">+</span><span class="st"> </span>x[<span class="dv">3</span>, ]) <span class="op">/</span><span class="st"> </span><span class="dv">3</span></a>
-<a class="sourceLine" id="cb2-9" data-line-number="9">}</a>
-<a class="sourceLine" id="cb2-10" data-line-number="10">t_area =<span class="st"> </span><span class="cf">function</span>(x) {</a>
-<a class="sourceLine" id="cb2-11" data-line-number="11">  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/MathFun">abs</a></span>(</a>
-<a class="sourceLine" id="cb2-12" data-line-number="12">    x[<span class="dv">1</span>, <span class="dv">1</span>] <span class="op">*</span><span class="st"> </span>(x[<span class="dv">2</span>, <span class="dv">2</span>] <span class="op">-</span><span class="st"> </span>x[<span class="dv">3</span>, <span class="dv">2</span>]) <span class="op">+</span></a>
-<a class="sourceLine" id="cb2-13" data-line-number="13"><span class="st">    </span>x[<span class="dv">2</span>, <span class="dv">1</span>] <span class="op">*</span><span class="st"> </span>(x[<span class="dv">3</span>, <span class="dv">2</span>] <span class="op">-</span><span class="st"> </span>x[<span class="dv">1</span>, <span class="dv">2</span>]) <span class="op">+</span></a>
-<a class="sourceLine" id="cb2-14" data-line-number="14"><span class="st">    </span>x[<span class="dv">3</span>, <span class="dv">1</span>] <span class="op">*</span><span class="st"> </span>(x[<span class="dv">1</span>, <span class="dv">2</span>] <span class="op">-</span><span class="st"> </span>x[<span class="dv">2</span>, <span class="dv">2</span>])</a>
-<a class="sourceLine" id="cb2-15" data-line-number="15">  ) <span class="op">/</span><span class="st"> </span><span class="dv">2</span></a>
-<a class="sourceLine" id="cb2-16" data-line-number="16">}</a>
-<a class="sourceLine" id="cb2-17" data-line-number="17">poly_centroid =<span class="st"> </span><span class="cf">function</span>(x) {</a>
-<a class="sourceLine" id="cb2-18" data-line-number="18">  i =<span class="st"> </span><span class="dv">2</span><span class="op">:</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/nrow">nrow</a></span>(x) <span class="op">-</span><span class="st"> </span><span class="dv">2</span>)</a>
-<a class="sourceLine" id="cb2-19" data-line-number="19">  T_all =<span class="st"> </span>T_all =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/lapply">lapply</a></span>(i, <span class="cf">function</span>(x) {</a>
-<a class="sourceLine" id="cb2-20" data-line-number="20">    <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cbind">rbind</a></span>(O, poly_mat[x<span class="op">:</span>(x <span class="op">+</span><span class="st"> </span><span class="dv">1</span>), ], O)</a>
-<a class="sourceLine" id="cb2-21" data-line-number="21">  })</a>
-<a class="sourceLine" id="cb2-22" data-line-number="22">  C_list =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/lapply">lapply</a></span>(T_all, t_centroid)</a>
-<a class="sourceLine" id="cb2-23" data-line-number="23">  C =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/do.call">do.call</a></span>(rbind, C_list)</a>
-<a class="sourceLine" id="cb2-24" data-line-number="24">  A =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/lapply">vapply</a></span>(T_all, t_area, <span class="dt">FUN.VALUE =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/double">double</a></span>(<span class="dv">1</span>))</a>
-<a class="sourceLine" id="cb2-25" data-line-number="25">  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/weighted.mean">weighted.mean</a></span>(C[, <span class="dv">1</span>], A), <span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/weighted.mean">weighted.mean</a></span>(C[, <span class="dv">2</span>], A))</a>
-<a class="sourceLine" id="cb2-26" data-line-number="26">}</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(sf)</code></pre></div>
+<p>They also require a few objects and functions from Chapter 10.</p>
 </div>
 <div id="chapter-10" class="section level1">
 <h1 class="hasAnchor">
@@ -113,30 +87,160 @@
 <ol style="list-style-type: decimal">
 <li>Read the script <code>10-centroid-alg.R</code> in the <code>code</code> folder of the book’s GitHub repo.
 <ul>
-<li>Which of the best practices covered in this <a href="https://geocompr.robinlovelace.net/algorithms.html#scripts">section</a> does it follow?</li>
-<li>Create a version of the script on your computer in an IDE such as RStudio (preferably by typing-out the script line-by-line, in your own coding style and with your own comments, rather than copy-pasting — this will help you learn how to type scripts) and, using the example of a square polygon (e.g. created with <code>poly_mat = cbind(x = c(0, 0, 9, 9, 0), y = c(0, 9, 9, 0, 0))</code>) execute the script line-by-line.</li>
-<li>What changes could be made to the script to make it more reproducible? Answer: The script could state that it needs a an object called <code>poly_mat</code> to be present and, if none is present, create an example dataset at the outset for testing.</li>
-<li>How could the documentation be improved? It could document the source of the data better - e.g. with <code>data from https://earthquake.usgs.gov/earthquakes/feed/v1.0/geojson.php</code>.</li>
+<li>Which of the best practices covered in this <a href="https://geocompr.robinlovelace.net/algorithms.html#scripts">section</a> does it follow?
+<ul>
+<li>It hase clear steps, e.g. <code># Step 1: create sub-triangles, set-up</code>
+</li>
+<li>It has comments, explaining what is going on</li>
+<li>It is reproducible, as can be verified with the following command:</li>
 </ul>
 </li>
-<li>In this <a href="https://geocompr.robinlovelace.net/algorithms.html#geographic-algorithms">section</a> we calculated the area and geographic centroid of the polygon represented by <code>poly_mat</code>.
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">u =<span class="st"> "https://github.com/Robinlovelace/geocompr/raw/master/code/10-centroid-alg.R"</span>
+<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/source">source</a></span>(u)
+<span class="co">#&gt; No poly_mat object provided, creating object representing a 9 by 9 square</span>
+<span class="co">#&gt; [1] "The area is: 81"</span>
+<span class="co">#&gt; [1] "The coordinates of the centroid are: 4.5, 4.5"</span></code></pre></div>
 <ul>
-<li>Reproduce the results on your own computer with reference to the script <code>10-centroid-alg.R</code>, an implementation of this algorithm (bonus: type out the commands - try to avoid copy-pasting).</li>
-<li>Are the results correct? Verify them by converting <code>poly_mat</code> into an <code>sfc</code> object (named <code>poly_sfc</code>) with <code><a href="https://www.rdocumentation.org/packages/sf/topics/st">st_polygon()</a></code> (hint: this function takes objects of class <code><a href="https://www.rdocumentation.org/packages/base/topics/list">list()</a></code>) and then using <code><a href="https://www.rdocumentation.org/packages/sf/topics/geos_measures">st_area()</a></code> and <code><a href="https://www.rdocumentation.org/packages/sf/topics/geos_unary">st_centroid()</a></code>. Answer: We can verify the answer by converting <code>poly_mat</code> into a simple feature collection as follows, which shows the calculations match:</li>
+<li>Create a version of the script on your computer in an IDE such as RStudio (preferably by typing-out the script line-by-line, in your own coding style and with your own comments, rather than copy-pasting — this will help you learn how to type scripts) and, using the example of a square polygon (e.g. created with <code>poly_mat = cbind(x = c(0, 0, 9, 9, 0), y = c(0, 9, 9, 0, 0))</code>) execute the script line-by-line.
+<ul>
+<li>A minimum viable version of the script could look something like this:</li>
 </ul>
 </li>
-</ol>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">poly_sfc =<span class="st"> </span>sf<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st">st_polygon</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(poly_mat))</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2">sf<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/geos_measures">st_area</a></span>(poly_sfc)</a>
-<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="co">#&gt; [1] 81</span></a>
-<a class="sourceLine" id="cb3-4" data-line-number="4">sf<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/geos_unary">st_centroid</a></span>(poly_sfc)</a>
-<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="co">#&gt; POINT (4.5 4.5)</span></a></code></pre></div>
-<ol start="3" style="list-style-type: decimal">
-<li>It was stated that the algorithm we created only works for <em>convex hulls</em>. Define convex hulls (see this <a href="https://geocompr.robinlovelace.net/geometric-operations.html#geometric-operations">Chapter</a>) and test the algorithm on a polygon that is <em>not</em> a convex hull.
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">poly_mat =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cbind">cbind</a></span>(
+  <span class="dt">x =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">4</span>, <span class="dv">4</span>, <span class="dv">0</span>),
+  <span class="dt">y =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>, <span class="dv">4</span>, <span class="dv">4</span>, <span class="dv">0</span>, <span class="dv">0</span>)
+)
+Origin =<span class="st"> </span>poly_mat[<span class="dv">1</span>, ] <span class="co"># create a point representing the origin</span>
+i =<span class="st"> </span><span class="dv">2</span><span class="op">:</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/nrow">nrow</a></span>(poly_mat) <span class="op">-</span><span class="st"> </span><span class="dv">2</span>)
+T_all =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/lapply">lapply</a></span>(i, <span class="cf">function</span>(x) {
+  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cbind">rbind</a></span>(Origin, poly_mat[x<span class="op">:</span>(x <span class="op">+</span><span class="st"> </span><span class="dv">1</span>), ], Origin)
+})
+
+C_list =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/lapply">lapply</a></span>(T_all,  <span class="cf">function</span>(x) (x[<span class="dv">1</span>, ] <span class="op">+</span><span class="st"> </span>x[<span class="dv">2</span>, ] <span class="op">+</span><span class="st"> </span>x[<span class="dv">3</span>, ]) <span class="op">/</span><span class="st"> </span><span class="dv">3</span>)
+C =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/do.call">do.call</a></span>(rbind, C_list)
+
+A =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/lapply">vapply</a></span>(T_all, <span class="cf">function</span>(x) {
+  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/MathFun">abs</a></span>(x[<span class="dv">1</span>, <span class="dv">1</span>] <span class="op">*</span><span class="st"> </span>(x[<span class="dv">2</span>, <span class="dv">2</span>] <span class="op">-</span><span class="st"> </span>x[<span class="dv">3</span>, <span class="dv">2</span>]) <span class="op">+</span>
+<span class="st">        </span>x[<span class="dv">2</span>, <span class="dv">1</span>] <span class="op">*</span><span class="st"> </span>(x[<span class="dv">3</span>, <span class="dv">2</span>] <span class="op">-</span><span class="st"> </span>x[<span class="dv">1</span>, <span class="dv">2</span>]) <span class="op">+</span>
+<span class="st">        </span>x[<span class="dv">3</span>, <span class="dv">1</span>] <span class="op">*</span><span class="st"> </span>(x[<span class="dv">1</span>, <span class="dv">2</span>] <span class="op">-</span><span class="st"> </span>x[<span class="dv">2</span>, <span class="dv">2</span>]) ) <span class="op">/</span><span class="st"> </span><span class="dv">2</span>
+}, <span class="dt">FUN.VALUE =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/double">double</a></span>(<span class="dv">1</span>))
+
+poly_area =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/sum">sum</a></span>(A)
+<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste0</a></span>(<span class="st">"The area is: "</span>, poly_area))
+<span class="co">#&gt; [1] "The area is: 16"</span>
+poly_cent =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/weighted.mean">weighted.mean</a></span>(C[, <span class="dv">1</span>], A), <span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/weighted.mean">weighted.mean</a></span>(C[, <span class="dv">2</span>], A))
+
+<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste0</a></span>(
+  <span class="st">"The coordinates of the centroid are: "</span>,
+  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Round">round</a></span>(poly_cent[<span class="dv">1</span>], <span class="dv">2</span>),
+  <span class="st">", "</span>,
+  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Round">round</a></span>(poly_cent[<span class="dv">2</span>], <span class="dv">2</span>)
+))
+<span class="co">#&gt; [1] "The coordinates of the centroid are: 2, 2"</span></code></pre></div>
 <ul>
-<li>Bonus 1: Think about why the method only works for convex hulls and note changes that would need to be made to the algorithm for other types of shape to be calculated. Answer: The algorithm would need to be able to have negative as well as positive area values.</li>
+<li>What changes could be made to the script to make it more reproducible?
+<ul>
+<li>Answer: The script could state that it needs a an object called <code>poly_mat</code> to be present and, if none is present, create an example dataset at the outset for testing.</li>
+</ul>
+</li>
+<li>How could the documentation be improved?
+<ul>
+<li>It could explain each step in detail, e.g. <code># Create list of centroid values</code> could go before this line: <code>C_list = lapply(T_all,  function(x) (x[1, ] + x[2, ] + x[3, ]) / 3)</code>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>In section <a href="https://geocompr.robinlovelace.net/algorithms.html#geographic-algorithms">10.3</a> we calculated the area and geographic centroid of the polygon represented by <code>poly_mat</code>.
+<ul>
+<li>Reproduce the results on your own computer with reference to the script <code>10-centroid-alg.R</code>, an implementation of this algorithm (bonus: type out the commands - try to avoid copy-pasting).
+<ul>
+<li>The results can be reproduced as follows:</li>
+</ul>
+</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x_coords =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">10</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">12</span>, <span class="dv">20</span>, <span class="dv">10</span>)
+y_coords =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">15</span>, <span class="dv">0</span>)
+poly_mat =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cbind">cbind</a></span>(x_coords, y_coords)
+<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/source">source</a></span>(<span class="st">"https://git.io/10-centroid-alg.R"</span>)
+<span class="co">#&gt; [1] "The area is: 245"</span>
+<span class="co">#&gt; [1] "The coordinates of the centroid are: 8.83, 9.22"</span></code></pre></div>
+<ul>
+<li>Are the results correct? Verify them by converting <code>poly_mat</code> into an <code>sfc</code> object (named <code>poly_sfc</code>) with <code><a href="https://www.rdocumentation.org/packages/sf/topics/st">st_polygon()</a></code> (hint: this function takes objects of class <code><a href="https://www.rdocumentation.org/packages/base/topics/list">list()</a></code>) and then using <code><a href="https://www.rdocumentation.org/packages/sf/topics/geos_measures">st_area()</a></code> and <code><a href="https://www.rdocumentation.org/packages/sf/topics/geos_unary">st_centroid()</a></code>.
+<ul>
+<li>Answer: We can verify the answer by converting <code>poly_mat</code> into a simple feature collection as follows, which shows the calculations match:</li>
+</ul>
+</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">poly_sfc =<span class="st"> </span>sf<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st">st_polygon</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(poly_mat))
+sf<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/geos_measures">st_area</a></span>(poly_sfc)
+<span class="co">#&gt; [1] 245</span>
+sf<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/geos_unary">st_centroid</a></span>(poly_sfc)
+<span class="co">#&gt; POINT (8.829932 9.217687)</span></code></pre></div>
+</li>
+<li>
+<p>It was stated that the algorithm we created only works for <em>convex hulls</em>. Define convex hulls (see this <a href="https://geocompr.robinlovelace.net/geometric-operations.html#geometric-operations">Chapter</a>) and test the algorithm on a polygon that is <em>not</em> a convex hull. - Convex hulls are polygons with internal angles defining the perimeter that are never larger than 180 degrees. They are polygons that, if you were to put an elastic band around them, would have no empty spaces. A more detailed definition can be found on <a href="https://en.wikipedia.org/wiki/Convex_hull">Wikipedia</a>. - We can test whether or not the algorithm we created works on a polygon that is not a convex hull by creating such an object, and comparing the results with <code>sf</code> functions, as follows:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">poly_mat =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cbind">cbind</a></span>(
+<span class="dt">x =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">4</span>, <span class="dv">4</span>, <span class="dv">2</span>, <span class="dv">0</span>),
+<span class="dt">y =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>, <span class="dv">4</span>, <span class="dv">4</span>, <span class="dv">0</span>, <span class="dv">2</span>, <span class="dv">0</span>)
+)
+<span class="co"># data preparation</span>
+
+Origin =<span class="st"> </span>poly_mat[<span class="dv">1</span>, ] <span class="co"># create a point representing the origin</span>
+
+t_centroid =<span class="st"> </span><span class="cf">function</span>(x) {
+(x[<span class="dv">1</span>, ] <span class="op">+</span><span class="st"> </span>x[<span class="dv">2</span>, ] <span class="op">+</span><span class="st"> </span>x[<span class="dv">3</span>, ]) <span class="op">/</span><span class="st"> </span><span class="dv">3</span>
+}
+
+t_area =<span class="st"> </span><span class="cf">function</span>(x) {
+<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/MathFun">abs</a></span>(
+x[<span class="dv">1</span>, <span class="dv">1</span>] <span class="op">*</span><span class="st"> </span>(x[<span class="dv">2</span>, <span class="dv">2</span>] <span class="op">-</span><span class="st"> </span>x[<span class="dv">3</span>, <span class="dv">2</span>]) <span class="op">+</span>
+x[<span class="dv">2</span>, <span class="dv">1</span>] <span class="op">*</span><span class="st"> </span>(x[<span class="dv">3</span>, <span class="dv">2</span>] <span class="op">-</span><span class="st"> </span>x[<span class="dv">1</span>, <span class="dv">2</span>]) <span class="op">+</span>
+x[<span class="dv">3</span>, <span class="dv">1</span>] <span class="op">*</span><span class="st"> </span>(x[<span class="dv">1</span>, <span class="dv">2</span>] <span class="op">-</span><span class="st"> </span>x[<span class="dv">2</span>, <span class="dv">2</span>])
+) <span class="op">/</span><span class="st"> </span><span class="dv">2</span>
+}
+
+poly_centroid =<span class="st"> </span><span class="cf">function</span>(x) {
+i =<span class="st"> </span><span class="dv">2</span><span class="op">:</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/nrow">nrow</a></span>(x) <span class="op">-</span><span class="st"> </span><span class="dv">2</span>)
+T_all =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/lapply">lapply</a></span>(i, <span class="cf">function</span>(x) {
+<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cbind">rbind</a></span>(Origin, poly_mat[x<span class="op">:</span>(x <span class="op">+</span><span class="st"> </span><span class="dv">1</span>), ], Origin)
+})
+C_list =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/lapply">lapply</a></span>(T_all, t_centroid)
+C =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/do.call">do.call</a></span>(rbind, C_list)
+A =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/lapply">vapply</a></span>(T_all, t_area, <span class="dt">FUN.VALUE =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/double">double</a></span>(<span class="dv">1</span>))
+<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/weighted.mean">weighted.mean</a></span>(C[, <span class="dv">1</span>], A), <span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/weighted.mean">weighted.mean</a></span>(C[, <span class="dv">2</span>], A))
+}
+
+<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(poly_mat, <span class="dt">type =</span> <span class="st">"lines"</span>)
+<span class="co">#&gt; Warning in plot.xy(xy, type, ...): plot type 'lines' will be truncated to</span>
+<span class="co">#&gt; first character</span></code></pre></div>
+<p><img src="solutions10_files/figure-html/unnamed-chunk-5-1.png" width="700"></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">poly_centroid</span>(poly_mat)
+<span class="co">#&gt; [1] 2.000000 1.733333</span>
+poly_sfc =<span class="st"> </span>sf<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st">st_polygon</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(poly_mat))
+sf<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/geos_unary">st_centroid</a></span>(poly_sfc) <span class="co"># the result is different: 2, 2.4 vs 2, 1.733</span>
+<span class="co">#&gt; POINT (2 2.444444)</span></code></pre></div>
+<ul>
+<li>Bonus 1: Think about why the method only works for convex hulls and note changes that would need to be made to the algorithm for other types of shape to be calculated.
+<ul>
+<li>Answer: The algorithm would need to be able to have negative as well as positive area values.</li>
+</ul>
+</li>
 <li>Bonus 2: Building on the contents of <code>10-centroid-alg.R</code>, write an algorithm only using base R functions that can find the total length of linestrings represented in matrix form.</li>
+<li>Continuing with the previous example, we could calculate the length of the perimeter by iterating to calculate the Euclidean length of each edge. One way of doing this, alongside a corroborating check against a function in <code>sf</code> is provided below:</li>
 </ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x =<span class="st"> </span>poly_mat
+poly_perimeter_length =<span class="st"> </span><span class="cf">function</span>(x) {
+  i =<span class="st"> </span><span class="dv">2</span><span class="op">:</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/nrow">nrow</a></span>(x))
+  seg_lengths =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/lapply">lapply</a></span>(i, <span class="cf">function</span>(i) {<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/dist">dist</a></span>(x[(i <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)<span class="op">:</span>i, ])} )
+  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/sum">sum</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/unlist">unlist</a></span>(seg_lengths))
+}
+<span class="kw">poly_perimeter_length</span>(x)
+<span class="co">#&gt; [1] 17.65685</span>
+sf<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/geos_measures">st_length</a></span>(sf<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st">st_linestring</a></span>(poly_mat))
+<span class="co">#&gt; [1] 17.65685</span></code></pre></div>
 </li>
 </ol>
 <!-- Todo: add example of matrix representing a linestring, demonstrate code to verify the answer, suggest alternative functions to decompose as a bonus. --><ol start="4" style="list-style-type: decimal">
@@ -144,30 +248,34 @@
 <ul>
 <li>Verify it works by running <code>poly_centroid_sf(sf::st_sf(sf::st_sfc(poly_sfc)))</code>
 </li>
-<li>What error message do you get when you try to run <code>poly_centroid_sf(poly_mat)</code>?</li>
+<li>What error message do you get when you try to run <code>poly_centroid_sf(poly_mat)</code>?
+<ul>
+<li>A solution is shown below:</li>
+</ul>
+</li>
 </ul>
 </li>
 </ol>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">poly_centroid_sf =<span class="st"> </span><span class="cf">function</span>(x) {</a>
-<a class="sourceLine" id="cb4-2" data-line-number="2">  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/stopifnot">stopifnot</a></span>(<span class="kw">is</span>(x, <span class="st">"sf"</span>))</a>
-<a class="sourceLine" id="cb4-3" data-line-number="3">  xcoords =<span class="st"> </span>sf<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_coordinates">st_coordinates</a></span>(x)</a>
-<a class="sourceLine" id="cb4-4" data-line-number="4">  centroid_coords =<span class="st"> </span><span class="kw">poly_centroid</span>(xcoords)</a>
-<a class="sourceLine" id="cb4-5" data-line-number="5">  centroid_sf =<span class="st"> </span>sf<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/sf">st_sf</a></span>(<span class="dt">geometry =</span> sf<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/sfc">st_sfc</a></span>(sf<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st">st_point</a></span>(centroid_coords)))</a>
-<a class="sourceLine" id="cb4-6" data-line-number="6">  centroid_sf</a>
-<a class="sourceLine" id="cb4-7" data-line-number="7">}</a>
-<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="kw">poly_centroid_sf</span>(sf<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/sf">st_sf</a></span>(sf<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/sfc">st_sfc</a></span>(poly_sfc)))</a>
-<a class="sourceLine" id="cb4-9" data-line-number="9"><span class="co">#&gt; Simple feature collection with 1 feature and 0 fields</span></a>
-<a class="sourceLine" id="cb4-10" data-line-number="10"><span class="co">#&gt; geometry type:  POINT</span></a>
-<a class="sourceLine" id="cb4-11" data-line-number="11"><span class="co">#&gt; dimension:      XY</span></a>
-<a class="sourceLine" id="cb4-12" data-line-number="12"><span class="co">#&gt; bbox:           xmin: 4.5 ymin: 4.5 xmax: 4.5 ymax: 4.5</span></a>
-<a class="sourceLine" id="cb4-13" data-line-number="13"><span class="co">#&gt; epsg (SRID):    NA</span></a>
-<a class="sourceLine" id="cb4-14" data-line-number="14"><span class="co">#&gt; proj4string:    NA</span></a>
-<a class="sourceLine" id="cb4-15" data-line-number="15"><span class="co">#&gt;          geometry</span></a>
-<a class="sourceLine" id="cb4-16" data-line-number="16"><span class="co">#&gt; 1 POINT (4.5 4.5)</span></a>
-<a class="sourceLine" id="cb4-17" data-line-number="17"><span class="kw">poly_centroid_sf</span>(poly_sfc)</a>
-<a class="sourceLine" id="cb4-18" data-line-number="18"><span class="co">#&gt; Error in poly_centroid_sf(poly_sfc): is(x, "sf") is not TRUE</span></a>
-<a class="sourceLine" id="cb4-19" data-line-number="19"><span class="kw">poly_centroid_sf</span>(poly_mat)</a>
-<a class="sourceLine" id="cb4-20" data-line-number="20"><span class="co">#&gt; Error in poly_centroid_sf(poly_mat): is(x, "sf") is not TRUE</span></a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">poly_centroid_sf =<span class="st"> </span><span class="cf">function</span>(x) {
+  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/stopifnot">stopifnot</a></span>(<span class="kw">is</span>(x, <span class="st">"sf"</span>))
+  xcoords =<span class="st"> </span>sf<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_coordinates">st_coordinates</a></span>(x)
+  centroid_coords =<span class="st"> </span><span class="kw">poly_centroid</span>(xcoords)
+  centroid_sf =<span class="st"> </span>sf<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/sf">st_sf</a></span>(<span class="dt">geometry =</span> sf<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/sfc">st_sfc</a></span>(sf<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st">st_point</a></span>(centroid_coords)))
+  centroid_sf
+}
+<span class="kw">poly_centroid_sf</span>(sf<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/sf">st_sf</a></span>(sf<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/sfc">st_sfc</a></span>(poly_sfc)))
+<span class="co">#&gt; Simple feature collection with 1 feature and 0 fields</span>
+<span class="co">#&gt; geometry type:  POINT</span>
+<span class="co">#&gt; dimension:      XY</span>
+<span class="co">#&gt; bbox:           xmin: 2 ymin: 1.733333 xmax: 2 ymax: 1.733333</span>
+<span class="co">#&gt; epsg (SRID):    NA</span>
+<span class="co">#&gt; proj4string:    NA</span>
+<span class="co">#&gt;             geometry</span>
+<span class="co">#&gt; 1 POINT (2 1.733333)</span>
+<span class="kw">poly_centroid_sf</span>(poly_sfc)
+<span class="co">#&gt; Error in poly_centroid_sf(poly_sfc): is(x, "sf") is not TRUE</span>
+<span class="kw">poly_centroid_sf</span>(poly_mat)
+<span class="co">#&gt; Error in poly_centroid_sf(poly_mat): is(x, "sf") is not TRUE</span></code></pre></div>
 </div>
   </div>
 

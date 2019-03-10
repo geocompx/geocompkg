@@ -30,7 +30,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">geocompkg | metapackage for the book Gecomputation with R</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.73</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.75</span>
       </span>
     </div>
 
@@ -65,7 +65,7 @@
       <h1>Geocomputation with R: maps extended</h1>
                         <h4 class="author">Robin Lovelace, Jakub Nowosad, Jannes Muenchow</h4>
             
-            <h4 class="date">2019-01-07</h4>
+            <h4 class="date">2019-03-10</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/geocompr/geocompkg/blob/master/vignettes/maps.Rmd"><code>vignettes/maps.Rmd</code></a></small>
       <div class="hidden name"><code>maps.Rmd</code></div>
@@ -77,23 +77,21 @@
 <div id="hillshade-map" class="section level1">
 <h1 class="hasAnchor">
 <a href="#hillshade-map" class="anchor"></a>Hillshade map</h1>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co"># data download</span></a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(raster)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># data download</span>
+<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(raster)</code></pre></div>
 <pre><code>## Loading required package: sp</code></pre>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">alt =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/getData">getData</a></span>(<span class="st">"alt"</span>, <span class="dt">country =</span> <span class="st">"SVN"</span>, <span class="dt">path =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/tempfile">tempdir</a></span>())</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2">slope =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/terrain">terrain</a></span>(alt, <span class="dt">opt =</span> <span class="st">"slope"</span>)</a>
-<a class="sourceLine" id="cb3-3" data-line-number="3">aspect =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/terrain">terrain</a></span>(alt, <span class="dt">opt =</span> <span class="st">"aspect"</span>)</a>
-<a class="sourceLine" id="cb3-4" data-line-number="4">hill =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/hillShade">hillShade</a></span>(slope, aspect, <span class="dv">40</span>, <span class="dv">270</span>)</a></code></pre></div>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="co"># map creation</span></a>
-<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(tmap)  </a></code></pre></div>
-<pre><code>## Warning in fun(libname, pkgname): rgeos: versions of GEOS runtime 3.7.0-CAPI-1.11.0
-## and GEOS at installation 3.6.2-CAPI-1.10.2differ</code></pre>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/tmap/topics/tm_shape">tm_shape</a></span>(hill) <span class="op">+</span></a>
-<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/tmap/topics/tm_raster">tm_raster</a></span>(<span class="dt">palette =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/gray">gray</a></span>(<span class="dv">0</span><span class="op">:</span><span class="dv">10</span> <span class="op">/</span><span class="st"> </span><span class="dv">10</span>), <span class="dt">style =</span> <span class="st">"cont"</span>, <span class="dt">legend.show =</span> <span class="ot">FALSE</span>)  <span class="op">+</span></a>
-<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/tmap/topics/tm_shape">tm_shape</a></span>(alt) <span class="op">+</span></a>
-<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/tmap/topics/tm_raster">tm_raster</a></span>(<span class="dt">alpha =</span> <span class="fl">0.5</span>, <span class="dt">palette =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/palettes">terrain.colors</a></span>(<span class="dv">10</span>), <span class="dt">style =</span> <span class="st">"cont"</span>,</a>
-<a class="sourceLine" id="cb6-5" data-line-number="5">            <span class="dt">title =</span> <span class="st">"Elevation (m asl)"</span>, <span class="dt">legend.show =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
-<pre><code>## Linking to GEOS 3.7.0, GDAL 2.3.2, PROJ 5.2.0</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">alt =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/getData">getData</a></span>(<span class="st">"alt"</span>, <span class="dt">country =</span> <span class="st">"SVN"</span>, <span class="dt">path =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/tempfile">tempdir</a></span>())
+slope =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/terrain">terrain</a></span>(alt, <span class="dt">opt =</span> <span class="st">"slope"</span>)
+aspect =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/terrain">terrain</a></span>(alt, <span class="dt">opt =</span> <span class="st">"aspect"</span>)
+hill =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/hillShade">hillShade</a></span>(slope, aspect, <span class="dv">40</span>, <span class="dv">270</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># map creation</span>
+<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(tmap)  
+<span class="kw"><a href="https://www.rdocumentation.org/packages/tmap/topics/tm_shape">tm_shape</a></span>(hill) <span class="op">+</span>
+<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/tmap/topics/tm_raster">tm_raster</a></span>(<span class="dt">palette =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/gray">gray</a></span>(<span class="dv">0</span><span class="op">:</span><span class="dv">10</span> <span class="op">/</span><span class="st"> </span><span class="dv">10</span>), <span class="dt">style =</span> <span class="st">"cont"</span>, <span class="dt">legend.show =</span> <span class="ot">FALSE</span>)  <span class="op">+</span>
+<span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/tmap/topics/tm_shape">tm_shape</a></span>(alt) <span class="op">+</span>
+<span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/tmap/topics/tm_raster">tm_raster</a></span>(<span class="dt">alpha =</span> <span class="fl">0.5</span>, <span class="dt">palette =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/palettes">terrain.colors</a></span>(<span class="dv">10</span>), <span class="dt">style =</span> <span class="st">"cont"</span>,
+            <span class="dt">title =</span> <span class="st">"Elevation (m asl)"</span>, <span class="dt">legend.show =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<pre><code>## Linking to GEOS 3.5.1, GDAL 2.1.2, PROJ 4.9.3</code></pre>
 <p><img src="maps_files/figure-html/unnamed-chunk-2-1.png" width="700"></p>
 </div>
   </div>

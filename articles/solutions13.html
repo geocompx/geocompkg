@@ -30,7 +30,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">geocompkg | metapackage for the book Gecomputation with R</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.73</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.75</span>
       </span>
     </div>
 
@@ -68,7 +68,7 @@
       <h1>Chapter 13: Geomarketing</h1>
                         <h4 class="author">Robin Lovelace, Jakub Nowosad, Jannes Muenchow</h4>
             
-            <h4 class="date">2019-01-07</h4>
+            <h4 class="date">2019-03-10</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/geocompr/geocompkg/blob/master/vignettes/solutions13.Rmd"><code>vignettes/solutions13.Rmd</code></a></small>
       <div class="hidden name"><code>solutions13.Rmd</code></div>
@@ -81,26 +81,26 @@
 <h2 class="hasAnchor">
 <a href="#prerequisites" class="anchor"></a>Prerequisites</h2>
 <p>The solutions assume the following packages are attached (other packages will be attached when needed):</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(leaflet)</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(sf)</a>
-<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(sp)</a>
-<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(tidyverse)</a>
-<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(raster)</a>
-<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(spData)</a></code></pre></div>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/data">data</a></span>(<span class="st">"census_de"</span>, <span class="dt">package =</span> <span class="st">"spDataLarge"</span>)</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2">input =<span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(census_de, <span class="dt">x =</span> x_mp_1km, <span class="dt">y =</span> y_mp_1km, <span class="dt">pop =</span> Einwohner,</a>
-<a class="sourceLine" id="cb2-3" data-line-number="3">                      <span class="dt">women =</span> Frauen_A, <span class="dt">mean_age =</span> Alter_D,</a>
-<a class="sourceLine" id="cb2-4" data-line-number="4">                      <span class="dt">hh_size =</span> HHGroesse_D)</a>
-<a class="sourceLine" id="cb2-5" data-line-number="5">input_tidy =<span class="st"> </span><span class="kw">mutate_all</span>(input, <span class="kw">funs</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/ifelse">ifelse</a></span>(. <span class="op">%in%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="op">-</span><span class="dv">1</span>, <span class="dv">-9</span>), <span class="ot">NA</span>, .)))</a>
-<a class="sourceLine" id="cb2-6" data-line-number="6"><span class="co">#&gt; Warning: funs() is soft deprecated as of dplyr 0.8.0</span></a>
-<a class="sourceLine" id="cb2-7" data-line-number="7"><span class="co">#&gt; please use list() instead</span></a>
-<a class="sourceLine" id="cb2-8" data-line-number="8"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb2-9" data-line-number="9"><span class="co">#&gt; # Before:</span></a>
-<a class="sourceLine" id="cb2-10" data-line-number="10"><span class="co">#&gt; funs(name = f(.)</span></a>
-<a class="sourceLine" id="cb2-11" data-line-number="11"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb2-12" data-line-number="12"><span class="co">#&gt; # After: </span></a>
-<a class="sourceLine" id="cb2-13" data-line-number="13"><span class="co">#&gt; list(name = ~f(.))</span></a>
-<a class="sourceLine" id="cb2-14" data-line-number="14"><span class="co">#&gt; This warning is displayed once per session.</span></a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(leaflet)
+<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(sf)
+<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(sp)
+<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(tidyverse)
+<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(raster)
+<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(spData)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/data">data</a></span>(<span class="st">"census_de"</span>, <span class="dt">package =</span> <span class="st">"spDataLarge"</span>)
+input =<span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(census_de, <span class="dt">x =</span> x_mp_1km, <span class="dt">y =</span> y_mp_1km, <span class="dt">pop =</span> Einwohner,
+                      <span class="dt">women =</span> Frauen_A, <span class="dt">mean_age =</span> Alter_D,
+                      <span class="dt">hh_size =</span> HHGroesse_D)
+input_tidy =<span class="st"> </span><span class="kw">mutate_all</span>(input, <span class="kw">funs</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/ifelse">ifelse</a></span>(. <span class="op">%in%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="op">-</span><span class="dv">1</span>, <span class="op">-</span><span class="dv">9</span>), <span class="ot">NA</span>, .)))
+<span class="co">#&gt; Warning: funs() is soft deprecated as of dplyr 0.8.0</span>
+<span class="co">#&gt; please use list() instead</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; # Before:</span>
+<span class="co">#&gt; funs(name = f(.))</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; # After: </span>
+<span class="co">#&gt; list(name = ~f(.))</span>
+<span class="co">#&gt; This warning is displayed once per session.</span></code></pre></div>
 </div>
 <div id="chapter-13" class="section level1">
 <h1 class="hasAnchor">
@@ -108,158 +108,158 @@
 <ol style="list-style-type: decimal">
 <li>We have used <code><a href="https://www.rdocumentation.org/packages/raster/topics/rasterFromXYZ">raster::rasterFromXYZ()</a></code> to convert a <code>input_tidy</code> into a raster brick. Try to achieve the same with the help of the <code><a href="https://www.rdocumentation.org/packages/sp/topics/gridded-methods">sp::gridded()</a></code> function.</li>
 </ol>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">input_tidy =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_as_sf">st_as_sf</a></span>(input_tidy, <span class="dt">coords =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"x"</span>, <span class="st">"y"</span>))</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co"># use the correct projection (see data description)</span></a>
-<a class="sourceLine" id="cb3-3" data-line-number="3">input_tidy =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_crs">st_set_crs</a></span>(input_tidy, <span class="dv">3035</span>)</a>
-<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co"># convert into an sp-object</span></a>
-<a class="sourceLine" id="cb3-5" data-line-number="5">input_tidy =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/coerce-methods">as</a></span>(input_tidy, <span class="st">"Spatial"</span>)</a>
-<a class="sourceLine" id="cb3-6" data-line-number="6"><span class="kw"><a href="https://www.rdocumentation.org/packages/sp/topics/gridded-methods">gridded</a></span>(input_tidy) =<span class="st"> </span><span class="ot">TRUE</span></a>
-<a class="sourceLine" id="cb3-7" data-line-number="7"><span class="co"># convert into a raster stack</span></a>
-<a class="sourceLine" id="cb3-8" data-line-number="8">input_ras =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/stack">stack</a></span>(input_tidy)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">input_tidy =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_as_sf">st_as_sf</a></span>(input_tidy, <span class="dt">coords =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"x"</span>, <span class="st">"y"</span>))
+<span class="co"># use the correct projection (see data description)</span>
+input_tidy =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_crs">st_set_crs</a></span>(input_tidy, <span class="dv">3035</span>)
+<span class="co"># convert into an sp-object</span>
+input_tidy =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/coerce-methods">as</a></span>(input_tidy, <span class="st">"Spatial"</span>)
+<span class="kw"><a href="https://www.rdocumentation.org/packages/sp/topics/gridded-methods">gridded</a></span>(input_tidy) =<span class="st"> </span><span class="ot">TRUE</span>
+<span class="co"># convert into a raster stack</span>
+input_ras =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/stack">stack</a></span>(input_tidy)</code></pre></div>
 <ol start="2" style="list-style-type: decimal">
 <li>Download the csv file containing inhabitant information for a 100 m cell resolution (<a href="https://www.zensus2011.de/SharedDocs/Downloads/DE/Pressemitteilung/DemografischeGrunddaten/csv_Bevoelkerung_100m_Gitter.zip?__blob=publicationFile&amp;v=3" class="uri">https://www.zensus2011.de/SharedDocs/Downloads/DE/Pressemitteilung/DemografischeGrunddaten/csv_Bevoelkerung_100m_Gitter.zip?__blob=publicationFile&amp;v=3</a>). Please note that the unzipped file has a size of 1.23 GB. To read it into R you can use <code><a href="https://readr.tidyverse.org/reference/read_delim.html">readr::read_csv</a></code>. This takes 30 seconds on my machine (16 GB RAM) <code><a href="https://www.rdocumentation.org/packages/data.table/topics/fread">data.table::fread()</a></code> might be even faster, and returns an object of class <code>data.table()</code>. Use <code>as.tibble()</code> to convert it into a tibble. Build an inhabitant raster, aggregate it to a cell resolution of 1 km, and compare the difference with the inhabitant raster (<code>inh</code>) we have created using class mean values.</li>
 </ol>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"></a>
-<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="co"># Coarse inhabitant raster (1 km resolution)</span></a>
-<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="co">#*******************************************</span></a>
-<a class="sourceLine" id="cb4-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="co"># inhabitant raster (coarse resolution); this is one of the results of the </span></a>
-<a class="sourceLine" id="cb4-6" data-line-number="6"><span class="co"># previous exercise</span></a>
-<a class="sourceLine" id="cb4-7" data-line-number="7">inh_coarse =<span class="st"> </span>input_ras<span class="op">$</span>pop</a>
-<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="co"># reclassify, i.e. convert the classes into inhabitant numbers</span></a>
-<a class="sourceLine" id="cb4-9" data-line-number="9">rcl =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/matrix">matrix</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">125</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">375</span>, <span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">1250</span>, <span class="dv">4</span>, <span class="dv">4</span>, <span class="dv">3000</span>, <span class="dv">5</span>, <span class="dv">5</span>, <span class="dv">6000</span>,</a>
-<a class="sourceLine" id="cb4-10" data-line-number="10">               <span class="dv">6</span>, <span class="dv">6</span>, <span class="dv">8000</span>), <span class="dt">ncol =</span> <span class="dv">3</span>, <span class="dt">byrow =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb4-11" data-line-number="11">inh_coarse =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/reclassify">reclassify</a></span>(inp_coarse, <span class="dt">rcl =</span> rcl, <span class="dt">right =</span> <span class="ot">NA</span>)</a>
-<a class="sourceLine" id="cb4-12" data-line-number="12"></a>
-<a class="sourceLine" id="cb4-13" data-line-number="13"><span class="co"># Fine inhabitant raster (100 m resolution)</span></a>
-<a class="sourceLine" id="cb4-14" data-line-number="14"><span class="co">#******************************************</span></a>
-<a class="sourceLine" id="cb4-15" data-line-number="15"></a>
-<a class="sourceLine" id="cb4-16" data-line-number="16">url =</a>
-<a class="sourceLine" id="cb4-17" data-line-number="17"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste0</a></span>(<span class="st">"https://www.zensus2011.de/SharedDocs/Downloads/DE/Pressemitteilung/"</span>,</a>
-<a class="sourceLine" id="cb4-18" data-line-number="18">         <span class="st">"DemografischeGrunddaten/csv_Bevoelkerung_100m_Gitter.zip"</span>, </a>
-<a class="sourceLine" id="cb4-19" data-line-number="19">         <span class="st">"?__blob=publicationFile&amp;v=3"</span>)</a>
-<a class="sourceLine" id="cb4-20" data-line-number="20"><span class="co"># download fine raster</span></a>
-<a class="sourceLine" id="cb4-21" data-line-number="21"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/download.file">download.file</a></span>(<span class="dt">url =</span> url, <span class="dt">destfile =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/file.path">file.path</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/tempfile">tempdir</a></span>(), <span class="st">"census.zip"</span>),</a>
-<a class="sourceLine" id="cb4-22" data-line-number="22">              <span class="dt">method =</span> <span class="st">"auto"</span>, <span class="dt">mode =</span> <span class="st">"wb"</span>)</a>
-<a class="sourceLine" id="cb4-23" data-line-number="23"><span class="co"># list the file names</span></a>
-<a class="sourceLine" id="cb4-24" data-line-number="24">nms =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/unzip">unzip</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/file.path">file.path</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/tempfile">tempdir</a></span>(), <span class="st">"census.zip"</span>), <span class="dt">list =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb4-25" data-line-number="25"><span class="co"># unzip only the csv file</span></a>
-<a class="sourceLine" id="cb4-26" data-line-number="26">base_name =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/grep">grep</a></span>(<span class="st">".csv$"</span>, nms<span class="op">$</span>Name, <span class="dt">value =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb4-27" data-line-number="27"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/unzip">unzip</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/file.path">file.path</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/tempfile">tempdir</a></span>(), <span class="st">"census.zip"</span>), <span class="dt">files =</span> base_name, <span class="dt">exdir =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/tempfile">tempdir</a></span>())</a>
-<a class="sourceLine" id="cb4-28" data-line-number="28"><span class="co"># read in the csv file</span></a>
-<a class="sourceLine" id="cb4-29" data-line-number="29">input =<span class="st"> </span>data.table<span class="op">::</span><span class="kw">fread</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/file.path">file.path</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/tempfile">tempdir</a></span>(), base_name)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb4-30" data-line-number="30"><span class="st">  </span>as.tibble</a>
-<a class="sourceLine" id="cb4-31" data-line-number="31">input =<span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(input, <span class="dt">x =</span> <span class="kw">starts_with</span>(<span class="st">"x_mp_1"</span>), <span class="dt">y =</span> <span class="kw">starts_with</span>(<span class="st">"y_mp_1"</span>),</a>
-<a class="sourceLine" id="cb4-32" data-line-number="32">                        <span class="dt">inh =</span> Einwohner)</a>
-<a class="sourceLine" id="cb4-33" data-line-number="33"><span class="co"># set -1 and -9 to NA</span></a>
-<a class="sourceLine" id="cb4-34" data-line-number="34">input =<span class="st"> </span><span class="kw">mutate_all</span>(input, <span class="kw">funs</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/ifelse">ifelse</a></span>(. <span class="op">%in%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="op">-</span><span class="dv">1</span>, <span class="dv">-9</span>), <span class="ot">NA</span>, .)))</a>
-<a class="sourceLine" id="cb4-35" data-line-number="35"><span class="co"># convert table into a raster (x and y are cell midpoints)</span></a>
-<a class="sourceLine" id="cb4-36" data-line-number="36"><span class="kw"><a href="https://www.rdocumentation.org/packages/sp/topics/coordinates">coordinates</a></span>(input) =<span class="er">~</span><span class="st"> </span>x <span class="op">+</span><span class="st"> </span>y</a>
-<a class="sourceLine" id="cb4-37" data-line-number="37"><span class="co"># use the correct projection</span></a>
-<a class="sourceLine" id="cb4-38" data-line-number="38"><span class="kw"><a href="https://www.rdocumentation.org/packages/sp/topics/is.projected">proj4string</a></span>(input) =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sp/topics/CRS-class">CRS</a></span>(<span class="st">"+init=epsg:3035"</span>)</a>
-<a class="sourceLine" id="cb4-39" data-line-number="39"><span class="kw"><a href="https://www.rdocumentation.org/packages/sp/topics/gridded-methods">gridded</a></span>(input) =<span class="st"> </span><span class="ot">TRUE</span></a>
-<a class="sourceLine" id="cb4-40" data-line-number="40"><span class="co"># convert into a raster stack</span></a>
-<a class="sourceLine" id="cb4-41" data-line-number="41">inh_fine =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/raster">raster</a></span>(input)</a>
-<a class="sourceLine" id="cb4-42" data-line-number="42"></a>
-<a class="sourceLine" id="cb4-43" data-line-number="43"><span class="co"># Comparing the coarse with the fine raster</span></a>
-<a class="sourceLine" id="cb4-44" data-line-number="44"><span class="co">#******************************************</span></a>
-<a class="sourceLine" id="cb4-45" data-line-number="45"></a>
-<a class="sourceLine" id="cb4-46" data-line-number="46"><span class="co"># aggregate to the resolution of the coarse raster</span></a>
-<a class="sourceLine" id="cb4-47" data-line-number="47">inh_fine =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/aggregate.sf">aggregate</a></span>(inh_fine, <span class="dt">fact =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/resolution">res</a></span>(inh_coarse)[<span class="dv">1</span>] <span class="op">/</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/resolution">res</a></span>(inh_fine)[<span class="dv">1</span>], </a>
-<a class="sourceLine" id="cb4-48" data-line-number="48">                     <span class="dt">fun =</span> sum)</a>
-<a class="sourceLine" id="cb4-49" data-line-number="49"><span class="co"># origin has to be the same</span></a>
-<a class="sourceLine" id="cb4-50" data-line-number="50"><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/origin">origin</a></span>(inh_fine) =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/origin">origin</a></span>(inh_coarse)</a>
-<a class="sourceLine" id="cb4-51" data-line-number="51"><span class="co"># make the comparison</span></a>
-<a class="sourceLine" id="cb4-52" data-line-number="52"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/summary">summary</a></span>(inh_fine <span class="op">-</span><span class="st"> </span>inh_coarse)</a>
-<a class="sourceLine" id="cb4-53" data-line-number="53"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(inh_fine <span class="op">-</span><span class="st"> </span>inh_coarse)</a>
-<a class="sourceLine" id="cb4-54" data-line-number="54"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/MathFun">abs</a></span>(inh_fine <span class="op">-</span><span class="st"> </span>inh_coarse) <span class="op">&gt;</span><span class="st"> </span><span class="dv">1000</span>)</a>
-<a class="sourceLine" id="cb4-55" data-line-number="55"><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/cellStats">cellStats</a></span>((<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/MathFun">abs</a></span>(inh_fine <span class="op">-</span><span class="st"> </span>inh_coarse) <span class="op">&gt;</span><span class="st"> </span><span class="dv">1000</span>), <span class="dt">stat =</span> <span class="st">"sum"</span>)</a>
-<a class="sourceLine" id="cb4-56" data-line-number="56"><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/cellStats">cellStats</a></span>((<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/MathFun">abs</a></span>(inh_fine <span class="op">-</span><span class="st"> </span>inh_coarse) <span class="op">&gt;</span><span class="st"> </span><span class="dv">5000</span>), <span class="dt">stat =</span> <span class="st">"sum"</span>)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">
+<span class="co"># Coarse inhabitant raster (1 km resolution)</span>
+<span class="co">#*******************************************</span>
+
+<span class="co"># inhabitant raster (coarse resolution); this is one of the results of the </span>
+<span class="co"># previous exercise</span>
+inh_coarse =<span class="st"> </span>input_ras<span class="op">$</span>pop
+<span class="co"># reclassify, i.e. convert the classes into inhabitant numbers</span>
+rcl =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/matrix">matrix</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">125</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">375</span>, <span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">1250</span>, <span class="dv">4</span>, <span class="dv">4</span>, <span class="dv">3000</span>, <span class="dv">5</span>, <span class="dv">5</span>, <span class="dv">6000</span>,
+               <span class="dv">6</span>, <span class="dv">6</span>, <span class="dv">8000</span>), <span class="dt">ncol =</span> <span class="dv">3</span>, <span class="dt">byrow =</span> <span class="ot">TRUE</span>)
+inh_coarse =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/reclassify">reclassify</a></span>(inp_coarse, <span class="dt">rcl =</span> rcl, <span class="dt">right =</span> <span class="ot">NA</span>)
+
+<span class="co"># Fine inhabitant raster (100 m resolution)</span>
+<span class="co">#******************************************</span>
+
+url =
+<span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste0</a></span>(<span class="st">"https://www.zensus2011.de/SharedDocs/Downloads/DE/Pressemitteilung/"</span>,
+         <span class="st">"DemografischeGrunddaten/csv_Bevoelkerung_100m_Gitter.zip"</span>, 
+         <span class="st">"?__blob=publicationFile&amp;v=3"</span>)
+<span class="co"># download fine raster</span>
+<span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/download.file">download.file</a></span>(<span class="dt">url =</span> url, <span class="dt">destfile =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/file.path">file.path</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/tempfile">tempdir</a></span>(), <span class="st">"census.zip"</span>),
+              <span class="dt">method =</span> <span class="st">"auto"</span>, <span class="dt">mode =</span> <span class="st">"wb"</span>)
+<span class="co"># list the file names</span>
+nms =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/unzip">unzip</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/file.path">file.path</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/tempfile">tempdir</a></span>(), <span class="st">"census.zip"</span>), <span class="dt">list =</span> <span class="ot">TRUE</span>)
+<span class="co"># unzip only the csv file</span>
+base_name =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/grep">grep</a></span>(<span class="st">".csv$"</span>, nms<span class="op">$</span>Name, <span class="dt">value =</span> <span class="ot">TRUE</span>)
+<span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/unzip">unzip</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/file.path">file.path</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/tempfile">tempdir</a></span>(), <span class="st">"census.zip"</span>), <span class="dt">files =</span> base_name, <span class="dt">exdir =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/tempfile">tempdir</a></span>())
+<span class="co"># read in the csv file</span>
+input =<span class="st"> </span>data.table<span class="op">::</span><span class="kw">fread</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/file.path">file.path</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/tempfile">tempdir</a></span>(), base_name)) <span class="op">%&gt;%</span>
+<span class="st">  </span>as.tibble
+input =<span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(input, <span class="dt">x =</span> <span class="kw">starts_with</span>(<span class="st">"x_mp_1"</span>), <span class="dt">y =</span> <span class="kw">starts_with</span>(<span class="st">"y_mp_1"</span>),
+                        <span class="dt">inh =</span> Einwohner)
+<span class="co"># set -1 and -9 to NA</span>
+input =<span class="st"> </span><span class="kw">mutate_all</span>(input, <span class="kw">funs</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/ifelse">ifelse</a></span>(. <span class="op">%in%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="op">-</span><span class="dv">1</span>, <span class="op">-</span><span class="dv">9</span>), <span class="ot">NA</span>, .)))
+<span class="co"># convert table into a raster (x and y are cell midpoints)</span>
+<span class="kw"><a href="https://www.rdocumentation.org/packages/sp/topics/coordinates">coordinates</a></span>(input) =<span class="er">~</span><span class="st"> </span>x <span class="op">+</span><span class="st"> </span>y
+<span class="co"># use the correct projection</span>
+<span class="kw"><a href="https://www.rdocumentation.org/packages/sp/topics/is.projected">proj4string</a></span>(input) =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sp/topics/CRS-class">CRS</a></span>(<span class="st">"+init=epsg:3035"</span>)
+<span class="kw"><a href="https://www.rdocumentation.org/packages/sp/topics/gridded-methods">gridded</a></span>(input) =<span class="st"> </span><span class="ot">TRUE</span>
+<span class="co"># convert into a raster stack</span>
+inh_fine =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/raster">raster</a></span>(input)
+
+<span class="co"># Comparing the coarse with the fine raster</span>
+<span class="co">#******************************************</span>
+
+<span class="co"># aggregate to the resolution of the coarse raster</span>
+inh_fine =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/aggregate.sf">aggregate</a></span>(inh_fine, <span class="dt">fact =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/resolution">res</a></span>(inh_coarse)[<span class="dv">1</span>] <span class="op">/</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/resolution">res</a></span>(inh_fine)[<span class="dv">1</span>], 
+                     <span class="dt">fun =</span> sum)
+<span class="co"># origin has to be the same</span>
+<span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/origin">origin</a></span>(inh_fine) =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/origin">origin</a></span>(inh_coarse)
+<span class="co"># make the comparison</span>
+<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/summary">summary</a></span>(inh_fine <span class="op">-</span><span class="st"> </span>inh_coarse)
+<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(inh_fine <span class="op">-</span><span class="st"> </span>inh_coarse)
+<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/MathFun">abs</a></span>(inh_fine <span class="op">-</span><span class="st"> </span>inh_coarse) <span class="op">&gt;</span><span class="st"> </span><span class="dv">1000</span>)
+<span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/cellStats">cellStats</a></span>((<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/MathFun">abs</a></span>(inh_fine <span class="op">-</span><span class="st"> </span>inh_coarse) <span class="op">&gt;</span><span class="st"> </span><span class="dv">1000</span>), <span class="dt">stat =</span> <span class="st">"sum"</span>)
+<span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/cellStats">cellStats</a></span>((<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/MathFun">abs</a></span>(inh_fine <span class="op">-</span><span class="st"> </span>inh_coarse) <span class="op">&gt;</span><span class="st"> </span><span class="dv">5000</span>), <span class="dt">stat =</span> <span class="st">"sum"</span>)</code></pre></div>
 <ol start="3" style="list-style-type: decimal">
 <li>Suppose our bike shop predominantly sold electric bikes to older people. Change the age raster accordingly, repeat the remaining analyses and compare the changes with our original result.</li>
 </ol>
 <p>Basically, we are assuming that especially older people will use an electric bike, therefore, we increase the weights for raster cells where predominantly older people are living.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">rcl_pop =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/matrix">matrix</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">127</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">375</span>, <span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">1250</span>, </a>
-<a class="sourceLine" id="cb5-2" data-line-number="2">                   <span class="dv">4</span>, <span class="dv">4</span>, <span class="dv">3000</span>, <span class="dv">5</span>, <span class="dv">5</span>, <span class="dv">6000</span>, <span class="dv">6</span>, <span class="dv">6</span>, <span class="dv">8000</span>), </a>
-<a class="sourceLine" id="cb5-3" data-line-number="3">                 <span class="dt">ncol =</span> <span class="dv">3</span>, <span class="dt">byrow =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb5-4" data-line-number="4">rcl_women =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/matrix">matrix</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">0</span>), </a>
-<a class="sourceLine" id="cb5-5" data-line-number="5">                   <span class="dt">ncol =</span> <span class="dv">3</span>, <span class="dt">byrow =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb5-6" data-line-number="6"><span class="co"># here we are giving the classes (3 to 5) containing the oldest people the</span></a>
-<a class="sourceLine" id="cb5-7" data-line-number="7"><span class="co"># highest weight</span></a>
-<a class="sourceLine" id="cb5-8" data-line-number="8">rcl_age =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/matrix">matrix</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">3</span>),</a>
-<a class="sourceLine" id="cb5-9" data-line-number="9">                 <span class="dt">ncol =</span> <span class="dv">3</span>, <span class="dt">byrow =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb5-10" data-line-number="10">rcl_hh =<span class="st"> </span>rcl_women</a>
-<a class="sourceLine" id="cb5-11" data-line-number="11">rcl =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(rcl_pop, rcl_women, rcl_age, rcl_hh)</a>
-<a class="sourceLine" id="cb5-12" data-line-number="12"></a>
-<a class="sourceLine" id="cb5-13" data-line-number="13">reclass =<span class="st"> </span>input_ras</a>
-<a class="sourceLine" id="cb5-14" data-line-number="14"><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>raster<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/nlayers">nlayers</a></span>(reclass)) {</a>
-<a class="sourceLine" id="cb5-15" data-line-number="15">  reclass[[i]] =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/reclassify">reclassify</a></span>(<span class="dt">x =</span> reclass[[i]], <span class="dt">rcl =</span> rcl[[i]], <span class="dt">right =</span> <span class="ot">NA</span>)</a>
-<a class="sourceLine" id="cb5-16" data-line-number="16">}</a>
-<a class="sourceLine" id="cb5-17" data-line-number="17"><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/names">names</a></span>(reclass) =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/names">names</a></span>(input_ras)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">rcl_pop =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/matrix">matrix</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">127</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">375</span>, <span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">1250</span>, 
+                   <span class="dv">4</span>, <span class="dv">4</span>, <span class="dv">3000</span>, <span class="dv">5</span>, <span class="dv">5</span>, <span class="dv">6000</span>, <span class="dv">6</span>, <span class="dv">6</span>, <span class="dv">8000</span>), 
+                 <span class="dt">ncol =</span> <span class="dv">3</span>, <span class="dt">byrow =</span> <span class="ot">TRUE</span>)
+rcl_women =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/matrix">matrix</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">0</span>), 
+                   <span class="dt">ncol =</span> <span class="dv">3</span>, <span class="dt">byrow =</span> <span class="ot">TRUE</span>)
+<span class="co"># here we are giving the classes (3 to 5) containing the oldest people the</span>
+<span class="co"># highest weight</span>
+rcl_age =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/matrix">matrix</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">3</span>),
+                 <span class="dt">ncol =</span> <span class="dv">3</span>, <span class="dt">byrow =</span> <span class="ot">TRUE</span>)
+rcl_hh =<span class="st"> </span>rcl_women
+rcl =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(rcl_pop, rcl_women, rcl_age, rcl_hh)
+
+reclass =<span class="st"> </span>input_ras
+<span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>raster<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/nlayers">nlayers</a></span>(reclass)) {
+  reclass[[i]] =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/reclassify">reclassify</a></span>(<span class="dt">x =</span> reclass[[i]], <span class="dt">rcl =</span> rcl[[i]], <span class="dt">right =</span> <span class="ot">NA</span>)
+}
+<span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/names">names</a></span>(reclass) =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/names">names</a></span>(input_ras)</code></pre></div>
 <p>The rest of the analysis follows exactly the code presented in the book. Supposing you have already created <code>input_ras</code> in the first exercise, the analysis would look something like this:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="co"># attach data</span></a>
-<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/data">data</a></span>(<span class="st">"metro_names"</span>, <span class="st">"shops"</span>, <span class="dt">package =</span> <span class="st">"spDataLarge"</span>)</a>
-<a class="sourceLine" id="cb6-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="co"># Add metro names to metros sf object</span></a>
-<a class="sourceLine" id="cb6-5" data-line-number="5"><span class="co">#************************************</span></a>
-<a class="sourceLine" id="cb6-6" data-line-number="6">metro_names =<span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/pull.html">pull</a></span>(metro_names, city) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb6-7" data-line-number="7"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/as.character">as.character</a></span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb6-8" data-line-number="8"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/ifelse">ifelse</a></span>(. <span class="op">==</span><span class="st"> "Wülfrath", "</span>Duesseldorf<span class="st">", .)</span></a>
-<a class="sourceLine" id="cb6-9" data-line-number="9"></a>
-<a class="sourceLine" id="cb6-10" data-line-number="10"><span class="st">pop_agg = aggregate(reclass$pop, fact = 20, fun = sum)</span></a>
-<a class="sourceLine" id="cb6-11" data-line-number="11"><span class="st">pop_agg = pop_agg[pop_agg &gt; 500000, drop = FALSE] </span></a>
-<a class="sourceLine" id="cb6-12" data-line-number="12"></a>
-<a class="sourceLine" id="cb6-13" data-line-number="13"><span class="st">polys = pop_agg %&gt;% </span></a>
-<a class="sourceLine" id="cb6-14" data-line-number="14"><span class="st">  raster::clump() %&gt;%</span></a>
-<a class="sourceLine" id="cb6-15" data-line-number="15"><span class="st">  rasterToPolygons() %&gt;%</span></a>
-<a class="sourceLine" id="cb6-16" data-line-number="16"><span class="st">  st_as_sf()</span></a>
-<a class="sourceLine" id="cb6-17" data-line-number="17"><span class="st">#&gt; Loading required namespace: igraph</span></a>
-<a class="sourceLine" id="cb6-18" data-line-number="18"></a>
-<a class="sourceLine" id="cb6-19" data-line-number="19"><span class="st">metros = polys %&gt;%</span></a>
-<a class="sourceLine" id="cb6-20" data-line-number="20"><span class="st">  group_by(clumps) %&gt;%</span></a>
-<a class="sourceLine" id="cb6-21" data-line-number="21"><span class="st">  dplyr::summarize()</span></a>
-<a class="sourceLine" id="cb6-22" data-line-number="22"><span class="st">metros$metro_names = metro_names</span></a>
-<a class="sourceLine" id="cb6-23" data-line-number="23"></a>
-<a class="sourceLine" id="cb6-24" data-line-number="24"><span class="st"># Create shop/poi density raster</span></a>
-<a class="sourceLine" id="cb6-25" data-line-number="25"><span class="st">#*******************************</span></a>
-<a class="sourceLine" id="cb6-26" data-line-number="26"><span class="st">shops = st_transform(shops, proj4string(reclass))</span></a>
-<a class="sourceLine" id="cb6-27" data-line-number="27"><span class="st"># create poi raster</span></a>
-<a class="sourceLine" id="cb6-28" data-line-number="28"><span class="st">poi = rasterize(x = shops, y = reclass, field = "</span>osm_id<span class="st">", fun = "</span>count<span class="st">")</span></a>
-<a class="sourceLine" id="cb6-29" data-line-number="29"><span class="st"># construct reclassification matrix</span></a>
-<a class="sourceLine" id="cb6-30" data-line-number="30"><span class="st">int = classInt::classIntervals(values(poi), n = 4, style = "</span>fisher<span class="st">")</span></a>
-<a class="sourceLine" id="cb6-31" data-line-number="31"><span class="st">int = round(int$brks)</span></a>
-<a class="sourceLine" id="cb6-32" data-line-number="32"><span class="st">rcl_poi = matrix(c(int[1], rep(int[-c(1, length(int))], each = 2), </span></a>
-<a class="sourceLine" id="cb6-33" data-line-number="33"><span class="st">                   int[length(int)] + 1), ncol = 2, byrow = TRUE)</span></a>
-<a class="sourceLine" id="cb6-34" data-line-number="34"><span class="st">rcl_poi = cbind(rcl_poi, 0:3)  </span></a>
-<a class="sourceLine" id="cb6-35" data-line-number="35"><span class="st"># reclassify</span></a>
-<a class="sourceLine" id="cb6-36" data-line-number="36"><span class="st">poi = reclassify(poi, rcl = rcl_poi, right = NA) </span></a>
-<a class="sourceLine" id="cb6-37" data-line-number="37"><span class="st">names(poi) = "</span>poi<span class="st">"</span></a>
-<a class="sourceLine" id="cb6-38" data-line-number="38"><span class="st"># add poi raster</span></a>
-<a class="sourceLine" id="cb6-39" data-line-number="39"><span class="st">reclass = addLayer(reclass, poi)</span></a>
-<a class="sourceLine" id="cb6-40" data-line-number="40"><span class="st"># delete population raster</span></a>
-<a class="sourceLine" id="cb6-41" data-line-number="41"><span class="st">reclass = dropLayer(reclass, "</span>pop<span class="st">")</span></a>
-<a class="sourceLine" id="cb6-42" data-line-number="42"></a>
-<a class="sourceLine" id="cb6-43" data-line-number="43"><span class="st"># Identify suitable locations</span></a>
-<a class="sourceLine" id="cb6-44" data-line-number="44"><span class="st">#****************************</span></a>
-<a class="sourceLine" id="cb6-45" data-line-number="45"><span class="st"># calculate the total score</span></a>
-<a class="sourceLine" id="cb6-46" data-line-number="46"><span class="st">result = sum(reclass)</span></a>
-<a class="sourceLine" id="cb6-47" data-line-number="47"></a>
-<a class="sourceLine" id="cb6-48" data-line-number="48"><span class="st"># have a look at suitable bike shop locations in Berlin</span></a>
-<a class="sourceLine" id="cb6-49" data-line-number="49"><span class="st">berlin = metros[metro_names == "</span>Berlin<span class="st">", ]</span></a>
-<a class="sourceLine" id="cb6-50" data-line-number="50"><span class="st">berlin_raster = raster::crop(result, as(berlin, "</span>Spatial<span class="st">"))</span></a>
-<a class="sourceLine" id="cb6-51" data-line-number="51"><span class="st"># summary(berlin_raster)</span></a>
-<a class="sourceLine" id="cb6-52" data-line-number="52"><span class="st"># berlin_raster</span></a>
-<a class="sourceLine" id="cb6-53" data-line-number="53"><span class="st">berlin_raster = berlin_raster &gt; 9</span></a>
-<a class="sourceLine" id="cb6-54" data-line-number="54"><span class="st">berlin_raster = berlin_raster == TRUE</span></a>
-<a class="sourceLine" id="cb6-55" data-line-number="55"><span class="st">berlin_raster[berlin_raster == 0] = NA</span></a>
-<a class="sourceLine" id="cb6-56" data-line-number="56"><span class="st"># make the plot</span></a>
-<a class="sourceLine" id="cb6-57" data-line-number="57"><span class="st">leaflet() %&gt;% </span></a>
-<a class="sourceLine" id="cb6-58" data-line-number="58"><span class="st">  addTiles() %&gt;%</span></a>
-<a class="sourceLine" id="cb6-59" data-line-number="59"><span class="st">  addRasterImage(berlin_raster, colors = "</span>darkgreen<span class="st">", opacity = 0.8) %&gt;%</span></a>
-<a class="sourceLine" id="cb6-60" data-line-number="60"><span class="st">  addLegend("</span>bottomright<span class="st">", colors = c("</span>darkgreen<span class="st">"), </span></a>
-<a class="sourceLine" id="cb6-61" data-line-number="61"><span class="st">            labels = c("</span>potential locations<span class="st">"), title = "</span>Legend<span class="st">")</span></a></code></pre></div>
-<div id="htmlwidget-95bbdc4eda15e44f735e" style="width:700px;height:432.632880098888px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-95bbdc4eda15e44f735e">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addRasterImage","args":["data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAMElEQVRYhe3OMQ0AMAwDQatYw59CiqBLpUy52192AgAA8FDpVHpy4nyXw8cAAIAVLj+9BCw2fWKYAAAAAElFTkSuQmCC",[[52.696600856383,13.0820026147986],[52.3210740877061,13.6981591380976]],0.8,null,null,null]},{"method":"addLegend","args":[{"colors":["darkgreen"],"labels":["potential locations"],"na_color":null,"na_label":"NA","opacity":0.5,"position":"bottomright","type":"unknown","title":"Legend","extra":null,"layerId":null,"className":"info legend","group":null}]}],"limits":{"lat":[52.3210740877061,52.696600856383],"lng":[13.0820026147986,13.6981591380976]}},"evals":[],"jsHooks":[]}</script>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># attach data</span>
+<span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/data">data</a></span>(<span class="st">"metro_names"</span>, <span class="st">"shops"</span>, <span class="dt">package =</span> <span class="st">"spDataLarge"</span>)
+
+<span class="co"># Add metro names to metros sf object</span>
+<span class="co">#************************************</span>
+metro_names =<span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/pull.html">pull</a></span>(metro_names, city) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/as.character">as.character</a></span>() <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/ifelse">ifelse</a></span>(. <span class="op">==</span><span class="st"> "Wülfrath", "</span>Duesseldorf<span class="st">", .)</span>
+
+<span class="st">pop_agg = aggregate(reclass$pop, fact = 20, fun = sum)</span>
+<span class="st">pop_agg = pop_agg[pop_agg &gt; 500000, drop = FALSE] </span>
+
+<span class="st">polys = pop_agg %&gt;% </span>
+<span class="st">  raster::clump() %&gt;%</span>
+<span class="st">  rasterToPolygons() %&gt;%</span>
+<span class="st">  st_as_sf()</span>
+<span class="st">#&gt; Loading required namespace: igraph</span>
+
+<span class="st">metros = polys %&gt;%</span>
+<span class="st">  group_by(clumps) %&gt;%</span>
+<span class="st">  dplyr::summarize()</span>
+<span class="st">metros$metro_names = metro_names</span>
+
+<span class="st"># Create shop/poi density raster</span>
+<span class="st">#*******************************</span>
+<span class="st">shops = st_transform(shops, proj4string(reclass))</span>
+<span class="st"># create poi raster</span>
+<span class="st">poi = rasterize(x = shops, y = reclass, field = "</span>osm_id<span class="st">", fun = "</span>count<span class="st">")</span>
+<span class="st"># construct reclassification matrix</span>
+<span class="st">int = classInt::classIntervals(values(poi), n = 4, style = "</span>fisher<span class="st">")</span>
+<span class="st">int = round(int$brks)</span>
+<span class="st">rcl_poi = matrix(c(int[1], rep(int[-c(1, length(int))], each = 2), </span>
+<span class="st">                   int[length(int)] + 1), ncol = 2, byrow = TRUE)</span>
+<span class="st">rcl_poi = cbind(rcl_poi, 0:3)  </span>
+<span class="st"># reclassify</span>
+<span class="st">poi = reclassify(poi, rcl = rcl_poi, right = NA) </span>
+<span class="st">names(poi) = "</span>poi<span class="st">"</span>
+<span class="st"># add poi raster</span>
+<span class="st">reclass = addLayer(reclass, poi)</span>
+<span class="st"># delete population raster</span>
+<span class="st">reclass = dropLayer(reclass, "</span>pop<span class="st">")</span>
+
+<span class="st"># Identify suitable locations</span>
+<span class="st">#****************************</span>
+<span class="st"># calculate the total score</span>
+<span class="st">result = sum(reclass)</span>
+
+<span class="st"># have a look at suitable bike shop locations in Berlin</span>
+<span class="st">berlin = metros[metro_names == "</span>Berlin<span class="st">", ]</span>
+<span class="st">berlin_raster = raster::crop(result, as(berlin, "</span>Spatial<span class="st">"))</span>
+<span class="st"># summary(berlin_raster)</span>
+<span class="st"># berlin_raster</span>
+<span class="st">berlin_raster = berlin_raster &gt; 9</span>
+<span class="st">berlin_raster = berlin_raster == TRUE</span>
+<span class="st">berlin_raster[berlin_raster == 0] = NA</span>
+<span class="st"># make the plot</span>
+<span class="st">leaflet() %&gt;% </span>
+<span class="st">  addTiles() %&gt;%</span>
+<span class="st">  addRasterImage(berlin_raster, colors = "</span>darkgreen<span class="st">", opacity = 0.8) %&gt;%</span>
+<span class="st">  addLegend("</span>bottomright<span class="st">", colors = c("</span>darkgreen<span class="st">"), </span>
+<span class="st">            labels = c("</span>potential locations<span class="st">"), title = "</span>Legend<span class="st">")</span></code></pre></div>
+<div id="htmlwidget-a4cd074d89714c088df1" style="width:700px;height:432.632880098888px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-a4cd074d89714c088df1">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addRasterImage","args":["data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAMElEQVRYhe3OMQ0AMAwDQatYw59CiqBLpUy52192AgAA8FDpVHpy4nyXw8cAAIAVLj+9BCw2fWKYAAAAAElFTkSuQmCC",[[52.696600856383,13.0820026147986],[52.3210740877061,13.6981591380976]],0.8,null,null,null]},{"method":"addLegend","args":[{"colors":["darkgreen"],"labels":["potential locations"],"na_color":null,"na_label":"NA","opacity":0.5,"position":"bottomright","type":"unknown","title":"Legend","extra":null,"layerId":null,"className":"info legend","group":null}]}],"limits":{"lat":[52.3210740877061,52.696600856383],"lng":[13.0820026147986,13.6981591380976]}},"evals":[],"jsHooks":[]}</script>
 </div>
   </div>
 

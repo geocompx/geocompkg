@@ -30,7 +30,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">geocompkg | metapackage for the book Gecomputation with R</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.73</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.75</span>
       </span>
     </div>
 
@@ -65,7 +65,7 @@
       <h1>Chapter 12: Transportation</h1>
                         <h4 class="author">Robin Lovelace, Jakub Nowosad, Jannes Muenchow</h4>
             
-            <h4 class="date">2019-01-07</h4>
+            <h4 class="date">2019-03-10</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/geocompr/geocompkg/blob/master/vignettes/solutions12.Rmd"><code>vignettes/solutions12.Rmd</code></a></small>
       <div class="hidden name"><code>solutions12.Rmd</code></div>
@@ -78,9 +78,54 @@
 <h2 class="hasAnchor">
 <a href="#prerequisites" class="anchor"></a>Prerequisites</h2>
 <p>The solutions assume the following packages are attached (other packages will be attached when needed):</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(sf)</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(tidyverse)</a>
-<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(spData)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(sf)
+<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(dplyr)
+<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(spDataLarge)
+<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(stplanr)
+<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(tmap) </code></pre></div>
+<p>You must have run the following code chunks to answer the questions:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">zones_attr =<span class="st"> </span>bristol_od <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span>(o) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/summarise_all.html">summarize_if</a></span>(is.numeric, sum) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">rename</a></span>(<span class="dt">geo_code =</span> o)
+
+zones_joined =<span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/join.html">left_join</a></span>(bristol_zones, zones_attr, <span class="dt">by =</span> <span class="st">"geo_code"</span>)
+
+zones_od =<span class="st"> </span>bristol_od <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span>(d) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/summarise_all.html">summarize_if</a></span>(is.numeric, sum) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(<span class="dt">geo_code =</span> d, <span class="dt">all_dest =</span> all) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/join.html">inner_join</a></span>(zones_joined, ., <span class="dt">by =</span> <span class="st">"geo_code"</span>)
+
+od_top5 =<span class="st"> </span>bristol_od <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span>(<span class="kw"><a href="https://dplyr.tidyverse.org/reference/desc.html">desc</a></span>(all)) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/top_n.html">top_n</a></span>(<span class="dv">5</span>, <span class="dt">wt =</span> all)
+
+bristol_od<span class="op">$</span>Active =<span class="st"> </span>(bristol_od<span class="op">$</span>bicycle <span class="op">+</span><span class="st"> </span>bristol_od<span class="op">$</span>foot) <span class="op">/</span>
+<span class="st">  </span>bristol_od<span class="op">$</span>all <span class="op">*</span><span class="st"> </span><span class="dv">100</span>
+
+od_intra =<span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(bristol_od, o <span class="op">==</span><span class="st"> </span>d)
+od_inter =<span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(bristol_od, o <span class="op">!=</span><span class="st"> </span>d)
+
+desire_lines =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stplanr/topics/od2line">od2line</a></span>(od_inter, zones_od)
+<span class="co">#&gt; Warning in st_centroid.sf(zones): st_centroid assumes attributes are</span>
+<span class="co">#&gt; constant over geometries of x</span>
+<span class="co">#&gt; Warning in st_centroid.sfc(st_geometry(x), of_largest_polygon =</span>
+<span class="co">#&gt; of_largest_polygon): st_centroid does not give correct centroids for</span>
+<span class="co">#&gt; longitude/latitude data</span>
+
+desire_lines<span class="op">$</span>distance =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/numeric">as.numeric</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/geos_measures">st_length</a></span>(desire_lines))
+desire_carshort =<span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(desire_lines, car_driver <span class="op">&gt;</span><span class="st"> </span><span class="dv">300</span> <span class="op">&amp;</span><span class="st"> </span>distance <span class="op">&lt;</span><span class="st"> </span><span class="dv">5000</span>)
+desire_carshort<span class="op">$</span>geom_car =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(route_carshort)
+
+desire_rail =<span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/top_n.html">top_n</a></span>(desire_lines, <span class="dt">n =</span> <span class="dv">3</span>, <span class="dt">wt =</span> train)
+desire_rail =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stplanr/topics/line_via">line_via</a></span>(desire_rail, bristol_stations)
+
+ways_freeway =<span class="st"> </span>bristol_ways <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(maxspeed <span class="op">==</span><span class="st"> "70 mph"</span>) 
+ways_sln =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stplanr/topics/SpatialLinesNetwork">SpatialLinesNetwork</a></span>(ways_freeway)
+
+route_cycleway =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cbind">rbind</a></span>(route_rail, route_carshort)
+route_cycleway<span class="op">$</span>all =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(desire_rail<span class="op">$</span>all, desire_carshort<span class="op">$</span>all)</code></pre></div>
 </div>
 <div id="chapter-12" class="section level1">
 <h1 class="hasAnchor">
@@ -92,8 +137,10 @@
 </ul>
 </li>
 </ol>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/sum">sum</a></span>(route_cycleway<span class="op">$</span>distance)</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/sum">sum</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/geos_measures">st_length</a></span>(route_cycleway))</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/sum">sum</a></span>(route_cycleway<span class="op">$</span>distance)
+<span class="co">#&gt; [1] 41996.8</span>
+<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/sum">sum</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/geos_measures">st_length</a></span>(route_cycleway))
+<span class="co">#&gt; 42077.53 [m]</span></code></pre></div>
 <ol start="2" style="list-style-type: decimal">
 <li>What proportion of trips represented in the <code>desire_lines</code> are accounted for in the <code>route_cycleway</code> object?
 <ul>
@@ -101,17 +148,50 @@
 <li>Advanced: write code that would increase this proportion.</li>
 </ul>
 </li>
+</ol>
+<p>To increase the proportion of trips that cross the proposed route, you could reduce the threshold for the number of cars in the ‘carshort’ object, e.g., by reducing the <code>car_driver</code> threshold to 200 as follows (code not run to avoid over-loading the OSRM demo server):</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">desire_carshort2 =<span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(desire_lines, car_driver <span class="op">&gt;</span><span class="st"> </span><span class="dv">200</span> <span class="op">&amp;</span><span class="st"> </span>distance <span class="op">&lt;</span><span class="st"> </span><span class="dv">5000</span>)
+route_carshort2 =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stplanr/topics/line2route">line2route</a></span>(desire_carshort2, <span class="dt">route_fun =</span> route_osrm) 
+route_cycleway2 =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cbind">rbind</a></span>(route_rail, route_carshort2)
+route_cycleway2<span class="op">$</span>all =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(desire_rail<span class="op">$</span>all, desire_carshort2<span class="op">$</span>all)
+
+<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/sum">sum</a></span>(route_cycleway2<span class="op">$</span>all) <span class="op">/</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/sum">sum</a></span>(desire_lines<span class="op">$</span>all) <span class="co"># around 7%</span>
+d_intersect =<span class="st"> </span>desire_lines[route_cycleway2, , op =<span class="st"> </span>st_crosses]
+<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/sum">sum</a></span>(d_intersect<span class="op">$</span>all) <span class="op">/</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/sum">sum</a></span>(desire_lines<span class="op">$</span>all) <span class="co"># around 62%</span></code></pre></div>
+<ol start="3" style="list-style-type: decimal">
 <li>The analysis presented in this chapter is designed for teaching how geocomputation methods can be applied to transport research. If you were to do this ‘for real’ for local government or a transport consultancy what top 3 things would you do differently?</li>
 </ol>
-<p>Answers: - Higher level of geographic resolution. - Use cycle-specific routing services. - Identify key walking routes. - Include a higher proportion of trips in the analysis.</p>
-<ol start="4" style="list-style-type: decimal">
-<li><p>Clearly the routes identified in this <a href="https://geocompr.robinlovelace.net/transport.html#fig:cycleways">Figure</a> only provide part of the picture. How would you extend the analysis to incorporate more trips that could potentially be cycled?</p></li>
-<li>Imagine that you want to extend the scenario by creating key <em>areas</em> (not routes) for investment in place-based cycling policies such as car-free zones, cycle parking points and reduced car parking strategy. How could raster data assist with this work?
+<p>Answers:</p>
 <ul>
-<li>Bonus: develop a raster layer that divides the Bristol region into 100 cells (10 by 10) and provide a metric related to transport policy, such as number of people trips that pass through each cell by walking or the average speed limit of roads, from the <code>bristol_ways</code> dataset (the approach taken in this <a href="https://geocompr.robinlovelace.net/location.html#location">Chapter</a>).</li>
+<li>Higher level of geographic resolution.</li>
+<li>Use cycle-specific routing services.</li>
+<li>Identify key walking routes.</li>
+<li>Include a higher proportion of trips in the analysis.</li>
 </ul>
-</li>
+<ol start="4" style="list-style-type: decimal">
+<li>Clearly the routes identified in this <a href="https://geocompr.robinlovelace.net/transport.html#fig:cycleways">Figure</a> only provide part of the picture. How would you extend the analysis to incorporate more trips that could potentially be cycled?</li>
 </ol>
+<p>There are many ways to extend the analysis. Some promising lines of research could include:</p>
+<ul>
+<li>Prioritising areas that already have high cycling levels, to get maximium ‘positive feedback’ loops. This may be a sensible near-term strategy.</li>
+<li>Identify datasets representing, or model, other trip purposes to identify where most short trips are taking place. Spatial interaction models could help here.</li>
+<li>Identify ‘near market’ populations who are most willing to switch using techniques covered in Chapter <a href="https://geocompr.robinlovelace.net/location.html">13</a>.</li>
+</ul>
+<ol start="5" style="list-style-type: decimal">
+<li>Imagine that you want to extend the scenario by creating key <em>areas</em> (not routes) for investment in place-based cycling policies such as car-free zones, cycle parking points and reduced car parking strategy. How could raster data assist with this work?</li>
+</ol>
+<p>Raster data analysis could help by providing useful aggregates of cycling potential (as estimated using previous methods) at a constant level of geographic resolution. The raster cells with the highest estimated potential would be prioritised.</p>
+<p>Bonus: develop a raster layer that divides the Bristol region into 100 cells (10 by 10) and provide a metric related to transport policy, such as number of people trips that pass through each cell by walking or the average speed limit of roads, from the <code>bristol_ways</code> dataset (the approach taken in this <a href="https://geocompr.robinlovelace.net/location.html#location">Chapter</a>).</p>
+<p>This exercise can be tackled in many ways. The code chunk below provides an example of how rasters could focus attention on important ‘hotspots’, by calculating the cells where most people may walk (using an illustrative sample of the top 20 most walked desire lines):</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">bristol_raster100 =<span class="st"> </span>raster<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/raster">raster</a></span>(bristol_region, <span class="dt">ncols =</span> <span class="dv">100</span>, <span class="dt">nrows =</span> <span class="dv">100</span>)
+bristol_walking =<span class="st"> </span>raster<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/rasterize">rasterize</a></span>(
+  <span class="kw"><a href="https://dplyr.tidyverse.org/reference/top_n.html">top_n</a></span>(desire_lines, <span class="dt">n =</span> <span class="dv">20</span>, <span class="dt">wt =</span> foot),
+  <span class="dt">y =</span> bristol_raster100,
+  <span class="dt">field =</span> <span class="st">"foot"</span>,
+  <span class="dt">fun =</span> sum
+  )
+<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(bristol_walking)</code></pre></div>
+<p><img src="solutions12_files/figure-html/unnamed-chunk-5-1.png" width="700"></p>
 </div>
   </div>
 
