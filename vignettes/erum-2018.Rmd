@@ -11,7 +11,7 @@ bibliography: refs.bib
 ---
 
 This is a guest post by Robin Lovelace, Jakub Nowosad and Jannes Muenchow.
-Together we're writing an open source book called *Geocomputation with R*.
+Together we're writing an open source book called [*Geocomputation with R*](https://geocompr.github.io/).
 The project aims to introducing people to R's rapidly evolving geographic data capabilities and provide a foundation for developing scripts, functions and applications for geographic data science.
 
 We recently presented some contents of the in-progress book at the eRum conference, where Jannes ran a [workshop](http://2018.erum.io/#talk-2-305) on the topic.
