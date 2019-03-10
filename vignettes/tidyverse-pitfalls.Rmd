@@ -20,7 +20,7 @@ opts_chunk$set(error = TRUE)
 
 This article is about working with spatial data 'in the tidyverse'.
 By this we mean handling spatial datasets using functions (such as ` %>% ` and `filter()`) and concepts (such as type stability) from R packages that are part of the metapackage **tidyverse**.
-You should already have an R installation set-up for spatial data analysis [having read Chapter 2 of Geocomputation with R](https://geocompr.robinlovelace.net/spatial-class.html).
+You should already have an R installation set-up for spatial data analysis [having read Chapter 2](https://geocompr.robinlovelace.net/spatial-class.html) of [the Geocomputation with R book](https://geocompr.github.io/).
 
 If not take a read there now.
 In any case the **tidyverse** can be installed from CRAN with the following command:
@@ -67,7 +67,7 @@ It has many other advantages, including:
     
 The final advantage comes with a warning:
 watch out for pitfalls!
-That's topic of this workshop, as illustrated by the following GIF:
+That's topic of this vignette, as illustrated by the following GIF:
 it's easy to imagine spatial data analyses but, as Homer Simson discovered with his BBQ project, doing something complicated is easier said than done, especially when combining packages that have only recently started working together:
 
 ![](https://media.giphy.com/media/OMeGDxdAsMPzW/giphy.gif)
@@ -109,7 +109,7 @@ To avoid this pitfall we suggest using `dplyr::select()` and `raster::select()` 
 
 - **sp** precedes **sf**  
 - Together with the **rgdal** and **rgeos** package, it creates a powerful tool to works with spatial data
-- Many spatial R packages still depends on the **sp** package, therefore it is important to know how to convert **sp** to and from **sf** objects
+- Many spatial R packages still depend on the **sp** package, therefore it is important to know how to convert **sp** to and from **sf** objects
 
 ```{r}
 library(spData)
@@ -118,8 +118,6 @@ world_sf = st_as_sf(world_sp)
 ```
 
 - The structures in the **sp** packages are more complicated - `str(world_sf)` vs `str(world_sp)`
-
-
 - **sp** doesn't play well with the **tidyverse**:
 
 ```{r, eval = FALSE}
@@ -179,7 +177,7 @@ near_lnd_tidy = world %>%
   filter(st_intersects(., lnd_buff, sparse = FALSE))
 ```
 
-But there are pitfalls
+But there are pitfalls:
 
 - It's verbose (you need `sparse = FALSE` in the spatial predicate function)
 - See the next pitfall: it boshes the row names!
@@ -194,7 +192,6 @@ row.names(near_lnd)
 - Consequences for joining - rownames can be useful! 
 
 Also affects non-spatial data - [tidyverse/dplyr#366](https://github.com/tidyverse/dplyr/issues/366)
-
 
 ## Pitfall: attribute alteration
 
@@ -218,7 +215,7 @@ identical(
 ) # ?
 ```
 
-Row names usually don't matter but they can bite
+Row names usually don't matter but they can bite.
 
 ```{r}
 u1 = world %>% filter(name_long == "United Kingdom")
@@ -235,35 +232,7 @@ identical(u1, u2)
 attributes(u1$geom)
 ```
 
----
-
-## Pitfall: Duplicate column names
-
-See [edzer/sf#544](https://github.com/r-spatial/sf/issues/544)
-
-```{r}
-names(world)
-names(lnd_buff)
-```
-
-```{r}
-lnd_buff$iso_a2 = NA
-```
-
-```{r, eval=FALSE}
-st_intersection(world, lnd_buff) # works
-world_tidy = st_as_sf(as_tibble(world))
-st_intersection(world_tidy, lnd_buff) # fails
-```
-
-```
-Error: Column `iso_a2` must have a unique name
-```
-
----
-
 ## Pitfall: binding rows
-
 
 ```{r, eval=FALSE}
 rbind(near_lnd, near_lnd) # works
@@ -288,11 +257,9 @@ plot(d_sf)
 
 Raster data is not yet closely connected to the **tidyverse**, however:
 
-- Some functions from the **raster** package works well in `pipes`
+- Some functions from the **raster** package work well in `pipes`
 - You can convert vector data to the `Spatial*` form using `as(my_vector, "Spatial")`before working on raster-vector interactions
-- There are some initial efforts to bring raster data closer to the **tidyverse**, such as [tabularaster](https://github.com/hypertidy/tabularaster), [sfraster](https://github.com/mdsumner/sfraster), or [fasterize](https://github.com/ecohealthalliance/fasterize)
-- The development of the [stars](https://github.com/r-spatial/stars), package focused on multidimensional, large datasets should start soon. It will allow pipe-based workflows
-
+- There are some initial efforts to bring raster data closer to the **tidyverse**, such as [tabularaster](https://github.com/hypertidy/tabularaster), [sfraster](https://github.com/mdsumner/sfraster), or [fasterize](https://github.com/ecohealthalliance/fasterize), and [stars](https://github.com/r-spatial/stars) - package focused on multidimensional, large datasets
 
 <!-- ## Practical exercises -->
 
