@@ -10,7 +10,7 @@ vignette: >
 ---
 
 This vignette builds on the [transport chapter](https://geocompr.robinlovelace.net/transport.html) of [the Geocomputation with R book](https://geocompr.github.io/) by showing how to create multi-stage desire lines, from the ground-up.
-It depends on these packages:
+It depends on these packages and datasets:
 
 ```{r, message=FALSE}
 library(sf)
@@ -34,8 +34,7 @@ But how to identify *which* intermediary points to use for each desire line?
 The `knn()` function from the **nabor** package (which is used internally by **stplanr** so it should already be installed) solves this problem by finding *k nearest neighbors* between two sets of coordinates.
 By setting the `k` parameter, one can define how many nearest neighbors should be returned. 
 Of course, `k` cannot exceed the number of observations in the input (here: `mat_rail`).
-We are interested in just one nearest neighbor, namely, the closest railway station.
-:
+We are interested in just one nearest neighbor, namely, the closest railway station:
 
 ```{r}
 knn_orig = nabor::knn(mat_rail, query = mat_orig, k = 1)$nn.idx
