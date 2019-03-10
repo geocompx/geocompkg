@@ -1,5 +1,5 @@
 ---
-title: "Loading and analysing GPS tracks with R"
+title: "Loading and analyzing GPS tracks with R"
 author: "Robin Lovelace, Jakub Nowosad, Jannes Muenchow"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
@@ -171,5 +171,4 @@ plot(r_munster$geometry)
 plot(p_munster$time)
 plot(p_munster$geometry)
 ```
-
 
