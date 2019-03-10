@@ -55,7 +55,7 @@ The `angle` argument is the elevation angle of the light source and the `directi
 hill = hillShade(slope, aspect, angle = 40, direction = 270)
 ```
 
-The output object can be plotted with `plot(hill)`, however it does not give an expected map.
+The output object can be plotted with `plot(hill)`, however, it does not give an expected map.
 This is because the hillshade object should be overlayed by another semi-transparent layer to give a proper visualization.
 
 ## Create a hillshade map
@@ -69,7 +69,7 @@ tm_shape(hill) +
   tm_raster(palette = gray(0:10 / 10), style = "cont", legend.show = FALSE)
 ```
 
-The second layer is the elevation object (`alt`), colored using the `terrain.colors` pallete.
+The second layer is the elevation object (`alt`), colored using the `terrain.colors` palette.
 
 ```{r}
 tm_shape(alt) +
@@ -78,7 +78,7 @@ tm_shape(alt) +
 ```
 
 Finally, both layers can be combined to create an expected visualization.
-It could be also improved by placing the legend in the right bottom of the map.
+It could be also improved by placing the legend on the right bottom of the map.
 
 ```{r, fig.width=6}
 tm_shape(hill) +
