@@ -29,6 +29,7 @@ library(spDataLarge)
 
 1) It was established in this [section](https://geocompr.robinlovelace.net/spatial-operations.html#spatial-vec) that Canterbury was the region of New Zealand containing most of 100 highest points in the country.
 How many of these high points does Canterbury Region contain?
+
 ```{r}
 library(tmap)
 tmap_mode("view")
@@ -84,6 +85,7 @@ zonal(stack(dem, ndvi), recl, fun = "mean")
 5) Apply a line detection filter to `raster(system.file("external/rlogo.grd", package = "raster"))`.
 Plot the result.
 Hint: Read `?raster::focal()`.
+
 ```{r}
 # from the focal help page (?raster::focal()):
 # Laplacian filter: filter=matrix(c(0,1,0,1,-4,1,0,1,0), nrow=3)

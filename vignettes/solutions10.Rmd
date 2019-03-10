@@ -22,68 +22,137 @@ The solutions assume the following packages are attached (other packages will be
 library(sf)
 ```
 
-They also require a few objects and functions from Chapter 10:
-
-```{r}
-# data preparation
-poly_mat = cbind(
-  x = c(0, 0, 9, 9, 0),
-  y = c(0, 9, 9, 0, 0)
-)
-O = poly_mat[1, ] # create a point representing the origin
-t_centroid = function(x) {
-  (x[1, ] + x[2, ] + x[3, ]) / 3
-}
-t_area = function(x) {
-  abs(
-    x[1, 1] * (x[2, 2] - x[3, 2]) +
-    x[2, 1] * (x[3, 2] - x[1, 2]) +
-    x[3, 1] * (x[1, 2] - x[2, 2])
-  ) / 2
-}
-poly_centroid = function(x) {
-  i = 2:(nrow(x) - 2)
-  T_all = T_all = lapply(i, function(x) {
-    rbind(O, poly_mat[x:(x + 1), ], O)
-  })
-  C_list = lapply(T_all, t_centroid)
-  C = do.call(rbind, C_list)
-  A = vapply(T_all, t_area, FUN.VALUE = double(1))
-  c(weighted.mean(C[, 1], A), weighted.mean(C[, 2], A))
-}
-```
+They also require a few objects and functions from Chapter 10.
 
 # Chapter 10
 
 1) Read the script `10-centroid-alg.R` in the `code` folder of the book's GitHub repo.
     - Which of the best practices covered in this [section](https://geocompr.robinlovelace.net/algorithms.html#scripts) does it follow?
+        - It hase clear steps, e.g. `# Step 1: create sub-triangles, set-up`
+        - It has comments, explaining what is going on
+        - It is reproducible, as can be verified with the following command:
+    ```{r}
+    u = "https://github.com/Robinlovelace/geocompr/raw/master/code/10-centroid-alg.R"
+    source(u)
+    ```
     - Create a version of the script on your computer in an IDE such as RStudio (preferably by typing-out the script line-by-line, in your own coding style and with your own comments, rather than copy-pasting --- this will help you learn how to type scripts) and, using the example of a square polygon (e.g. created with `poly_mat = cbind(x = c(0, 0, 9, 9, 0), y = c(0, 9, 9, 0, 0))`) execute the script line-by-line.
+        - A minimum viable version of the script could look something like this:
+    ```{r}
+    poly_mat = cbind(
+      x = c(0, 0, 4, 4, 0),
+      y = c(0, 4, 4, 0, 0)
+    )
+    Origin = poly_mat[1, ] # create a point representing the origin
+    i = 2:(nrow(poly_mat) - 2)
+    T_all = lapply(i, function(x) {
+      rbind(Origin, poly_mat[x:(x + 1), ], Origin)
+    })
+    
+    C_list = lapply(T_all,  function(x) (x[1, ] + x[2, ] + x[3, ]) / 3)
+    C = do.call(rbind, C_list)
+    
+    A = vapply(T_all, function(x) {
+      abs(x[1, 1] * (x[2, 2] - x[3, 2]) +
+            x[2, 1] * (x[3, 2] - x[1, 2]) +
+            x[3, 1] * (x[1, 2] - x[2, 2]) ) / 2
+    }, FUN.VALUE = double(1))
+    
+    poly_area = sum(A)
+    print(paste0("The area is: ", poly_area))
+    poly_cent = c(weighted.mean(C[, 1], A), weighted.mean(C[, 2], A))
+    
+    print(paste0(
+      "The coordinates of the centroid are: ",
+      round(poly_cent[1], 2),
+      ", ",
+      round(poly_cent[2], 2)
+    ))
+    
+    ```
     - What changes could be made to the script to make it more reproducible?
-Answer: The script could state that it needs a an object called `poly_mat` to be present and, if none is present, create an example dataset at the outset for testing.
+        - Answer: The script could state that it needs a an object called `poly_mat` to be present and, if none is present, create an example dataset at the outset for testing.
     - How could the documentation be improved?
-It could document the source of the data better - e.g. with `data from https://earthquake.usgs.gov/earthquakes/feed/v1.0/geojson.php`.
+        - It could explain each step in detail, e.g. `# Create list of centroid values` could go before this line: `C_list = lapply(T_all,  function(x) (x[1, ] + x[2, ] + x[3, ]) / 3)`
 
-2) In this [section](https://geocompr.robinlovelace.net/algorithms.html#geographic-algorithms) we calculated the area and geographic centroid of the polygon represented by `poly_mat`.
+2) In section [10.3](https://geocompr.robinlovelace.net/algorithms.html#geographic-algorithms) we calculated the area and geographic centroid of the polygon represented by `poly_mat`.
     - Reproduce the results on your own computer with reference to the script `10-centroid-alg.R`, an implementation of this algorithm (bonus: type out the commands - try to avoid copy-pasting).
+        - The results can be reproduced as follows:
+    ```{r}
+    x_coords = c(10, 0, 0, 12, 20, 10)
+    y_coords = c(0, 0, 10, 20, 15, 0)
+    poly_mat = cbind(x_coords, y_coords)
+    source("https://git.io/10-centroid-alg.R")
+    ```
     - Are the results correct? Verify them by converting `poly_mat` into an `sfc` object (named `poly_sfc`) with `st_polygon()` (hint: this function takes objects of class `list()`) and then using `st_area()` and `st_centroid()`.
-Answer: We can verify the answer by converting `poly_mat` into a simple feature collection as follows, which shows the calculations match:
-```{r}
-poly_sfc = sf::st_polygon(list(poly_mat))
-sf::st_area(poly_sfc)
-sf::st_centroid(poly_sfc)
-```
+        - Answer: We can verify the answer by converting `poly_mat` into a simple feature collection as follows, which shows the calculations match:
+    ```{r}
+    poly_sfc = sf::st_polygon(list(poly_mat))
+    sf::st_area(poly_sfc)
+    sf::st_centroid(poly_sfc)
+    ```
 
 3) It was stated that the algorithm we created only works for *convex hulls*. Define convex hulls (see this [Chapter](https://geocompr.robinlovelace.net/geometric-operations.html#geometric-operations)) and test the algorithm on a polygon that is *not* a convex hull.
+         - Convex hulls are polygons with internal angles defining the perimeter that are never larger than 180 degrees. They are polygons that, if you were to put an elastic band around them, would have no empty spaces. A more detailed definition can be found on [Wikipedia](https://en.wikipedia.org/wiki/Convex_hull).
+         - We can test whether or not the algorithm we created works on a polygon that is not a convex hull by creating such an object, and comparing the results with `sf` functions, as follows: 
+    ```{r}
+    poly_mat = cbind(
+    x = c(0, 0, 4, 4, 2, 0),
+    y = c(0, 4, 4, 0, 2, 0)
+    )
+    # data preparation
+
+    Origin = poly_mat[1, ] # create a point representing the origin
+    
+    t_centroid = function(x) {
+    (x[1, ] + x[2, ] + x[3, ]) / 3
+    }
+    
+    t_area = function(x) {
+    abs(
+    x[1, 1] * (x[2, 2] - x[3, 2]) +
+    x[2, 1] * (x[3, 2] - x[1, 2]) +
+    x[3, 1] * (x[1, 2] - x[2, 2])
+    ) / 2
+    }
+    
+    poly_centroid = function(x) {
+    i = 2:(nrow(x) - 2)
+    T_all = lapply(i, function(x) {
+    rbind(Origin, poly_mat[x:(x + 1), ], Origin)
+    })
+    C_list = lapply(T_all, t_centroid)
+    C = do.call(rbind, C_list)
+    A = vapply(T_all, t_area, FUN.VALUE = double(1))
+    c(weighted.mean(C[, 1], A), weighted.mean(C[, 2], A))
+    }
+    
+    plot(poly_mat, type = "lines")
+    poly_centroid(poly_mat)
+    poly_sfc = sf::st_polygon(list(poly_mat))
+    sf::st_centroid(poly_sfc) # the result is different: 2, 2.4 vs 2, 1.733
+    ```
      - Bonus 1: Think about why the method only works for convex hulls and note changes that would need to be made to the algorithm for other types of shape to be calculated.
-Answer: The algorithm would need to be able to have negative as well as positive area values.
+         - Answer: The algorithm would need to be able to have negative as well as positive area values.
      - Bonus 2: Building on the contents of `10-centroid-alg.R`, write an algorithm only using base R functions that can find the total length of linestrings represented in matrix form.
+       - Continuing with the previous example, we could calculate the length of the perimeter by iterating to calculate the Euclidean length of each edge. One way of doing this, alongside a corroborating check against a function in `sf` is provided below:
+
+    ```{r}
+    x = poly_mat
+    poly_perimeter_length = function(x) {
+      i = 2:(nrow(x))
+      seg_lengths = lapply(i, function(i) {dist(x[(i - 1):i, ])} )
+      sum(unlist(seg_lengths))
+    }
+    poly_perimeter_length(x)
+    sf::st_length(sf::st_linestring(poly_mat))
+    ```
 
 <!-- Todo: add example of matrix representing a linestring, demonstrate code to verify the answer, suggest alternative functions to decompose as a bonus. -->
 
 4) In this [section](https://geocompr.robinlovelace.net/algorithms.html#functions) we created a different versions of the `poly_centroid()` function that generated outputs of class `sfg` (`poly_centroid_sfg()`) and type-stable `matrix` outputs (`poly_centroid_type_stable()`). Further extend the function by creating a version (e.g. called `poly_centroid_sf()`) that is type stable (only accepts inputs of class `sf`) *and* returns `sf` objects (hint: you may need to convert the object `x` into a matrix with the command `sf::st_coordinates(x)`.
     - Verify it works by running `poly_centroid_sf(sf::st_sf(sf::st_sfc(poly_sfc)))`
     - What error message do you get when you try to run `poly_centroid_sf(poly_mat)`?
-    
+        - A solution is shown below:
 ```{r, error=TRUE}
 poly_centroid_sf = function(x) {
   stopifnot(is(x, "sf"))
