@@ -1,6 +1,5 @@
 ---
 title: "Making inset maps of the USA"
-subtitle: "For [Geocomputation with R](https://github.com/Robinlovelace/geocompr)"
 author: "Robin Lovelace, Jakub Nowosad, Jannes Muenchow"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
@@ -14,21 +13,19 @@ vignette: >
 knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
 ```
 
+This vignette provides a detailed description of inset map generation, building on the content in Section [Inset maps](http://geocompr.robinlovelace.net/adv-map.html#inset-maps) of [the Geocomputation with R book](https://geocompr.github.io/).
+
 ## Prerequisites {-}
 
-The example below assume the following packages are loaded:
+The example below assume the following packages are attached:
 
 ```{r packages, message=FALSE, warning=FALSE}
-library(sf)
-library(spData)
-library(tidyverse)
-library(tmap)
-library(grid)
+# devtools::install_github("robinlovelace/geocompr") # install pkgs
+library(spData) # contains datasets used in this example
+library(sf)     # for handling spatial (vector) data
+library(tmap)   # map making package
+library(grid)   # to re-arrange maps
 ```
-
-## Introduction
-
-This vignette provides a detailed description of inset map generation, building on the content in Chapter [9](http://geocompr.robinlovelace.net/adv-map.html#inset-maps) of the book Geocomputation with R.
 
 ## Data preparation
 
@@ -46,16 +43,16 @@ The second step is to calculate scale relations between the main map (the contig
 To do so we can calculate areas of the bounding box of each object:
 
 ```{r}
-us_states_area = st_area(st_as_sfc(st_bbox(us_states2163)))
-hawaii_area = st_area(st_as_sfc(st_bbox(hawaii)))
-alaska_area = st_area(st_as_sfc(st_bbox(alaska)))
+us_states_range = st_bbox(us_states2163)[4] - st_bbox(us_states2163)[2]
+hawaii_range = st_bbox(hawaii)[4] - st_bbox(hawaii)[2]
+alaska_range = st_bbox(alaska)[4] - st_bbox(alaska)[2]
 ``` 
 
 Next, we can calculate the ratios between their areas:
 
 ```{r}
-us_states_hawaii_ratio = as.numeric(hawaii_area/us_states_area)
-us_states_alaska_ratio = as.numeric(alaska_area/us_states_area)
+us_states_hawaii_ratio = hawaii_range / us_states_range
+us_states_alaska_ratio = alaska_range / us_states_range
 ```
 
 ## Single maps creation
@@ -91,16 +88,21 @@ In the code below, we create a new page and specify its layout with two rows - o
 Next, we populate the layout with maps of Alaska and the contiguous 48 states add a map of Hawaii to the bottom left of the map and specify its size.
 Lastly, we draw two dashed lines (`gp = gpar(lty = 2)`) to separate the contiguous 48 states from Alaska and Hawaii.
 
-```{r}
+```{r, fig.width=5.5, fig.height=4.5}
 grid.newpage()
-pushViewport(viewport(layout = grid.layout(2, 1, heights = unit(c(us_states_alaska_ratio, 1), "null"))))
+pushViewport(viewport(layout = grid.layout(2, 1,
+                                           heights = unit(c(us_states_alaska_ratio, 1), "null"))))
 print(alaska_map, vp = viewport(layout.pos.row = 1))
 print(us_states_map, vp = viewport(layout.pos.row = 2))
-print(hawaii_map, vp = viewport(x = 0.25, y = 0.1,
-                                height = us_states_hawaii_ratio))
-grid.lines(x = c(0, 1), y = c(0.64, 0.64), gp = gpar(lty = 2))
-grid.lines(x = c(0, 0.5), y = c(0.32, 0), gp = gpar(lty = 2))
+print(hawaii_map, vp = viewport(x = 0.3, y = 0.07,
+                                height = us_states_hawaii_ratio / sum(c(us_states_alaska_ratio, 1))))
+grid.lines(x = c(0, 1), y = c(0.58, 0.58), gp = gpar(lty = 2))
+grid.lines(x = c(0, 0.5), y = c(0.33, 0), gp = gpar(lty = 2))
 ```
 
 The result map is just an approximation, not a perfect representation, of relationships between the partial maps -- their location and size. 
 In the same time, it is an improvement upon a standard map of United States, which either shows only the contiguous 48 states or largely reduce the size of Hawaii and Alaska.
+
+## Another approach
+
+Alternative approach to this problem can be found at https://github.com/Nowosad/us-map-alternative-layout.
