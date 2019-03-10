@@ -21,7 +21,7 @@ knitr::opts_chunk$set(
 Perhaps the most ubiquitous type of geographic information is the continuous stream of data produced by GPS devices.
 Global Positioning System (GPS) devices are now in everything from watches to cars and, of course, smartphones.
 This means that GPS datasets have the ability to track a large proportion of the world's population.
-Although there are privacy concerns, when appropriately anonymized and aggregated, GPS datasets have the potential to help tackle the issues raised in Chapter [12](http://geocompr.robinlovelace.net/transport.html) of Gecomputation with R:
+Although there are privacy concerns, when appropriately anonymized and aggregated, GPS datasets have the potential to help tackle the issues raised in Chapter [12](http://geocompr.robinlovelace.net/transport.html) of Geocomputation with R:
 to design healthy transport systems in which walking and cycling overtake cars as the main travel modes.
 
 ## Loading GPS data
@@ -36,7 +36,7 @@ library(sf)
 As with any dataset the first stage is to identify the source.
 A great source of GPS data is OpenStreetMap (OSM).
 We'll use publicly available .gpx files uploaded to OSM as the basis of this tutorial.^[
-For saving your own GPS data, we recommend using an open source Android app such as [Orux](https://www.oruxmaps.com/cs/en/), [owntracks](https://github.com/owntracks/android) or [osmand](https://osmand.net/features/trip-recording-plugin).
+For saving your own GPS data, we recommend using an open source Android apps such as [Orux](https://www.oruxmaps.com/cs/en/), [owntracks](https://github.com/owntracks/android) or [osmand](https://osmand.net/features/trip-recording-plugin).
 These can then be transferred onto your computer and, if you want to support the community, uploaded to OSM.
 ]
 For the purpose of this tutorial we will use a .gpx file uploaded to OSM, that represents travel to the [Institute for Geoinformatics, Universität Münster](https://www.uni-muenster.de/Geoinformatics/en/):
@@ -47,7 +47,7 @@ download.file(url = u, destfile = "trace.gpx")
 st_layers("trace.gpx")
 ```
 
-The previous code code chunk downloads the trace from OSM and queries the 'layers' that can be imported (note there are 5, but only 'tracks' and 'track_points' are available).
+The previous code chunk downloads the trace from OSM and queries the 'layers' that can be imported (note there are 5, but only 'tracks' and 'track_points' are available).
 The following code chunk imports and plots the 'tracks' layer, which is a MULTILINESTRING geometry in sf, and only 1 row of data:
 
 ```{r}
@@ -148,7 +148,7 @@ plot(l["s"], lwd = l$s)
 https://cran.r-project.org/package=trajectories
 - The trajr package: https://cran.rstudio.com/web/packages/trajr/vignettes/trajr-vignette.html
 - The trackeR package: https://github.com/trackerproject/trackeR
-- The SpatioTemporal taskview: https://cran.r-project.org/web/views/SpatioTemporal.html
+- The SpatioTemporal task view: https://cran.r-project.org/web/views/SpatioTemporal.html
 
 <!-- # Larger track datasets -->
 
