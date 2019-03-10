@@ -1,6 +1,6 @@
 ---
 title: "Point Pattern analysis, spatial interpolation and heatmaps"
-author: "Robin Lovelace"
+author: "Robin Lovelace, Jakub Nowosad, Jannes Muenchow"
 date: "`r Sys.Date()`"
 # output: rmarkdown::html_vignette
 output: bookdown::html_document2
@@ -17,8 +17,6 @@ bibliography:
 ```{r}
 knitr::opts_chunk$set(eval = FALSE)
 ```
-
-
 
 This vignette builds on the Raster-vector interactions section of Geocomputation with R (see [geocompr.robinlovelace.net/geometric-operations.html#raster-vector](https://geocompr.robinlovelace.net/geometric-operations.html#raster-vector)).
 It shows the the basics of point pattern analysis in R and how to make (raster) 'heatmaps' from (vector) point data.
