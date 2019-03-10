@@ -13,7 +13,7 @@ vignette: >
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 ```
 
-This vignette provides some further detail on the section Type transformations (see https://geocompr.robinlovelace.net/geometric-operations.html#type-trans ).
+This vignette provides some further detail on the section Type transformations (see https://geocompr.robinlovelace.net/geometric-operations.html#type-trans ) of [the Geocomputation with R book](https://geocompr.github.io/).
 
 # Attach libraries
 
