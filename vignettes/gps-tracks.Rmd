@@ -21,7 +21,7 @@ knitr::opts_chunk$set(
 Perhaps the most ubiquitous type of geographic information is the continuous stream of data produced by GPS devices.
 Global Positioning System (GPS) devices are now in everything from watches to cars and, of course, smartphones.
 This means that GPS datasets have the ability to track a large proportion of the world's population.
-Although there are privacy concerns, when appropriately anonymized and aggregated, GPS datasets have the potential to help tackle the issues raised in Chapter [12](http://geocompr.robinlovelace.net/transport.html) of Geocomputation with R:
+Although there are privacy concerns, when appropriately anonymized and aggregated, GPS datasets have the potential to help tackle the issues raised in [the Transportation chapter](https://geocompr.robinlovelace.net/transport.html) of [the Geocomputation with R book](https://geocompr.github.io/).:
 to design healthy transport systems in which walking and cycling overtake cars as the main travel modes.
 
 ## Loading GPS data
@@ -144,10 +144,10 @@ plot(l["s"], lwd = l$s)
 ## Further resources
 
 - Content on trajectories by Edzer Pebesma: http://edzer.github.io/astd/lec8.html
-- The trajectories package: 
+- The **trajectories** package: 
 https://cran.r-project.org/package=trajectories
-- The trajr package: https://cran.rstudio.com/web/packages/trajr/vignettes/trajr-vignette.html
-- The trackeR package: https://github.com/trackerproject/trackeR
+- The **trajr** package: https://cran.rstudio.com/web/packages/trajr/vignettes/trajr-vignette.html
+- The **trackeR** package: https://github.com/trackerproject/trackeR
 - The SpatioTemporal task view: https://cran.r-project.org/web/views/SpatioTemporal.html
 
 <!-- # Larger track datasets -->
