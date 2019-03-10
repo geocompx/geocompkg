@@ -1,6 +1,6 @@
 ---
 title: "Loading and analysing GPS tracks with R"
-author: "Robin Lovelace"
+author: "Robin Lovelace, Jakub Nowosad, Jannes Muenchow"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >

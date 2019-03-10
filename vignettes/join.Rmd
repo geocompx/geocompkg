@@ -1,6 +1,6 @@
 ---
 title: "Spatial Joins Extended"
-author: "Robin Lovelace, Jakub Nowosad"
+author: "Robin Lovelace, Jakub Nowosad, Jannes Muenchow"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
@@ -14,7 +14,6 @@ library(sf)
 library(spData)
 library(tidyverse)
 ```
-
 
 We will use an `sf` object `north_america` with country codes (`iso_a2`), names and geometries, as well as a `data.frame` object `wb_north_america` containing information about urban population and unemployment for three countries.
 Note that `north_america` contains data about Canada, Greenland and the United States but the World Bank dataset (`wb_north_america`) contains information about Canada, Mexico and the United States:
