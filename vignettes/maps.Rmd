@@ -93,13 +93,19 @@ tm_shape(hill) +
 library(magrittr)
 library(rayshader)
 
-elevation_mat = t(raster::as.matrix(alt))
+alt2 = projectRaster(alt, crs = "+proj=tmerc +lat_0=0 +lon_0=15 +k=0.9999 +x_0=500000 +y_0=-5000000 +ellps=bessel +towgs84=682,-203,480,0,0,0,0 +units=m +no_defs")
 
-shadow_mat = ray_shade(elevation_mat)
+raster_template = raster(extent(alt2), resolution = 1000, crs = crs(alt2))
+
+alt3 = resample(alt2, raster_template)
+
+elevation_mat <- t(raster::as.matrix(alt3))
+shadow_mat <- ray_shade(elevation_mat)
 
 elevation_mat %>%
   sphere_shade(progbar = FALSE, sunangle = 45) %>%
-  add_shadow(shadow_mat) %>%
+  add_shadow(shadow_mat)%>%
+   plot_map() # %>%
   plot_3d(elevation_mat,
           zscale = 75,
           phi = 30,
