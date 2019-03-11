@@ -54,5 +54,5 @@ articles = gsub(pattern = ".Rmd", replacement = "", articles)
 for(i in articles) {
   pkgdown::build_article(i)
 }
- ```
+```
 
