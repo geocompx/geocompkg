@@ -89,3 +89,19 @@ tm_shape(hill) +
   tm_layout(legend.position = c("RIGHT", "BOTTOM"))
 ```
 
+```{r, echo=FALSE, eval=FALSE}
+library(magrittr)
+library(rayshader)
+
+elevation_mat = t(raster::as.matrix(alt))
+
+shadow_mat = ray_shade(elevation_mat)
+
+elevation_mat %>%
+  sphere_shade(progbar = FALSE, sunangle = 45) %>%
+  add_shadow(shadow_mat) %>%
+  plot_3d(elevation_mat,
+          zscale = 75,
+          phi = 30,
+          theta = 135)
+```
