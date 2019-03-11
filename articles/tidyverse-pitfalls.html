@@ -65,7 +65,7 @@
       <h1>Spatial data and the tidyverse: pitfalls to avoid</h1>
                         <h4 class="author">Robin Lovelace, Jakub Nowosad, Jannes Muenchow</h4>
             
-            <h4 class="date">2019-03-10</h4>
+            <h4 class="date">2019-03-11</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/geocompr/geocompkg/blob/master/vignettes/tidyverse-pitfalls.Rmd"><code>vignettes/tidyverse-pitfalls.Rmd</code></a></small>
       <div class="hidden name"><code>tidyverse-pitfalls.Rmd</code></div>
@@ -77,7 +77,7 @@
 <div id="prerequisites" class="section level2">
 <h2 class="hasAnchor">
 <a href="#prerequisites" class="anchor"></a>Prerequisites</h2>
-<p>This article is about working with spatial data ‘in the tidyverse’. By this we mean handling spatial datasets using functions (such as <code>%&gt;%</code> and <code><a href="https://www.rdocumentation.org/packages/stats/topics/filter">filter()</a></code>) and concepts (such as type stability) from R packages that are part of the metapackage <strong>tidyverse</strong>. You should already have an R installation set-up for spatial data analysis <a href="https://geocompr.robinlovelace.net/spatial-class.html">having read Chapter 2 of Geocomputation with R</a>.</p>
+<p>This article is about working with spatial data ‘in the tidyverse’. By this we mean handling spatial datasets using functions (such as <code>%&gt;%</code> and <code><a href="https://www.rdocumentation.org/packages/stats/topics/filter">filter()</a></code>) and concepts (such as type stability) from R packages that are part of the metapackage <strong>tidyverse</strong>. You should already have an R installation set-up for spatial data analysis <a href="https://geocompr.robinlovelace.net/spatial-class.html">having read Chapter 2</a> of <a href="https://geocompr.github.io/">the Geocomputation with R book</a>.</p>
 <p>If not take a read there now. In any case the <strong>tidyverse</strong> can be installed from CRAN with the following command:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages</a></span>(<span class="st">"tidyverse"</span>)</code></pre></div>
 <p>The <strong>tidyverse</strong> works with spatial data thanks to <strong>sf</strong> which is quite a recent package (first release in 2016). If you have not already got it, get <strong>sf</strong> with:</p>
@@ -104,7 +104,7 @@
 <li>Compatibility with the <strong>tidyverse</strong>
 </li>
 </ul>
-<p>The final advantage comes with a warning: watch out for pitfalls! That’s topic of this workshop, as illustrated by the following GIF: it’s easy to imagine spatial data analyses but, as Homer Simson discovered with his BBQ project, doing something complicated is easier said than done, especially when combining packages that have only recently started working together:</p>
+<p>The final advantage comes with a warning: watch out for pitfalls! That’s topic of this vignette, as illustrated by the following GIF: it’s easy to imagine spatial data analyses but, as Homer Simson discovered with his BBQ project, doing something complicated is easier said than done, especially when combining packages that have only recently started working together:</p>
 <div class="figure">
 <img src="https://media.giphy.com/media/OMeGDxdAsMPzW/giphy.gif">
 </div>
@@ -125,12 +125,12 @@
 <a href="#pitfall-name-clashes" class="anchor"></a>Pitfall: name clashes</h2>
 <p>Just loading the tidyverse reveals a pitfall of using spatial data with the tidyverse that affects the <strong>raster</strong> package in particular:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(tidyverse)</code></pre></div>
-<pre><code>## ── Attaching packages ──────────────────────────────────────────────────── tidyverse 1.2.1 ──</code></pre>
+<pre><code>## ── Attaching packages ─────────────────────────────────────────────────────────── tidyverse 1.2.1 ──</code></pre>
 <pre><code>## ✔ ggplot2 3.1.0          ✔ purrr   0.3.0     
 ## ✔ tibble  2.0.1          ✔ dplyr   0.8.0.9006
 ## ✔ tidyr   0.8.2          ✔ stringr 1.3.1     
 ## ✔ readr   1.3.1          ✔ forcats 0.3.0</code></pre>
-<pre><code>## ── Conflicts ─────────────────────────────────────────────────────── tidyverse_conflicts() ──
+<pre><code>## ── Conflicts ────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
 ## ✖ tidyr::extract() masks raster::extract()
 ## ✖ dplyr::filter()  masks stats::filter()
 ## ✖ dplyr::lag()     masks stats::lag()
@@ -146,14 +146,16 @@
 <strong>sp</strong> precedes <strong>sf</strong><br>
 </li>
 <li>Together with the <strong>rgdal</strong> and <strong>rgeos</strong> package, it creates a powerful tool to works with spatial data</li>
-<li>Many spatial R packages still depends on the <strong>sp</strong> package, therefore it is important to know how to convert <strong>sp</strong> to and from <strong>sf</strong> objects</li>
+<li>Many spatial R packages still depend on the <strong>sp</strong> package, therefore it is important to know how to convert <strong>sp</strong> to and from <strong>sf</strong> objects</li>
 </ul>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(spData)
 world_sp =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/coerce-methods">as</a></span>(world, <span class="st">"Spatial"</span>)
 world_sf =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_as_sf">st_as_sf</a></span>(world_sp)</code></pre></div>
 <ul>
-<li><p>The structures in the <strong>sp</strong> packages are more complicated - <code><a href="https://www.rdocumentation.org/packages/utils/topics/str">str(world_sf)</a></code> vs <code><a href="https://www.rdocumentation.org/packages/utils/topics/str">str(world_sp)</a></code></p></li>
-<li><p><strong>sp</strong> doesn’t play well with the <strong>tidyverse</strong>:</p></li>
+<li>The structures in the <strong>sp</strong> packages are more complicated - <code><a href="https://www.rdocumentation.org/packages/utils/topics/str">str(world_sf)</a></code> vs <code><a href="https://www.rdocumentation.org/packages/utils/topics/str">str(world_sp)</a></code>
+</li>
+<li>
+<strong>sp</strong> doesn’t play well with the <strong>tidyverse</strong>:</li>
 </ul>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">world_sp <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/filter">filter</a></span>(name_long <span class="op">==</span><span class="st"> "England"</span>)</code></pre></div>
@@ -202,7 +204,7 @@ near_lnd_new =<span class="st"> </span>world_poly[lnd_buff, ]
 <p>You can also do tidy spatial subsetting:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">near_lnd_tidy =<span class="st"> </span>world <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/filter">filter</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/geos_binary_pred">st_intersects</a></span>(., lnd_buff, <span class="dt">sparse =</span> <span class="ot">FALSE</span>))</code></pre></div>
-<p>But there are pitfalls</p>
+<p>But there are pitfalls:</p>
 <ul>
 <li>It’s verbose (you need <code>sparse = FALSE</code> in the spatial predicate function)</li>
 <li>See the next pitfall: it boshes the row names!</li>
@@ -243,7 +245,7 @@ near_lnd_new =<span class="st"> </span>world_poly[lnd_buff, ]
   world[world<span class="op">$</span>name_long <span class="op">==</span><span class="st"> "United Kingdom"</span>, ]
 ) <span class="co"># ?</span></code></pre></div>
 <pre><code>## [1] FALSE</code></pre>
-<p>Row names usually don’t matter but they can bite</p>
+<p>Row names usually don’t matter but they can bite.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">u1 =<span class="st"> </span>world <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/filter">filter</a></span>(name_long <span class="op">==</span><span class="st"> "United Kingdom"</span>)
 u2 =<span class="st"> </span>world[world<span class="op">$</span>name_long <span class="op">==</span><span class="st"> "United Kingdom"</span>, ]
 <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/row.names">row.names</a></span>(u2) =<span class="st"> </span><span class="dv">1</span>
@@ -252,25 +254,6 @@ u2 =<span class="st"> </span>world[world<span class="op">$</span>name_long <span
 <ul>
 <li>Advanced challenge: how to make u1 and u2 identical?</li>
 </ul>
-<hr>
-</div>
-<div id="pitfall-duplicate-column-names" class="section level2">
-<h2 class="hasAnchor">
-<a href="#pitfall-duplicate-column-names" class="anchor"></a>Pitfall: Duplicate column names</h2>
-<p>See <a href="https://github.com/r-spatial/sf/issues/544">edzer/sf#544</a></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/names">names</a></span>(world)</code></pre></div>
-<pre><code>##  [1] "iso_a2"    "name_long" "continent" "region_un" "subregion"
-##  [6] "type"      "area_km2"  "pop"       "lifeExp"   "gdpPercap"
-## [11] "geom"</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/names">names</a></span>(lnd_buff)</code></pre></div>
-<pre><code>## [1] "NAME"       "GSS_CODE"   "HECTARES"   "NONLD_AREA" "ONS_INNER" 
-## [6] "SUB_2009"   "SUB_2006"   "geometry"</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lnd_buff<span class="op">$</span>iso_a2 =<span class="st"> </span><span class="ot">NA</span></code></pre></div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/geos_binary_ops">st_intersection</a></span>(world, lnd_buff) <span class="co"># works</span>
-world_tidy =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_as_sf">st_as_sf</a></span>(<span class="kw">as_tibble</span>(world))
-<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/geos_binary_ops">st_intersection</a></span>(world_tidy, lnd_buff) <span class="co"># fails</span></code></pre></div>
-<pre><code>Error: Column `iso_a2` must have a unique name</code></pre>
-<hr>
 </div>
 <div id="pitfall-binding-rows" class="section level2">
 <h2 class="hasAnchor">
@@ -284,19 +267,17 @@ world_tidy =<span class="st"> </span><span class="kw"><a href="https://www.rdocu
 d =<span class="st"> </span><span class="kw">bind_rows</span>(near_lnd_data, near_lnd_data)
 d_sf =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/sf">st_sf</a></span>(d, <span class="dt">geometry =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(near_lnd<span class="op">$</span>geom, near_lnd<span class="op">$</span>geom))
 <span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(d_sf)</code></pre></div>
-<p><img src="tidyverse-pitfalls_files/figure-html/unnamed-chunk-23-1.png" width="700"></p>
+<p><img src="tidyverse-pitfalls_files/figure-html/unnamed-chunk-20-1.png" width="700"></p>
 </div>
 <div id="raster-data-in-the-tidyverse" class="section level2">
 <h2 class="hasAnchor">
 <a href="#raster-data-in-the-tidyverse" class="anchor"></a>Raster data in the tidyverse</h2>
 <p>Raster data is not yet closely connected to the <strong>tidyverse</strong>, however:</p>
 <ul>
-<li>Some functions from the <strong>raster</strong> package works well in <code>pipes</code>
+<li>Some functions from the <strong>raster</strong> package work well in <code>pipes</code>
 </li>
 <li>You can convert vector data to the <code>Spatial*</code> form using <code><a href="https://www.rdocumentation.org/packages/sf/topics/coerce-methods">as(my_vector, "Spatial")</a></code>before working on raster-vector interactions</li>
-<li>There are some initial efforts to bring raster data closer to the <strong>tidyverse</strong>, such as <a href="https://github.com/hypertidy/tabularaster">tabularaster</a>, <a href="https://github.com/mdsumner/sfraster">sfraster</a>, or <a href="https://github.com/ecohealthalliance/fasterize">fasterize</a>
-</li>
-<li>The development of the <a href="https://github.com/r-spatial/stars">stars</a>, package focused on multidimensional, large datasets should start soon. It will allow pipe-based workflows</li>
+<li>There are some initial efforts to bring raster data closer to the <strong>tidyverse</strong>, such as <a href="https://github.com/hypertidy/tabularaster">tabularaster</a>, <a href="https://github.com/mdsumner/sfraster">sfraster</a>, or <a href="https://github.com/ecohealthalliance/fasterize">fasterize</a>, and <a href="https://github.com/r-spatial/stars">stars</a> - package focused on multidimensional, large datasets</li>
 </ul>
 <!-- ## Practical exercises --><!-- In groups of 2:4: --><!-- -- Work-through section 3.2 in the handout --><!-- -- Answer questions 1:3 --><!-- -- --><!-- A) Beginner/tidyverse consolidation: Tackle the exercises in [Chapter 3](http://geocompr.robinlovelace.net/attr.html) of Geocomputation with R --><!-- -- --><!-- B) Intermediate/advanced: Build on Edzer's [`breweries` analysis](https://edzer.github.io/UseR2017/) and answer the questions using tidyverse functions: --><!-- 1. which was the earliest founded brewery? --><!-- 2. which has the longest name? --><!-- 3. group the breweries by the century they were founded: which has, on average, most beer types? --><!-- 4. Join the breweries to a 5km buffer around the trails: which trail is the best for number/diversity of breweries? --><!-- -- -->
 </div>
@@ -316,7 +297,6 @@ d_sf =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentat
       <li><a href="#pitfall-spatial-subsetting">Pitfall: spatial subsetting</a></li>
       <li><a href="#pitfall-row-names">Pitfall: row names</a></li>
       <li><a href="#pitfall-attribute-alteration">Pitfall: attribute alteration</a></li>
-      <li><a href="#pitfall-duplicate-column-names">Pitfall: Duplicate column names</a></li>
       <li><a href="#pitfall-binding-rows">Pitfall: binding rows</a></li>
       <li><a href="#raster-data-in-the-tidyverse">Raster data in the tidyverse</a></li>
       </ul>

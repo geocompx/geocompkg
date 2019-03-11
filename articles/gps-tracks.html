@@ -5,11 +5,11 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Loading and analysing GPS tracks with R • geocompkg | metapackage for the book Gecomputation with R</title>
+<title>Loading and analyzing GPS tracks with R • geocompkg | metapackage for the book Gecomputation with R</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="Loading and analysing GPS tracks with R">
+<script src="../pkgdown.js"></script><meta property="og:title" content="Loading and analyzing GPS tracks with R">
 <meta property="og:description" content="">
 <meta name="twitter:card" content="summary">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -62,10 +62,10 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1>Loading and analysing GPS tracks with R</h1>
-                        <h4 class="author">Robin Lovelace</h4>
+      <h1>Loading and analyzing GPS tracks with R</h1>
+                        <h4 class="author">Robin Lovelace, Jakub Nowosad, Jannes Muenchow</h4>
             
-            <h4 class="date">2019-03-10</h4>
+            <h4 class="date">2019-03-11</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/geocompr/geocompkg/blob/master/vignettes/gps-tracks.Rmd"><code>vignettes/gps-tracks.Rmd</code></a></small>
       <div class="hidden name"><code>gps-tracks.Rmd</code></div>
@@ -77,7 +77,7 @@
 <div id="introduction" class="section level2">
 <h2 class="hasAnchor">
 <a href="#introduction" class="anchor"></a>Introduction</h2>
-<p>Perhaps the most ubiquitous type of geographic information is the continuous stream of data produced by GPS devices. Global Positioning System (GPS) devices are now in everything from watches to cars and, of course, smartphones. This means that GPS datasets have the ability to track a large proportion of the world’s population. Although there are privacy concerns, when appropriately anonymized and aggregated, GPS datasets have the potential to help tackle the issues raised in Chapter <a href="http://geocompr.robinlovelace.net/transport.html">12</a> of Gecomputation with R: to design healthy transport systems in which walking and cycling overtake cars as the main travel modes.</p>
+<p>Perhaps the most ubiquitous type of geographic information is the continuous stream of data produced by GPS devices. Global Positioning System (GPS) devices are now in everything from watches to cars and, of course, smartphones. This means that GPS datasets have the ability to track a large proportion of the world’s population. Although there are privacy concerns, when appropriately anonymized and aggregated, GPS datasets have the potential to help tackle the issues raised in <a href="https://geocompr.robinlovelace.net/transport.html">the Transportation chapter</a> of <a href="https://geocompr.github.io/">the Geocomputation with R book</a>: to design healthy transport systems in which walking and cycling overtake cars as the main travel modes.</p>
 </div>
 <div id="loading-gps-data" class="section level2">
 <h2 class="hasAnchor">
@@ -97,7 +97,7 @@
 <span class="co">#&gt; 3       tracks Multi Line String        1     13</span>
 <span class="co">#&gt; 4 route_points             Point        0     25</span>
 <span class="co">#&gt; 5 track_points             Point      225     26</span></code></pre></div>
-<p>The previous code code chunk downloads the trace from OSM and queries the ‘layers’ that can be imported (note there are 5, but only ‘tracks’ and ‘track_points’ are available). The following code chunk imports and plots the ‘tracks’ layer, which is a MULTILINESTRING geometry in sf, and only 1 row of data:</p>
+<p>The previous code chunk downloads the trace from OSM and queries the ‘layers’ that can be imported (note there are 5, but only ‘tracks’ and ‘track_points’ are available). The following code chunk imports and plots the ‘tracks’ layer, which is a MULTILINESTRING geometry in sf, and only 1 row of data:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">r =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_read">st_read</a></span>(<span class="st">"trace.gpx"</span>, <span class="dt">layer =</span> <span class="st">"tracks"</span>)
 <span class="co">#&gt; Reading layer `tracks' from data source `/home/rstudio/data/repos/geocompkg/vignettes/trace.gpx' using driver `GPX'</span>
 <span class="co">#&gt; Simple feature collection with 1 feature and 13 fields</span>
@@ -196,13 +196,13 @@ lsf =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentati
 <ul>
 <li>Content on trajectories by Edzer Pebesma: <a href="http://edzer.github.io/astd/lec8.html" class="uri">http://edzer.github.io/astd/lec8.html</a>
 </li>
-<li>The trajectories package: <a href="https://cran.r-project.org/package=trajectories" class="uri">https://cran.r-project.org/package=trajectories</a>
+<li>The <strong>trajectories</strong> package: <a href="https://cran.r-project.org/package=trajectories" class="uri">https://cran.r-project.org/package=trajectories</a>
 </li>
-<li>The trajr package: <a href="https://cran.rstudio.com/web/packages/trajr/vignettes/trajr-vignette.html" class="uri">https://cran.rstudio.com/web/packages/trajr/vignettes/trajr-vignette.html</a>
+<li>The <strong>trajr</strong> package: <a href="https://cran.rstudio.com/web/packages/trajr/vignettes/trajr-vignette.html" class="uri">https://cran.rstudio.com/web/packages/trajr/vignettes/trajr-vignette.html</a>
 </li>
-<li>The trackeR package: <a href="https://github.com/trackerproject/trackeR" class="uri">https://github.com/trackerproject/trackeR</a>
+<li>The <strong>trackeR</strong> package: <a href="https://github.com/trackerproject/trackeR" class="uri">https://github.com/trackerproject/trackeR</a>
 </li>
-<li>The SpatioTemporal taskview: <a href="https://cran.r-project.org/web/views/SpatioTemporal.html" class="uri">https://cran.r-project.org/web/views/SpatioTemporal.html</a>
+<li>The SpatioTemporal task view: <a href="https://cran.r-project.org/web/views/SpatioTemporal.html" class="uri">https://cran.r-project.org/web/views/SpatioTemporal.html</a>
 </li>
 </ul>
 <!-- # Larger track datasets --><!-- 6 MB -->
@@ -210,7 +210,7 @@ lsf =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentati
 <div class="footnotes">
 <hr>
 <ol>
-<li id="fn1"><p>For saving your own GPS data, we recommend using an open source Android app such as <a href="https://www.oruxmaps.com/cs/en/">Orux</a>, <a href="https://github.com/owntracks/android">owntracks</a> or <a href="https://osmand.net/features/trip-recording-plugin">osmand</a>. These can then be transferred onto your computer and, if you want to support the community, uploaded to OSM.<a href="#fnref1">↩</a></p></li>
+<li id="fn1"><p>For saving your own GPS data, we recommend using an open source Android apps such as <a href="https://www.oruxmaps.com/cs/en/">Orux</a>, <a href="https://github.com/owntracks/android">owntracks</a> or <a href="https://osmand.net/features/trip-recording-plugin">osmand</a>. These can then be transferred onto your computer and, if you want to support the community, uploaded to OSM.<a href="#fnref1">↩</a></p></li>
 </ol>
 </div>
   </div>

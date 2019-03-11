@@ -65,7 +65,7 @@
       <h1>Geocomputation with R: benchmark</h1>
                         <h4 class="author">Robin Lovelace, Jakub Nowosad, Jannes Muenchow</h4>
             
-            <h4 class="date">2019-03-10</h4>
+            <h4 class="date">2019-03-11</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/geocompr/geocompkg/blob/master/vignettes/benchmark.Rmd"><code>vignettes/benchmark.Rmd</code></a></small>
       <div class="hidden name"><code>benchmark.Rmd</code></div>
@@ -90,16 +90,16 @@ u =<span class="st"> "https://github.com/spnethack/spnethack/releases/download/0
 
 <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.time">system.time</a></span>({b =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_read">read_sf</a></span>(f2)})
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;   3.309   0.068   3.376</span>
+<span class="co">#&gt;   2.753   0.066   2.820</span>
 <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.time">system.time</a></span>({d =<span class="st"> </span>b  <span class="op">%&gt;%</span><span class="st"> </span>data.table<span class="op">::</span><span class="kw">as.data.table</span>()})
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;   0.017   0.000   0.017</span>
+<span class="co">#&gt;   0.013   0.000   0.012</span>
 <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.time">system.time</a></span>(d[,geometry<span class="op">:</span><span class="er">=</span>sf<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_as_text">st_as_text</a></span>(geometry),])
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;   5.591   0.000   5.591</span>
+<span class="co">#&gt;   4.702   0.000   4.701</span>
 <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.time">system.time</a></span>(d <span class="op">%&gt;%</span><span class="st"> </span>readr<span class="op">::</span><span class="kw"><a href="https://readr.tidyverse.org/reference/write_delim.html">write_tsv</a></span>(<span class="st">"tmp.tsv"</span>))
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;   1.067   0.045   1.112</span></code></pre></div>
+<span class="co">#&gt;   0.880   0.008   0.888</span></code></pre></div>
 </div>
 <div id="reading-vector-data" class="section level1">
 <h1 class="hasAnchor">
@@ -165,12 +165,12 @@ world =<span class="st"> </span><span class="kw"><a href="https://www.rdocumenta
 <span class="co">#&gt; It has 10 fields</span>
 b1
 <span class="co">#&gt; # A tibble: 2 x 10</span>
-<span class="co">#&gt;   expression      min     mean  median     max `itr/sec` mem_alloc  n_gc</span>
-<span class="co">#&gt;   &lt;chr&gt;      &lt;bch:tm&gt; &lt;bch:tm&gt; &lt;bch:t&gt; &lt;bch:t&gt;     &lt;dbl&gt; &lt;bch:byt&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt; 1 sf           7.73ms   9.98ms  10.6ms  11.6ms    100.     508.8KB     0</span>
-<span class="co">#&gt; 2 sp          459.4ms 474.69ms   462ms 502.6ms      2.11    17.4MB     0</span>
+<span class="co">#&gt;   expression      min     mean   median      max `itr/sec` mem_alloc  n_gc</span>
+<span class="co">#&gt;   &lt;chr&gt;      &lt;bch:tm&gt; &lt;bch:tm&gt; &lt;bch:tm&gt; &lt;bch:tm&gt;     &lt;dbl&gt; &lt;bch:byt&gt; &lt;dbl&gt;</span>
+<span class="co">#&gt; 1 sf           6.62ms   6.93ms   6.99ms   7.18ms    144.     508.8KB     0</span>
+<span class="co">#&gt; 2 sp         358.39ms  363.1ms  363.4ms 367.51ms      2.75    17.4MB     0</span>
 <span class="co">#&gt; # … with 2 more variables: n_itr &lt;int&gt;, total_time &lt;bch:tm&gt;</span></code></pre></div>
-<p>The benchmark ran on an input file (<code>file</code>) and a number of times. It shows that <strong>sf</strong> was 48 times faster than <strong>rgdal</strong> at loading this file.</p>
+<p>The benchmark ran on an input file (<code>file</code>) and a number of times. It shows that <strong>sf</strong> was 52 times faster than <strong>rgdal</strong> at loading this file.</p>
 <p>The relative performance of <code><a href="https://www.rdocumentation.org/packages/sf/topics/st_read">st_read()</a></code> compared with other functions will vary depending on file format and the nature of the data. To illustrate this point, we performed the same operation on a geojson file and found a greater speed saving:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">vector_filepath =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">"shapes/cycle_hire_osm.geojson"</span>, <span class="dt">package =</span> <span class="st">"spData"</span>)
 b2 =<span class="st"> </span>bench<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/bench/topics/mark">mark</a></span>(<span class="dt">iterations =</span> <span class="dv">3</span>, <span class="dt">check =</span> <span class="ot">FALSE</span>,
@@ -187,22 +187,22 @@ b2</code></pre></div>
 world_sp =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/coerce-methods">as</a></span>(world, <span class="st">"Spatial"</span>)</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.time">system.time</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/rgdal/topics/writeOGR">writeOGR</a></span>(world_sp, <span class="dt">dsn =</span> <span class="st">"world_sp.geojson"</span>, <span class="dt">layer =</span> <span class="st">"world_sp.geojson"</span>, <span class="dt">driver =</span> <span class="st">"GeoJSON"</span>))
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;    0.05    0.00    0.05</span>
+<span class="co">#&gt;   0.042   0.000   0.043</span>
 <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.time">system.time</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/rgdal/topics/writeOGR">writeOGR</a></span>(world_sp, <span class="dt">dsn =</span> <span class="st">"."</span>, <span class="dt">layer =</span> <span class="st">"world_sp"</span>, <span class="dt">driver =</span> <span class="st">"ESRI Shapefile"</span>)) 
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;   0.004   0.004   0.008</span>
+<span class="co">#&gt;   0.004   0.003   0.008</span>
 <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.time">system.time</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/rgdal/topics/writeOGR">writeOGR</a></span>(world_sp, <span class="dt">dsn =</span> <span class="st">"world_sp.gpkg"</span>, <span class="dt">layer =</span> <span class="st">"world_sp.gpkg"</span>, <span class="dt">driver =</span> <span class="st">"GPKG"</span>))
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;   0.012   0.000   0.012</span>
+<span class="co">#&gt;   0.010   0.000   0.011</span>
 <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.time">system.time</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_write">st_write</a></span>(world, <span class="st">"world_sf.geojson"</span>, <span class="dt">quiet =</span> <span class="ot">TRUE</span>))
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;   0.045   0.004   0.049</span>
+<span class="co">#&gt;   0.042   0.000   0.042</span>
 <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.time">system.time</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_write">st_write</a></span>(world, <span class="st">"world_sf.shp"</span>, <span class="dt">quiet =</span> <span class="ot">TRUE</span>)) 
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;   0.011   0.000   0.011</span>
+<span class="co">#&gt;   0.008   0.000   0.007</span>
 <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.time">system.time</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_write">st_write</a></span>(world, <span class="st">"world_sf.gpkg"</span>, <span class="dt">quiet =</span> <span class="ot">TRUE</span>))
 <span class="co">#&gt;    user  system elapsed </span>
-<span class="co">#&gt;   0.008   0.008   0.015</span></code></pre></div>
+<span class="co">#&gt;   0.011   0.000   0.012</span></code></pre></div>
 </div>
   </div>
 

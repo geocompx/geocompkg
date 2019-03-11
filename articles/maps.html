@@ -65,7 +65,7 @@
       <h1>Geocomputation with R: maps extended</h1>
                         <h4 class="author">Robin Lovelace, Jakub Nowosad, Jannes Muenchow</h4>
             
-            <h4 class="date">2019-03-10</h4>
+            <h4 class="date">2019-03-11</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/geocompr/geocompkg/blob/master/vignettes/maps.Rmd"><code>vignettes/maps.Rmd</code></a></small>
       <div class="hidden name"><code>maps.Rmd</code></div>
@@ -74,25 +74,53 @@
 
     
     
+<p>This vignette builds on the <a href="https://geocompr.robinlovelace.net/adv-map.html">making maps chapter</a> of <a href="https://geocompr.github.io/">the Geocomputation with R book</a>.</p>
+<div id="prerequisites" class="section level2 unnumbered">
+<h2 class="hasAnchor">
+<a href="#prerequisites" class="anchor"></a>Prerequisites</h2>
+<p>The example below assume the following packages are attached:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(raster) <span class="co"># data download</span>
+<span class="co">#&gt; Loading required package: sp</span>
+<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(tmap)   <span class="co"># map creation</span></code></pre></div>
+</div>
 <div id="hillshade-map" class="section level1">
 <h1 class="hasAnchor">
 <a href="#hillshade-map" class="anchor"></a>Hillshade map</h1>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># data download</span>
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(raster)</code></pre></div>
-<pre><code>## Loading required package: sp</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">alt =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/getData">getData</a></span>(<span class="st">"alt"</span>, <span class="dt">country =</span> <span class="st">"SVN"</span>, <span class="dt">path =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/tempfile">tempdir</a></span>())
-slope =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/terrain">terrain</a></span>(alt, <span class="dt">opt =</span> <span class="st">"slope"</span>)
-aspect =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/terrain">terrain</a></span>(alt, <span class="dt">opt =</span> <span class="st">"aspect"</span>)
-hill =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/hillShade">hillShade</a></span>(slope, aspect, <span class="dv">40</span>, <span class="dv">270</span>)</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># map creation</span>
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(tmap)  
-<span class="kw"><a href="https://www.rdocumentation.org/packages/tmap/topics/tm_shape">tm_shape</a></span>(hill) <span class="op">+</span>
-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/tmap/topics/tm_raster">tm_raster</a></span>(<span class="dt">palette =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/gray">gray</a></span>(<span class="dv">0</span><span class="op">:</span><span class="dv">10</span> <span class="op">/</span><span class="st"> </span><span class="dv">10</span>), <span class="dt">style =</span> <span class="st">"cont"</span>, <span class="dt">legend.show =</span> <span class="ot">FALSE</span>)  <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/tmap/topics/tm_shape">tm_shape</a></span>(alt) <span class="op">+</span>
+<p>Hillshade maps show the topographical shape of hills and mountains using levels of gray on a map. The role of this kind of maps is to display relative slopes, but not absolute height.</p>
+<div id="calculate-terrain-characteristics" class="section level2">
+<h2 class="hasAnchor">
+<a href="#calculate-terrain-characteristics" class="anchor"></a>Calculate terrain characteristics</h2>
+<p>Elevation data is needed to create a hillshade map. The <strong>raster</strong> package provides an easy access to the SRTM 90 m resolution elevation data with the <code><a href="https://www.rdocumentation.org/packages/raster/topics/getData">getData()</a></code> function. For example, it is possible to download the elevation data for the whole country of Slovenia using the code below:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">alt =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/getData">getData</a></span>(<span class="st">"alt"</span>, <span class="dt">country =</span> <span class="st">"SVN"</span>, <span class="dt">path =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/tempfile">tempdir</a></span>())</code></pre></div>
+<p>Hillshade maps are created based on certain terrain characteristics - slope and aspect. Both of them can be calculated with the <code>terrain</code> function and the <code>opt</code> argument set to <code>"slope"</code> or <code>"aspect"</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">slope =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/terrain">terrain</a></span>(alt, <span class="dt">opt =</span> <span class="st">"slope"</span>)
+aspect =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/terrain">terrain</a></span>(alt, <span class="dt">opt =</span> <span class="st">"aspect"</span>)</code></pre></div>
+<p>Computing of a hillshade can be done using the <code><a href="https://www.rdocumentation.org/packages/raster/topics/hillShade">hillShade()</a></code> function. It requires previously created <code>slope</code> and <code>aspect</code> objects and setting two new arguments <code>angle</code> and <code>direction</code>. The <code>angle</code> argument is the elevation angle of the light source and the <code>direction</code> argument is the direction (azimuth) angle of the light source (sun), both in degrees.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">hill =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/hillShade">hillShade</a></span>(slope, aspect, <span class="dt">angle =</span> <span class="dv">40</span>, <span class="dt">direction =</span> <span class="dv">270</span>)</code></pre></div>
+<p>The output object can be plotted with <code><a href="https://www.rdocumentation.org/packages/raster/topics/plot">plot(hill)</a></code>, however, it does not give an expected map. This is because the hillshade object should be overlayed by another semi-transparent layer to give a proper visualization.</p>
+</div>
+<div id="create-a-hillshade-map" class="section level2">
+<h2 class="hasAnchor">
+<a href="#create-a-hillshade-map" class="anchor"></a>Create a hillshade map</h2>
+<p>A hillshade map can be created using the <strong>tmap</strong> package. This package builds maps by stacking different data layers. In this case, the first layer is the hillshade object (<code>hill</code>), colored using different levels of gray.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/tmap/topics/tm_shape">tm_shape</a></span>(hill) <span class="op">+</span>
+<span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/tmap/topics/tm_raster">tm_raster</a></span>(<span class="dt">palette =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/gray">gray</a></span>(<span class="dv">0</span><span class="op">:</span><span class="dv">10</span> <span class="op">/</span><span class="st"> </span><span class="dv">10</span>), <span class="dt">style =</span> <span class="st">"cont"</span>, <span class="dt">legend.show =</span> <span class="ot">FALSE</span>)
+<span class="co">#&gt; Linking to GEOS 3.5.1, GDAL 2.1.2, PROJ 4.9.3</span></code></pre></div>
+<p><img src="maps_files/figure-html/unnamed-chunk-5-1.png" width="700"></p>
+<p>The second layer is the elevation object (<code>alt</code>), colored using the <code>terrain.colors</code> palette.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/tmap/topics/tm_shape">tm_shape</a></span>(alt) <span class="op">+</span>
 <span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/tmap/topics/tm_raster">tm_raster</a></span>(<span class="dt">alpha =</span> <span class="fl">0.5</span>, <span class="dt">palette =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/palettes">terrain.colors</a></span>(<span class="dv">10</span>), <span class="dt">style =</span> <span class="st">"cont"</span>,
             <span class="dt">title =</span> <span class="st">"Elevation (m asl)"</span>, <span class="dt">legend.show =</span> <span class="ot">TRUE</span>)</code></pre></div>
-<pre><code>## Linking to GEOS 3.5.1, GDAL 2.1.2, PROJ 4.9.3</code></pre>
-<p><img src="maps_files/figure-html/unnamed-chunk-2-1.png" width="700"></p>
+<p><img src="maps_files/figure-html/unnamed-chunk-6-1.png" width="700"></p>
+<p>Finally, both layers can be combined to create an expected visualization. It could be also improved by placing the legend on the right bottom of the map.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/tmap/topics/tm_shape">tm_shape</a></span>(hill) <span class="op">+</span>
+<span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/tmap/topics/tm_raster">tm_raster</a></span>(<span class="dt">palette =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/gray">gray</a></span>(<span class="dv">0</span><span class="op">:</span><span class="dv">10</span> <span class="op">/</span><span class="st"> </span><span class="dv">10</span>), <span class="dt">style =</span> <span class="st">"cont"</span>, <span class="dt">legend.show =</span> <span class="ot">FALSE</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/tmap/topics/tm_shape">tm_shape</a></span>(alt) <span class="op">+</span>
+<span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/tmap/topics/tm_raster">tm_raster</a></span>(<span class="dt">alpha =</span> <span class="fl">0.5</span>, <span class="dt">palette =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/palettes">terrain.colors</a></span>(<span class="dv">10</span>), <span class="dt">style =</span> <span class="st">"cont"</span>,
+            <span class="dt">title =</span> <span class="st">"Elevation (m asl)"</span>, <span class="dt">legend.show =</span> <span class="ot">TRUE</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/tmap/topics/tm_layout">tm_layout</a></span>(<span class="dt">legend.position =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"RIGHT"</span>, <span class="st">"BOTTOM"</span>))</code></pre></div>
+<p><img src="maps_files/figure-html/unnamed-chunk-7-1.png" width="576"></p>
+</div>
 </div>
   </div>
 
@@ -101,7 +129,13 @@ hill =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentat
       <h2 class="hasAnchor">
 <a href="#tocnav" class="anchor"></a>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-<li><a href="#hillshade-map">Hillshade map</a></li>
+<li><a href="#prerequisites">Prerequisites</a></li>
+      <li>
+<a href="#hillshade-map">Hillshade map</a><ul class="nav nav-pills nav-stacked">
+<li><a href="#calculate-terrain-characteristics">Calculate terrain characteristics</a></li>
+      <li><a href="#create-a-hillshade-map">Create a hillshade map</a></li>
+      </ul>
+</li>
       </ul>
 </div>
       </div>

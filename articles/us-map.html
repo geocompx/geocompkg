@@ -63,11 +63,9 @@
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1>Making inset maps of the USA</h1>
-            <h3 class="subtitle">For <a href="https://github.com/Robinlovelace/geocompr">Geocomputation with R</a>
-</h3>
                         <h4 class="author">Robin Lovelace, Jakub Nowosad, Jannes Muenchow</h4>
             
-            <h4 class="date">2019-03-10</h4>
+            <h4 class="date">2019-03-11</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/geocompr/geocompkg/blob/master/vignettes/us-map.Rmd"><code>vignettes/us-map.Rmd</code></a></small>
       <div class="hidden name"><code>us-map.Rmd</code></div>
@@ -76,20 +74,16 @@
 
     
     
+<p>This vignette provides a detailed description of inset map generation, building on the content in Section <a href="http://geocompr.robinlovelace.net/adv-map.html#inset-maps">Inset maps</a> of <a href="https://geocompr.github.io/">the Geocomputation with R book</a>.</p>
 <div id="prerequisites" class="section level2 unnumbered">
 <h2 class="hasAnchor">
 <a href="#prerequisites" class="anchor"></a>Prerequisites</h2>
-<p>The example below assume the following packages are loaded:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(sf)
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(spData)
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(tidyverse)
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(tmap)
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(grid)</code></pre></div>
-</div>
-<div id="introduction" class="section level2">
-<h2 class="hasAnchor">
-<a href="#introduction" class="anchor"></a>Introduction</h2>
-<p>This vignette provides a detailed description of inset map generation, building on the content in Chapter <a href="http://geocompr.robinlovelace.net/adv-map.html#inset-maps">9</a> of the book Geocomputation with R.</p>
+<p>The example below assume the following packages are attached:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># devtools::install_github("robinlovelace/geocompr") # install pkgs</span>
+<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(spData) <span class="co"># contains datasets used in this example</span>
+<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(sf)     <span class="co"># for handling spatial (vector) data</span>
+<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(tmap)   <span class="co"># map making package</span>
+<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(grid)   <span class="co"># to re-arrange maps</span></code></pre></div>
 </div>
 <div id="data-preparation" class="section level2">
 <h2 class="hasAnchor">
@@ -101,12 +95,12 @@
 <h2 class="hasAnchor">
 <a href="#ratio-calculation" class="anchor"></a>Ratio calculation</h2>
 <p>The second step is to calculate scale relations between the main map (the contiguous 48 states) and Hawaii, and between the main map and Alaska. To do so we can calculate areas of the bounding box of each object:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">us_states_area =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/geos_measures">st_area</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_as_sfc">st_as_sfc</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_bbox">st_bbox</a></span>(us_states2163)))
-hawaii_area =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/geos_measures">st_area</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_as_sfc">st_as_sfc</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_bbox">st_bbox</a></span>(hawaii)))
-alaska_area =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/geos_measures">st_area</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_as_sfc">st_as_sfc</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_bbox">st_bbox</a></span>(alaska)))</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">us_states_range =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_bbox">st_bbox</a></span>(us_states2163)[<span class="dv">4</span>] <span class="op">-</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_bbox">st_bbox</a></span>(us_states2163)[<span class="dv">2</span>]
+hawaii_range =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_bbox">st_bbox</a></span>(hawaii)[<span class="dv">4</span>] <span class="op">-</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_bbox">st_bbox</a></span>(hawaii)[<span class="dv">2</span>]
+alaska_range =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_bbox">st_bbox</a></span>(alaska)[<span class="dv">4</span>] <span class="op">-</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_bbox">st_bbox</a></span>(alaska)[<span class="dv">2</span>]</code></pre></div>
 <p>Next, we can calculate the ratios between their areas:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">us_states_hawaii_ratio =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/numeric">as.numeric</a></span>(hawaii_area<span class="op">/</span>us_states_area)
-us_states_alaska_ratio =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/numeric">as.numeric</a></span>(alaska_area<span class="op">/</span>us_states_area)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">us_states_hawaii_ratio =<span class="st"> </span>hawaii_range <span class="op">/</span><span class="st"> </span>us_states_range
+us_states_alaska_ratio =<span class="st"> </span>alaska_range <span class="op">/</span><span class="st"> </span>us_states_range</code></pre></div>
 </div>
 <div id="single-maps-creation" class="section level2">
 <h2 class="hasAnchor">
@@ -129,15 +123,21 @@ us_states_alaska_ratio =<span class="st"> </span><span class="kw"><a href="https
 <a href="#map-arrangement" class="anchor"></a>Map arrangement</h2>
 <p>The final step is to arrange the map. One of the ways to achieve this goal is to use the <strong>grid</strong> package. In the code below, we create a new page and specify its layout with two rows - one smaller (for Alaska) and one larger (for the contiguous 48 states). Next, we populate the layout with maps of Alaska and the contiguous 48 states add a map of Hawaii to the bottom left of the map and specify its size. Lastly, we draw two dashed lines (<code>gp = gpar(lty = 2)</code>) to separate the contiguous 48 states from Alaska and Hawaii.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/grid/topics/grid.newpage">grid.newpage</a></span>()
-<span class="kw"><a href="https://www.rdocumentation.org/packages/grid/topics/viewports">pushViewport</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/grid/topics/viewport">viewport</a></span>(<span class="dt">layout =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/grid/topics/grid.layout">grid.layout</a></span>(<span class="dv">2</span>, <span class="dv">1</span>, <span class="dt">heights =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/grid/topics/unit">unit</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(us_states_alaska_ratio, <span class="dv">1</span>), <span class="st">"null"</span>))))
+<span class="kw"><a href="https://www.rdocumentation.org/packages/grid/topics/viewports">pushViewport</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/grid/topics/viewport">viewport</a></span>(<span class="dt">layout =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/grid/topics/grid.layout">grid.layout</a></span>(<span class="dv">2</span>, <span class="dv">1</span>,
+                                           <span class="dt">heights =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/grid/topics/unit">unit</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(us_states_alaska_ratio, <span class="dv">1</span>), <span class="st">"null"</span>))))
 <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(alaska_map, <span class="dt">vp =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/grid/topics/viewport">viewport</a></span>(<span class="dt">layout.pos.row =</span> <span class="dv">1</span>))
 <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(us_states_map, <span class="dt">vp =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/grid/topics/viewport">viewport</a></span>(<span class="dt">layout.pos.row =</span> <span class="dv">2</span>))
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(hawaii_map, <span class="dt">vp =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/grid/topics/viewport">viewport</a></span>(<span class="dt">x =</span> <span class="fl">0.25</span>, <span class="dt">y =</span> <span class="fl">0.1</span>,
-                                <span class="dt">height =</span> us_states_hawaii_ratio))
-<span class="kw"><a href="https://www.rdocumentation.org/packages/grid/topics/grid.lines">grid.lines</a></span>(<span class="dt">x =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="dt">y =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="fl">0.64</span>, <span class="fl">0.64</span>), <span class="dt">gp =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/grid/topics/gpar">gpar</a></span>(<span class="dt">lty =</span> <span class="dv">2</span>))
-<span class="kw"><a href="https://www.rdocumentation.org/packages/grid/topics/grid.lines">grid.lines</a></span>(<span class="dt">x =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>, <span class="fl">0.5</span>), <span class="dt">y =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="fl">0.32</span>, <span class="dv">0</span>), <span class="dt">gp =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/grid/topics/gpar">gpar</a></span>(<span class="dt">lty =</span> <span class="dv">2</span>))</code></pre></div>
-<p><img src="us-map_files/figure-html/unnamed-chunk-7-1.png" width="700"></p>
+<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(hawaii_map, <span class="dt">vp =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/grid/topics/viewport">viewport</a></span>(<span class="dt">x =</span> <span class="fl">0.3</span>, <span class="dt">y =</span> <span class="fl">0.07</span>,
+                                <span class="dt">height =</span> us_states_hawaii_ratio <span class="op">/</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/sum">sum</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(us_states_alaska_ratio, <span class="dv">1</span>))))
+<span class="kw"><a href="https://www.rdocumentation.org/packages/grid/topics/grid.lines">grid.lines</a></span>(<span class="dt">x =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="dt">y =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="fl">0.58</span>, <span class="fl">0.58</span>), <span class="dt">gp =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/grid/topics/gpar">gpar</a></span>(<span class="dt">lty =</span> <span class="dv">2</span>))
+<span class="kw"><a href="https://www.rdocumentation.org/packages/grid/topics/grid.lines">grid.lines</a></span>(<span class="dt">x =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>, <span class="fl">0.5</span>), <span class="dt">y =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="fl">0.33</span>, <span class="dv">0</span>), <span class="dt">gp =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/grid/topics/gpar">gpar</a></span>(<span class="dt">lty =</span> <span class="dv">2</span>))</code></pre></div>
+<p><img src="us-map_files/figure-html/unnamed-chunk-7-1.png" width="528"></p>
 <p>The result map is just an approximation, not a perfect representation, of relationships between the partial maps – their location and size. In the same time, it is an improvement upon a standard map of United States, which either shows only the contiguous 48 states or largely reduce the size of Hawaii and Alaska.</p>
+</div>
+<div id="another-approach" class="section level2">
+<h2 class="hasAnchor">
+<a href="#another-approach" class="anchor"></a>Another approach</h2>
+<p>Alternative approach to this problem can be found at <a href="https://github.com/Nowosad/us-map-alternative-layout" class="uri">https://github.com/Nowosad/us-map-alternative-layout</a>.</p>
 </div>
   </div>
 
@@ -147,11 +147,11 @@ us_states_alaska_ratio =<span class="st"> </span><span class="kw"><a href="https
 <a href="#tocnav" class="anchor"></a>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
 <li><a href="#prerequisites">Prerequisites</a></li>
-      <li><a href="#introduction">Introduction</a></li>
       <li><a href="#data-preparation">Data preparation</a></li>
       <li><a href="#ratio-calculation">Ratio calculation</a></li>
       <li><a href="#single-maps-creation">Single maps creation</a></li>
       <li><a href="#map-arrangement">Map arrangement</a></li>
+      <li><a href="#another-approach">Another approach</a></li>
       </ul>
 </div>
       </div>

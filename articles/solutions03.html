@@ -65,7 +65,7 @@
       <h1>Chapter 3: Attribute operations</h1>
                         <h4 class="author">Robin Lovelace, Jakub Nowosad, Jannes Muenchow</h4>
             
-            <h4 class="date">2019-03-10</h4>
+            <h4 class="date">2019-03-11</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/geocompr/geocompkg/blob/master/vignettes/solutions03.Rmd"><code>vignettes/solutions03.Rmd</code></a></small>
       <div class="hidden name"><code>solutions03.Rmd</code></div>
@@ -447,10 +447,10 @@ us_income_change_reg <span class="op">%&gt;%</span>
            <span class="dt">ymn =</span> <span class="dv">0</span>, <span class="dt">ymx =</span> <span class="fl">4.5</span>, <span class="dt">vals =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Normal">rnorm</a></span>(<span class="dv">81</span>))
 <span class="co"># using cell IDs</span>
 r[<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span>, <span class="dv">9</span>, <span class="dv">81</span> <span class="op">-</span><span class="st"> </span><span class="dv">9</span>, <span class="dv">81</span>)]
-<span class="co">#&gt; [1]  0.2304904  1.1406249 -0.2051430  1.4385665</span>
+<span class="co">#&gt; [1] -0.3671728  0.7860762  0.5824693  1.2010531</span>
 <span class="co"># using indexing</span>
 r[<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span>, <span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/ncell">nrow</a></span>(r)), <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span>, <span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/ncell">ncol</a></span>(r))]
-<span class="co">#&gt; [1] 0.2304904 1.1406249 0.2179297 1.4385665</span>
+<span class="co">#&gt; [1] -0.3671728  0.7860762  0.7906587  1.2010531</span>
 <span class="co"># corresponds to [1, 1], [1, 9], [9, 1], [9, 9]</span></code></pre></div>
 <ol start="15" style="list-style-type: decimal">
 <li>What is the most common class of our example raster <code>grain</code> (hint: <code><a href="https://www.rdocumentation.org/packages/raster/topics/modal">modal()</a></code>)?</li>
@@ -466,7 +466,7 @@ grain =<span class="st"> </span><span class="kw"><a href="https://www.rdocumenta
 <span class="co">#&gt; 1  sand</span>
 <span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/factor">factorValues</a></span>(grain, <span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/modal">modal</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/getValues">values</a></span>(grain)))
 <span class="co">#&gt;   VALUE</span>
-<span class="co">#&gt; 1  sand</span></code></pre></div>
+<span class="co">#&gt; 1  silt</span></code></pre></div>
 <ol start="16" style="list-style-type: decimal">
 <li>Plot the histogram and the boxplot of the <code><a href="https://www.rdocumentation.org/packages/utils/topics/data">data(dem, package = "RQGIS")</a></code> raster.</li>
 </ol>
