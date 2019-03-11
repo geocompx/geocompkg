@@ -78,10 +78,10 @@
 <h2 class="hasAnchor">
 <a href="#prerequisites" class="anchor"></a>Prerequisites</h2>
 <p>The solutions assume the following packages are attached (other packages will be attached when needed):</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(sf)
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(raster)
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(tidyverse)
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(spData)</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(sf)</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(raster)</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(tidyverse)</a>
+<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(spData)</a></code></pre></div>
 </div>
 <div id="chapter-6" class="section level1">
 <h1 class="hasAnchor">
@@ -97,91 +97,91 @@
 </ul>
 </li>
 </ol>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_crs">st_crs</a></span>(nz)
-<span class="co">#&gt; Coordinate Reference System:</span>
-<span class="co">#&gt;   EPSG: 2193 </span>
-<span class="co">#&gt;   proj4string: "+proj=tmerc +lat_0=0 +lon_0=173 +k=0.9996 +x_0=1600000 +y_0=10000000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs"</span>
-nz_wgs =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_transform">st_transform</a></span>(nz, <span class="dv">4326</span>)
-nz_crs =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_crs">st_crs</a></span>(nz)
-nz_wgs_crs =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_crs">st_crs</a></span>(nz_wgs)
-nz_crs<span class="op">$</span>epsg
-<span class="co">#&gt; [1] 2193</span>
-nz_wgs_crs<span class="op">$</span>epsg
-<span class="co">#&gt; [1] 4326</span>
-<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_bbox">st_bbox</a></span>(nz)
-<span class="co">#&gt;    xmin    ymin    xmax    ymax </span>
-<span class="co">#&gt; 1090144 4748537 2089533 6191874</span>
-<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_bbox">st_bbox</a></span>(nz_wgs)
-<span class="co">#&gt;      xmin      ymin      xmax      ymax </span>
-<span class="co">#&gt; 166.42630 -47.28285 178.55037 -34.41452</span>
-nz_wgs_NULL_crs =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_crs">st_set_crs</a></span>(nz_wgs, <span class="ot">NA</span>)
-<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/par">par</a></span>(<span class="dt">mfrow =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span>, <span class="dv">3</span>))
-<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(nz))
-<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(nz_wgs))
-<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(nz_wgs_NULL_crs))</code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_crs">st_crs</a></span>(nz)</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="co">#&gt; Coordinate Reference System:</span></a>
+<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="co">#&gt;   EPSG: 2193 </span></a>
+<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co">#&gt;   proj4string: "+proj=tmerc +lat_0=0 +lon_0=173 +k=0.9996 +x_0=1600000 +y_0=10000000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs"</span></a>
+<a class="sourceLine" id="cb2-5" data-line-number="5">nz_wgs =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_transform">st_transform</a></span>(nz, <span class="dv">4326</span>)</a>
+<a class="sourceLine" id="cb2-6" data-line-number="6">nz_crs =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_crs">st_crs</a></span>(nz)</a>
+<a class="sourceLine" id="cb2-7" data-line-number="7">nz_wgs_crs =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_crs">st_crs</a></span>(nz_wgs)</a>
+<a class="sourceLine" id="cb2-8" data-line-number="8">nz_crs<span class="op">$</span>epsg</a>
+<a class="sourceLine" id="cb2-9" data-line-number="9"><span class="co">#&gt; [1] 2193</span></a>
+<a class="sourceLine" id="cb2-10" data-line-number="10">nz_wgs_crs<span class="op">$</span>epsg</a>
+<a class="sourceLine" id="cb2-11" data-line-number="11"><span class="co">#&gt; [1] 4326</span></a>
+<a class="sourceLine" id="cb2-12" data-line-number="12"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_bbox">st_bbox</a></span>(nz)</a>
+<a class="sourceLine" id="cb2-13" data-line-number="13"><span class="co">#&gt;    xmin    ymin    xmax    ymax </span></a>
+<a class="sourceLine" id="cb2-14" data-line-number="14"><span class="co">#&gt; 1090144 4748537 2089533 6191874</span></a>
+<a class="sourceLine" id="cb2-15" data-line-number="15"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_bbox">st_bbox</a></span>(nz_wgs)</a>
+<a class="sourceLine" id="cb2-16" data-line-number="16"><span class="co">#&gt;      xmin      ymin      xmax      ymax </span></a>
+<a class="sourceLine" id="cb2-17" data-line-number="17"><span class="co">#&gt; 166.42630 -47.28285 178.55037 -34.41452</span></a>
+<a class="sourceLine" id="cb2-18" data-line-number="18">nz_wgs_NULL_crs =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_crs">st_set_crs</a></span>(nz_wgs, <span class="ot">NA</span>)</a>
+<a class="sourceLine" id="cb2-19" data-line-number="19"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/par">par</a></span>(<span class="dt">mfrow =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span>, <span class="dv">3</span>))</a>
+<a class="sourceLine" id="cb2-20" data-line-number="20"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(nz))</a>
+<a class="sourceLine" id="cb2-21" data-line-number="21"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(nz_wgs))</a>
+<a class="sourceLine" id="cb2-22" data-line-number="22"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(nz_wgs_NULL_crs))</a></code></pre></div>
 <p><img src="solutions06_files/figure-html/unnamed-chunk-1-1.png" width="700"></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># answer: it is fatter in the East-West direction</span>
-<span class="co"># because New Zealand is close to the South Pole and meridians converge there</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="co"># answer: it is fatter in the East-West direction</span></a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co"># because New Zealand is close to the South Pole and meridians converge there</span></a></code></pre></div>
 <ol start="2" style="list-style-type: decimal">
 <li>Transform the <code>world</code> dataset to the transverse Mercator projection (<code>"+proj=tmerc"</code>) and plot the result. What has changed and why? Try to transform it back into WGS 84 and plot the new object. Why does the new object differ from the original one?</li>
 </ol>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># see https://github.com/r-spatial/sf/issues/509</span>
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(sf)
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(spData)
-world_tmerc =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_transform">st_transform</a></span>(world, <span class="st">"+proj=tmerc"</span>)
-<span class="co"># plot(st_geometry(world_tmerc)) # fails on old versions of geos</span>
-world_<span class="dv">4326</span> =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_transform">st_transform</a></span>(world_tmerc, <span class="dv">4326</span>)
-<span class="co"># plot(st_geometry(world_4326))</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="co"># see https://github.com/r-spatial/sf/issues/509</span></a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(sf)</a>
+<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(spData)</a>
+<a class="sourceLine" id="cb4-4" data-line-number="4">world_tmerc =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_transform">st_transform</a></span>(world, <span class="st">"+proj=tmerc"</span>)</a>
+<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="co"># plot(st_geometry(world_tmerc)) # fails on old versions of geos</span></a>
+<a class="sourceLine" id="cb4-6" data-line-number="6">world_<span class="dv">4326</span> =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_transform">st_transform</a></span>(world_tmerc, <span class="dv">4326</span>)</a>
+<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="co"># plot(st_geometry(world_4326))</span></a></code></pre></div>
 <ol start="3" style="list-style-type: decimal">
 <li>Transform the continuous raster (<code>cat_raster</code>) into NAD83 / UTM zone 12N using the nearest neighbor interpolation method. What has changed? How does it influence the results?</li>
 </ol>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">utm12n =<span class="st"> "+proj=utm +zone=12 +ellps=GRS80 +datum=NAD83 +units=m +no_defs"</span>
-con_raster =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/raster">raster</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">"raster/srtm.tif"</span>, <span class="dt">package =</span> <span class="st">"spDataLarge"</span>))
-con_raster_utm12n =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/projectRaster">projectRaster</a></span>(con_raster, <span class="dt">crs =</span> utm12n, <span class="dt">method =</span> <span class="st">"ngb"</span>)
-con_raster_utm12n
-<span class="co">#&gt; class      : RasterLayer </span>
-<span class="co">#&gt; dimensions : 475, 490, 232750  (nrow, ncol, ncell)</span>
-<span class="co">#&gt; resolution : 73.8, 92.5  (x, y)</span>
-<span class="co">#&gt; extent     : 300619.2, 336781.2, 4110656, 4154593  (xmin, xmax, ymin, ymax)</span>
-<span class="co">#&gt; crs        : +proj=utm +zone=12 +ellps=GRS80 +datum=NAD83 +units=m +no_defs +towgs84=0,0,0 </span>
-<span class="co">#&gt; source     : memory</span>
-<span class="co">#&gt; names      : srtm </span>
-<span class="co">#&gt; values     : 1024, 2892  (min, max)</span>
-<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/par">par</a></span>(<span class="dt">mfrow =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span>, <span class="dv">2</span>))
-<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(con_raster)
-<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(con_raster_utm12n)</code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">utm12n =<span class="st"> "+proj=utm +zone=12 +ellps=GRS80 +datum=NAD83 +units=m +no_defs"</span></a>
+<a class="sourceLine" id="cb5-2" data-line-number="2">con_raster =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/raster">raster</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">"raster/srtm.tif"</span>, <span class="dt">package =</span> <span class="st">"spDataLarge"</span>))</a>
+<a class="sourceLine" id="cb5-3" data-line-number="3">con_raster_utm12n =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/projectRaster">projectRaster</a></span>(con_raster, <span class="dt">crs =</span> utm12n, <span class="dt">method =</span> <span class="st">"ngb"</span>)</a>
+<a class="sourceLine" id="cb5-4" data-line-number="4">con_raster_utm12n</a>
+<a class="sourceLine" id="cb5-5" data-line-number="5"><span class="co">#&gt; class      : RasterLayer </span></a>
+<a class="sourceLine" id="cb5-6" data-line-number="6"><span class="co">#&gt; dimensions : 475, 490, 232750  (nrow, ncol, ncell)</span></a>
+<a class="sourceLine" id="cb5-7" data-line-number="7"><span class="co">#&gt; resolution : 73.8, 92.5  (x, y)</span></a>
+<a class="sourceLine" id="cb5-8" data-line-number="8"><span class="co">#&gt; extent     : 300619.2, 336781.2, 4110656, 4154593  (xmin, xmax, ymin, ymax)</span></a>
+<a class="sourceLine" id="cb5-9" data-line-number="9"><span class="co">#&gt; crs        : +proj=utm +zone=12 +ellps=GRS80 +datum=NAD83 +units=m +no_defs +towgs84=0,0,0 </span></a>
+<a class="sourceLine" id="cb5-10" data-line-number="10"><span class="co">#&gt; source     : memory</span></a>
+<a class="sourceLine" id="cb5-11" data-line-number="11"><span class="co">#&gt; names      : srtm </span></a>
+<a class="sourceLine" id="cb5-12" data-line-number="12"><span class="co">#&gt; values     : 1024, 2892  (min, max)</span></a>
+<a class="sourceLine" id="cb5-13" data-line-number="13"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/par">par</a></span>(<span class="dt">mfrow =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span>, <span class="dv">2</span>))</a>
+<a class="sourceLine" id="cb5-14" data-line-number="14"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(con_raster)</a>
+<a class="sourceLine" id="cb5-15" data-line-number="15"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(con_raster_utm12n)</a></code></pre></div>
 <p><img src="solutions06_files/figure-html/unnamed-chunk-3-1.png" width="700"></p>
 <p>There are several differences between the original and the transformed raster, including a different number of rows and columns (and subsequently cells), projection units, and slightly different distribution of values.</p>
 <ol start="4" style="list-style-type: decimal">
 <li>Transform the categorical raster (<code>cat_raster</code>) into WGS 84 using the bilinear interpolation method. What has changed? How does it influence the results?</li>
 </ol>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">wgs84 =<span class="st"> "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs"</span>
-cat_raster =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/raster">raster</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">"raster/nlcd2011.tif"</span>, <span class="dt">package =</span> <span class="st">"spDataLarge"</span>))
-cat_raster_wgs84 =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/projectRaster">projectRaster</a></span>(cat_raster, <span class="dt">crs =</span> wgs84, <span class="dt">method =</span> <span class="st">"bilinear"</span>)
-cat_raster_wgs84
-<span class="co">#&gt; class      : RasterLayer </span>
-<span class="co">#&gt; dimensions : 1394, 1111, 1548734  (nrow, ncol, ncell)</span>
-<span class="co">#&gt; resolution : 0.000356, 0.000284  (x, y)</span>
-<span class="co">#&gt; extent     : -113.2432, -112.8477, 37.12494, 37.52083  (xmin, xmax, ymin, ymax)</span>
-<span class="co">#&gt; crs        : +proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs +towgs84=0,0,0 </span>
-<span class="co">#&gt; source     : memory</span>
-<span class="co">#&gt; names      : nlcd2011 </span>
-<span class="co">#&gt; values     : 5.751417, 95  (min, max)</span>
-<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/par">par</a></span>(<span class="dt">mfrow =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span>, <span class="dv">2</span>))
-<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(cat_raster)</code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">wgs84 =<span class="st"> "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs"</span></a>
+<a class="sourceLine" id="cb6-2" data-line-number="2">cat_raster =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/raster">raster</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">"raster/nlcd2011.tif"</span>, <span class="dt">package =</span> <span class="st">"spDataLarge"</span>))</a>
+<a class="sourceLine" id="cb6-3" data-line-number="3">cat_raster_wgs84 =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/projectRaster">projectRaster</a></span>(cat_raster, <span class="dt">crs =</span> wgs84, <span class="dt">method =</span> <span class="st">"bilinear"</span>)</a>
+<a class="sourceLine" id="cb6-4" data-line-number="4">cat_raster_wgs84</a>
+<a class="sourceLine" id="cb6-5" data-line-number="5"><span class="co">#&gt; class      : RasterLayer </span></a>
+<a class="sourceLine" id="cb6-6" data-line-number="6"><span class="co">#&gt; dimensions : 1394, 1111, 1548734  (nrow, ncol, ncell)</span></a>
+<a class="sourceLine" id="cb6-7" data-line-number="7"><span class="co">#&gt; resolution : 0.000356, 0.000284  (x, y)</span></a>
+<a class="sourceLine" id="cb6-8" data-line-number="8"><span class="co">#&gt; extent     : -113.2432, -112.8477, 37.12494, 37.52083  (xmin, xmax, ymin, ymax)</span></a>
+<a class="sourceLine" id="cb6-9" data-line-number="9"><span class="co">#&gt; crs        : +proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs +towgs84=0,0,0 </span></a>
+<a class="sourceLine" id="cb6-10" data-line-number="10"><span class="co">#&gt; source     : memory</span></a>
+<a class="sourceLine" id="cb6-11" data-line-number="11"><span class="co">#&gt; names      : nlcd2011 </span></a>
+<a class="sourceLine" id="cb6-12" data-line-number="12"><span class="co">#&gt; values     : 5.751417, 95  (min, max)</span></a>
+<a class="sourceLine" id="cb6-13" data-line-number="13"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/par">par</a></span>(<span class="dt">mfrow =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span>, <span class="dv">2</span>))</a>
+<a class="sourceLine" id="cb6-14" data-line-number="14"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(cat_raster)</a></code></pre></div>
 <p><img src="solutions06_files/figure-html/unnamed-chunk-4-1.png" width="700"></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(cat_raster_wgs84)</code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(cat_raster_wgs84)</a></code></pre></div>
 <p><img src="solutions06_files/figure-html/unnamed-chunk-4-2.png" width="700"></p>
 <p>There are several differences between the original and the transformed raster, including a different number of rows and columns (and subsequently cells), and projection units. The most important difference of the bilinear interpolation is a conversion of integer values in the original raster to float values in the output raster. This operation should be avoided because float values are not suitable to represent categorical values.</p>
 <ol start="5" style="list-style-type: decimal">
 <li>Create your own <code>proj4string</code>. It should have the Lambert Azimuthal Equal Area (<code>laea</code>) projection, the WGS84 ellipsoid, the longitude of projection center of 95 degrees west, the latitude of projection center of 60 degrees north, and its units should be in meters. Next, subset Canada from the <code>world</code> object and transform it into the new projection. Plot and compare a map before and after the transformation.</li>
 </ol>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">new_p4s =<span class="st"> "+proj=laea +ellps=WGS84 +lon_0=-95 +lat_0=60 +units=m"</span>
-canada =<span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(world, name_long <span class="op">==</span><span class="st"> "Canada"</span>)
-new_canada =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_transform">st_transform</a></span>(canada, new_p4s)
-<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/par">par</a></span>(<span class="dt">mfrow =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span>, <span class="dv">2</span>))
-<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(canada), <span class="dt">graticule =</span> <span class="ot">TRUE</span>, <span class="dt">axes =</span> <span class="ot">TRUE</span>)
-<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(new_canada), <span class="dt">graticule =</span> <span class="ot">TRUE</span>, <span class="dt">axes =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">new_p4s =<span class="st"> "+proj=laea +ellps=WGS84 +lon_0=-95 +lat_0=60 +units=m"</span></a>
+<a class="sourceLine" id="cb8-2" data-line-number="2">canada =<span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(world, name_long <span class="op">==</span><span class="st"> "Canada"</span>)</a>
+<a class="sourceLine" id="cb8-3" data-line-number="3">new_canada =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_transform">st_transform</a></span>(canada, new_p4s)</a>
+<a class="sourceLine" id="cb8-4" data-line-number="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/par">par</a></span>(<span class="dt">mfrow =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span>, <span class="dv">2</span>))</a>
+<a class="sourceLine" id="cb8-5" data-line-number="5"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(canada), <span class="dt">graticule =</span> <span class="ot">TRUE</span>, <span class="dt">axes =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb8-6" data-line-number="6"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(new_canada), <span class="dt">graticule =</span> <span class="ot">TRUE</span>, <span class="dt">axes =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 <p><img src="solutions06_files/figure-html/unnamed-chunk-5-1.png" width="700"></p>
 </div>
   </div>

@@ -84,14 +84,14 @@
 </blockquote>
 <p>Like many open source projects R is evolving. Although ‘base R’ is conservative (as demonstrated in Roger Bivand’s keynote, in which he did a live demo using a version of R from 1997 that still runs!), the ‘ecosystem’ of packages that extend its capabilities changes fast (video <a href="https://www.youtube.com/watch?v=Luxllb_WAqY">here</a>, slides at <a href="https://github.com/rsbivand/eRum18">rsbivand/eRum18</a>).</p>
 <p>To clarify what we mean by ‘base R’, we can identify base packages with the following code (source: <a href="https://stackoverflow.com/questions/9700799/difference-between-r-base-and-r-recommended-packages">stackoverflow</a>):</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/installed.packages">installed.packages</a></span>()
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/row.names">row.names</a></span>(x)[<span class="op">!</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/NA">is.na</a></span>(x[ ,<span class="st">"Priority"</span>])]</code></pre></div>
-<pre><code>##  [1] "base"       "boot"       "class"      "cluster"    "codetools" 
-##  [6] "compiler"   "datasets"   "foreign"    "graphics"   "grDevices" 
-## [11] "grid"       "KernSmooth" "lattice"    "MASS"       "Matrix"    
-## [16] "methods"    "mgcv"       "nlme"       "nnet"       "parallel"  
-## [21] "rpart"      "spatial"    "splines"    "stats"      "stats4"    
-## [26] "survival"   "tcltk"      "tools"      "utils"</code></pre>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">x =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/installed.packages">installed.packages</a></span>()</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/row.names">row.names</a></span>(x)[<span class="op">!</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/NA">is.na</a></span>(x[ ,<span class="st">"Priority"</span>])]</a></code></pre></div>
+<pre><code>##  [1] "mgcv"       "base"       "boot"       "class"      "cluster"   
+##  [6] "codetools"  "compiler"   "datasets"   "foreign"    "graphics"  
+## [11] "grDevices"  "grid"       "KernSmooth" "lattice"    "MASS"      
+## [16] "Matrix"     "methods"    "mgcv"       "nlme"       "nnet"      
+## [21] "parallel"   "rpart"      "spatial"    "splines"    "stats"     
+## [26] "stats4"     "survival"   "tcltk"      "tools"      "utils"</code></pre>
 <p>The output shows there are 28 packages that are currently part of the base distribution (R Core makes “base R” as Martin Maechler <a href="http://stat.ethz.ch/~maechler/U/R/eRum_2018_ProgR-ALTREP.html#29">put it</a> during another <a href="http://stat.ethz.ch/~maechler/U/R/eRum_2018_ProgR-ALTREP.html#1">keynote</a>). These can be relied on to change very little in terms of their API, although bug fixes and performance improvements happen continuously.</p>
 <p>The same cannot be said of contributed packages. Packages are created, die (or are <a href="http://dirk.eddelbuettel.com/blog/2011/11/27/#removed_cran_packages_monitored">abandoned</a>) and change, sometimes <a href="https://github.com/ropensci/stplanr/issues/210">dramatically</a>. And this applies as much (or more) to r-spatial as to any other part of R’s ecosystem, as can be seen by looking at any one of R’s <a href="https://cran.r-project.org/web/views/">task views</a>. At the time of writing the <a href="https://cran.r-project.org/web/views/Spatial.html">Spatial task view</a> alone listed 177 packages, many of them recently contributed and in-development.</p>
 <p>In this context it helps to have an understanding of the history <span class="citation">(Bivand, Pebesma, and Gómez-Rubio 2013)</span>. Like in politics, knowing the past can help navigate the future. More specifically, knowing which packages are mature or up-and-coming can help decide which one to use!</p>
@@ -107,24 +107,24 @@ Your browser does not support iframes.
 <div id="vector-data" class="section level2">
 <h2 class="hasAnchor">
 <a href="#vector-data" class="anchor"></a>Vector data</h2>
-<p>Spatial vector data are best used for objects that represent discrete borders such as bus stops (points), streets (lines) and houses (polygons). For instance, we can represent ‘Budapest’ (the city where eRum 2018 was held) as a spatial point with the help of the <code>sf</code> package <span class="citation">(E. Pebesma 2018)</span> as follows:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">budapest_df =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/data.frame">data.frame</a></span>(
-  <span class="dt">name =</span> <span class="st">"Budapest"</span>,
-  <span class="dt">x =</span> <span class="fl">19.0</span>,
-  <span class="dt">y =</span> <span class="fl">47.5</span>
-  )
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/class">class</a></span>(budapest_df)</code></pre></div>
+<p>Spatial vector data are best used for objects that represent discrete borders such as bus stops (points), streets (lines) and houses (polygons). For instance, we can represent ‘Budapest’ (the city where eRum 2018 was held) as a spatial point with the help of the <code>sf</code> package <span class="citation">(Pebesma 2018)</span> as follows:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">budapest_df =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/data.frame">data.frame</a></span>(</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2">  <span class="dt">name =</span> <span class="st">"Budapest"</span>,</a>
+<a class="sourceLine" id="cb3-3" data-line-number="3">  <span class="dt">x =</span> <span class="fl">19.0</span>,</a>
+<a class="sourceLine" id="cb3-4" data-line-number="4">  <span class="dt">y =</span> <span class="fl">47.5</span></a>
+<a class="sourceLine" id="cb3-5" data-line-number="5">  )</a>
+<a class="sourceLine" id="cb3-6" data-line-number="6"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/class">class</a></span>(budapest_df)</a></code></pre></div>
 <pre><code>## [1] "data.frame"</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">budapest_sf =<span class="st"> </span>sf<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_as_sf">st_as_sf</a></span>(budapest_df, <span class="dt">coords =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"x"</span>, <span class="st">"y"</span>))
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/class">class</a></span>(budapest_sf)</code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">budapest_sf =<span class="st"> </span>sf<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_as_sf">st_as_sf</a></span>(budapest_df, <span class="dt">coords =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"x"</span>, <span class="st">"y"</span>))</a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/class">class</a></span>(budapest_sf)</a></code></pre></div>
 <pre><code>## [1] "sf"         "data.frame"</code></pre>
 <p>Why bother creating a new class if both objects contain the same essential data? It’s what you can do with an object that’s important. The reason for using the <code>sf</code> class can be understood as follows: it gives the <code>budapest_sf</code> spatial superpowers. We can, for example, now identify what country the point is using a spatial function such as a <a href="http://geocompr.robinlovelace.net/spatial-operations.html#spatial-joining">spatial join</a> implemented in the function <code>st_join()</code> (spatial subsetting would also do the trick, as covered in section <a href="http://geocompr.robinlovelace.net/spatial-operations.html#spatial-subsetting">4.2.1</a>). First, we need to load the ‘world’ dataset and set the ‘CRS’ of the object:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># set-up:</span>
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(spData)
-sf<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_crs">st_crs</a></span>(budapest_sf) =<span class="st"> </span><span class="dv">4326</span>
-
-<span class="co"># spatial join:</span>
-sf<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_join">st_join</a></span>(budapest_sf, world)</code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="co"># set-up:</span></a>
+<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(spData)</a>
+<a class="sourceLine" id="cb7-3" data-line-number="3">sf<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_crs">st_crs</a></span>(budapest_sf) =<span class="st"> </span><span class="dv">4326</span></a>
+<a class="sourceLine" id="cb7-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="co"># spatial join:</span></a>
+<a class="sourceLine" id="cb7-6" data-line-number="6">sf<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_join">st_join</a></span>(budapest_sf, world)</a></code></pre></div>
 <pre><code>## Simple feature collection with 1 feature and 11 fields
 ## geometry type:  POINT
 ## dimension:      XY
@@ -146,19 +146,19 @@ Your browser does not support iframes.
 <h2 class="hasAnchor">
 <a href="#raster-data" class="anchor"></a>Raster data</h2>
 <p>On the other hand, a raster data represents continuous surfaces in form of a regular grid. You can think about a raster as a matrix object containing information about its spatial location. It has rows and columns, each cell has a value (it could be <code>NA</code>) and its spatial properties are described by the cell resolution (<code>res</code>), outer borders (bounding box - <code>xmn</code>, <code>xmx</code>, <code>ymn</code>, <code>ymx</code>), and coordinate reference system (<code>crs</code>). In R the <strong>raster</strong> package supports the spatial raster format <span class="citation">(Hijmans 2017)</span>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(raster)
-elev =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/raster">raster</a></span>(<span class="dt">nrow =</span> <span class="dv">6</span>, <span class="dt">ncol =</span> <span class="dv">6</span>, 
-              <span class="dt">vals =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">36</span>,
-              <span class="dt">res =</span> <span class="fl">0.5</span>,
-              <span class="dt">xmn =</span> <span class="op">-</span><span class="fl">1.5</span>, <span class="dt">xmx =</span> <span class="fl">1.5</span>,
-              <span class="dt">ymn =</span> <span class="op">-</span><span class="fl">1.5</span>, <span class="dt">ymx =</span> <span class="fl">1.5</span>,
-              <span class="dt">crs =</span> <span class="st">"+proj=longlat"</span>)</code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(raster)</a>
+<a class="sourceLine" id="cb9-2" data-line-number="2">elev =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/raster">raster</a></span>(<span class="dt">nrow =</span> <span class="dv">6</span>, <span class="dt">ncol =</span> <span class="dv">6</span>, </a>
+<a class="sourceLine" id="cb9-3" data-line-number="3">              <span class="dt">vals =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">36</span>,</a>
+<a class="sourceLine" id="cb9-4" data-line-number="4">              <span class="dt">res =</span> <span class="fl">0.5</span>,</a>
+<a class="sourceLine" id="cb9-5" data-line-number="5">              <span class="dt">xmn =</span> <span class="fl">-1.5</span>, <span class="dt">xmx =</span> <span class="fl">1.5</span>,</a>
+<a class="sourceLine" id="cb9-6" data-line-number="6">              <span class="dt">ymn =</span> <span class="fl">-1.5</span>, <span class="dt">ymx =</span> <span class="fl">1.5</span>,</a>
+<a class="sourceLine" id="cb9-7" data-line-number="7">              <span class="dt">crs =</span> <span class="st">"+proj=longlat"</span>)</a></code></pre></div>
 <p>The data structure makes raster processing much more efficient and faster than vector data processing.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">elev2 =<span class="st"> </span>elev<span class="op">^</span><span class="dv">2</span>
-elev3 =<span class="st"> </span>elev <span class="op">/</span><span class="st"> </span>elev2
-elev4 =<span class="st"> </span>(elev2 <span class="op">-</span><span class="st"> </span>elev3) <span class="op">*</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Log">log</a></span>(elev)</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">elev_stack =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/stack">stack</a></span>(elev, elev2, elev3, elev4)
-<span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(elev_stack)</code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">elev2 =<span class="st"> </span>elev<span class="op">^</span><span class="dv">2</span></a>
+<a class="sourceLine" id="cb10-2" data-line-number="2">elev3 =<span class="st"> </span>elev <span class="op">/</span><span class="st"> </span>elev2</a>
+<a class="sourceLine" id="cb10-3" data-line-number="3">elev4 =<span class="st"> </span>(elev2 <span class="op">-</span><span class="st"> </span>elev3) <span class="op">*</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Log">log</a></span>(elev)</a></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">elev_stack =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/stack">stack</a></span>(elev, elev2, elev3, elev4)</a>
+<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(elev_stack)</a></code></pre></div>
 <p><img src="erum-2018_files/figure-html/unnamed-chunk-6-1.png" width="700"></p>
 <p>Raster objects can be <a href="https://geocompr.robinlovelace.net/attr.html#raster-subsetting">subsetted (by index, coordinates, or other spatial objects)</a>, transformed using <a href="https://geocompr.robinlovelace.net/spatial-operations.html#local-operations">local</a>, <a href="https://geocompr.robinlovelace.net/spatial-operations.html#focal-operations">focal</a>, <a href="https://geocompr.robinlovelace.net/spatial-operations.html#focal-operations">zonal</a> and <a href="https://geocompr.robinlovelace.net/spatial-operations.html#global-operations-and-distances">global</a> operations, and <a href="https://geocompr.robinlovelace.net/attr.html#summarizing-raster-objects">summarized</a>. Importantly, there are many tools allowing for <a href="https://geocompr.robinlovelace.net/raster-vector.html">interactions between raster and vector data models, and transformation between them</a>.</p>
 <p>The slides associated with the raster data part of the workshop can be found <a href="https://geocompr.github.io/workshops/erum2018/03_raster.html#1">here</a>:</p>
@@ -175,29 +175,23 @@ Your browser does not support iframes.
 <p>The workshop was an opportunity to expand on the contents of that chapter and ask: what’s the purpose of maps in the first place? To answer that question we used an early data visualization / infographic created by Alexander von Humboldt, illustrated below. The point of this is that it’s not always the accuracy of a map that’s most important (although that is important): the meaning that you wish to convey and the target audience should be central to the design of the map (in Humboldt’s case the unity of nature to an audience of Enlightenment book readers!):</p>
 <p><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Zentralbibliothek_Z%C3%BCrich_-_Ideen_zu_einer_Geographie_der_Pflanzen_nebst_einem_Naturgem%C3%A4lde_der_Tropenl%C3%A4nder_-_000012142.jpg/2560px-Zentralbibliothek_Z%C3%BCrich_-_Ideen_zu_einer_Geographie_der_Pflanzen_nebst_einem_Naturgem%C3%A4lde_der_Tropenl%C3%A4nder_-_000012142.jpg" width="80%"></p>
 <p>In the context of geographic data in R, it is easier than ever to create attractive maps to tell a story. The previously created point representing Budapest, for example, can be visualized using the <strong>tmap</strong> package as follows:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(tmap)
-budapest_df =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/data.frame">data.frame</a></span>(<span class="dt">name =</span> <span class="st">"Budapest"</span>, <span class="dt">x =</span> <span class="dv">19</span>, <span class="dt">y =</span> <span class="fl">47.5</span>)
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/class">class</a></span>(budapest_df)
-<span class="co">#&gt; [1] "data.frame"</span>
-budapest_sf =<span class="st"> </span>sf<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_as_sf">st_as_sf</a></span>(budapest_df, <span class="dt">coords =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"x"</span>, <span class="st">"y"</span>))
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/class">class</a></span>(budapest_sf)
-<span class="co">#&gt; [1] "sf"         "data.frame"</span>
-<span class="kw"><a href="https://www.rdocumentation.org/packages/tmap/topics/tmap_mode">tmap_mode</a></span>(<span class="st">"view"</span>)
-<span class="co">#&gt; tmap mode set to interactive viewing</span>
-m =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/tmap/topics/tm_shape">tm_shape</a></span>(budapest_sf) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/tmap/topics/tm_symbols">tm_dots</a></span>() <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/tmap/topics/tm_view">tm_view</a></span>(<span class="dt">basemaps =</span> <span class="st">"OpenStreetMap"</span>, 
-  <span class="dt">set.view =</span> <span class="dv">9</span>)
-<span class="kw"><a href="https://www.rdocumentation.org/packages/tmap/topics/tmap_leaflet">tmap_leaflet</a></span>(m)</code></pre></div>
-<div class="figure">
-<img src="https://i.imgur.com/pzlQ0M3.png">
-</div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(tmap)</a>
+<a class="sourceLine" id="cb12-2" data-line-number="2">budapest_df =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/data.frame">data.frame</a></span>(<span class="dt">name =</span> <span class="st">"Budapest"</span>, <span class="dt">x =</span> <span class="dv">19</span>, <span class="dt">y =</span> <span class="fl">47.5</span>)</a>
+<a class="sourceLine" id="cb12-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/class">class</a></span>(budapest_df)</a>
+<a class="sourceLine" id="cb12-4" data-line-number="4"><span class="co">#&gt; [1] "data.frame"</span></a>
+<a class="sourceLine" id="cb12-5" data-line-number="5">budapest_sf =<span class="st"> </span>sf<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_as_sf">st_as_sf</a></span>(budapest_df, <span class="dt">coords =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"x"</span>, <span class="st">"y"</span>))</a>
+<a class="sourceLine" id="cb12-6" data-line-number="6"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/class">class</a></span>(budapest_sf)</a>
+<a class="sourceLine" id="cb12-7" data-line-number="7"><span class="co">#&gt; [1] "sf"         "data.frame"</span></a>
+<a class="sourceLine" id="cb12-8" data-line-number="8"><span class="kw"><a href="https://www.rdocumentation.org/packages/tmap/topics/tmap_mode">tmap_mode</a></span>(<span class="st">"view"</span>)</a>
+<a class="sourceLine" id="cb12-9" data-line-number="9"><span class="co">#&gt; tmap mode set to interactive viewing</span></a>
+<a class="sourceLine" id="cb12-10" data-line-number="10">m =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/tmap/topics/tm_shape">tm_shape</a></span>(budapest_sf) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/tmap/topics/tm_symbols">tm_dots</a></span>() <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/tmap/topics/tm_view">tm_view</a></span>(<span class="dt">basemaps =</span> <span class="st">"OpenStreetMap"</span>, </a>
+<a class="sourceLine" id="cb12-11" data-line-number="11">  <span class="dt">set.view =</span> <span class="dv">9</span>)</a>
+<a class="sourceLine" id="cb12-12" data-line-number="12"><span class="kw"><a href="https://www.rdocumentation.org/packages/tmap/topics/tmap_leaflet">tmap_leaflet</a></span>(m)</a></code></pre></div>
+<p><img src="https://i.imgur.com/pzlQ0M3.png"></p>
 <p>A range of mapping techniques were covered in the workshop including the <code><a href="https://www.rdocumentation.org/packages/raster/topics/plot">plot()</a></code> method from the <code>sf</code> package that generates multiple maps from a single object by default, such as this one representing the <code>nz</code> (short for New Zealand) object from the <strong>spData</strong> package:</p>
-<div class="figure">
-<img src="https://geocompr.github.io/workshops/erum2018/04_viz_files/figure-html/unnamed-chunk-7-1.png">
-</div>
+<p><img src="https://geocompr.github.io/workshops/erum2018/04_viz_files/figure-html/unnamed-chunk-7-1.png"></p>
 <p>More advanced maps were demonstrated, including this animated map of the United States (for information on how to make animated maps with R, see section <a href="http://geocompr.robinlovelace.net/adv-map.html#animated-maps">9.3</a>) of <em>Geocomputation with R</em>.</p>
-<div class="figure">
-<img src="https://user-images.githubusercontent.com/1825120/38543030-5794b6f0-3c9b-11e8-9da9-10ec1f3ea726.gif">
-</div>
+<p><img src="https://user-images.githubusercontent.com/1825120/38543030-5794b6f0-3c9b-11e8-9da9-10ec1f3ea726.gif"></p>
 <p>The slides forming the basis of the visualization part of the tutorial can be found <a href="https://geocompr.github.io/workshops/erum2018/04_viz.html#1">here</a>:</p>
 <iframe src="https://geocompr.github.io/workshops/erum2018/04_viz.html#1" width="600px" height="450px">
 <p>
@@ -219,7 +213,7 @@ Your browser does not support iframes.
 <li>
 <strong>RQGIS</strong> provides access to <a href="https://qgis.org/en/site/">QGIS</a>. For much more details and background information, please check out the corresponding <a href="https://journal.r-project.org/archive/2017/RJ-2017-067/RJ-2017-067.pdf">R Journal publication</a>.</li>
 </ol>
-<p>Note that you must have installed the GIS software on your machine before you can use it through R.<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a></p>
+<p>Note that you must have installed the GIS software on your machine before you can use it through R.<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a></p>
 <p>In the workshop we shortly presented how to use <strong>RQGIS</strong>. The corresponding slides can be found <a href="https://geocompr.github.io/workshops/erum2018/05_rqgis.html#1">here</a>:</p>
 <iframe src="https://geocompr.github.io/workshops/erum2018/05_rqgis.html#1" width="600px" height="450px">
 <p>
@@ -251,7 +245,7 @@ Your browser does not support iframes.
 <p>Chambers, John M. 2016. <em>Extending R</em>. CRC Press.</p>
 </div>
 <div id="ref-R-raster">
-<p>Hijmans, Robert J. 2017. <em>Raster: Geographic Data Analysis and Modeling</em>. <a href="https://CRAN.R-project.org/package=raster" class="uri">https://CRAN.R-project.org/package=raster</a>.</p>
+<p>Hijmans, Robert J. 2017. <em>Raster: Geographic Data Analysis and Modeling</em>. <a href="https://CRAN.R-project.org/package=raster">https://CRAN.R-project.org/package=raster</a>.</p>
 </div>
 <div id="ref-longley_geographic_2015">
 <p>Longley, Paul. 2015. <em>Geographic Information Science &amp; Systems</em>. Fourth edition. Hoboken, NJ: Wiley.</p>
@@ -264,7 +258,7 @@ Your browser does not support iframes.
 <div class="footnotes">
 <hr>
 <ol>
-<li id="fn1"><p>Note also that <strong>RPyGeo</strong> provides access to <a href="http://desktop.arcgis.com/en/arcmap/">ArcMap</a> which is a commercial Desktop GIS software.<a href="#fnref1">↩</a></p></li>
+<li id="fn1"><p>Note also that <strong>RPyGeo</strong> provides access to <a href="http://desktop.arcgis.com/en/arcmap/">ArcMap</a> which is a commercial Desktop GIS software.<a href="#fnref1" class="footnote-back">↩</a></p></li>
 </ol>
 </div>
   </div>

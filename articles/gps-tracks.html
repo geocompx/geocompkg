@@ -83,111 +83,111 @@
 <h2 class="hasAnchor">
 <a href="#loading-gps-data" class="anchor"></a>Loading GPS data</h2>
 <p>The standard format of GPS data is the <a href="https://en.wikipedia.org/wiki/GPS_Exchange_Format">.gpx file</a>. GPS traces are vector datasets that are well-support by <strong>sf</strong> (see Chapter <a href="https://geocompr.robinlovelace.net/spatial-class.html">2</a> of the book), so we’ll use this package to process them:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(sf)
-<span class="co">#&gt; Linking to GEOS 3.5.1, GDAL 2.1.2, PROJ 4.9.3</span></code></pre></div>
-<p>As with any dataset the first stage is to identify the source. A great source of GPS data is OpenStreetMap (OSM). We’ll use publicly available .gpx files uploaded to OSM as the basis of this tutorial.<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a> For the purpose of this tutorial we will use a .gpx file uploaded to OSM, that represents travel to the <a href="https://www.uni-muenster.de/Geoinformatics/en/">Institute for Geoinformatics, Universität Münster</a>:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">u =<span class="st"> "https://www.openstreetmap.org/trace/2886173/data"</span>
-<span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/download.file">download.file</a></span>(<span class="dt">url =</span> u, <span class="dt">destfile =</span> <span class="st">"trace.gpx"</span>)
-<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_layers">st_layers</a></span>(<span class="st">"trace.gpx"</span>)
-<span class="co">#&gt; Driver: GPX </span>
-<span class="co">#&gt; Available layers:</span>
-<span class="co">#&gt;     layer_name     geometry_type features fields</span>
-<span class="co">#&gt; 1    waypoints             Point        0     23</span>
-<span class="co">#&gt; 2       routes       Line String        0     12</span>
-<span class="co">#&gt; 3       tracks Multi Line String        1     13</span>
-<span class="co">#&gt; 4 route_points             Point        0     25</span>
-<span class="co">#&gt; 5 track_points             Point      225     26</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(sf)</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="co">#&gt; Linking to GEOS 3.7.0, GDAL 2.3.2, PROJ 5.2.0</span></a></code></pre></div>
+<p>As with any dataset the first stage is to identify the source. A great source of GPS data is OpenStreetMap (OSM). We’ll use publicly available .gpx files uploaded to OSM as the basis of this tutorial.<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> For the purpose of this tutorial we will use a .gpx file uploaded to OSM, that represents travel to the <a href="https://www.uni-muenster.de/Geoinformatics/en/">Institute for Geoinformatics, Universität Münster</a>:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">u =<span class="st"> "https://www.openstreetmap.org/trace/2886173/data"</span></a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/download.file">download.file</a></span>(<span class="dt">url =</span> u, <span class="dt">destfile =</span> <span class="st">"trace.gpx"</span>)</a>
+<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_layers">st_layers</a></span>(<span class="st">"trace.gpx"</span>)</a>
+<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co">#&gt; Driver: GPX </span></a>
+<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="co">#&gt; Available layers:</span></a>
+<a class="sourceLine" id="cb2-6" data-line-number="6"><span class="co">#&gt;     layer_name     geometry_type features fields</span></a>
+<a class="sourceLine" id="cb2-7" data-line-number="7"><span class="co">#&gt; 1    waypoints             Point        0     23</span></a>
+<a class="sourceLine" id="cb2-8" data-line-number="8"><span class="co">#&gt; 2       routes       Line String        0     12</span></a>
+<a class="sourceLine" id="cb2-9" data-line-number="9"><span class="co">#&gt; 3       tracks Multi Line String        1     13</span></a>
+<a class="sourceLine" id="cb2-10" data-line-number="10"><span class="co">#&gt; 4 route_points             Point        0     25</span></a>
+<a class="sourceLine" id="cb2-11" data-line-number="11"><span class="co">#&gt; 5 track_points             Point      225     26</span></a></code></pre></div>
 <p>The previous code chunk downloads the trace from OSM and queries the ‘layers’ that can be imported (note there are 5, but only ‘tracks’ and ‘track_points’ are available). The following code chunk imports and plots the ‘tracks’ layer, which is a MULTILINESTRING geometry in sf, and only 1 row of data:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">r =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_read">st_read</a></span>(<span class="st">"trace.gpx"</span>, <span class="dt">layer =</span> <span class="st">"tracks"</span>)
-<span class="co">#&gt; Reading layer `tracks' from data source `/home/rstudio/data/repos/geocompkg/vignettes/trace.gpx' using driver `GPX'</span>
-<span class="co">#&gt; Simple feature collection with 1 feature and 13 fields</span>
-<span class="co">#&gt; geometry type:  MULTILINESTRING</span>
-<span class="co">#&gt; dimension:      XY</span>
-<span class="co">#&gt; bbox:           xmin: 7.595836 ymin: 51.95356 xmax: 7.640715 ymax: 51.96967</span>
-<span class="co">#&gt; epsg (SRID):    4326</span>
-<span class="co">#&gt; proj4string:    +proj=longlat +datum=WGS84 +no_defs</span>
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/class">class</a></span>(r)
-<span class="co">#&gt; [1] "sf"         "data.frame"</span>
-<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_geometry_type">st_geometry_type</a></span>(r)
-<span class="co">#&gt; [1] MULTILINESTRING</span>
-<span class="co">#&gt; 18 Levels: GEOMETRY POINT LINESTRING POLYGON ... TRIANGLE</span>
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/nrow">nrow</a></span>(r)
-<span class="co">#&gt; [1] 1</span>
-<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(r<span class="op">$</span>geometry)</code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">r =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_read">st_read</a></span>(<span class="st">"trace.gpx"</span>, <span class="dt">layer =</span> <span class="st">"tracks"</span>)</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co">#&gt; Reading layer `tracks' from data source `/home/robin/repos/geocompkg/vignettes/trace.gpx' using driver `GPX'</span></a>
+<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="co">#&gt; Simple feature collection with 1 feature and 13 fields</span></a>
+<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co">#&gt; geometry type:  MULTILINESTRING</span></a>
+<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="co">#&gt; dimension:      XY</span></a>
+<a class="sourceLine" id="cb3-6" data-line-number="6"><span class="co">#&gt; bbox:           xmin: 7.595836 ymin: 51.95356 xmax: 7.640715 ymax: 51.96967</span></a>
+<a class="sourceLine" id="cb3-7" data-line-number="7"><span class="co">#&gt; epsg (SRID):    4326</span></a>
+<a class="sourceLine" id="cb3-8" data-line-number="8"><span class="co">#&gt; proj4string:    +proj=longlat +datum=WGS84 +no_defs</span></a>
+<a class="sourceLine" id="cb3-9" data-line-number="9"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/class">class</a></span>(r)</a>
+<a class="sourceLine" id="cb3-10" data-line-number="10"><span class="co">#&gt; [1] "sf"         "data.frame"</span></a>
+<a class="sourceLine" id="cb3-11" data-line-number="11"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_geometry_type">st_geometry_type</a></span>(r)</a>
+<a class="sourceLine" id="cb3-12" data-line-number="12"><span class="co">#&gt; [1] MULTILINESTRING</span></a>
+<a class="sourceLine" id="cb3-13" data-line-number="13"><span class="co">#&gt; 18 Levels: GEOMETRY POINT LINESTRING POLYGON ... TRIANGLE</span></a>
+<a class="sourceLine" id="cb3-14" data-line-number="14"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/nrow">nrow</a></span>(r)</a>
+<a class="sourceLine" id="cb3-15" data-line-number="15"><span class="co">#&gt; [1] 1</span></a>
+<a class="sourceLine" id="cb3-16" data-line-number="16"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(r<span class="op">$</span>geometry)</a></code></pre></div>
 <p><img src="gps-tracks_files/figure-html/unnamed-chunk-3-1.png" width="700"></p>
 <p>Other than the geometry, this object has limited information about the route in the fields. The richest field is ‘Description’, which contains the following summary data:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/class">class</a></span>(r<span class="op">$</span>desc)</code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/class">class</a></span>(r<span class="op">$</span>desc)</a></code></pre></div>
 <p>[1] “factor”</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/character">as.character</a></span>(r<span class="op">$</span>desc)</code></pre></div>
-[1] “
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/character">as.character</a></span>(r<span class="op">$</span>desc)</a></code></pre></div>
+[1] "
 <p>
 Start time: 01/07/2019 10:03<br>Finish time: 01/07/2019 10:34<br>Distance: 5.1 km (00:30)<br>Moving time: 00:21<br>Average speed: 10.08 km/h<br>Avg. Speed Mov.: 14.07 km/h<br>Max. speed: 35.06 km/h<br>Minimum altitude: 32 m<br>Maximum altitude: 68 m<br>Ascent speed: 469.6 m/h<br>Descent speed: -889.1 m/h<br>Elevation gain: 139 m<br>Elevation loss: -113 m<br>Ascent time: 00:17<br>Descent time: 00:07<br></p>
 <hr align='\"center\"' width='\"480\"' style='\"height:' width:>
 <p>"</p>
 <p>The data can also be imported as points, as follows:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">p =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_read">read_sf</a></span>(<span class="st">"trace.gpx"</span>, <span class="dt">layer =</span> <span class="st">"track_points"</span>)
-<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(p)
-<span class="co">#&gt; Warning: plotting the first 9 out of 26 attributes; use max.plot = 26 to</span>
-<span class="co">#&gt; plot all</span>
-<span class="co">#&gt; Warning in min(x): no non-missing arguments to min; returning Inf</span>
-<span class="co">#&gt; Warning in max(x): no non-missing arguments to max; returning -Inf</span>
-<span class="co">#&gt; Warning in min(x): no non-missing arguments to min; returning Inf</span>
-<span class="co">#&gt; Warning in max(x): no non-missing arguments to max; returning -Inf</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">p =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_read">read_sf</a></span>(<span class="st">"trace.gpx"</span>, <span class="dt">layer =</span> <span class="st">"track_points"</span>)</a>
+<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(p)</a>
+<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="co">#&gt; Warning: plotting the first 9 out of 26 attributes; use max.plot = 26 to</span></a>
+<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="co">#&gt; plot all</span></a>
+<a class="sourceLine" id="cb6-5" data-line-number="5"><span class="co">#&gt; Warning in min(x): no non-missing arguments to min; returning Inf</span></a>
+<a class="sourceLine" id="cb6-6" data-line-number="6"><span class="co">#&gt; Warning in max(x): no non-missing arguments to max; returning -Inf</span></a>
+<a class="sourceLine" id="cb6-7" data-line-number="7"><span class="co">#&gt; Warning in min(x): no non-missing arguments to min; returning Inf</span></a>
+<a class="sourceLine" id="cb6-8" data-line-number="8"><span class="co">#&gt; Warning in max(x): no non-missing arguments to max; returning -Inf</span></a></code></pre></div>
 <p><img src="gps-tracks_files/figure-html/unnamed-chunk-5-1.png" width="700"></p>
 </div>
 <div id="time-series" class="section level2">
 <h2 class="hasAnchor">
 <a href="#time-series" class="anchor"></a>Time series</h2>
 <p>When did the track take place?</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/summary">summary</a></span>(p<span class="op">$</span>time)
-<span class="co">#&gt;                  Min.               1st Qu.                Median </span>
-<span class="co">#&gt; "2019-01-07 09:03:22" "2019-01-07 09:15:31" "2019-01-07 09:19:29" </span>
-<span class="co">#&gt;                  Mean               3rd Qu.                  Max. </span>
-<span class="co">#&gt; "2019-01-07 09:20:02" "2019-01-07 09:24:24" "2019-01-07 09:34:01"</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/summary">summary</a></span>(p<span class="op">$</span>time)</a>
+<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="co">#&gt;                  Min.               1st Qu.                Median </span></a>
+<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="co">#&gt; "2019-01-07 09:03:22" "2019-01-07 09:15:31" "2019-01-07 09:19:29" </span></a>
+<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="co">#&gt;                  Mean               3rd Qu.                  Max. </span></a>
+<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="co">#&gt; "2019-01-07 09:20:02" "2019-01-07 09:24:24" "2019-01-07 09:34:01"</span></a></code></pre></div>
 <p>It started from just after 9:00 in the morning and ended just after 09:30. Let’s check if they happened at regular intervals:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(p<span class="op">$</span>time, <span class="dv">1</span><span class="op">:</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/nrow">nrow</a></span>(p))</code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(p<span class="op">$</span>time, <span class="dv">1</span><span class="op">:</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/nrow">nrow</a></span>(p))</a></code></pre></div>
 <p><img src="gps-tracks_files/figure-html/unnamed-chunk-7-1.png" width="700"></p>
 <p>And the temporal resolution:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/difftime">difftime</a></span>(p<span class="op">$</span>time[<span class="dv">11</span>], p<span class="op">$</span>time[<span class="dv">10</span>])
-<span class="co">#&gt; Time difference of 4 secs</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/difftime">difftime</a></span>(p<span class="op">$</span>time[<span class="dv">11</span>], p<span class="op">$</span>time[<span class="dv">10</span>])</a>
+<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="co">#&gt; Time difference of 4 secs</span></a></code></pre></div>
 </div>
 <div id="converting-points-to-lines" class="section level2">
 <h2 class="hasAnchor">
 <a href="#converting-points-to-lines" class="anchor"></a>Converting points to lines</h2>
 <p>The plot of points is useful, but it would be better to have a line representation <em>that contains the rich point-level data</em>. This can be done by converting the points to lines, as follows for the the first 2 points:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">c =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_coordinates">st_coordinates</a></span>(p)
-l1 =<span class="st"> </span>sf<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st">st_linestring</a></span>(c[<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>, ])
-<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(l1)
-lsf =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/sf">st_sf</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_geometry">st_set_geometry</a></span>(p[<span class="dv">2</span>, ], <span class="ot">NULL</span>), <span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/sfc">st_sfc</a></span>(l1))
-<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(p<span class="op">$</span>geometry[<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>], <span class="dt">add =</span> T)</code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">c =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_coordinates">st_coordinates</a></span>(p)</a>
+<a class="sourceLine" id="cb10-2" data-line-number="2">l1 =<span class="st"> </span>sf<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st">st_linestring</a></span>(c[<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>, ])</a>
+<a class="sourceLine" id="cb10-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(l1)</a>
+<a class="sourceLine" id="cb10-4" data-line-number="4">lsf =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/sf">st_sf</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_geometry">st_set_geometry</a></span>(p[<span class="dv">2</span>, ], <span class="ot">NULL</span>), <span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/sfc">st_sfc</a></span>(l1))</a>
+<a class="sourceLine" id="cb10-5" data-line-number="5"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(p<span class="op">$</span>geometry[<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>], <span class="dt">add =</span> T)</a></code></pre></div>
 <p><img src="gps-tracks_files/figure-html/unnamed-chunk-9-1.png" width="700"></p>
 <p>For all points we can do:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">points2line_trajectory =<span class="st"> </span><span class="cf">function</span>(p) {
-  c =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_coordinates">st_coordinates</a></span>(p)
-  i =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/seq">seq</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/nrow">nrow</a></span>(p) <span class="op">-</span><span class="st"> </span><span class="dv">2</span>)
-  l =<span class="st"> </span>purrr<span class="op">::</span><span class="kw"><a href="https://purrr.tidyverse.org/reference/map.html">map</a></span>(i, <span class="op">~</span><span class="st"> </span>sf<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st">st_linestring</a></span>(c[.x<span class="op">:</span>(.x <span class="op">+</span><span class="st"> </span><span class="dv">1</span>), ]))
-  s =<span class="st"> </span>purrr<span class="op">::</span><span class="kw"><a href="https://purrr.tidyverse.org/reference/map.html">map_dbl</a></span>(i, <span class="cf">function</span>(x) {
-    geosphere<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/geosphere/topics/distHaversine">distHaversine</a></span>(c[x, ], c[(x <span class="op">+</span><span class="st"> </span><span class="dv">1</span>), ]) <span class="op">/</span>
-<span class="st">      </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/numeric">as.numeric</a></span>(p<span class="op">$</span>time[x <span class="op">+</span><span class="st"> </span><span class="dv">1</span>] <span class="op">-</span><span class="st"> </span>p<span class="op">$</span>time[x])
-  }
-  )
-  lfc =<span class="st"> </span>sf<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/sfc">st_sfc</a></span>(l)
-  a =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/seq">seq</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/length">length</a></span>(lfc)) <span class="op">+</span><span class="st"> </span><span class="dv">1</span> <span class="co"># sequence to subset</span>
-  p_data =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cbind">cbind</a></span>(sf<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_geometry">st_set_geometry</a></span>(p[a, ], <span class="ot">NULL</span>), s)
-  sf<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/sf">st_sf</a></span>(p_data, <span class="dt">geometry =</span> lfc)
-}</code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">points2line_trajectory =<span class="st"> </span><span class="cf">function</span>(p) {</a>
+<a class="sourceLine" id="cb11-2" data-line-number="2">  c =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_coordinates">st_coordinates</a></span>(p)</a>
+<a class="sourceLine" id="cb11-3" data-line-number="3">  i =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/seq">seq</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/nrow">nrow</a></span>(p) <span class="op">-</span><span class="st"> </span><span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb11-4" data-line-number="4">  l =<span class="st"> </span>purrr<span class="op">::</span><span class="kw"><a href="https://purrr.tidyverse.org/reference/map.html">map</a></span>(i, <span class="op">~</span><span class="st"> </span>sf<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st">st_linestring</a></span>(c[.x<span class="op">:</span>(.x <span class="op">+</span><span class="st"> </span><span class="dv">1</span>), ]))</a>
+<a class="sourceLine" id="cb11-5" data-line-number="5">  s =<span class="st"> </span>purrr<span class="op">::</span><span class="kw"><a href="https://purrr.tidyverse.org/reference/map.html">map_dbl</a></span>(i, <span class="cf">function</span>(x) {</a>
+<a class="sourceLine" id="cb11-6" data-line-number="6">    geosphere<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/geosphere/topics/distHaversine">distHaversine</a></span>(c[x, ], c[(x <span class="op">+</span><span class="st"> </span><span class="dv">1</span>), ]) <span class="op">/</span></a>
+<a class="sourceLine" id="cb11-7" data-line-number="7"><span class="st">      </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/numeric">as.numeric</a></span>(p<span class="op">$</span>time[x <span class="op">+</span><span class="st"> </span><span class="dv">1</span>] <span class="op">-</span><span class="st"> </span>p<span class="op">$</span>time[x])</a>
+<a class="sourceLine" id="cb11-8" data-line-number="8">  }</a>
+<a class="sourceLine" id="cb11-9" data-line-number="9">  )</a>
+<a class="sourceLine" id="cb11-10" data-line-number="10">  lfc =<span class="st"> </span>sf<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/sfc">st_sfc</a></span>(l)</a>
+<a class="sourceLine" id="cb11-11" data-line-number="11">  a =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/seq">seq</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/length">length</a></span>(lfc)) <span class="op">+</span><span class="st"> </span><span class="dv">1</span> <span class="co"># sequence to subset</span></a>
+<a class="sourceLine" id="cb11-12" data-line-number="12">  p_data =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cbind">cbind</a></span>(sf<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_geometry">st_set_geometry</a></span>(p[a, ], <span class="ot">NULL</span>), s)</a>
+<a class="sourceLine" id="cb11-13" data-line-number="13">  sf<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/sf">st_sf</a></span>(p_data, <span class="dt">geometry =</span> lfc)</a>
+<a class="sourceLine" id="cb11-14" data-line-number="14">}</a></code></pre></div>
 <p>Let’s test it out:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">l =<span class="st"> </span><span class="kw">points2line_trajectory</span>(p)
-<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(l)
-<span class="co">#&gt; Warning: plotting the first 10 out of 27 attributes; use max.plot = 27 to</span>
-<span class="co">#&gt; plot all</span>
-<span class="co">#&gt; Warning in min(x): no non-missing arguments to min; returning Inf</span>
-<span class="co">#&gt; Warning in max(x): no non-missing arguments to max; returning -Inf</span>
-<span class="co">#&gt; Warning in min(x): no non-missing arguments to min; returning Inf</span>
-<span class="co">#&gt; Warning in max(x): no non-missing arguments to max; returning -Inf</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">l =<span class="st"> </span><span class="kw">points2line_trajectory</span>(p)</a>
+<a class="sourceLine" id="cb12-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(l)</a>
+<a class="sourceLine" id="cb12-3" data-line-number="3"><span class="co">#&gt; Warning: plotting the first 10 out of 27 attributes; use max.plot = 27 to</span></a>
+<a class="sourceLine" id="cb12-4" data-line-number="4"><span class="co">#&gt; plot all</span></a>
+<a class="sourceLine" id="cb12-5" data-line-number="5"><span class="co">#&gt; Warning in min(x): no non-missing arguments to min; returning Inf</span></a>
+<a class="sourceLine" id="cb12-6" data-line-number="6"><span class="co">#&gt; Warning in max(x): no non-missing arguments to max; returning -Inf</span></a>
+<a class="sourceLine" id="cb12-7" data-line-number="7"><span class="co">#&gt; Warning in min(x): no non-missing arguments to min; returning Inf</span></a>
+<a class="sourceLine" id="cb12-8" data-line-number="8"><span class="co">#&gt; Warning in max(x): no non-missing arguments to max; returning -Inf</span></a></code></pre></div>
 <p><img src="gps-tracks_files/figure-html/unnamed-chunk-11-1.png" width="700"></p>
 <p>We now have lots more variables to play with and, unlike with the point dataset, the look good (and like traces) when plotted. Note that in the previous function definition we calculated speed. Plot the resulting ‘speed profile trace’ as follows:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(l[<span class="st">"s"</span>], <span class="dt">lwd =</span> l<span class="op">$</span>s)</code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(l[<span class="st">"s"</span>], <span class="dt">lwd =</span> l<span class="op">$</span>s)</a></code></pre></div>
 <p><img src="gps-tracks_files/figure-html/unnamed-chunk-12-1.png" width="700"></p>
 </div>
 <div id="further-resources" class="section level2">
@@ -210,7 +210,7 @@ lsf =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentati
 <div class="footnotes">
 <hr>
 <ol>
-<li id="fn1"><p>For saving your own GPS data, we recommend using an open source Android apps such as <a href="https://www.oruxmaps.com/cs/en/">Orux</a>, <a href="https://github.com/owntracks/android">owntracks</a> or <a href="https://osmand.net/features/trip-recording-plugin">osmand</a>. These can then be transferred onto your computer and, if you want to support the community, uploaded to OSM.<a href="#fnref1">↩</a></p></li>
+<li id="fn1"><p> For saving your own GPS data, we recommend using an open source Android apps such as <a href="https://www.oruxmaps.com/cs/en/">Orux</a>, <a href="https://github.com/owntracks/android">owntracks</a> or <a href="https://osmand.net/features/trip-recording-plugin">osmand</a>. These can then be transferred onto your computer and, if you want to support the community, uploaded to OSM.<a href="#fnref1" class="footnote-back">↩</a></p></li>
 </ol>
 </div>
   </div>

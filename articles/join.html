@@ -75,14 +75,14 @@
     
     
 <p>This vignette provides some further detail on the Vector attribute joining section (see <a href="https://geocompr.robinlovelace.net/attr.html#vector-attribute-joining" class="uri">https://geocompr.robinlovelace.net/attr.html#vector-attribute-joining</a> ) of <a href="https://geocompr.github.io/">the Geocomputation with R book</a>. This vignette requires the following packages to be installed and attached:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(sf)
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(spData)
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(tidyverse)</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(sf)</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(spData)</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(tidyverse)</a></code></pre></div>
 <p>We will use an <code>sf</code> object <code>north_america</code> with country codes (<code>iso_a2</code>), names and geometries, as well as a <code>data.frame</code> object <code>wb_north_america</code> containing information about urban population and unemployment for three countries. Note that <code>north_america</code> contains data about Canada, Greenland and the United States but the World Bank dataset (<code>wb_north_america</code>) contains information about Canada, Mexico and the United States:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">north_america =<span class="st"> </span>world <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/filter">filter</a></span>(subregion <span class="op">==</span><span class="st"> "Northern America"</span>) <span class="op">%&gt;%</span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(iso_a2, name_long)
-north_america</code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">north_america =<span class="st"> </span>world <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/filter">filter</a></span>(subregion <span class="op">==</span><span class="st"> "Northern America"</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(iso_a2, name_long)</a>
+<a class="sourceLine" id="cb2-4" data-line-number="4">north_america</a></code></pre></div>
 <pre><code>## Simple feature collection with 3 features and 2 fields
 ## geometry type:  MULTIPOLYGON
 ## dimension:      XY
@@ -93,10 +93,10 @@ north_america</code></pre></div>
 ## 1     CA        Canada MULTIPOLYGON (((-122.84 49,...
 ## 2     US United States MULTIPOLYGON (((-122.84 49,...
 ## 3     GL     Greenland MULTIPOLYGON (((-46.76379 8...</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">wb_north_america =<span class="st"> </span>worldbank_df <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/filter">filter</a></span>(name <span class="op">%in%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"Canada"</span>, <span class="st">"Mexico"</span>, <span class="st">"United States"</span>)) <span class="op">%&gt;%</span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(name, iso_a2, urban_pop, <span class="dt">unemploy =</span> unemployment)
-wb_north_america</code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">wb_north_america =<span class="st"> </span>worldbank_df <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/filter">filter</a></span>(name <span class="op">%in%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"Canada"</span>, <span class="st">"Mexico"</span>, <span class="st">"United States"</span>)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(name, iso_a2, urban_pop, <span class="dt">unemploy =</span> unemployment)</a>
+<a class="sourceLine" id="cb4-4" data-line-number="4">wb_north_america</a></code></pre></div>
 <pre><code>## # A tibble: 3 x 4
 ##   name          iso_a2 urban_pop unemploy
 ##   &lt;chr&gt;         &lt;chr&gt;      &lt;dbl&gt;    &lt;dbl&gt;
@@ -105,9 +105,9 @@ wb_north_america</code></pre></div>
 ## 3 United States US     259460378     6.17</code></pre>
 <p>We will use a left join to combine the two datasets. Left joins are the most commonly used operation for adding attributes to spatial data, as they return all observations from the left object (<code>north_america</code>) and the matched observations from the right object (<code>wb_north_america</code>) in new columns. Rows in the left object without matches in the right (<code>Greenland</code> in this case) result in <code>NA</code> values.</p>
 <p>To join two objects we need to specify a key. This is a variable (or a set of variables) that uniquely identifies each observation (row). The <code>by</code> argument of <strong>dplyr</strong>’s join functions lets you identify the key variable. In simple cases, a single, unique variable exist in both objects like the <code>iso_a2</code> column in our example (you may need to rename columns with identifying information for this to work):</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">left_join1 =<span class="st"> </span>north_america <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">left_join</span>(wb_north_america, <span class="dt">by =</span> <span class="st">"iso_a2"</span>)
-left_join1</code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">left_join1 =<span class="st"> </span>north_america <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="st">  </span><span class="kw">left_join</span>(wb_north_america, <span class="dt">by =</span> <span class="st">"iso_a2"</span>)</a>
+<a class="sourceLine" id="cb6-3" data-line-number="3">left_join1</a></code></pre></div>
 <pre><code>## Simple feature collection with 3 features and 5 fields
 ## geometry type:  MULTIPOLYGON
 ## dimension:      XY
@@ -129,9 +129,9 @@ Figure 1. The unemployment rate (taken from World Bank statistics) in Canada and
 </p>
 </div>
 <p>It is also possible to join objects by different variables. Both of the datasets have variables with names of countries, but they are named differently. The <code>north_america</code> has a <code>name_long</code> column and the <code>wb_north_america</code> has a <code>name</code> column. In these cases a named vector, such as <code><a href="https://www.rdocumentation.org/packages/base/topics/c">c("name_long" = "name")</a></code>, can specify the connection:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">left_join2 =<span class="st"> </span>north_america <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">left_join</span>(wb_north_america, <span class="dt">by =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"name_long"</span> =<span class="st"> "name"</span>))
-left_join2</code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">left_join2 =<span class="st"> </span>north_america <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="st">  </span><span class="kw">left_join</span>(wb_north_america, <span class="dt">by =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"name_long"</span> =<span class="st"> "name"</span>))</a>
+<a class="sourceLine" id="cb8-3" data-line-number="3">left_join2</a></code></pre></div>
 <pre><code>## Simple feature collection with 3 features and 5 fields
 ## geometry type:  MULTIPOLYGON
 ## dimension:      XY
@@ -147,9 +147,9 @@ left_join2</code></pre></div>
 ## 2 MULTIPOLYGON (((-122.84 49,...
 ## 3 MULTIPOLYGON (((-46.76379 8...</code></pre>
 <p>Note that the result contains two duplicated variables - <code>iso_a2.x</code> and <code>iso_a2.y</code> because both <code>x</code> and <code>y</code> objects have the column <code>iso_a2</code>. This can be solved by specifying all the keys:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">left_join3 =<span class="st"> </span>north_america <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">left_join</span>(wb_north_america, <span class="dt">by =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"iso_a2"</span>, <span class="st">"name_long"</span> =<span class="st"> "name"</span>))
-left_join3</code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">left_join3 =<span class="st"> </span>north_america <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb10-2" data-line-number="2"><span class="st">  </span><span class="kw">left_join</span>(wb_north_america, <span class="dt">by =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"iso_a2"</span>, <span class="st">"name_long"</span> =<span class="st"> "name"</span>))</a>
+<a class="sourceLine" id="cb10-3" data-line-number="3">left_join3</a></code></pre></div>
 <pre><code>## Simple feature collection with 3 features and 4 fields
 ## geometry type:  MULTIPOLYGON
 ## dimension:      XY
@@ -161,36 +161,36 @@ left_join3</code></pre></div>
 ## 2     US United States 259460378     6.17 MULTIPOLYGON (((-122.84 49,...
 ## 3     GL     Greenland        NA       NA MULTIPOLYGON (((-46.76379 8...</code></pre>
 <p>Joins also work when a data frame is the first argument. This keeps the geometry column but drops the <code>sf</code> class, returning a <code>data.frame</code> object.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># keeps the geom column, but drops the sf class</span>
-left_join4 =<span class="st"> </span>wb_north_america <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">left_join</span>(north_america, <span class="dt">by =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"iso_a2"</span>))
-left_join4</code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="co"># keeps the geom column, but drops the sf class</span></a>
+<a class="sourceLine" id="cb12-2" data-line-number="2">left_join4 =<span class="st"> </span>wb_north_america <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb12-3" data-line-number="3"><span class="st">  </span><span class="kw">left_join</span>(north_america, <span class="dt">by =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"iso_a2"</span>))</a>
+<a class="sourceLine" id="cb12-4" data-line-number="4">left_join4</a></code></pre></div>
 <pre><code>## # A tibble: 3 x 6
 ##   name   iso_a2 urban_pop unemploy name_long                           geom
 ##   &lt;chr&gt;  &lt;chr&gt;      &lt;dbl&gt;    &lt;dbl&gt; &lt;chr&gt;                 &lt;MULTIPOLYGON [°]&gt;
 ## 1 Canada CA      29014612     6.91 Canada     (((-122.84 49, -122.9742 49.…
 ## 2 Mexico MX      98099040     4.81 &lt;NA&gt;                               EMPTY
 ## 3 Unite… US     259460378     6.17 United St… (((-122.84 49, -120 49, -117…</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/class">class</a></span>(left_join4)</code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/class">class</a></span>(left_join4)</a></code></pre></div>
 <pre><code>## [1] "tbl_df"     "tbl"        "data.frame"</code></pre>
 <p>On the other hand, it is also possible to remove the geometry column of <code>left_join4</code> using base R functions or <code>dplyr</code>. Here, this is this simple because the geometry column is just another <code>data.frame</code> column and no longer the sticky geometry column of an <code>sf</code> object (see also the chapter <a href="https://geocompr.robinlovelace.net/spatial-class.html">Geographic data in R</a>):</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># base R</span>
-left_join4_df =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/subset">subset</a></span>(left_join4, <span class="dt">select =</span> <span class="op">-</span>geom)
-<span class="co"># or dplyr</span>
-left_join4_df =<span class="st"> </span>left_join4 <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(<span class="op">-</span>geom)
-left_join4_df</code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="co"># base R</span></a>
+<a class="sourceLine" id="cb16-2" data-line-number="2">left_join4_df =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/subset">subset</a></span>(left_join4, <span class="dt">select =</span> <span class="op">-</span>geom)</a>
+<a class="sourceLine" id="cb16-3" data-line-number="3"><span class="co"># or dplyr</span></a>
+<a class="sourceLine" id="cb16-4" data-line-number="4">left_join4_df =<span class="st"> </span>left_join4 <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(<span class="op">-</span>geom)</a>
+<a class="sourceLine" id="cb16-5" data-line-number="5">left_join4_df</a></code></pre></div>
 <pre><code>## # A tibble: 3 x 5
 ##   name          iso_a2 urban_pop unemploy name_long    
 ##   &lt;chr&gt;         &lt;chr&gt;      &lt;dbl&gt;    &lt;dbl&gt; &lt;chr&gt;        
 ## 1 Canada        CA      29014612     6.91 Canada       
 ## 2 Mexico        MX      98099040     4.81 &lt;NA&gt;         
 ## 3 United States US     259460378     6.17 United States</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/class">class</a></span>(left_join4_df)</code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/class">class</a></span>(left_join4_df)</a></code></pre></div>
 <pre><code>## [1] "tbl_df"     "tbl"        "data.frame"</code></pre>
 <p>In contrast to <code>left_join()</code>, <code>inner_join()</code> keeps only observations from the left object (<code>north_america</code>) where there are matching observations in the right object (<code>wb_north_america</code>). All columns from the left and right object are still kept:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">inner_join1 =<span class="st"> </span>north_america <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">inner_join</span>(wb_north_america, <span class="dt">by =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"iso_a2"</span>, <span class="st">"name_long"</span> =<span class="st"> "name"</span>))
-inner_join1</code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1">inner_join1 =<span class="st"> </span>north_america <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb20-2" data-line-number="2"><span class="st">  </span><span class="kw">inner_join</span>(wb_north_america, <span class="dt">by =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"iso_a2"</span>, <span class="st">"name_long"</span> =<span class="st"> "name"</span>))</a>
+<a class="sourceLine" id="cb20-3" data-line-number="3">inner_join1</a></code></pre></div>
 <pre><code>## Simple feature collection with 2 features and 4 fields
 ## geometry type:  MULTIPOLYGON
 ## dimension:      XY
