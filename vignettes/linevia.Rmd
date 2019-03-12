@@ -10,9 +10,10 @@ vignette: >
 ---
 
 This vignette builds on the [transport chapter](https://geocompr.robinlovelace.net/transport.html) of [the Geocomputation with R book](https://geocompr.github.io/) by showing how to create multi-stage desire lines, from the ground-up.
+
 It depends on these packages and datasets:
 
-```{r, message=FALSE}
+```{r, message=FALSE, warning=FALSE}
 library(sf)
 library(stplanr)
 library(tidyverse)
