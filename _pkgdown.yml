@@ -34,6 +34,7 @@ articles:
       - subsetting
       - cast
       - us-map
+      - maps
       - algorithm
       - point-pattern
       - linevia
@@ -41,7 +42,6 @@ articles:
     desc: >
       These vignettes provide additional miscellaneous materials related to Geocomputation with R
     contents:
-      - maps
       - benchmark
       - erum-2018
       - sea-level-rise

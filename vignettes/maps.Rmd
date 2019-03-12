@@ -1,5 +1,5 @@
 ---
-title: "Geocomputation with R: maps extended"
+title: "Maps extended"
 author: "Robin Lovelace, Jakub Nowosad, Jannes Muenchow"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
