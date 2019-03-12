@@ -10,6 +10,7 @@ vignette: >
 ---
 
 This vignette provides some further detail on the chapter Scripts, algorithms and functions (see https://geocompr.robinlovelace.net/algorithms.html ) of [the Geocomputation with R book](https://geocompr.github.io/).
+
 It starts with the same input data:
 
 ```{r}

@@ -1,7 +1,7 @@
 ---
 title: "Geocomputation with R: workshop at eRum"
 author: "Robin Lovelace, Jakub Nowosad, Jannes Muenchow"
-ate: "`r Sys.Date()`"
+ate: "2018-05-31"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{geocompr-erum}

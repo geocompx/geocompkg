@@ -2,7 +2,7 @@
 title: "Geocomputation with R - the afterword"
 subtitle: "For [Geocomputation with R](https://github.com/Robinlovelace/geocompr)"
 author: "Robin Lovelace, Jakub Nowosad, Jannes Muenchow"
-date: "`r Sys.Date()`"
+date: "2018-12-12"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Vignette Title}
