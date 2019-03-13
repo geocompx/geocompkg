@@ -12,54 +12,115 @@ bibliography: refs.bib
 
 # Introduction
 
-Sea level rise (SLR) is a worldwide phenemona with major implications.
-Although SLR is a global phenomenon, its potentially deadly impacts will vary greatly over the globe, making it well-suited to geographical analysis.
-The need for reproducibility and scalability of the approach means a computational approach, of the type recommended in the book, is needed.
+Sea level rise (SLR) is a global phenemona whose impacts vary geographically.
+Although the sea rises everywhere (although at different [rates](https://www.sciencedirect.com/science/article/pii/S0273117718305799)), only certain, low-lying locations will be affected.
+Sea level research involves analysing large geographic datasets and statistical models of change, making the computational approach advocated in *[Geocomputation with R](https://geocompr.robinlovelace.net/)* well-suited to its study.
 
-In terms of the spatial distribution of impacts the main factor is current elevation: low-lying areas closed to the sea are most vulnerable.
-Elevation in countries is actually dynamic due to [glacial isostatic adjustment](https://en.wikipedia.org/wiki/Post-glacial_rebound).
-However, the rate of change in elevation in most places is slow compared with rapid sea level rise.
+The main factors determining the spatial distribution include elevation, proximity to the sea and population density: large, low-lying coastal settlements house the highest numbers of people at risk.
+Land elevation, the height relative to geodesic reference points, is well known.
+Although elevantion can change due to [glacial isostatic adjustment](https://en.wikipedia.org/wiki/Post-glacial_rebound), the rate in places (less than 1mm/yr) is negligible compared with projected rates of SLR 21^st^ Century and beyond.
 
-How much the sea will rise in the next 10, 100, 1000 and even 10,000 is a subject of scientific research.
-One thing is for certain: the trend of rising sea levels, illustrated in the figure below, will continue (source: [NASA](https://climate.nasa.gov/vital-signs/sea-level/)).
+How much the sea will rise in the next 10, 100, 1000 and even 10,000 years is a subject of scientific research.
+One thing is for certain: the trend of rising sea levels, illustrated Figure 1, will continue (source: [NASA](https://climate.nasa.gov/vital-signs/sea-level/)).
 
-```{r, echo=FALSE, out.width="100%"}
+```{r slr, fig.cap="Figure 1: Historic sea level rise over the last century", echo=FALSE, out.width="100%"}
 knitr::include_graphics("https://climate.nasa.gov/system/charts/12_seaLevel_left.gif")
 ```
 
-One recent analysis suggests 50 m of SLR is likely in the next 10,000 years (note the units in the previous graph are mm, 1000 times less than a meter), with much of that happening in the next 1,000 years [@clark_consequences_2016].
-Their model results provide a range of SLR futures, as illustrated in the figure below:
+In the long term, ice melt due to climate change means that SLR is likely to accelerate and flood many coastal areas.
+One recent analysis suggests 50 m of SLR is likely in the next 10,000 years (note the units in the previous graph are mm, 1000 times less than a meter).
+Much of that is likely to happen in the next 1,000 years [@clark_consequences_2016], as illustrated in Figure 2:
 
-```{r, echo=FALSE, out.width="100%"}
+```{r, echo=FALSE, out.width="100%", fig.cap="Figure 2: Future SLR projections over the next 10,000 years."}
 knitr::include_graphics("https://raw.githubusercontent.com/geocompr/geostats_18/master/images/slr-long-clark-et-al-2016.png")
 ```
 
 This vignette will download data for a city and analyse vulnerable areas based on the assumption of 10 m of sea level rise.
 In the exercises you will be encouraged to re-run the analysis in different places and assuming different levels of SLR.
-The first stage is to read-in the data:
+The first stage is setting up and reading in the data:
 
-## Read-in data
+## Set-up
 
-```{r}
-# aim: demo r-spatial capabilities with slr data
+We will use the following packages:
+
+```{r, message=FALSE}
+library(sf)
+library(tmap)
+library(dplyr)
+library(raster)
+library(spDataLarge)
+```
+
+
+```{r, echo=FALSE, eval=FALSE}
+# aim: get data for demo r-spatial capabilities with slr data
 # See https://github.com/geocompr/geostats_18/blob/master/code/geocompr/slr.R
+
+# # load data
+if(!dir.exists("data")) {
+  download.file("https://github.com/geocompr/geostats_18/releases/download/0.1/data.zip", "data.zip")
+  unzip("data.zip")
+  file.rename("pres/geocompr/data/", "data")
+}
 
 # if(!require(elevatr)) {
 #   install.packages("elevatr")
 # }
 # library(elevatr)
 library(raster)
-library(sf)
+install.packages("geomapdata")
+data(package = "geomapdata")
+library(geomapdata)
+data("ETOPO5")
+class(ETOPO5)
+# ?ETOPO5
+emat = t(ETOPO5)
+dim(emat)
+emat_shifted = cbind(emat[, (ncol(emat) / 2 + 1):ncol(emat)], emat[, 1:(ncol(emat) / 2)])
+# pryr::object_size(e)
+e = raster::raster(
+  emat_shifted,
+  xmn = 0,
+  xmx = 360,
+  ymn = -90,
+  ymx = 90,
+  crs = "+proj=longlat"
+  )
+# pryr::object_size(e)
+plot(e)
+# remotes::install_github("cboettig/piggyback")
+writeRaster(e, "e.tif") 
+piggyback::pb_upload("e.tif")
+# piggyback::pb_download_url("e.tif")
 ```
 
+A file representing global elevation can be downloaded and read-in as follows:
+
 ```{r}
-# load data
-if(!dir.exists("data")) {
-  download.file("https://github.com/geocompr/geostats_18/releases/download/0.1/data.zip", "data.zip")
-  unzip("data.zip")
-  file.rename("pres/geocompr/data/", "data")
-}
+if(!file.exists("e.tif"))
+  download.file("https://github.com/geocompr/geocompkg/releases/download/0.1/e.tif",
+  "e.tif")
+elev = raster("e.tif")
 ```
+
+The global population data we will use can be summarised as follows:
+
+```{r}
+urban = spData::urban_agglomerations %>% 
+  filter(year == 2030) %>% 
+  dplyr::select(population_millions) 
+summary(urban)
+```
+
+We have 30 points. These can be overlaid on the raster image as follows:
+
+```{r}
+tm_shape(elev) +
+  tm_raster(breaks = c(-10000, 0, 10, 50, 100, 10000)) +
+  tm_shape(urban) +
+  tm_dots(size = "population_millions")
+```
+
 
 ```{r}
 # vector data
