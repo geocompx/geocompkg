@@ -65,7 +65,7 @@
       <h1>Geocomputation for sea level research</h1>
                         <h4 class="author">Robin Lovelace, Jakub Nowosad, Jannes Muenchow</h4>
             
-            <h4 class="date">2019-03-13</h4>
+            <h4 class="date">2019-03-14</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/geocompr/geocompkg/blob/master/vignettes/sea-level-rise.Rmd"><code>vignettes/sea-level-rise.Rmd</code></a></small>
       <div class="hidden name"><code>sea-level-rise.Rmd</code></div>
@@ -122,17 +122,17 @@ elev =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentat
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/tmap/topics/tm_shape">tm_shape</a></span>(elev) <span class="op">+</span>
 <span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/tmap/topics/tm_raster">tm_raster</a></span>(<span class="dt">breaks =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="op">-</span><span class="dv">10000</span>, <span class="dv">0</span>, <span class="dv">10</span>, <span class="dv">50</span>, <span class="dv">100</span>, <span class="dv">10000</span>)) <span class="op">+</span>
 <span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/tmap/topics/tm_shape">tm_shape</a></span>(urban) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/tmap/topics/tm_symbols">tm_dots</a></span>(<span class="dt">size =</span> <span class="st">"population_millions"</span>)</code></pre></div>
+<span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/tmap/topics/tm_symbols">tm_dots</a></span>(<span class="dt">size =</span> <span class="st">"population_millions"</span>, <span class="dt">scale =</span> <span class="fl">0.5</span>)</code></pre></div>
 <pre><code>## Variable "e" contains positive and negative values, so midpoint is set to 0. Set midpoint = NA to show the full spectrum of the color palette.</code></pre>
-<p><img src="sea-level-rise_files/figure-html/unnamed-chunk-6-1.png" width="700"></p>
+<p><img src="sea-level-rise_files/figure-html/slr-map1-1.png" width="100%"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># vector data</span>
 <span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(spData<span class="op">::</span>world)</code></pre></div>
 <pre><code>## Warning: plotting the first 9 out of 10 attributes; use max.plot = 10 to
 ## plot all</code></pre>
-<p><img src="sea-level-rise_files/figure-html/unnamed-chunk-7-1.png" width="700"></p>
+<p><img src="sea-level-rise_files/figure-html/unnamed-chunk-6-1.png" width="700"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">poland =<span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(spData<span class="op">::</span>world, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/grep">grepl</a></span>(<span class="dt">pattern =</span> <span class="st">"Pola"</span>, name_long))
 <span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(poland))</code></pre></div>
-<p><img src="sea-level-rise_files/figure-html/unnamed-chunk-7-2.png" width="700"></p>
+<p><img src="sea-level-rise_files/figure-html/unnamed-chunk-6-2.png" width="700"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># testing elevatr (from readme / vignette)</span>
 <span class="co"># data(lake)</span>
 <span class="co"># elevation_high = get_elev_raster(lake, z = 14, src = "aws")</span>
@@ -160,7 +160,7 @@ region =<span class="st"> </span>sf<span class="op">::</span><span class="kw"><a
 <span class="co"># sf::write_sf(region_mapedit, "data/scz-mapedit.geojson")</span>
 region_mapedit =<span class="st"> </span>sf<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_read">read_sf</a></span>(<span class="st">"data/scz-mapedit.geojson"</span>)
 <span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(region_mapedit)</code></pre></div>
-<p><img src="sea-level-rise_files/figure-html/unnamed-chunk-7-3.png" width="700"></p>
+<p><img src="sea-level-rise_files/figure-html/unnamed-chunk-6-3.png" width="700"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">region_sp =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/coerce-methods">as</a></span>(region, <span class="st">"Spatial"</span>)
 <span class="co"># e = elevatr::get_elev_raster(locations = region_sp, z = 8, src = "aws")</span>
 <span class="co"># raster::writeRaster(x = e, filename = "data/scz-elev-z5.tif")</span>
@@ -182,7 +182,7 @@ e_mask =<span class="st"> </span>e_low =<span class="st"> </span>e <span class="
 <span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(spData<span class="op">::</span>world, <span class="dt">add =</span> T, <span class="dt">col =</span> <span class="ot">NA</span>)</code></pre></div>
 <pre><code>## Warning in plot.sf(spData::world, add = T, col = NA): ignoring all but the
 ## first attribute</code></pre>
-<p><img src="sea-level-rise_files/figure-html/unnamed-chunk-7-4.png" width="700"></p>
+<p><img src="sea-level-rise_files/figure-html/unnamed-chunk-6-4.png" width="700"></p>
 </div>
 <div id="analysis" class="section level2">
 <h2 class="hasAnchor">
