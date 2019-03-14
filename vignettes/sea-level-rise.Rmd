@@ -80,8 +80,8 @@ emat_shifted = cbind(emat[, (ncol(emat) / 2 + 1):ncol(emat)], emat[, 1:(ncol(ema
 # pryr::object_size(e)
 e = raster::raster(
   emat_shifted,
-  xmn = 0,
-  xmx = 360,
+  xmn = -180,
+  xmx = 180,
   ymn = -90,
   ymx = 90,
   crs = "+proj=longlat"
@@ -92,6 +92,7 @@ plot(e)
 writeRaster(e, "e.tif") 
 piggyback::pb_upload("e.tif")
 # piggyback::pb_download_url("e.tif")
+# e = stars::read_ncdf("GMTED2010_15n060_0250deg.hdf")
 ```
 
 A file representing global elevation can be downloaded and read-in as follows:
@@ -114,11 +115,11 @@ summary(urban)
 
 We have 30 points. These can be overlaid on the raster image as follows:
 
-```{r}
+```{r slr-map1, out.width="100%"}
 tm_shape(elev) +
   tm_raster(breaks = c(-10000, 0, 10, 50, 100, 10000)) +
   tm_shape(urban) +
-  tm_dots(size = "population_millions")
+  tm_dots(size = "population_millions", scale = 0.5)
 ```
 
 
