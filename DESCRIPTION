@@ -22,6 +22,7 @@ Imports:
     leaflet,
     link2GI,
     lwgeom,
+    mapdeck,
     mapview,    
     mlr,
     odbc,
