@@ -123,7 +123,7 @@ tm_shape(elev) +
 ```
 
 
-```{r}
+```{r, eval=FALSE}
 # vector data
 plot(spData::world)
 poland = dplyr::filter(spData::world, grepl(pattern = "Pola", name_long))
