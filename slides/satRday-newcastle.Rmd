@@ -1,6 +1,6 @@
 ---
 title: "Geocomputation with R"
-subtitle: "Reproducible Geo* workflows, from getting data to making maps"
+subtitle: "Reproducible Geo* workflows, from getting data to deploying map-based applications"
 author: "Robin Lovelace, SatRdays Newcastle"
 date: "2019-04-06. Source code: [github.com/geocompr/geocompkg](https://github.com/geocompr/geocompkg/blob/master/slides/)<br> "
 output:
@@ -11,6 +11,7 @@ output:
       countIncrementalSlides: false
 bibliography: refs-geostat.bib
 ---
+
 class: large
 
 ## What is this talk about?
@@ -23,16 +24,15 @@ The talk will show how geographic analysis can bring local examples to life.
 --
 
 ```{r, echo=FALSE}
-hamb_geo_talk = list(
+newcastle_geo_talk = list(
   intro = "about me + geo* data",
   ecosystem = "prominent spatial packages",
-  live_demo = "actions speak louder than words",
-  evidence4policy = "ensuring impact"
+  fin = "final thoughts"
 )
 ```
 
 ```{r}
-str(hamb_geo_talk)
+str(newcastle_geo_talk)
 ```
 
 ---
@@ -54,82 +54,49 @@ BibOptions(check.entries = FALSE,
            hyperlink = FALSE, 
            dashed = FALSE)
 my_bib = ReadBib("refs-geostat.bib", check = FALSE)
+knitr::opts_chunk$set(eval = TRUE)
 ```
-
-<figure>
-<img align="right" src="https://geocompr.github.io/workshops/erum2018/img/globe.png" width = "60%", height = "60%"/>
-</figure>
-
-- [Jakub Nowosad](https://nowosad.github.io/): developer of GeoPAT + more. Lecturing 09:00 on Wednesday.
-
-- [Jannes Muenchow](http://www.geographie.uni-jena.de/en/Muenchow.html), creator of **RQGIS**. Lecturing  Weds 13:30 on GIS Bridges and Weds 15:30 on Spatial CV.
-
---
-
-- [Robin Lovelace](https://www.robinlovelace.net/), creator of **stplanr**, co-author of Efficent R Programming. Lecturing 11:00 Weds on spatial data and the **tidyverse**.
-
---
-
-- Still looking for input before publication in early 2019.
-
----
-
-## whoami
-
-```{r}
-system("whoami")
-```
-
---
-
 
 .pull-left[
-- Environmental geographer
 
-- Learned R for PhD on energy and transport
+- [Jakub Nowosad](https://nowosad.github.io/): developer of GeoPAT + more.
 
-- Now work at the University of Leeds (ITS and LIDA)
+- [Jannes Muenchow](http://www.geographie.uni-jena.de/en/Muenchow.html), creator of **RQGIS**.
 
-- Working on Geocomputation with R
-
-```{r, eval=FALSE}
-devtools::install_github("r-rust/gifski")
-system("youtube-dl https://youtu.be/CzxeJlgePV4 -o v.mp4")
-system("ffmpeg -i v.mp4 -t 00:00:03 -c copy out.mp4")
-system("ffmpeg -i out.mp4 frame%04d.png ")
-f = list.files(pattern = "frame")
-gifski::gifski(f, gif_file = "g.gif", width = 200, height = 200)
-```
+- [Robin Lovelace](https://www.robinlovelace.net/), creator of **stplanr**, co-author of Efficent R Programming.
 
 ]
-
---
 
 .pull-right[
-Image credit: Jeroen Ooms + others
 
-```{r, out.width="100%"}
-knitr::include_graphics("https://user-images.githubusercontent.com/1825120/39661313-534efd66-5047-11e8-8d99-a5597fe160ff.gif")
+```{r}
+library(leaflet)
+popup = c("Robin", "Jakub", "Jannes")
+m = leaflet() %>%
+  addProviderTiles("NASAGIBS.ViirsEarthAtNight2012") %>%
+  addMarkers(lng = c(-3, 23, 11),
+             lat = c(52, 53, 49), 
+             popup = popup)
 ```
 
 ]
+
+--
+
+```{r, out.height="200px", out.width="700px"}
+m
+```
 
 
 ---
 
 .pull-left[
 
-## Why geo*?
+## Why use geographic data?
 
-
-
-## Geographic data is everywhere
-
-
-## underlies some of society's biggest issues
-
-
-## global analyses given local meaning
+- Geographic data is everywhere
+- underlies some of society's biggest issues
+- Give generalised analyse local meaning
 
 ]
 
@@ -138,36 +105,12 @@ knitr::include_graphics("https://user-images.githubusercontent.com/1825120/39661
 .pull-right[
 
 ```{r, echo=FALSE}
-knitr::include_graphics("https://raw.githubusercontent.com/npct/pct-team/master/figures/Leeds-network.png")
+knitr::include_graphics("https://raw.githubusercontent.com/npct/pct-team/master/figures/rnet-newcastle-cost-road.png")
 ```
 
-Example: Propensity to Cycle Tool (PCT) in Manchester: http://pct.bike/m/?r=greater-manchester
+- Example: Propensity to Cycle Tool (PCT) in Newcastle: http://pct.bike/m/?r=north-east
 
 ]
-
----
-
-
-## R can help tackle Big issues
-
---
-
-```{r, echo=FALSE, out.width="50%"}
-knitr::include_graphics("https://media3.giphy.com/media/YkXNjAkG7CfEVx3gcy/giphy.gif?cid=3640f6095bd86a5e784739746ba086e4")
-```
-
---
-
-Geocomputation with R provides new tools
-
----
-
-background-image: url("https://media1.giphy.com/media/Hw5LkPYy9yfVS/giphy.gif")
-
-## Geocomputation with R
-
-- A book we are working on for CRC Press (to be published early 2019)
-- Chapters 3 ~~and 4~~ of this book demonstrate foundations of geocomputing
 
 ---
 
@@ -243,7 +186,9 @@ knitr::include_graphics("https://raw.githubusercontent.com/Robinlovelace/geocomp
 
 ---
 
-class: inverse, center, middle
+background-image: url("https://pbs.twimg.com/media/CvzEQcfWIAAIs-N.jpg")
+background-size: cover
+class: center, middle
 
 # ecosystem
 
@@ -252,35 +197,45 @@ class: inverse, center, middle
 ## Context
 
 - Software for 'data science' is evolving
-- In R, packages **ggplot2** and **dplyr** have become immensely popular and now they are a part of the **tidyverse**
-- These packages use the 'tidy data' principles for consistency and speed of processing (from `vignette("tidy-data")`):
+- **tidyverse** packages **ggplot2** and **dplyr** have become immensely popular
+- Shift in public-facing emphasis:
+  - Away from implementation (computational efficiency)
+  - Towards user friendliness (programmer efficiency)
 
+- Historically spatial R packages have been incompatible with the **tidyverse**
 
->    - Each variable forms a column.
->    - Each observation forms a row.
->    - Each type of observational unit forms a table
+```{r, eval=FALSE}
+library(sp)
+dplyr::slice(stplanr::zones, 2) # error
+```
 
-- Historically spatial R packages have not been compatible with the **tidyverse**
+```{r slice-eg-sf}
+dplyr::slice(stplanr::zones_sf, 2)
+```
 
----
-background-image: url("https://pbs.twimg.com/media/CvzEQcfWIAAIs-N.jpg")
-background-size: cover
-
----
-
-## Enter sf
-
-- **sf** is a recently developed package for spatial (vector) data
-- Combines the functionality of three previous packages: **sp**, **rgeos** and **rgdal**
-- Has many advantages, including:
-    - Faster data I/O
-    - More geometry types supported
-    - Compatibility with the *tidyverse*
-    
 
 ---
 
-## A brief history of geographic data in R
+## Viz developments
+
+"The core R engine was not designed specifically for the display and analysis
+of maps, and the limited interactive facilities it offers have drawbacks in this
+area" `r Citep(my_bib, "bivand_applied_2013", .opts = list(cite.style = "authoryear"))`.
+
+--
+
+Five years later...
+
+--
+
+"An example showing R's flexibility and evolving geographic capabilities is **leaflet**
+`r Citep(my_bib, "R-leaflet", .opts = list(cite.style = "authoryear"))`,
+a package for making interactive maps that has been extended by the R community, as we'll see in Chapter 9" 
+`r Citep(my_bib, "lovelace_geocomputation_2018", .opts = list(cite.style = "authoryear"))`.
+
+---
+
+## A brief history of geographic packages in R
 
 R's predecesor was S, which was itself inspired by lisp `r Citep(my_bib, "chambers_extending_2016", .opts = list(cite.style = "authoryear"))`.
 
@@ -306,7 +261,7 @@ library(splancs)
 
 ---
 
-## Live demo (try this)!
+## splancs
 
 ```{r, fig.height=4}
 # install.packages("splancs"); library(splancs)
@@ -329,44 +284,96 @@ pointmap(as.points(bodmin), add=TRUE)
 
 ---
 
-## A brief history of geographic data viz in R
+## sf
 
-"The core R engine was not designed specifically for the display and analysis
-of maps, and the limited interactive facilities it offers have drawbacks in this
-area" `r Citep(my_bib, "bivand_applied_2013", .opts = list(cite.style = "authoryear"))`.
-
---
-
-Five years later...
-
---
-
-"An example showing R's flexibility and evolving geographic capabilities is **leaflet**
-`r Citep(my_bib, "R-leaflet", .opts = list(cite.style = "authoryear"))`,
-a package for making interactive maps that has been extended by the R community, as we'll see in Chapter 9" 
-`r Citep(my_bib, "lovelace_geocomputation_2018", .opts = list(cite.style = "authoryear"))`.
+- **sf** is a recently developed package for spatial (vector) data
+- Combines the functionality of three previous packages: **sp**, **rgeos** and **rgdal**
+- Has many advantages, including:
+    - Faster data I/O
+    - More geometry types supported
+    - Compatibility with the *tidyverse*
 
 ---
 
-## Base R graphics: sf 
+## sf graphics
 
 ```{r}
 library(sf)
 library(spData)
-plot(nz)
+newcastle_cycling = pct::get_pct_zones("north-east")
+plot(newcastle_cycling)
 ```
 
---
+
+---
+
+## Reading and writing spatial data
+
+```{r}
+library(sf)
+u = paste0("https://github.com/npct/pct-outputs-regional-notR/",
+  "raw/master/commute/msoa/north-east/z.geojson")
+zones = read_sf(u)
+zones = zones[c("geo_name", "all", "bicycle")]
+```
+
+- `write_sf()` writes data `st_write(zones, 'zones.gpkg')`.
+
+- See supported formats with: `sf::st_drivers()`. Details: Chapter 6 of our book: [geocompr.robinlovelace.net/read-write.html](https://geocompr.robinlovelace.net/read-write.html)
+
+---
+
+## sf class 
+
+```{r}
+library(spData) # we'll use our own data
+class(world)
+world
+```
+
+```{r, eval=FALSE, echo=FALSE}
+# ---
+## Structure of the sf objects
+# world$name_long
+# ```
+# 
+# ```{r, echo=FALSE}
+# world$name_long[1:3]
+# ```
+# 
+# ```{r, eval=FALSE}
+# world$geom
+# ```
+# 
+# ```{r, echo=FALSE}
+# print(world$geom, n = 3)
+```
+
+
+---
 
 ## tmap
 
-- A diverse dedicated mapping R package
+- A dedicated mapping R package
 
 ```{r}
 library(tmap)
-tm_shape(nz) +
-  tm_polygons("Median_income", palette = "RdYlBu")
+tm_shape(newcastle_cycling) +
+  tm_polygons("bicycle", palette = "RdYlBu")
 ```
+
+---
+
+## tmap II
+
+- A dedicated mapping R package
+
+```{r}
+tmap_mode("view")
+tm_shape(newcastle_cycling) +
+  tm_polygons("bicycle", palette = "RdYlBu")
+```
+
 
 ---
 
@@ -411,8 +418,8 @@ A package by Mark Padgham and others:
 
 ```{r}
 library(osmdata)
-hamburg = getbb("hamburg")
-parks = opq(bbox = hamburg) %>% 
+newcastle = getbb("newcastle")
+parks = opq(bbox = newcastle) %>% 
   add_osm_feature(key = "leisure", value = "park") %>% 
   osmdata_sf()
 parks
@@ -430,84 +437,10 @@ qtm(parks$osm_polygons)
 
 ---
 
-class: inverse, center, middle
-
-# Demo: sf in the tidyverse
-
-   
----
-
-## Reproducibility + collaboration
-
-> Collaboration is most important aspect of science (and reprex the most important R package!) (Jakub Nowosad, 2018, GEOSTAT)
-
-<br> Slides: https://geocompr.github.io/presentations/
-<br> Source code: https://github.com/geocompr/geostats_18
-
-```{r, eval=FALSE}
-reprex::reprex(2 + 2)
-```
-
-``` r
-2 + 2
-#> [1] 4
-```
-
-<sup>Created on 2018-10-30 by the [reprex package](https://reprex.tidyverse.org) (v0.2.1)</sup>
-
-Attaching packages
-
-```{r}
-library(sf)
-library(raster)
-```
-
----
-
-## Issue: Conflicting function names
+## tidyverse
 
 ```{r}
 library(tidyverse)
-```
-
----
-
-## Reading and writing spatial data
-
-```{r}
-library(sf)
-f = system.file(package = "spData", "shapes/world.shp")
-world_sf = read_sf(f)
-```
-
-`write_sf()/st_write()` writes data `st_write(prague_sf, 'data/prague_sf.gpkg')`. See supported formats with: `sf::st_drivers()`. Details: Chapter 6 of our book: [geocompr.robinlovelace.net/read-write.html](https://geocompr.robinlovelace.net/read-write.html)
-
----
-
-## Structure of the sf objects 
-
-```{r}
-library(spData) # we'll use our own data
-class(world)
-world
-```
-
-```{r, eval=FALSE, echo=FALSE}
-# ---
-## Structure of the sf objects
-# world$name_long
-# ```
-# 
-# ```{r, echo=FALSE}
-# world$name_long[1:3]
-# ```
-# 
-# ```{r, eval=FALSE}
-# world$geom
-# ```
-# 
-# ```{r, echo=FALSE}
-# print(world$geom, n = 3)
 ```
 
 ---
@@ -700,54 +633,37 @@ frameWidget(l, height = '400')
 
 ---
 
+## Final thoughts
+
+---
+
 ## What about raster data?
 
 Raster data in R is evolving:
 
-- You can convert vector data to the `Spatial*` form using `as(my_vector, "Spatial")`before working on raster-vector interactions
-- There are some initial efforts to bring raster data closer to the **tidyverse**/**sf** approaches, such as [tabularaster](https://github.com/hypertidy/tabularaster), [sfraster](https://github.com/mdsumner/sfraster), or [fasterize](https://github.com/ecohealthalliance/fasterize)
+- **raster** package dominates, designed for `Spatial*` objects, e.g. with `as(my_vector, "Spatial")`
+
+
+- Efforts to bring raster data closer to the **tidyverse**/**sf** approaches, such as [tabularaster](https://github.com/hypertidy/tabularaster), [sfraster](https://github.com/mdsumner/sfraster) + [fasterize](https://github.com/ecohealthalliance/fasterize)
 - [stars](https://github.com/r-spatial/stars) focusses on multidimensional space-time (raster/vector) is evolving.
-- **[terra](https://github.com/rspatial/terra)** - first release expected early 2019
-
----
-
-class: inverse, center, middle
-
-# Applications: R for sustainable transport research
-
----
-background-image: url(https://pbs.twimg.com/media/DOH94nXUIAAgcll.jpg)
-background-position: 50% 50%
-class: center, bottom, inverse
-
-## Case study: congested cities
-
----
-
-## Transport: growing source of emissions
-
-.pull-left[
+- **[terra](https://github.com/rspatial/terra)** - first release expected 2019
 
 ```{r}
-knitr::include_graphics("https://raw.githubusercontent.com/Robinlovelace/erum18-transport/master/transport-projections-ipcc.png")
+raster::plot(spData::elev)
 ```
 
-]
 
---
+---
+class: center, middle
 
-.pull-right[
+# Thanks, links, happy R day travels 🚶, 🚲 +  🚀!
 
-- People like to travel!
+- Reproducible slides: [github.com/Robinlovelace/erum18-transport](https://github.com/Robinlovelace/erum18-transport)
 
-- Does not 'saturate' with income
+- Geocomputation (feedback welcome):
+[geocompr.robinlovelace.net](http://geocompr.robinlovelace.net/transport.html)
 
-- Hard to decarbonise via technology
-
-![](https://media2.giphy.com/media/3o7TKOB6oTdYPFXJmw/giphy.gif)
-![](https://media1.giphy.com/media/YlQQYUIEAZ76o/200w.gif)
-
-]
+Slides created via the R package [**xaringan**](https://github.com/yihui/xaringan).
 
 ---
 
@@ -765,7 +681,7 @@ A few examples:
 
 --
 
-- Local issues. E.g. where's the most dangerous/unpopular road in Hamburg?
+- Local issues. E.g. where's the most dangerous/unpopular road in Newcastle?
 
 --
 
@@ -781,19 +697,3 @@ Challenge: balance between transparency/simplicity and sophistication of analysi
 
 
 That is a balance R is ideally set-up to strike
-
----
-class: center, middle
-
-# Thanks, links, happy R day travels 🚶, 🚲 +  🚀!
-
-- Reproducible slides + app: [github.com/Robinlovelace/erum18-transport](https://github.com/Robinlovelace/erum18-transport)
-
-- Transport chapter in Geocomputation with R (feedback welcome):
-[geocompr.robinlovelace.net](http://geocompr.robinlovelace.net/transport.html)
-
-Slides created via the R package [**xaringan**](https://github.com/yihui/xaringan).
-
-
-
-
