@@ -26,7 +26,7 @@ library(sf)
 ```
 
 ```{r}
-world_moll =  st_transform(world, crs = "+proj=moll")
+world_moll = st_transform(world, crs = "+proj=moll")
 ```
 
 ##
@@ -66,86 +66,125 @@ tm_shape(world_moll) +
 
 ```{r}
 tm_shape(world_moll) +
-  tm_polygons(col = "lifeExp")
+  tm_polygons(col = "lifeExp",
+              legend.hist = TRUE) +
+  tm_layout(legend.outside = TRUE) 
 ```
 
 ```{r}
 tm_shape(world_moll) +
-  tm_polygons(col = "lifeExp", style = "jenks")
+  tm_polygons(col = "lifeExp",
+              style = "jenks",
+              legend.hist = TRUE) +
+  tm_layout(legend.outside = TRUE) 
 ```
 
 ```{r}
 tm_shape(world_moll) +
-  tm_polygons(col = "lifeExp", style = "fisher")
+  tm_polygons(col = "lifeExp",
+              style = "fisher",
+              legend.hist = TRUE) +
+  tm_layout(legend.outside = TRUE) 
 ```
 
 ```{r}
 tm_shape(world_moll) +
-  tm_polygons(col = "lifeExp", style = "bclust")
+  tm_polygons(col = "lifeExp",
+              style = "bclust")
 ```
 
 ```{r}
 tm_shape(world_moll) +
-  tm_polygons(col = "lifeExp", style = "hclust")
+  tm_polygons(col = "lifeExp",
+              style = "hclust",
+              legend.hist = TRUE) +
+  tm_layout(legend.outside = TRUE) 
 ```
 
 ```{r}
 tm_shape(world_moll) +
-  tm_polygons(col = "lifeExp", style = "kmeans")
+  tm_polygons(col = "lifeExp", 
+              style = "kmeans",
+              legend.hist = TRUE) +
+  tm_layout(legend.outside = TRUE) 
 ```
 
 ```{r}
 tm_shape(world_moll) +
-  tm_polygons(col = "lifeExp", style = "quantile")
+  tm_polygons(col = "lifeExp", 
+              style = "quantile",
+              legend.hist = TRUE) +
+  tm_layout(legend.outside = TRUE) 
 ```
 
 ```{r}
 tm_shape(world_moll) +
-  tm_polygons(col = "lifeExp", style = "equal")
+  tm_polygons(col = "lifeExp", 
+              style = "equal",
+              legend.hist = TRUE) +
+  tm_layout(legend.outside = TRUE) 
 ```
 
 ```{r}
 tm_shape(world_moll) +
-  tm_polygons(col = "lifeExp", style = "sd")
+  tm_polygons(col = "lifeExp", 
+              style = "sd",
+              legend.hist = TRUE) +
+  tm_layout(legend.outside = TRUE)
 ```
 
 ##
 
 ```{r}
 tm_shape(world_moll) +
-  tm_polygons(col = "lifeExp", style = "fixed", breaks = c(50, 60, 70, 80, 90))
+  tm_polygons(col = "lifeExp", 
+              style = "fixed",
+              breaks = c(50, 60, 70, 80, 90),
+              legend.hist = TRUE) +
+  tm_layout(legend.outside = TRUE) 
 ```
 
 ##
 
 ```{r}
 tm_shape(world_moll) +
-  tm_polygons(col = "lifeExp", style = "cont")
+  tm_polygons(col = "lifeExp",
+              style = "cont") +
+  tm_layout(legend.outside = TRUE) 
 ```
 
 ```{r}
 tm_shape(world_moll) +
-  tm_polygons(col = "lifeExp", style = "order")
+  tm_polygons(col = "lifeExp",
+              style = "order") +
+  tm_layout(legend.outside = TRUE) 
 ```
 
 ## log
 
 ```{r}
 tm_shape(world_moll) +
-  tm_polygons(col = "pop")
+  tm_polygons(col = "pop") +
+  tm_layout(legend.outside = TRUE) 
 ```
 
 ```{r}
 tm_shape(world_moll) +
-  tm_polygons(col = "pop", style = "cont")
+  tm_polygons(col = "pop", 
+              style = "cont") +
+  tm_layout(legend.outside = TRUE) 
 ```
 
 ```{r}
 tm_shape(world_moll) +
-  tm_polygons(col = "pop", style = "log10_pretty")
+  tm_polygons(col = "pop", 
+              style = "log10_pretty") +
+  tm_layout(legend.outside = TRUE) 
 ```
 
 ```{r}
 tm_shape(world_moll) +
-  tm_polygons(col = "pop", style = "log10")
+  tm_polygons(col = "pop", 
+              style = "log10") +
+  tm_layout(legend.outside = TRUE) 
 ```
