@@ -48,4 +48,4 @@ env:
   - MAKEFLAGS="-j 2"
 
 #services
-services:
+script:
