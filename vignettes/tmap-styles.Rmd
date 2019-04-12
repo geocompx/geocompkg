@@ -1,0 +1,151 @@
+---
+title: "Map styles available in the tmap package"
+author: "Robin Lovelace, Jakub Nowosad, Jannes Muenchow"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{tmap-styles}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```
+
+This vignette builds on the [making maps chapter](https://geocompr.robinlovelace.net/adv-map.html) of [the Geocomputation with R book](https://geocompr.github.io/).
+
+## Prerequisites {-}
+
+The example below assume the following packages are attached:
+
+```{r}
+library(spData) # example datasets
+library(tmap)   # map creation
+library(sf)
+```
+
+```{r}
+world_moll =  st_transform(world, crs = "+proj=moll")
+```
+
+##
+
+```{r}
+tm_shape(world_moll) +
+  tm_polygons(col = "lightblue")
+```
+
+##
+
+```{r}
+tm_shape(world_moll) +
+  tm_polygons(col = "MAP_COLORS")
+```
+
+`tmaptools::palette_explorer()`
+
+```{r}
+tm_shape(world_moll) +
+  tm_polygons(col = "MAP_COLORS", palette = "Pastel1")
+```
+
+##
+
+`tm_polygons(col = "subregion", style = "cat")`
+
+```{r}
+tm_shape(world_moll) +
+  tm_polygons(col = "subregion")
+```
+
+
+##
+
+`tm_polygons(col = "lifeExp", style = "pretty")`
+
+```{r}
+tm_shape(world_moll) +
+  tm_polygons(col = "lifeExp")
+```
+
+```{r}
+tm_shape(world_moll) +
+  tm_polygons(col = "lifeExp", style = "jenks")
+```
+
+```{r}
+tm_shape(world_moll) +
+  tm_polygons(col = "lifeExp", style = "fisher")
+```
+
+```{r}
+tm_shape(world_moll) +
+  tm_polygons(col = "lifeExp", style = "bclust")
+```
+
+```{r}
+tm_shape(world_moll) +
+  tm_polygons(col = "lifeExp", style = "hclust")
+```
+
+```{r}
+tm_shape(world_moll) +
+  tm_polygons(col = "lifeExp", style = "kmeans")
+```
+
+```{r}
+tm_shape(world_moll) +
+  tm_polygons(col = "lifeExp", style = "quantile")
+```
+
+```{r}
+tm_shape(world_moll) +
+  tm_polygons(col = "lifeExp", style = "equal")
+```
+
+```{r}
+tm_shape(world_moll) +
+  tm_polygons(col = "lifeExp", style = "sd")
+```
+
+##
+
+```{r}
+tm_shape(world_moll) +
+  tm_polygons(col = "lifeExp", style = "fixed", breaks = c(50, 60, 70, 80, 90))
+```
+
+##
+
+```{r}
+tm_shape(world_moll) +
+  tm_polygons(col = "lifeExp", style = "cont")
+```
+
+```{r}
+tm_shape(world_moll) +
+  tm_polygons(col = "lifeExp", style = "order")
+```
+
+## log
+
+```{r}
+tm_shape(world_moll) +
+  tm_polygons(col = "pop")
+```
+
+```{r}
+tm_shape(world_moll) +
+  tm_polygons(col = "pop", style = "cont")
+```
+
+```{r}
+tm_shape(world_moll) +
+  tm_polygons(col = "pop", style = "log10_pretty")
+```
+
+```{r}
+tm_shape(world_moll) +
+  tm_polygons(col = "pop", style = "log10")
+```
