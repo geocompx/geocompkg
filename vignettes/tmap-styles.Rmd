@@ -2,7 +2,10 @@
 title: "Map styles available in the tmap package"
 author: "Robin Lovelace, Jakub Nowosad, Jannes Muenchow"
 date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
+output: 
+  rmarkdown::html_vignette:
+      toc: true
+      number_sections: true
 vignette: >
   %\VignetteIndexEntry{tmap-styles}
   %\VignetteEngine{knitr::rmarkdown}
@@ -10,14 +13,15 @@ vignette: >
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, eval = FALSE)
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, eval = F,
+                      fig.width = 8, fig.height = 4)
 ```
 
 This vignette builds on the [making maps chapter](https://geocompr.robinlovelace.net/adv-map.html) of [the Geocomputation with R book](https://geocompr.github.io/).
 
 ## Prerequisites {-}
 
-The example below assume the following packages are attached:
+The examples below assume the following packages are attached:
 
 ```{r}
 library(spData) # example datasets
@@ -29,14 +33,14 @@ library(sf)
 world_moll = st_transform(world, crs = "+proj=moll")
 ```
 
-##
+# One color
 
 ```{r}
 tm_shape(world_moll) +
   tm_polygons(col = "lightblue")
 ```
 
-##
+# Coloring of adjacent polygons
 
 ```{r}
 tm_shape(world_moll) +
@@ -47,93 +51,31 @@ tm_shape(world_moll) +
 
 ```{r}
 tm_shape(world_moll) +
-  tm_polygons(col = "MAP_COLORS", palette = "Pastel1")
+  tm_polygons(col = "MAP_COLORS",
+              palette = "Pastel1")
 ```
 
-##
+```{r}
+tm_shape(world_moll) +
+  tm_polygons(col = "MAP_COLORS",
+              minimize = TRUE)
+```
+
+https://en.wikipedia.org/wiki/Four_color_theorem
+
+# Categorical maps
 
 `tm_polygons(col = "subregion", style = "cat")`
 
 ```{r}
 tm_shape(world_moll) +
-  tm_polygons(col = "subregion")
-```
-
-
-##
-
-`tm_polygons(col = "lifeExp", style = "pretty")`
-
-```{r}
-tm_shape(world_moll) +
-  tm_polygons(col = "lifeExp",
-              legend.hist = TRUE) +
+  tm_polygons(col = "subregion")+
   tm_layout(legend.outside = TRUE) 
 ```
 
-```{r}
-tm_shape(world_moll) +
-  tm_polygons(col = "lifeExp",
-              style = "jenks",
-              legend.hist = TRUE) +
-  tm_layout(legend.outside = TRUE) 
-```
+# Discrete maps
 
-```{r}
-tm_shape(world_moll) +
-  tm_polygons(col = "lifeExp",
-              style = "fisher",
-              legend.hist = TRUE) +
-  tm_layout(legend.outside = TRUE) 
-```
-
-```{r}
-tm_shape(world_moll) +
-  tm_polygons(col = "lifeExp",
-              style = "bclust")
-```
-
-```{r}
-tm_shape(world_moll) +
-  tm_polygons(col = "lifeExp",
-              style = "hclust",
-              legend.hist = TRUE) +
-  tm_layout(legend.outside = TRUE) 
-```
-
-```{r}
-tm_shape(world_moll) +
-  tm_polygons(col = "lifeExp", 
-              style = "kmeans",
-              legend.hist = TRUE) +
-  tm_layout(legend.outside = TRUE) 
-```
-
-```{r}
-tm_shape(world_moll) +
-  tm_polygons(col = "lifeExp", 
-              style = "quantile",
-              legend.hist = TRUE) +
-  tm_layout(legend.outside = TRUE) 
-```
-
-```{r}
-tm_shape(world_moll) +
-  tm_polygons(col = "lifeExp", 
-              style = "equal",
-              legend.hist = TRUE) +
-  tm_layout(legend.outside = TRUE) 
-```
-
-```{r}
-tm_shape(world_moll) +
-  tm_polygons(col = "lifeExp", 
-              style = "sd",
-              legend.hist = TRUE) +
-  tm_layout(legend.outside = TRUE)
-```
-
-##
+## Fixed
 
 ```{r}
 tm_shape(world_moll) +
@@ -144,7 +86,121 @@ tm_shape(world_moll) +
   tm_layout(legend.outside = TRUE) 
 ```
 
-##
+## Pretty
+
+The `"pretty"` style rounds breaks into whole numbers where possible and spaces them evenly.
+
+`tm_polygons(col = "lifeExp", style = "pretty")`
+
+```{r}
+tm_shape(world_moll) +
+  tm_polygons(col = "lifeExp",
+              legend.hist = TRUE) +
+  tm_layout(legend.outside = TRUE) 
+```
+
+<!-- n is approximation -->
+
+```{r}
+tm_shape(world_moll) +
+  tm_polygons(col = "lifeExp",
+              legend.hist = TRUE,
+              n = 4) +
+  tm_layout(legend.outside = TRUE) 
+```
+
+<!-- https://r-spatial.github.io/classInt/index.html -->
+
+
+## Breaks based on the centred and scaled variable
+
+```{r}
+tm_shape(world_moll) +
+  tm_polygons(col = "lifeExp", 
+              style = "sd",
+              legend.hist = TRUE) +
+  tm_layout(legend.outside = TRUE)
+```
+
+
+## Jenks natural breaks 
+
+The `"jenks"` style identifies groups of similar values in the data and maximizes the differences between categories.
+
+```{r}
+tm_shape(world_moll) +
+  tm_polygons(col = "lifeExp",
+              style = "jenks",
+              legend.hist = TRUE) +
+  tm_layout(legend.outside = TRUE) 
+```
+
+## Fisher-Jenks algorithm
+
+```{r}
+tm_shape(world_moll) +
+  tm_polygons(col = "lifeExp",
+              style = "fisher",
+              legend.hist = TRUE) +
+  tm_layout(legend.outside = TRUE) 
+```
+
+## Bagged clustering
+
+```{r, message=FALSE}
+tm_shape(world_moll) +
+  tm_polygons(col = "lifeExp",
+              style = "bclust",
+              legend.hist = TRUE) +
+  tm_layout(legend.outside = TRUE) 
+```
+
+## Hierarchical clustering
+
+```{r}
+tm_shape(world_moll) +
+  tm_polygons(col = "lifeExp",
+              style = "hclust",
+              legend.hist = TRUE) +
+  tm_layout(legend.outside = TRUE) 
+```
+
+## k-means clustering
+
+```{r}
+tm_shape(world_moll) +
+  tm_polygons(col = "lifeExp", 
+              style = "kmeans",
+              legend.hist = TRUE) +
+  tm_layout(legend.outside = TRUE) 
+```
+
+## Quantile breaks
+
+```{r}
+tm_shape(world_moll) +
+  tm_polygons(col = "lifeExp", 
+              style = "quantile",
+              legend.hist = TRUE) +
+  tm_layout(legend.outside = TRUE) 
+```
+
+## Equal breaks
+
+The `"equal"` style divides input values into bins of equal range, and is appropriate for variables with a uniform distribution (not recommended for variables with a skewed distribution as the resulting map may end-up having little color diversity).
+
+```{r}
+tm_shape(world_moll) +
+  tm_polygons(col = "lifeExp", 
+              style = "equal",
+              legend.hist = TRUE) +
+  tm_layout(legend.outside = TRUE) 
+```
+
+
+## Continuous
+
+The `"cont"` style presents a large number of colors over continuous color field.
 
 ```{r}
 tm_shape(world_moll) +
@@ -153,6 +209,9 @@ tm_shape(world_moll) +
   tm_layout(legend.outside = TRUE) 
 ```
 
+The `"order"` style also presents a large number of colors over continuous color field. 
+However, this style is suited to visualize skewed distributions.
+
 ```{r}
 tm_shape(world_moll) +
   tm_polygons(col = "lifeExp",
@@ -160,7 +219,7 @@ tm_shape(world_moll) +
   tm_layout(legend.outside = TRUE) 
 ```
 
-## log
+## Logarithmic scale
 
 ```{r}
 tm_shape(world_moll) +
@@ -175,12 +234,16 @@ tm_shape(world_moll) +
   tm_layout(legend.outside = TRUE) 
 ```
 
+The `"log10_pretty"` style 
+
 ```{r}
 tm_shape(world_moll) +
   tm_polygons(col = "pop", 
               style = "log10_pretty") +
   tm_layout(legend.outside = TRUE) 
 ```
+
+The `"log10"` style 
 
 ```{r}
 tm_shape(world_moll) +
