@@ -10,7 +10,7 @@ vignette: >
 ---
 
 This vignette provides some further detail on the vector attribute subsetting section (see https://geocompr.robinlovelace.net/attr.html#vector-attribute-subsetting ) and the spatial subsetting section (see https://geocompr.robinlovelace.net/spatial-operations.html#spatial-subsetting ) of [the Geocomputation with R book](https://geocompr.github.io/).
-It goal is to demonstrate some subtleties of spatial subsetting of `sf` objects using base R and **tidyverse** methods.
+Its goal is to demonstrate some subtleties of spatial subsetting of `sf` objects using base R and **tidyverse** methods.
 
 The starting point is to attach necessary packages:
 
