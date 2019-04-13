@@ -13,11 +13,12 @@ vignette: >
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, eval = F,
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, eval = TRUE,
                       fig.width = 8, fig.height = 4)
 ```
 
 This vignette builds on the [making maps chapter](https://geocompr.robinlovelace.net/adv-map.html) of [the Geocomputation with R book](https://geocompr.github.io/).
+Its goal is to demonstrate all possible map styles available in the **tmap** package.
 
 ## Prerequisites {-}
 
@@ -26,8 +27,12 @@ The examples below assume the following packages are attached:
 ```{r}
 library(spData) # example datasets
 library(tmap)   # map creation
-library(sf)
+library(sf)     # spatial data reprojection
 ```
+
+The `world` object containing a world map data from [Natural Earth](https://www.naturalearthdata.com/) and information about countries' names, regions and subregions they belong to, areas, life expectancies, and populations.
+This object is in geographical coordinates using the WGS84 datum, however for mapping purposes the Mollweide projection is a better alternative (learn more in [the modifying map projections section](https://geocompr.robinlovelace.net/reproj-geo-data.html#modifying-map-projections)).
+The `st_tranform` function from the **sf** package allows for quick reprojection to the selected coordinate reference system (e.g., the Mollweide projection can be represented as `"+proj=moll"`).
 
 ```{r}
 world_moll = st_transform(world, crs = "+proj=moll")
