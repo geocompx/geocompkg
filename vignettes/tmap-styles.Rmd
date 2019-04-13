@@ -13,7 +13,7 @@ vignette: >
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, eval = TRUE,
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, eval = F,
                       fig.width = 8, fig.height = 4)
 ```
 
@@ -30,9 +30,9 @@ library(tmap)   # map creation
 library(sf)     # spatial data reprojection
 ```
 
-The `world` object containing a world map data from [Natural Earth](https://www.naturalearthdata.com/) and information about countries' names, regions and subregions they belong to, areas, life expectancies, and populations.
-This object is in geographical coordinates using the WGS84 datum, however for mapping purposes the Mollweide projection is a better alternative (learn more in [the modifying map projections section](https://geocompr.robinlovelace.net/reproj-geo-data.html#modifying-map-projections)).
-The `st_tranform` function from the **sf** package allows for quick reprojection to the selected coordinate reference system (e.g., the Mollweide projection can be represented as `"+proj=moll"`).
+The `world` object containing a world map data from [Natural Earth](https://www.naturalearthdata.com/) and information about countries' names, regions, and subregions they belong to, areas, life expectancies, and populations.
+This object is in geographical coordinates using the WGS84 datum, however, for mapping purposes, the Mollweide projection is a better alternative (learn more in [the modifying map projections section](https://geocompr.robinlovelace.net/reproj-geo-data.html#modifying-map-projections)).
+The `st_tranform` function from the **sf** package allows for quick reprojection to the selected coordinate reference system (e.g., `"+proj=moll"` represents the Mollweide projection).
 
 ```{r}
 world_moll = st_transform(world, crs = "+proj=moll")
@@ -40,19 +40,30 @@ world_moll = st_transform(world, crs = "+proj=moll")
 
 # One color
 
+Let's start with the basics.
+To create a simple world map, we need to specify the data object (`world_moll`) inside the `tm_shape()` function, and the way we want to visualize it.
+The **tmap** package offers several visualisation possibilities for polygons, including `tm_borders()`, `tm_fill()`, and `tm_polygons()`.
+The last one draws the filled polygons with borders, where the fill color can be specified with the `col` argument:
+
 ```{r}
 tm_shape(world_moll) +
   tm_polygons(col = "lightblue")
 ```
 
+The output is a map of world countries, where each country is filled with a light blue color.
+
 # Coloring of adjacent polygons
+
+The `col` argument is very flexible, and its action depends on the value provided.
+In the previous example, we provided a single color value resulting in a map with one color. 
+To create a map, where adjacent polygons do not get the same color, we need to provide a keyword `"MAP_COLORS"`.
 
 ```{r}
 tm_shape(world_moll) +
   tm_polygons(col = "MAP_COLORS")
 ```
 
-`tmaptools::palette_explorer()`
+The default color can be changed using the `palette` argument - run the `tmaptools::palette_explorer()` function to see possible palettes' names.
 
 ```{r}
 tm_shape(world_moll) +
@@ -60,17 +71,24 @@ tm_shape(world_moll) +
               palette = "Pastel1")
 ```
 
+<!-- Additionally, the number of classes can be set using the `n` argument. -->
+Additionally, in this case, it is possible to use the `minimize` argument, which triggers the internal algorithm to search for a minimal number of colors for visualization.
+
 ```{r}
 tm_shape(world_moll) +
   tm_polygons(col = "MAP_COLORS",
               minimize = TRUE)
 ```
 
-https://en.wikipedia.org/wiki/Four_color_theorem
+The new map uses five colors<!-- except for Angola (blue color)-->. 
+On a side note, in theory, no more than four colors are required to color the polygons of the map so that no two adjacent polygons have the same color (learn more about the four color map theorem on [wikipedia](https://en.wikipedia.org/wiki/Four_color_theorem)).
 
 # Categorical maps
 
-`tm_polygons(col = "subregion", style = "cat")`
+The third use of the `col` argument is by providing the variable (column) name.
+In this case, the map will represent the given variable.
+By default, **tmap** behaves differently depending on the input variable type.
+For example, it will create a categorical map when the provided variable contains characters or factors.^[The `tm_polygons(col = "subregion", style = "cat")` code will be used automatically in this case.]
 
 ```{r}
 tm_shape(world_moll) +
@@ -79,6 +97,8 @@ tm_shape(world_moll) +
 ```
 
 # Discrete maps
+
+<!-- Discrete maps  -->
 
 ## Fixed
 
