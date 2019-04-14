@@ -13,7 +13,7 @@ vignette: >
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, eval = F,
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, eval = FALSE,
                       fig.width = 8, fig.height = 4)
 ```
 
@@ -98,8 +98,8 @@ tm_shape(world_moll) +
 
 # Discrete maps
 
-
-<!-- Discrete maps  -->
+Discrete maps represents continuous numerical variables using discrete class intervals.
+There are several ways to convert continuous variables to discrete ones implemented in **tmap**.
 
 ## Pretty
 
@@ -113,7 +113,7 @@ tm_shape(world_moll) +
   tm_layout(legend.outside = TRUE) 
 ```
 
-Histogram is added using `legend.hist = TRUE` in this and several next examples to show how the selected map style relates to the distribution of values. 
+A histogram is added using `legend.hist = TRUE` in this and several next examples to show how the selected map style relates to the distribution of values. 
 
 It is possible to indicate a preferred number of classes using the `n` argument.^[Importantly, not every `n` is possible depending on the range of the values in the data.]
 
@@ -138,7 +138,7 @@ tm_shape(world_moll) +
   tm_layout(legend.outside = TRUE) 
 ```
 
-Additionaly, the default lables can be overwirtten using the `labels` argument.
+Additionally, the default labels can be overwritten using the `labels` argument.
 
 ```{r}
 tm_shape(world_moll) +
@@ -150,9 +150,9 @@ tm_shape(world_moll) +
   tm_layout(legend.outside = TRUE) 
 ```
 
-## Breaks based on the centred and scaled variable
+## Breaks based on the standard deviation value
 
-The `"sd"` style calculates a value of standard deviation of a given variable, and next use this value as the break width.
+The `"sd"` style calculates a standard deviation of a given variable, and next use this value as the break width.
 
 ```{r}
 tm_shape(world_moll) +
@@ -164,7 +164,7 @@ tm_shape(world_moll) +
 
 ## Fisher algorithm
 
-The `"fisher"` style creates a groups with maximilized homogenity.^[https://www.tandfonline.com/doi/abs/10.1080/01621459.1958.10501479] 
+The `"fisher"` style creates groups with maximalized homogeneity.^[https://www.tandfonline.com/doi/abs/10.1080/01621459.1958.10501479] 
 
 ```{r}
 tm_shape(world_moll) +
@@ -237,7 +237,7 @@ tm_shape(world_moll) +
 
 ## Equal breaks
 
-The `"equal"` style divides input values into bins of equal range, and is appropriate for variables with a uniform distribution.
+The `"equal"` style divides input values into bins of equal range and is appropriate for variables with a uniform distribution.
 It is not recommended for variables with a skewed distribution as the resulting map may end-up having little color diversity.
 
 ```{r}
@@ -252,9 +252,11 @@ Learn more about the implementation of discrete scales in [the **classInt** pack
 
 # Continuous maps
 
+The **tmap** package also allows for creating continuous maps.
+
 ## Continuous
 
-The `"cont"` style presents a large number of colors over continuous color field.
+The `"cont"` style presents a large number of colors over the continuous color field.
 
 ```{r}
 tm_shape(world_moll) +
@@ -265,7 +267,7 @@ tm_shape(world_moll) +
 
 ## Order
 
-The `"order"` style also presents a large number of colors over continuous color field. 
+The `"order"` style also presents a large number of colors over the continuous color field. 
 However, this style is suited to visualize skewed distributions.^[Notice that the values on the legend do not change linearly.]
 
 ```{r}
@@ -285,7 +287,7 @@ tm_shape(world_moll) +
   tm_layout(legend.outside = TRUE) 
 ```
 
-Another possible style, `order` works better in this case, however it is not easy to interpret.
+Another possible style, `order` works better in this case; however, it is not easy to interpret.
 
 ```{r}
 tm_shape(world_moll) +
@@ -294,7 +296,7 @@ tm_shape(world_moll) +
   tm_layout(legend.outside = TRUE) 
 ```
 
-Better alternative in this case is to use a common logarithm (the logarithm to base 10) scale.
+A better alternative, in this case, is to use a common logarithm (the logarithm to base 10) scale.
 The **tmap** package gives two possibilities in this case - `"log10_pretty"` and `"log10"`.
 The `"log10_pretty"` style is a common logarithmic version of the regular `pretty` style.
 
