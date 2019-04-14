@@ -13,7 +13,7 @@ vignette: >
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, eval = T,
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, eval = F,
                       fig.width = 8, fig.height = 4)
 ```
 
