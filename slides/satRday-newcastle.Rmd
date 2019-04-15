@@ -25,15 +25,17 @@ The talk will show how geographic analysis can bring local examples to life.
 
 ```{r, echo=FALSE}
 newcastle_geo_talk = list(
-  intro = "about me + geo* data",
+  introduction = "introduction to geocomputation with R",
   ecosystem = "prominent spatial packages",
-  fin = "final thoughts"
+  vizpkgs = "visualisation packages",
+  fin = "what next?"
 )
 ```
 
 ```{r}
 str(newcastle_geo_talk)
 ```
+
 
 ---
 
@@ -137,19 +139,25 @@ knitr::include_graphics("http://www.ccg.leeds.ac.uk/people/s.openshaw/s.openshaw
 
 ---
 
-## Other aspects of the definition
-
---
-
-> What distinguishes geocomputation from the older quantitative geography, is its emphasis on "creative and experimental" GIS applications `r Citep(my_bib, "longley_geocomputation_1998", .opts = list(cite.style = "authoryear"))`.
-
---
-
-It's about doing "practical work that is beneficial or useful" `r Citep(my_bib, "openshaw_geocomputation_2000", .opts = list(cite.style = "authoryear"))`.
-
---
+## Another definition
 
 > about harnessing the power of modern computers to *do things* with geographic data.
+
+--
+
+.pull-left[
+
+```{r, echo=FALSE}
+knitr::include_graphics("https://geocompr.robinlovelace.net/figures/08_metro_areas.png")
+```
+
+]
+
+.pull-right[
+
+Raster image of Germany (resolution: 20 km) with the identified metropolitan areas (golden polygons) and the corresponding names.
+
+]
 
 ---
 
@@ -178,11 +186,42 @@ Applications
 
 ]
 
+--
+
 .pull-right[
-```{r, echo=FALSE, message=FALSE, out.height="700"}
-knitr::include_graphics("https://raw.githubusercontent.com/Robinlovelace/geocompr/master/images/frontcover.png")
+```{r, echo=FALSE, message=FALSE}
+knitr::include_graphics("https://geocompr.robinlovelace.net/images/cover.png")
 ```
 ]
+
+---
+
+## Context
+
+- Software for 'data science' is evolving
+- **tidyverse** packages **ggplot2** and **dplyr** have become immensely popular
+- Shift in public-facing emphasis:
+  - Away from implementation (computational efficiency)
+  - Towards user friendliness (productivity)
+  
+--
+
+There are different types of efficiency (source: [Efficient R Programming](https://csgillespie.github.io/efficientR/introduction.html#what-is-efficiency))
+
+--
+
+> The second, broader definition of efficient computing is programmer productivity. This is the amount of useful work a person (not a computer) can do per unit time.
+
+```{r, echo=FALSE}
+# demonstrate incompatibility
+# 
+# - Historically spatial R packages have been incompatible with the # **tidyverse**
+# 
+# library(sp)
+# dplyr::slice(stplanr::zones, 2) # error
+# 
+# dplyr::slice(stplanr::zones_sf, 2)
+```
 
 ---
 
@@ -194,25 +233,24 @@ class: center, middle
 
 ---
 
-## Context
+## A brief history of geographic packages in R
 
-- Software for 'data science' is evolving
-- **tidyverse** packages **ggplot2** and **dplyr** have become immensely popular
-- Shift in public-facing emphasis:
-  - Away from implementation (computational efficiency)
-  - Towards user friendliness (programmer efficiency)
+- See a [video](https://www.youtube.com/watch?v=Luxllb_WAqY) of Roger Bivand's talk on the subject (live demo of [R 0.49](https://cran.r-project.org/src/base/R-0/), released 1997) + GitHub [repo](https://github.com/rsbivand/eRum18/blob/master/eRum_keynote_18.Rmd)
 
-- Historically spatial R packages have been incompatible with the **tidyverse**
+- Brian Ripley, on R's [core team](https://www.r-project.org/contributors.html), with strong interest in spatial stats
 
-```{r, eval=FALSE}
-library(sp)
-dplyr::slice(stplanr::zones, 2) # error
-```
+- Rs capabilities have evolved substantially since then!
 
-```{r slice-eg-sf}
-dplyr::slice(stplanr::zones_sf, 2)
-```
+--
 
+- **rgdal**, released in 2003
+
+--
+
+- **sp**, released 2005
+  - **sp**verse: **gstat**, **geosphere**, **adehabitat**
+
+- **raster**, released 2010
 
 ---
 
@@ -235,7 +273,7 @@ a package for making interactive maps that has been extended by the R community,
 
 ---
 
-## A brief history of geographic packages in R
+## Going way back...
 
 R's predecesor was S, which was itself inspired by lisp `r Citep(my_bib, "chambers_extending_2016", .opts = list(cite.style = "authoryear"))`.
 
@@ -276,11 +314,56 @@ pointmap(as.points(bodmin), add=TRUE)
 ---
 
 ## Observations
+
 - R' is robust and future-proof 
 
-- See a [video](https://www.youtube.com/watch?v=Luxllb_WAqY) of Roger Bivand's talk on the subject (live demo of R 0.49) + GitHub [repo](https://github.com/rsbivand/eRum18/blob/master/eRum_keynote_18.Rmd)
+--
 
-- Rs capabilities have evolved substantially since then!
+- It was hard
+
+--
+
+- But it still worked
+
+---
+
+## Getting data
+
+- Many portals and packages for getting data - see [Chapter 7](https://geocompr.robinlovelace.net/read-write.html)
+
+```{r}
+library(osmdata)
+newcastle = getbb("newcastle")
+osm_data = opq(bbox = newcastle) %>% 
+  add_osm_feature(key = "leisure", value = "park") %>% 
+  osmdata_sf()
+parks = osm_data$osm_polygons
+```
+
+--
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE, out.height="200px"}
+library(tmap)
+tmap_mode("view")
+qtm(parks)
+tmap_mode("plot")
+```
+
+---
+
+## Getting transport data
+
+- pct package developed to make transport data more accessible
+
+--
+
+- Get transport zones for Newcastle
+
+```{r}
+zones_all = pct::get_pct_zones("north-east")
+zones = zones_all[c("geo_code", "car_driver", "foot", "bicycle")]
+plot(zones)
+```
 
 ---
 
@@ -295,26 +378,14 @@ pointmap(as.points(bodmin), add=TRUE)
 
 ---
 
-## sf graphics
-
-```{r}
-library(sf)
-library(spData)
-newcastle_cycling = pct::get_pct_zones("north-east")
-plot(newcastle_cycling)
-```
-
-
----
-
 ## Reading and writing spatial data
 
-```{r}
+```{r, echo=FALSE}
 library(sf)
 u = paste0("https://github.com/npct/pct-outputs-regional-notR/",
   "raw/master/commute/msoa/north-east/z.geojson")
 zones = read_sf(u)
-zones = zones[c("geo_name", "all", "bicycle")]
+zones = zones[c("geo_name", "all", "foot", "bicycle")]
 ```
 
 - `write_sf()` writes data `st_write(zones, 'zones.gpkg')`.
@@ -326,9 +397,9 @@ zones = zones[c("geo_name", "all", "bicycle")]
 ## sf class 
 
 ```{r}
-library(spData) # we'll use our own data
-class(world)
-world
+library(spData) # pre-packaged data
+class(zones)
+zones
 ```
 
 ```{r, eval=FALSE, echo=FALSE}
@@ -349,92 +420,6 @@ world
 # print(world$geom, n = 3)
 ```
 
-
----
-
-## tmap
-
-- A dedicated mapping R package
-
-```{r}
-library(tmap)
-tm_shape(newcastle_cycling) +
-  tm_polygons("bicycle", palette = "RdYlBu")
-```
-
----
-
-## tmap II
-
-- A dedicated mapping R package
-
-```{r}
-tmap_mode("view")
-tm_shape(newcastle_cycling) +
-  tm_polygons("bicycle", palette = "RdYlBu")
-```
-
-
----
-
-## Summary: recent packages for spatial data
-
-```{r, eval=FALSE}
-install.packages("tidyverse")
-```
-
-The **tidyverse** now (mostly) works with spatial data.
-
-This is thanks to **sf**, a recent package (first release in 2016) that implements the open standard data model *simple features*. Get **sf** with:
-
-```{r, eval=FALSE}
-install.packages("sf")
-```
-
-Raster data is also supported, in the more mature package **raster**:
-
-```{r, eval=FALSE}
-install.packages("raster")
-```
-
-
-For datasets...:
-
-```{r, eval=FALSE}
-install.packages("spData")
-install.packages("rnaturalearth")
-```
-
-For more on this see: [github.com/Robinlovelace/geocompr](https://github.com/Robinlovelace/geocompr). 
-
----
-
-# osmdata
-
-A package by Mark Padgham and others:
-
-> Padgham, M., Lovelace, R., Salmon, M., Rudis, B., 2017. osmdata. The Journal of Open Source Software 2. https://doi.org/10.21105/joss.00305
-
-
-```{r}
-library(osmdata)
-newcastle = getbb("newcastle")
-parks = opq(bbox = newcastle) %>% 
-  add_osm_feature(key = "leisure", value = "park") %>% 
-  osmdata_sf()
-parks
-```
-
---
-
-# A map can tell 1000 words
-
-```{r, echo=FALSE, warning=FALSE, message=FALSE}
-library(tmap)
-ttm()
-qtm(parks$osm_polygons)
-```
-
 ---
 
 ## tidyverse
@@ -443,231 +428,210 @@ qtm(parks$osm_polygons)
 library(tidyverse)
 ```
 
----
-
-## Attribute operations: filtering
-
-```{r, warning=FALSE}
-world %>% 
-  filter(name_long == "United Kingdom")
-```
-
 --
 
-Base R equivalent:
-
-```{r, eval=FALSE}
-world[world$name_long == "United Kingdom", ]
-```
-
---
-
-Question:
-
-```{r}
-identical(
-  world %>% filter(name_long == "United Kingdom"),
-  world[world$name_long == "United Kingdom", ]
-) # ?
-```
+- Mostly compatible, but there are some [pitfalls](https://geocompr.github.io/geocompkg/articles/tidyverse-pitfalls.html)
 
 ---
 
-## Aggregation
-
-```{r}
-world_cont = world %>% 
-        group_by(continent) %>% 
-        summarize(pop_sum = sum(pop, na.rm = TRUE))
-```
-
-```{r, echo=FALSE}
-print(world_cont, n = 1)
-```
-
-
-- The `st_set_geometry` function can be used to remove the geometry column:
-
-```{r}
-world_df = st_set_geometry(world_cont, NULL)
-class(world_df)
-```
-
----
-
-## Spatial operations
-
-It's a big topic which includes:
-
-- Spatial subsetting
-- Spatial joining/aggregation
-- Topological relations
-- Distances
-- Spatial geometry modification
-- Raster operations (map algebra)
-
-See [Chapter 4](http://geocompr.robinlovelace.net/spatial-operations.html) of *Geocomputation with R* 
-
----
-
-## Spatial subsetting
+## Chaining geographic operations
 
 ```{r, warning = FALSE, message = FALSE, fig.height = 4}
-lnd_buff = lnd[1, ] %>% 
+parks_buff = parks %>% 
   st_transform(crs = 27700) %>%  # uk CRS
-  st_buffer(500000) %>%
+  st_buffer(50) %>%
   st_transform(crs = 4326)
-near_lnd = world[lnd_buff, ]
-plot(near_lnd$geom)
+near_parks = zones[parks_buff, ] # spatial subsetting
+zones$near_parks = lengths(st_intersects(zones, parks_buff)) > 0
 ```
 
-- What is going with the country miles away?
+--
+
+```{r}
+qtm(zones, "near_parks")
+```
+
 
 ---
 
-## Multi-objects
+## Gotchas with geographic data
 
-Some objects have multiple geometries:
 
-```{r}
-st_geometry_type(near_lnd)
+- Some objects have multiple geometries:
+
+```{r, warning=FALSE}
+unique(st_geometry_type(zones))
+zones_POLYGON = st_cast(zones, "POLYGON")
+unique(st_geometry_type(zones_POLYGON))
 ```
 
-Which have more than 1?
+- Coordinate references systems
 
-```{r}
-data.frame(near_lnd$name_long,
-           sapply(near_lnd$geom, length))
-```
-
----
-
-## Subsetting contiguous polygons
-
-```{r, message = FALSE, warning = FALSE, fig.height = 6}
-near_lnd_new = world %>% 
-  st_cast(to = "POLYGON") %>% 
-  filter(st_intersects(., lnd_buff, sparse = FALSE))
-plot(st_geometry(near_lnd_new))
-```
-
----
-
-## CRS: a key geo* concept
-
-```{r}
-na_2163 = world %>%
-  filter(continent == "North America") %>% 
-  st_transform(2163) #US National Atlas Equal Area
-st_crs(na_2163)
-```
 
 ```{r, echo=FALSE, eval=FALSE}
-na = world %>%
-  filter(continent == "North America") 
-png('slides/figs/coord_compare.png', width = 1000, height = 250)
-par(mfrow = c(1, 2), mar=c(0,0,0,0))
-plot(na[0]);plot(na_2163[0])
-dev.off()
-```
+france = 
+st_geometry_type(world)
+# Which have more than 1?
+## Subsetting contiguous polygons
 
-![](figs/coord_compare.png)
-
----
-
-## Making maps
-
-- Basic maps of `sf` objects can be quickly created using the `plot()` function:
-
-```{r, eval=FALSE}
-plot(world[0])
-```
-
-```{r, eval=FALSE}
-plot(world["pop"])
-```
-
-```{r, echo=FALSE, message=FALSE, eval=FALSE, warning=FALSE, results='hide'}
-png('slides/figs/plot_compare.png', width = 800, height = 300)
-par(mfrow = c(1, 2), mar=c(0,0,1,0))
-plot(world[0]);plot(world["pop"])
-dev.off()
-```
-
-![](figs/plot_compare.png)
-
----
-
-## tmap
-
-https://cran.r-project.org/web/packages/tmap/vignettes/tmap-nutshell.html
-```{r, fig.align='center', fig.height=4, message=FALSE}
-library(tmap)
-tmap_mode("plot") #check the "view"
-tm_shape(world, projection = "+proj=moll") +
-        tm_polygons("lifeExp", title = "Life expactancy",
-          style = "pretty", palette = "RdYlGn") +
-        tm_style("grey")
+world_POLYGON = st_cast(world, to = "POLYGON")
+near_lnd = world_POLYGON[parks_buff, ]
+near_lnd2 = world_POLYGON %>% 
+  filter(st_intersects(., parks_buff, sparse = FALSE))
+plot(st_geometry(near_lnd))
 ```
 
 ---
+
+background-image: url(https://user-images.githubusercontent.com/1825120/38543030-5794b6f0-3c9b-11e8-9da9-10ec1f3ea726.gif)
+background-size: cover
+class: center, middle
+
+# Geographic data visualisation
+
+--
+
+Source: [Geocomputation with R](https://geocompr.robinlovelace.net/adv-map.html#animated-maps)
+
+---
+
+## sf graphics
+
+```{r}
+library(sf)
+# plot(zones[c("car_driver", "foot")])
+```
+
+---
+
+## ggplot2
+
+```{r}
+ggplot(zones) +
+  geom_sf(aes(fill = bicycle)) +
+  scale_fill_viridis_c()
+```
+
+---
+
 ## leaflet
 
 ```{r, eval=FALSE}
 library(leaflet)
-leaflet(world) %>%
+leaflet(zones) %>%
         addTiles() %>%
         addPolygons(color = "#444444", weight = 1, fillOpacity = 0.5,
-                    fillColor = ~colorQuantile("YlOrRd", lifeExp)(lifeExp),
-                    popup = paste(round(world$lifeExp, 2)))
+                    fillColor = ~colorQuantile("YlOrRd", bicycle)(bicycle),
+                    popup = paste(round(zones$bicycle, 2)))
 ```
 
 ```{r, echo=FALSE, message=FALSE}
 library(widgetframe)
 library('leaflet')
-l = leaflet(world) %>%
+l = leaflet(zones) %>%
   addTiles() %>%
-  addPolygons(color = "#444444", weight = 1, fillOpacity = 0.5, fillColor = ~colorQuantile("YlOrRd", lifeExp)(lifeExp), popup = paste(round(world$lifeExp, 2)))
+  addPolygons(color = "#444444", weight = 1, fillOpacity = 0.5, fillColor = ~colorQuantile("YlOrRd", foot)(foot), popup = paste(round(zones$foot, 2)))
 frameWidget(l, height = '400')
 ```
 
 ---
 
-## Final thoughts
+## tmap
+
+- A dedicated mapping R package
+
+```{r}
+library(tmap)
+tm_shape(zones) +
+  tm_polygons("foot", palette = "RdYlBu")
+```
 
 ---
 
-## What about raster data?
+## tmap II
+
+- A dedicated mapping R package
+
+```{r, message=FALSE}
+tmap_mode("view")
+tm_shape(zones) +
+  tm_polygons("foot", palette = "RdYlBu")
+```
+
+---
+
+## Mapdeck
+
+- See example at [geocompr.robinlovelace.net/adv-map.html](https://geocompr.robinlovelace.net/adv-map.html#other-mapping-packages)
+
+```{r}
+library(mapdeck)
+set_token(Sys.getenv("MAPBOX"))
+mapdeck(data = zones) %>% 
+  mapdeck::add_sf() %>% 
+  add_polygon(elevation = zones$foot^2)
+```
+
+
+---
+
+## Shiny
+
+Here's one I made earlier: www.pct.bike
+
+```{r, echo=FALSE}
+knitr::include_graphics("https://raw.githubusercontent.com/npct/pct-team/master/figures/front-page-leeds-pct-demo.png")
+```
+
+---
+
+## Geoplumber
+
+GitHub package developed by Layik Hama - see [github.com/ATFutures](https://github.com/ATFutures/geoplumber)
+
+![](https://user-images.githubusercontent.com/1825120/46699371-7f79d000-cc11-11e8-9716-e1223296c7d6.gif)
+
+
+---
+
+# What next?
+
+---
+
+## Advances in raster data with R
 
 Raster data in R is evolving:
 
 - **raster** package dominates, designed for `Spatial*` objects, e.g. with `as(my_vector, "Spatial")`
 
-
 - Efforts to bring raster data closer to the **tidyverse**/**sf** approaches, such as [tabularaster](https://github.com/hypertidy/tabularaster), [sfraster](https://github.com/mdsumner/sfraster) + [fasterize](https://github.com/ecohealthalliance/fasterize)
 - [stars](https://github.com/r-spatial/stars) focusses on multidimensional space-time (raster/vector) is evolving.
 - **[terra](https://github.com/rspatial/terra)** - first release expected 2019
 
-```{r}
+--
+
+- See https://github.com/edzer/sdsr
+
+```{r, out.width="200px"}
 raster::plot(spData::elev)
+```
+
+---
+
+## Spatial networks
+
+- Lots of packages out there, including `stplanr`, `dodgr` and `tidygraph`
+
+- Source: https://github.com/spnethack/spnethack
+
+```{r, echo=FALSE, out.width="80%"}
+knitr::include_graphics("https://raw.githubusercontent.com/spnethack/spnethack/master/README_files/figure-gfm/pway-1.png")
 ```
 
 
 ---
-class: center, middle
 
-# Thanks, links, happy R day travels 🚶, 🚲 +  🚀!
-
-- Reproducible slides: [github.com/Robinlovelace/erum18-transport](https://github.com/Robinlovelace/erum18-transport)
-
-- Geocomputation (feedback welcome):
-[geocompr.robinlovelace.net](http://geocompr.robinlovelace.net/transport.html)
-
-Slides created via the R package [**xaringan**](https://github.com/yihui/xaringan).
-
----
-
-## 'Leverage points' where R skills can help
+## Geographic 'leverage points' where R can help
 
 A few examples:
 
@@ -697,3 +661,53 @@ Challenge: balance between transparency/simplicity and sophistication of analysi
 
 
 That is a balance R is ideally set-up to strike
+
+---
+
+## Summary: do things with geographic data in R
+
+Base R + **tidyverse** now (mostly) works with spatial data.
+
+This is thanks to **sf**, a recent package (first release in 2016) that implements the open standard data model *simple features*. Get **sf** with:
+
+```{r, eval=FALSE}
+install.packages("sf")
+```
+
+Raster data is also supported, in the more mature package **raster**:
+
+```{r, eval=FALSE}
+install.packages("raster")
+```
+
+
+For datasets...:
+
+```{r, eval=FALSE}
+install.packages("spData")
+install.packages("rnaturalearth")
+```
+
+For more on this see the book: [github.com/Robinlovelace/geocompr](https://github.com/Robinlovelace/geocompr)
+
+--
+
+- 2 day workshop: [lida.leeds.ac.uk/event](https://lida.leeds.ac.uk/event/geocomputation-data-analysis-r/)
+
+---
+class: center, middle
+
+# Thanks, links, happy R day travels 🚶, 🚲 +  🚀!
+
+- Reproducible slides: [githttps://github.com/geocompr/geocompkgttps://github.com/Robgeocompr/geocompkg- Geocomputation (feedback welcome):
+[geocompr.robinlovelace.net](http://geocompr.robinlovelace.net/transport.html)
+
+Slides created via the R package [**xaringan**](https://github.com/yihui/xaringan).
+
+--
+
+```{r, echo=FALSE}
+knitr::include_graphics("https://user-images.githubusercontent.com/1825120/55670985-962c7700-5882-11e9-8bef-188854547011.png")
+```
+
+
