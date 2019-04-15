@@ -1,6 +1,6 @@
 Package: geocompkg
 Title: Geocomputation with R metapackage with solutions and extensions
-Version: 0.0.76
+Version: 0.0.77
 Authors@R: c(person("Robin", "Lovelace", role = c("aut")), 
     person("Jakub", "Nowosad", email = "nowosad.jakub@gmail.com",
     role = c("aut", "cre")),
@@ -11,6 +11,7 @@ Imports:
     bookdown,
     cartogram,
     classInt,
+    dplyr,
     geosphere,
     ggplot2,
     historydata,
@@ -29,6 +30,7 @@ Imports:
     osmdata,
     pool,
     pROC,
+    purrr,
     ranger,
     raster,
     rasterVis,
@@ -50,8 +52,10 @@ Imports:
     spDataLarge,
     stars,
     stplanr,
+    stringr,
+    tibble,
+    tidyr,
     tree,
-    tidyverse,
     tmap,
     tmaptools,
     vegan
