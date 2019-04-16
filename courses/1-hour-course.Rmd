@@ -1,0 +1,128 @@
+---
+title: Geocomputation with R
+subtitle: Get me started with vector data
+output: pdf_document
+---
+
+This short tutorial is designed to accompany a 'get me started' lecture on working with geographic data in R.
+It's a big topic: a more detailed account is covered in the open source book *Geocomputation with R*.
+The contents of this tutorial aim to get you started.
+
+The practicals assume you have installed commonly used packages for data science and working with geographic data, e.g. with:
+
+```{eval=FALSE}
+install.packages("sf")        # a package for working with spatial data
+install.packages("spData")    # provides example data
+install.packages("tidyverse") # metapackage for data science
+install.packages("tmap")      # a mapping package
+```
+
+## Attribute operations
+
+Load `sf` and `spData` with the following commands:
+
+```{r, message=FALSE}
+library(sf)
+library(dplyr)
+library(spData)
+```
+
+You should now have the `world` data in your namespace, which you can check by plotting the object, which should generate the following result:
+
+```{r}
+plot(world)
+```
+
+You can filter and subset the data as follows:
+
+```{r}
+# subset rows (countries) in Asia
+asia = world %>% 
+  filter(continent == "Asia")
+# subset columns with certain names
+world_small = world %>% 
+  select(name_long, continent, pop)
+```
+
+1. Create and plot an object called `europe` representing the countries of Europe
+1. Use the commands `dim()` and `nrow()` to find out: how many countries are there in Europe?
+    - Bonus: cast the `europe` object into a new object called `europe_poly`. How many rows does it have and why does it have more rows than `europe` does?
+1. Create an object called `world_names` containing only country names.
+    - Bonus: what is the class of this new object?
+    - Bonus: What is its geometry type?
+1. Create an object containing only countries with at least 100 million inhabitants
+    - Bonus: which continent has most small countries (with less than 10 million inhabitants)?
+
+```{r, echo=FALSE, eval=FALSE}
+europe = world %>% 
+  filter(continent == "Europe")
+nrow(europe)
+europe_poly = europe %>% 
+  st_cast(to = "POLYGON")
+nrow(europe_poly)
+plot(europe_poly)
+```
+
+## Spatial operations
+
+The input data for this part will be point and polygon data representing New Zealand, from Chapter 4 of *Geocomputation with R*.
+The best place to start is to plot the data:
+
+```{r}
+plot(nz$geom)
+plot(nz_height, add = TRUE)
+```
+
+1. Canterbury is the region of New Zealand containing most of the 100 highest points in the country. Create an object called `canterbury` and use this to subset all points within the region. How many of these high points does the Canterbury region contain?
+```{r 04-spatial-operations-45, eval=FALSE, echo=FALSE}
+library(tmap)
+tmap_mode("view")
+qtm(nz) + qtm(nz_height)
+canterbury = nz %>% filter(Name == "Canterbury")
+canterbury_height = nz_height[canterbury, ]
+nrow(canterbury_height) # answer: 70
+```
+1. Which region has the second highest number of `nz_height` points in, and how many does it have?
+```{r 04-spatial-operations-46, eval=FALSE, echo=FALSE}
+nz_height_count = aggregate(nz_height, nz, length)
+nz_height_combined = cbind(nz, count = nz_height_count$elevation)
+nz_height_combined %>% 
+  st_drop_geometry() %>% 
+  dplyr::select(Name, count) %>% 
+  arrange(desc(count)) %>% 
+  slice(2)
+```
+    - Bonus: geralizing the question to all regions, how many of New Zealand's 16 regions contain points which belong to the top 100 highest points in the country? Which regions?
+    - Bonus: create a table listing these regions in order of the number of points and their name.
+```{r 04-spatial-operations-47, echo=FALSE, eval=FALSE}
+nz_height_count = aggregate(nz_height, nz, length)
+nz_height_combined = cbind(nz, count = nz_height_count$elevation)
+nz_height_combined %>% 
+  st_drop_geometry() %>% 
+  dplyr::select(Name, count) %>% 
+  arrange(desc(count)) %>% 
+  na.omit()
+```
+
+## Plotting
+
+These exercises rely on the object `europe`.
+Create it using the `world` and `worldbank_df` datasets from the **spData** package as follows (see Chapter \@ref(attr)):
+
+```{r 08-mapping-41, warning=FALSE}
+europe = world %>% 
+  filter(continent == "Europe", !is.na(iso_a2)) %>% 
+  left_join(worldbank_df, by = "iso_a2") %>% 
+  dplyr::select(name, subregion, gdpPercap, HDI, pop_growth) %>% 
+  st_transform("+proj=aea +lat_1=20 +lat_2=-23 +lat_0=0 +lon_0=25")
+```
+
+1. Create a map showing the geographic distribution of the Human Development Index (`HDI`) across Europe with base **graphics** (hint: use `plot()`) and **tmap** packages (hint: use `tm_shape(europe) + ...`).
+1. Extend the **tmap** created for the previous exercise so the legend has three bins: "High" (`HDI` above 0.7), "Medium" (`HDI` between 0.55 and 0.7) and "Low" (`HDI` below 0.55).
+    - Bonus: improve the map aesthetics, for example by changing the legend title, class labels and color palette.
+1. Represent `europe`'s subregions on the map. 
+
+```{r, echo=FALSE}
+plot(europe["subregion"])
+```
+
