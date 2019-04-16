@@ -126,3 +126,8 @@ europe = world %>%
 plot(europe["subregion"])
 ```
 
+
+```{r, echo=FALSE, eval=FALSE}
+file.rename("courses/1-hour-course.pdf", "1-hour-course.pdf")
+piggyback::pb_upload("1-hour-course.pdf")
+```
