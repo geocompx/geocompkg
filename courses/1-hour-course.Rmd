@@ -10,7 +10,7 @@ The contents of this tutorial aim to get you started.
 
 The practicals assume you have installed commonly used packages for data science and working with geographic data, e.g. with:
 
-```{eval=FALSE}
+```{r, eval=FALSE}
 install.packages("sf")        # a package for working with spatial data
 install.packages("spData")    # provides example data
 install.packages("tidyverse") # metapackage for data science
@@ -29,7 +29,7 @@ library(spData)
 
 You should now have the `world` data in your namespace, which you can check by plotting the object, which should generate the following result:
 
-```{r}
+```{r, out.height="9.6cm"}
 plot(world)
 ```
 
@@ -107,7 +107,7 @@ nz_height_combined %>%
 ## Plotting
 
 These exercises rely on the object `europe`.
-Create it using the `world` and `worldbank_df` datasets from the **spData** package as follows (see Chapter \@ref(attr)):
+Create it using the `world` and `worldbank_df` datasets from the **spData** package as follows (see Section [2.2](https://geocompr.robinlovelace.net/spatial-class.html#intro-sf) of Geocomputation with R for details):
 
 ```{r 08-mapping-41, warning=FALSE}
 europe = world %>% 
