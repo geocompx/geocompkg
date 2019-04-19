@@ -90,6 +90,7 @@ tm_shape(hill) +
 ```
 
 ```{r, echo=FALSE, eval=FALSE}
+# https://github.com/neilcharles/geoviz
 library(magrittr)
 library(rayshader)
 
