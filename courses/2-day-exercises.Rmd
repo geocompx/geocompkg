@@ -15,7 +15,7 @@ These practicals aim to test your knowledge and improve your skills in relation 
 
 It will use the following CRAN packages:
 
-```{r, message=FALSE, warning=FALSE}
+```{r, message=FALSE, warning=FALSE, echo=TRUE}
 library(dplyr)
 library(osmdata)
 library(pct)
