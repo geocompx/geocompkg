@@ -119,6 +119,14 @@ knitr::include_graphics("geolida_files/figure-gfm/unnamed-chunk-2-1.png")
 tmap_mode("plot")
 ```
 
+## Online home
+
+The course is part of the Geocomputation with R book project.
+
+See the overview slides here: https://geocompr.github.io/presentations/2day.html#1
+
+See an overview of the course here: https://git.io/geocompr-2-day-course
+
 ## Course contents
 
 ### Day 1: Foundations

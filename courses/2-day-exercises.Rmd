@@ -1,0 +1,91 @@
+---
+output:
+  pdf_document:
+    number_sections: true
+title: "Geocomputation with: R Practical Exercises"
+---
+
+```{r setup, include = FALSE}
+# setup
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+
+These practicals aim to test your knowledge and improve your skills in relation to the 2 day Geocomputation with R course, hosted at https://git.io/geocompr-2-day-course
+
+It will use the following CRAN packages:
+
+```{r, message=FALSE, warning=FALSE}
+library(dplyr)
+library(osmdata)
+library(pct)
+library(sf)
+library(tmap)
+library(mapview)
+```
+
+# Project set-up
+
+- Check your packages are up-to-date with `update.packages()`
+- Create an RStudio project with an appropriate name for this course (e.g. `geo2day`)
+- Create a script called `set-up.R`, e.g. with the following command:
+
+```{r, eval=FALSE, echo=TRUE}
+file.edit("set-up.R") 
+```
+
+- Create an interactive map showing the course location with the following commands (you should see the map shown below):
+
+```{r, eval=FALSE, echo=TRUE}
+library(leaflet)
+library(osmdata)
+library(tmap)
+lida = opq("Leeds") %>% 
+  add_osm_feature(key = "name", value = "Worsley Building") %>% 
+  osmdata_sf()
+# m = mapview::mapview(lida$osm_polygons, zoom = 16)
+lida_centroid = lida$osm_polygons %>% 
+  sf::st_centroid()
+lon = sf::st_coordinates(lida_centroid)[1]
+lat = sf::st_coordinates(lida_centroid)[2]
+m = tm_shape(lida$osm_polygons) +
+  tm_polygons(col = "red") +
+  tm_view(set.view = c(lon + 0.005, lat - 0.005, 15)) +
+  tm_basemap(server = leaflet::providers$CartoDB.Positron) +
+  tm_minimap(server = leaflet::providers$OpenTopoMap, zoomLevelOffset = -10) +
+  tm_scale_bar()
+tmap_mode("view")
+```
+
+
+```{r, echo=FALSE, out.width="50%"}
+knitr::include_graphics("geolida_files/figure-gfm/unnamed-chunk-2-1.png")
+```
+
+
+- Bonus: add a layer showing a road along which you travelled to get here
+
+
+# R's spatial ecosystem
+
+**Lunch**
+
+13:30-15:00 The structure of vector geographic data in R and working with attribute data
+
+15:15-16:30 Spatial data operations
+
+]
+.pull-right[
+
+
+### Day 2 GIS, viz, modelling
+
+09:30-11:00 Reading and writing geographic data
+
+11:15-12:30: Geometric operations
+
+**Lunch**
+
+13:30-15:00 Visualisation
+
+15:15-16:30 Working on your own data

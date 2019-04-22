@@ -12,6 +12,11 @@ output:
 bibliography: refs-geostat.bib
 ---
 
+```{r, engine='bash', eval=FALSE, echo=FALSE}
+# publish slides
+```
+
+
 class: large
 
 ## What is this talk about?
