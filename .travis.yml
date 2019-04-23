@@ -24,10 +24,18 @@
 
 # Header
 language: r
-cache: packages
+cache:
+  - packages
+  - ccache
 latex: false
 dist: trusty
 sudo: required
+
+addons:
+  apt:
+    packages:
+     - ccache
+
 before_install:
   - sudo add-apt-repository ppa:ubuntugis/ubuntugis-unstable --yes
   - sudo add-apt-repository ppa:opencpu/jq --yes
