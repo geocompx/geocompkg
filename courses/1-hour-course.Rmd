@@ -4,9 +4,18 @@ subtitle: Get me started with vector data
 output: pdf_document
 ---
 
+```{r, include=FALSE, eval=FALSE}
+download.file("https://github.com/nickbearman/intro-r-spatial-analysis-short/raw/1dd525dd7209c36d2c0931d20bc1cc18114fa5f6/workbook.Rmd", "workbook.Rmd")
+knitr::purl("workbook.Rmd")
+file.edit("workbook.R")
+```
+
+
 This short tutorial is designed to accompany a 'get me started' lecture on working with geographic data in R.
 It's a big topic: a more detailed account is covered in the open source book *Geocomputation with R*.
 The contents of this tutorial aim to get you started.
+
+For slides, see  https://geocompr.github.io/presentations/1hr.html#1 and 
 
 The practicals assume you have installed commonly used packages for data science and working with geographic data, e.g. with:
 
@@ -61,6 +70,23 @@ europe_poly = europe %>%
   st_cast(to = "POLYGON")
 nrow(europe_poly)
 plot(europe_poly)
+world_names = world %>% 
+  select(name_long, pop)
+world_big = world %>%
+  select(name_long, pop) %>% 
+  filter(pop > 100000)
+world_small = world %>%
+  select(name_long, pop, continent) %>% 
+  filter(pop < 10000000)
+
+world_small_agg = world_small %>% 
+  group_by(continent) %>% 
+  summarise(n = n())
+
+library(tmap)
+tmap_mode("view")
+tm_shape(world_small_agg) +
+  tm_polygons(col = "n")
 ```
 
 ## Spatial operations
