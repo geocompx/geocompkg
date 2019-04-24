@@ -34,6 +34,34 @@ library(mapview)
 file.edit("set-up.R") 
 ```
 
+- Create a data frame representing coffee consumption across the country as follows (note: this may not be representative):
+
+```{r, echo=TRUE}
+person_name = c("arron", "bob", "carl")
+n_coffee = c(5, 1, 0)
+likes_herbal_tea = c(TRUE, FALSE, TRUE)
+home_region = c("west-yorkshire", "avon", "london")
+coffee = tibble::tibble(person_name, n_coffee, likes_herbal_tea,
+                        home_region)
+```
+
+- Filter rows in which the `person_name == "bob"`
+- Create a subset of the data containing only rows in which `likes_herbal_tea` is `TRUE`
+- Bonus: return all rows in which the `person_name` contains the letter `o` (hint: type `?grepl` for help)
+
+- Save the data as a file called `coffee.csv` using `readr::write_csv()`
+- Read-in the data to objects called `coffee2` and `coffee3` using `read_csv()` from the `readr` package and `read.csv()` from base R as follows:
+
+```{r, eval=FALSE, echo=TRUE}
+readr::write_csv(coffee, "coffee.csv")
+coffee1 = read_csv("coffee.csv")
+coffee2 = read.csv("coffee.csv")
+```
+
+- Use the function `purrr::map_chr(coffee2, class)` to find the class of each column. What's the difference between `coffee2` and the other datasets?
+
+# R's spatial ecosystem
+
 - Create an interactive map showing the course location with the following commands (you should see the map shown below):
 
 ```{r, eval=FALSE, echo=TRUE}
@@ -62,9 +90,7 @@ tmap_mode("view")
 knitr::include_graphics("geolida_files/figure-gfm/unnamed-chunk-2-1.png")
 ```
 
-- Bonus: add a layer showing a road along which you travelled to get here
-
-# R's spatial ecosystem
+- Bonus: add a layer showing a road along which you travelled to get here (hint: you can search for road names at http://osm.org/ )
 
 
 1) Think about the terms 'GIS', 'GDS' and 'Geocomputation' described above. Which (if any) best describes the work you would like to do using geo* methods and software and why?
@@ -93,7 +119,7 @@ knitr::include_graphics("geolida_files/figure-gfm/unnamed-chunk-2-1.png")
 
 Load `sf` and `spData` with the following commands:
 
-```{r, message=FALSE}
+```{r, message=FALSE, echo=TRUE}
 library(sf)
 library(dplyr)
 library(spData)
@@ -138,12 +164,14 @@ plot(europe_poly)
 
 # Spatial data operations
 
-The input data for this part will be point and polygon data representing New Zealand, from Chapter 4 of *Geocomputation with R*.
-The best place to start is to plot the data:
+The input data for this part will be point and polygon data representing New Zealand (`nz`), from Chapter 4 of *Geocomputation with R*.
+The best place to start is to plot the data so the first exercise is:
+
+- Create a plot of the data so it looks like the map of New Zealand below (hint: use the `add = TRUE` argument).
 
 ```{r}
 plot(nz$geom)
-plot(nz_height, add = TRUE)
+plot(nz_height["elevation"], add = TRUE)
 ```
 
 1. Canterbury is the region of New Zealand containing most of the 100 highest points in the country. Create an object called `canterbury` and use this to subset all points within the region. How many of these high points does the Canterbury region contain?
