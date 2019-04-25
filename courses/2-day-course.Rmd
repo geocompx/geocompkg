@@ -256,7 +256,7 @@ tm_shape(uk) +
 
 ## Additional exercises
 
-Part II
+### Section 2
 
 - Use the code in Section 2 to create a map of an OSM element you're interested in.
 
@@ -264,9 +264,60 @@ Part II
 
 - What differences do you notice compared with `sf` objects
 
+### Section 4
+
+- Use the following commands to get STATS19 point data and cycleway data in Leeds
+
+```{r, eval=FALSE}
+library(stats19)
+stats19 = stats19::get_stats19(year = 2017, type = "ac", ask = FALSE)
+stats19 = stats19[stats19$accident_severity == "Serious", ]
+stats19_sf = stats19::format_sf(stats19, lonlat = TRUE)
+cycleways = opq("leeds") %>% 
+  add_osm_feature(key = "name", value = "Cycle Superhighway 1") %>% 
+  osmdata_sf()
+```
+
+```{r, eval=FALSE, echo=FALSE}
+sf::write_sf(stats19_sf, "stats19_sf.geojson")
+piggyback::pb_upload("stats19_sf.geojson")
+saveRDS(cycleways, "cycleways.Rds")
+piggyback::pb_upload("cycleways.Rds")
+
+```
+
+
+Note: the saved data can be read-in as follows:
+
+```{r}
+u = "https://github.com/geocompr/geocompkg/releases/download/0.1/cycleways.Rds"
+download.file(u, "cycleways.Rds", mode = "wb")
+cycleways = readRDS("cycleways.Rds")
+u = "https://github.com/geocompr/geocompkg/releases/download/0.1/stats19_sf.geojson"
+stats19_sf = read_sf(u)
+```
+
+
+- Create a 500 m buffer around the cycleways and subset the crashes that happened within 500 metres of cycleways. The results should look like the image below.
+
+```{r, echo=FALSE}
+cway = st_transform(cycleways$osm_lines, 27700)
+cway_buff = st_buffer(cway, 500) %>% 
+  st_union()
+stats19_sf = st_transform(stats19_sf, 27700)
+stats19_cway = stats19_sf[cway_buff,]
+
+plot(cway_buff)
+plot(stats19_cway, add = T)
+```
+
+
+
 ## Notes
 
 Welcome to the course!
+
+**Note for day 2:** Do not use the HDI dataset. Use the `lifeExp` column instead.
 
 To be updated as the course progresses
 
