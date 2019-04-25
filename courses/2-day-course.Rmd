@@ -454,6 +454,37 @@ vignette("sf1")
 - Attribute operations
 
 
+### Spatial operations
+
+```{r, eval=FALSE}
+library(sf)
+library(spData)
+nz = spData::nz
+plot(nz)
+nz_height
+canterbury = nz[nz$Name == "Canterbury", ]
+canterbury_points = nz_height[canterbury, ]
+canterbury_points = nz_height[canterbury, , op = st_intersects]
+plot(nz$geom)
+plot(canterbury, col = "red", add = TRUE)
+plot(nz_height, add = TRUE, col = "grey")
+plot(canterbury_points, add = TRUE)
+
+point_joined = st_join(nz_height, nz["Name"])
+
+point_aggregated1 = aggregate(nz_height["elevation"], nz, FUN = mean)
+plot(point_aggregated1)
+
+library(dplyr)
+point_aggregated2 = point_joined %>% 
+  group_by(Name) %>% 
+  summarise(av_height = mean(elevation))
+plot(point_aggregated2)
+```
+
+
+
+
 
 
 ## References
