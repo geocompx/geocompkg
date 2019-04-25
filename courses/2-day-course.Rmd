@@ -307,10 +307,11 @@ cway_buff = st_buffer(cway, 500) %>%
 stats19_sf = st_transform(stats19_sf, 27700)
 stats19_cway = stats19_sf[cway_buff,]
 
-plot(cway_buff)
-plot(stats19_cway, add = T)
+# plot(cway_buff)
+# plot(stats19_cway, add = T)
 ```
 
+![](https://user-images.githubusercontent.com/1825120/56742786-4ea45700-676d-11e9-93ab-03f6f9f3122c.png)
 
 
 ## Notes

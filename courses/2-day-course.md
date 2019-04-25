@@ -291,14 +291,9 @@ stats19_sf = read_sf(u)
   - Create a 500 m buffer around the cycleways and subset the crashes
     that happened within 500 metres of cycleways. The results should
     look like the image
-    below.
+below.
 
-<!-- end list -->
-
-    #> Warning in plot.sf(stats19_cway, add = T): ignoring all but the first
-    #> attribute
-
-![](2-day-course_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
+![](https://user-images.githubusercontent.com/1825120/56742786-4ea45700-676d-11e9-93ab-03f6f9f3122c.png)
 
 ## Notes
 
