@@ -479,8 +479,20 @@ plot(nz_height, add = TRUE, col = "grey")
 plot(canterbury_points, add = TRUE)
 
 point_joined = st_join(nz_height, nz["Name"])
-nz_joined = st_join(nz, nz_height)
+nz_joined = st_join(nz, nz_height) %>% 
+  filter(!is.na(elevation))
 
+summary(nz_height$elevation)
+
+summary(is.na(nz_joined$elevation))
+
+res = nz_joined %>% 
+  group_by(Name) %>% 
+  summarise(n = n()) %>% 
+  arrange(desc(n)) 
+  # slice(2) %>% 
+  # pull(Name)
+plot(res)
 
 point_aggregated1 = aggregate(nz_height["elevation"], nz, FUN = mean)
 plot(point_aggregated1)
@@ -490,6 +502,8 @@ point_aggregated2 = nz_joined %>%
   group_by(Name) %>% 
   summarise(av_height = mean(elevation))
 plot(point_aggregated2)
+st_crs(nz)
+
 ```
 
 
