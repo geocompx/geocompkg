@@ -201,6 +201,14 @@ coffee %>%
 coffee[2, ]
 ```
 
+-   Bonus: create a spatial object representing coffee consumption by region
+
+Note: use Ctl-Shift-M to create the pipe operator
+
+``` r
+%>% %>% %>% %>% %>% %>% %>% %>% %>% %>% %>% 
+```
+
 -   Attribute operations
 
 References

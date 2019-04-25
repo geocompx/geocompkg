@@ -295,6 +295,24 @@ coffee %>%
 coffee[2, ]
 ```
 
+- Bonus: create a spatial object representing coffee consumption by region
+
+```{r, echo=FALSE, eval=FALSE}
+coffee1$region_name = coffee1$home_region
+coffee1$region_name = NULL
+coffee_sf = dplyr::right_join(pct::pct_regions, coffee1,
+                              by = c("region_name" = "home_region"))
+plot(coffee_sf)
+library(spData)
+coffee_data
+```
+
+Note: use Ctl-Shift-M to create the pipe operator
+
+```{r, eval=FALSE}
+%>% %>% %>% %>% %>% %>% %>% %>% %>% %>% %>% 
+```
+
 
 - Attribute operations
 
