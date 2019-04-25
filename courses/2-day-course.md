@@ -248,6 +248,29 @@ tm_shape(uk) +
 
 ![](2-day-course_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
 
+## Additional exercises
+
+Part II
+
+  - Use the code in Section 2 to create a map of an OSM element you’re
+    interested in.
+
+  - Take a look at the old tutorial Making Maps with R:
+    <https://github.com/Robinlovelace/Creating-maps-in-R>
+
+  - What differences do you notice compared with `sf` objects
+
+## Notes
+
+To be updated as the course progresses
+
+  - Introductory slides can be found here:
+    <https://geocompr.github.io/presentations/intro-to-R.html>
+
+  - Attribute operations
+
+Welcome to the course\!
+
 ## References
 
 <div id="refs" class="references">
