@@ -433,6 +433,10 @@ plot(world)
 
 sel = world$pop > 10000000
 summary(sel)
+
+world_continents = world %>% 
+  group_by(continent) %>% 
+  summarise(n = n())
 ```
 
 Try changing the basemap
