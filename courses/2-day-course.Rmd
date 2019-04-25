@@ -266,12 +266,37 @@ Part II
 
 ## Notes
 
+Welcome to the course!
+
 To be updated as the course progresses
 
 - Introductory slides can be found here: https://geocompr.github.io/presentations/intro-to-R.html
 
+Resources on for loops:
+
+- r4ds book: https://r4ds.had.co.nz/iteration.html
+
+
+```{r, eval=FALSE}
+coffee = readr::read_csv("coffee.csv")
+coffee[coffee$likes_herbal_tea, ]
+coffee[grepl(pattern = "o", coffee$person_name), ]
+
+names(coffee)
+coffee$region_name = coffee$home_region
+coffee$home_region = NULL
+
+coffee_sf = dplyr::right_join(pct::pct_regions, coffee)
+coffee_sf
+plot(coffee_sf$geometry)
+library(tidyverse)
+coffee %>% 
+  slice(2)
+coffee[2, ]
+```
+
+
 - Attribute operations
 
-Welcome to the course!
 
 ## References
