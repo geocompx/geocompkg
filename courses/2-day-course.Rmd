@@ -254,4 +254,12 @@ tm_shape(uk) +
   tm_lines(col = "red", lwd = 5)
 ```
 
+## Notes
+
+To be updated as the course progresses
+
+- Introductory slides can be found here: https://geocompr.github.io/presentations/intro-to-R.html
+
+- Attribute operations
+
 ## References

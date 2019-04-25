@@ -1,7 +1,8 @@
 ---
-output: github_document
-  # pdf_document:
-  #   number_sections: true
+output: 
+# github_document
+  pdf_document:
+    number_sections: true
 title: "Geocomputation with: R Practical Exercises"
 ---
 
