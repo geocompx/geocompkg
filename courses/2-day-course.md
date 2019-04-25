@@ -209,6 +209,47 @@ Note: use Ctl-Shift-M to create the pipe operator
 %>% %>% %>% %>% %>% %>% %>% %>% %>% %>% %>% 
 ```
 
+### R's spatial ecosystem
+
+Try playing with the map created with these commands
+
+``` r
+library(leaflet)
+library(osmdata)
+library(tmap)
+lida = opq("Leeds") %>% 
+  add_osm_feature(key = "name", value = "Worsley Building") %>% 
+  osmdata_sf()
+road = opq("Leeds") %>% 
+  add_osm_feature(key = "name", value = "Albion Street") %>% 
+  osmdata_sf()
+# m = mapview::mapview(lida$osm_polygons, zoom = 16)
+lida_centroid = lida$osm_polygons %>% 
+  sf::st_centroid()
+lon = sf::st_coordinates(lida_centroid)[1]
+lat = sf::st_coordinates(lida_centroid)[2]
+m = tm_shape(lida$osm_polygons["name"]) +
+  tm_polygons(col = "red") +
+  tm_shape(road$osm_lines) +
+  tm_lines(lwd = 5) +
+  tm_view(set.view = c(lon + 0.005, lat - 0.005, 12)) +
+  tm_basemap(server = leaflet::providers$OpenStreetMap) +
+  tm_minimap(server = leaflet::providers$OpenTopoMap, zoomLevelOffset = -10) +
+  tm_scale_bar()
+tmap_mode("view")
+m
+```
+
+Try changing the basemap
+
+If you are fast, try running the code in the `sf1` vignette
+
+You should be able to open it with:
+
+``` r
+vignette("sf1")
+```
+
 -   Attribute operations
 
 References
