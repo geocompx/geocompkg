@@ -370,6 +370,20 @@ Note: use Ctl-Shift-M to create the pipe operator
 Try playing with the map created with these commands
 
 
+Try changing the basemap
+
+If you are fast, try running the code in the `sf1` vignette
+
+You should be able to open it with:
+
+```{r, eval=FALSE}
+vignette("sf1")
+```
+
+
+- Attribute operations
+
+
 ```{r, eval=FALSE, echo=TRUE}
 library(leaflet)
 library(osmdata)
@@ -432,27 +446,21 @@ mapview(albion_spatial_subset)
 world
 plot(world)
 
-sel = world$pop > 10000000
-summary(sel)
+world$is_small = world$pop > 10000000
+summary(world$is_small)
 
 world_continents = world %>% 
   group_by(continent) %>% 
-  summarise(n = n())
+  summarise(
+    n = n(),
+    n_small = sum(is_small, na.rm = TRUE)
+    )
+
+coffee_data
+
+world_coffee = inner_join(world["name_long"] , coffee_data)
+plot(world_coffee)
 ```
-
-Try changing the basemap
-
-If you are fast, try running the code in the `sf1` vignette
-
-You should be able to open it with:
-
-```{r, eval=FALSE}
-vignette("sf1")
-```
-
-
-- Attribute operations
-
 
 ### Spatial operations
 
@@ -481,8 +489,6 @@ point_aggregated2 = point_joined %>%
   summarise(av_height = mean(elevation))
 plot(point_aggregated2)
 ```
-
-
 
 
 
