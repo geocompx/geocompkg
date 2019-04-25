@@ -343,6 +343,45 @@ m = tm_shape(lida$osm_polygons["name"]) +
   tm_scale_bar()
 tmap_mode("view")
 m
+
+x = c("a", 1, TRUE)
+x[2] + x[3]
+
+x_list = list("a", 1, TRUE)
+y = list(1, x_list)
+x_list[[3]] + x_list[[2]]
+
+class(road)
+
+albion_street_all = road$osm_lines
+albion_street = albion_street_all[albion_street_all$highway == "pedestrian", ]
+
+class(albion_street)
+names(albion_street)
+
+attributes(albion_street)
+albion_street$geometry[[1]]
+unclass(albion_street$geometry[[1]])
+class(.Last.value)
+
+albion_street_projected = st_transform(x = albion_street,
+                                           crs = 27700)
+
+albion_street_buffer = st_buffer(x = albion_street_projected, dist = 100)
+plot(albion_street_buffer$geometry)
+mapview(albion_street_buffer)
+
+albion_street_all
+st_crs(albion_street_all)
+albion_street_all = st_transform(albion_street_all, 27700)
+
+albion_spatial_subset = albion_street_all[albion_street_buffer, ]
+mapview(albion_spatial_subset)
+world
+plot(world)
+
+sel = world$pop > 10000000
+summary(sel)
 ```
 
 Try changing the basemap
