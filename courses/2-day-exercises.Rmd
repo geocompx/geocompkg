@@ -41,9 +41,9 @@ file.edit("set-up.R")
 person_name = c("arron", "bob", "carl")
 n_coffee = c(5, 1, 0)
 likes_herbal_tea = c(TRUE, FALSE, TRUE)
-home_region = c("west-yorkshire", "avon", "london")
+region_name = c("west-yorkshire", "avon", "london")
 coffee = tibble::tibble(person_name, n_coffee, likes_herbal_tea,
-                        home_region)
+                        region_name)
 ```
 
 - Filter rows in which the `person_name == "bob"`
@@ -60,6 +60,14 @@ coffee2 = read.csv("coffee.csv")
 ```
 
 - Use the function `purrr::map_chr(coffee2, class)` to find the class of each column. What's the difference between `coffee2` and the other datasets?
+
+- Bonus: create a spatial object representing coffee consumption by region
+
+```{r, echo=FALSE, eval=FALSE}
+coffee_sf = dplyr::right_join(pct::pct_regions, coffee)
+plot(coffee_sf)
+```
+
 
 # R's spatial ecosystem
 

@@ -15,7 +15,7 @@ output:
 
 ```{r, engine='bash', eval=FALSE, echo=FALSE}
 # publish slides
-cp -Rv slides/sat* ~/geocompr/geocompr.github.io/static/presentations
+cp -Rv slides/2* ~/geocompr/geocompr.github.io/static/presentations
 cd ~/geocompr/geocompr.github.io
 git status
 git add -A
