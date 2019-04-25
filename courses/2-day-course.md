@@ -344,6 +344,20 @@ Note: use Ctl-Shift-M to create the pipe operator
 
 Try playing with the map created with these commands
 
+Try changing the basemap
+
+If you are fast, try running the code in the `sf1` vignette
+
+You should be able to open it with:
+
+``` r
+vignette("sf1")
+```
+
+  - Attribute operations
+
+<!-- end list -->
+
 ``` r
 library(leaflet)
 library(osmdata)
@@ -406,25 +420,49 @@ mapview(albion_spatial_subset)
 world
 plot(world)
 
-sel = world$pop > 10000000
-summary(sel)
+world$is_small = world$pop > 10000000
+summary(world$is_small)
 
 world_continents = world %>% 
   group_by(continent) %>% 
-  summarise(n = n())
+  summarise(
+    n = n(),
+    n_small = sum(is_small, na.rm = TRUE)
+    )
+
+coffee_data
+
+world_coffee = inner_join(world["name_long"] , coffee_data)
+plot(world_coffee)
 ```
 
-Try changing the basemap
-
-If you are fast, try running the code in the `sf1` vignette
-
-You should be able to open it with:
+### Spatial operations
 
 ``` r
-vignette("sf1")
-```
+library(sf)
+library(spData)
+nz = spData::nz
+plot(nz)
+nz_height
+canterbury = nz[nz$Name == "Canterbury", ]
+canterbury_points = nz_height[canterbury, ]
+canterbury_points = nz_height[canterbury, , op = st_intersects]
+plot(nz$geom)
+plot(canterbury, col = "red", add = TRUE)
+plot(nz_height, add = TRUE, col = "grey")
+plot(canterbury_points, add = TRUE)
 
-  - Attribute operations
+point_joined = st_join(nz_height, nz["Name"])
+
+point_aggregated1 = aggregate(nz_height["elevation"], nz, FUN = mean)
+plot(point_aggregated1)
+
+library(dplyr)
+point_aggregated2 = point_joined %>% 
+  group_by(Name) %>% 
+  summarise(av_height = mean(elevation))
+plot(point_aggregated2)
+```
 
 ## References
 
