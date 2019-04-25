@@ -479,12 +479,14 @@ plot(nz_height, add = TRUE, col = "grey")
 plot(canterbury_points, add = TRUE)
 
 point_joined = st_join(nz_height, nz["Name"])
+nz_joined = st_join(nz, nz_height)
+
 
 point_aggregated1 = aggregate(nz_height["elevation"], nz, FUN = mean)
 plot(point_aggregated1)
 
 library(dplyr)
-point_aggregated2 = point_joined %>% 
+point_aggregated2 = nz_joined %>% 
   group_by(Name) %>% 
   summarise(av_height = mean(elevation))
 plot(point_aggregated2)
