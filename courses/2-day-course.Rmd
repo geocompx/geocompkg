@@ -262,4 +262,6 @@ To be updated as the course progresses
 
 - Attribute operations
 
+Welcome to the course!
+
 ## References
