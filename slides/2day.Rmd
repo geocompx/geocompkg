@@ -68,6 +68,10 @@ my_bib = ReadBib("refs-geostat.bib", check = FALSE)
 
 **You?**
 
+--
+
+**Course home: https://git.io/geocompr-2-day-course **
+
 ---
 
 ## Housekeeping
@@ -135,6 +139,9 @@ By the end of the course, you will be able to:
 15:15-16:30 Spatial data operations
 
 ]
+
+--
+
 .pull-right[
 
 
@@ -151,6 +158,10 @@ By the end of the course, you will be able to:
 15:15-16:30 Working on your own data
 
 ]
+
+--
+
+**Updated challenges/examples: git.io/geocompr-2-day-course**
 
 ---
 
@@ -192,12 +203,27 @@ It's about doing "practical work that is beneficial or useful" `r Citep(my_bib, 
 
 ---
 
-
 # Introduction to the course and software
+
+<p><a href="https://www.rstudio.com/products/RStudio/?wvideo=520zbd3tij"><img src="https://embedwistia-a.akamaihd.net/deliveries/260e6e980f526abaedf8ef3378270c899da74f08.jpg?image_play_button_size=2x&amp;image_crop_resized=960x540&amp;image_play_button=1&amp;image_play_button_color=71a5d4e0" style="width: 400px; height: 225px;" width="400" height="225"></a></p><p><a href="https://www.rstudio.com/products/RStudio/?wvideo=520zbd3tij">RStudio IDE Overview</a></p>
+
+- Source: [rstudio.com](https://www.rstudio.com/products/RStudio/?wvideo=520zbd3tij)
+
+--
+
+- Key elements: Source, Console, Environment, Plot panes
+
+--
+
+- Projects and short-cuts (e.g. try `Alt-Shift-J`)
 
 ---
 
 ## An introduction to R
+
+See slides at
+
+- Work through Exercises in Section 1 of handouts
 
 ---
 <!-- - R installation questions/debugging -->

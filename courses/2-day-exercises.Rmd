@@ -1,7 +1,7 @@
 ---
-output:
-  pdf_document:
-    number_sections: true
+output: github_document
+  # pdf_document:
+  #   number_sections: true
 title: "Geocomputation with: R Practical Exercises"
 ---
 
@@ -386,3 +386,4 @@ plot(europe["subregion"])
 file.rename("courses/2-day-exercises.pdf", "2-day-exercises.pdf")
 piggyback::pb_upload("2-day-exercises.pdf")
 ```
+
