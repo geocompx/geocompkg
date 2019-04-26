@@ -612,6 +612,19 @@ tm_shape(nz) +
   tm_compass()
 
 tmaptools::palette_explorer()
+
+mapview::mapview(nz)
+tm_shape(nz) +
+  tm_fill()
+
+library(tmap)
+
+map_labels = c("a", "b", "c")
+tm_shape(nz) +
+  tm_fill("Median_income", style = "quantile", n = 3, labels = map_labels) +
+  tm_layout(legend.text.size = 0.4)
+
 ```
+
 
 ## References
