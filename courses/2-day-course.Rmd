@@ -322,7 +322,13 @@ Welcome to the course!
 
 To be updated as the course progresses
 
+- Overview slides: https://geocompr.github.io/presentations/2day.html
+
 - Introductory slides can be found here: https://geocompr.github.io/presentations/intro-to-R.html
+
+- I/O slides: https://geocompr.github.io/presentations/read-write.html#1
+
+- Viz slides: https://geocompr.github.io/presentations/04_viz.html#1
 
 Resources on for loops:
 
