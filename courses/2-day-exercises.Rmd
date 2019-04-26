@@ -277,7 +277,8 @@ st_write(germany_borders, "germany_borders.gpkg")
 Extract the June values, and save them to a file named `tmin_june.tif` file (hint: use `raster::subset()`).
 
 ```{r, eval=FALSE}
-gmmt = getData("worldclim", var = "tmin", res = 5)
+gmmt = raster::getData("worldclim", var = "tmin", res = 5)
+names(gmmt)
 gmmt_june = raster::subset(gmmt, "tmin6")
 writeRaster(gmmt_june, "tmin_june.tif")
 ```

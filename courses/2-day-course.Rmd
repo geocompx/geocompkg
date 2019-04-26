@@ -564,6 +564,54 @@ mapview::mapview(uruguay)
 Shortcut: Alt-Shift-Down: copy lines down
 Shortcut: Ctl-Shift-A: nicely formats your code
 
+```{r, eval=FALSE}
+library(osmdata)
+a1010_osm = opq("england") %>% 
+  add_osm_feature(key = "ref", value = "A1010") %>% 
+  osmdata_sf()
+mapview::mapview(a1010_osm$osm_lines)
 
+a1010 = st_transform(a1010_osm$osm_lines, 27700)
+
+# identical result with pipe
+a1010 = a1010_osm$osm_lines %>% 
+  st_transform(27700) %>% 
+  st_union()
+
+a1010_df = st_sf(data.frame(name = "A1010"), geometry = a1010)
+
+class(a1010)
+st_crs(a1010)
+
+a1010_buffer = a1010 %>% st_buffer(30)
+
+library(stats19)
+crashes = get_stats19(year = 2017, type = "ac", ask = F)
+crashes_sf = format_sf(crashes)
+crashes_sf = crashes_sf[crashes_sf$accident_severity == "Serious", ]
+crashes_a1010 = crashes_sf[a1010_buffer, ]
+plot(a1010_buffer)
+mapview::mapview(a1010_buffer) + mapview::mapview(crashes_a1010)
+
+co = sf.colors(n = 4)
+q = quantile(nz$Median_income)
+nz$income_bands = cut(nz$Median_income, breaks = q)
+nz$co = factor(nz$income_bands)
+nz$cols = factor(nz$co, labels = co)
+nz$cols = as.character(nz$cols)
+
+library(tmap)
+tmap_mode("view")
+tm_shape(nz) +
+  tm_fill("Median_income", 
+          palette = "-magma") +
+  tm_borders(col = "red") +
+  tm_shape(nz_height) +
+  tm_dots() +
+  tm_scale_bar() +
+  tm_compass()
+
+tmaptools::palette_explorer()
+```
 
 ## References
