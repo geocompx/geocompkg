@@ -334,6 +334,7 @@ Resources on for loops:
 
 - r4ds book: https://r4ds.had.co.nz/iteration.html
 
+New R spatial book (work in progress): https://www.r-spatial.org/book/
 
 ```{r, eval=FALSE}
 coffee = readr::read_csv("coffee.csv")
@@ -512,6 +513,56 @@ st_crs(nz)
 
 ```
 
+- Geographic data I/O
+
+```{r, eval=FALSE}
+library(stats19)
+# example of data package 
+a = get_stats19(year = 2017, type = "acc", ask = FALSE)
+a_sf = format_sf(a)
+plot(a_sf[1:99, "accident_severity"])
+
+xy = read.csv(text = 
+"lon,lat,v1
+0,50,a
+0,60,b
+-30,-20,c")
+
+library(sf)
+xy_sf = st_as_sf(xy, coords = c("lon", "lat"))
+st_crs(xy_sf) = 4326
+st_crs(xy_sf)
+plot(spData::world$geom)
+plot(xy_sf, add = T)
+
+library(spData)
+saveRDS(nz, "nz.Rds")
+write_sf(nz, "nz.gpkg")
+dir.create("new_directory")
+file.create("new_directory/new-file.R")
+file.remove("new_directory")
+list.dirs(recursive = FALSE)
+write_sf(nz, "nz.geojson")
+write_sf(nz, "nz.geopkg")
+write_sf(nz, "nz.shp")
+f = list.files(pattern = "nz.")
+f_sizes = file.size(f)
+f_df = tibble::tibble(f, f_sizes)
+dplyr::arrange(f_df, desc(f_sizes))
+
+
+uruguay = rnaturalearth::ne_countries(
+  scale = "medium",
+  type = "countries",
+  country = "uruguay",
+  returnclass = "sf"
+  )
+  plot(uruguay)
+mapview::mapview(uruguay)
+```
+
+Shortcut: Alt-Shift-Down: copy lines down
+Shortcut: Ctl-Shift-A: nicely formats your code
 
 
 
