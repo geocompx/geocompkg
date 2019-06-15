@@ -17,7 +17,7 @@ The starting point is to attach necessary packages:
 ```{r, message=FALSE}
 library(sf)
 library(spData)
-library(tidyverse)
+library(dplyr)
 ```
 
 And subsetting canterbury and `nz_height` features in the region:
