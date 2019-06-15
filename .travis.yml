@@ -25,7 +25,6 @@
 # Header
 language: r
 cache:
-  - packages
   - ccache
 latex: false
 dist: trusty
