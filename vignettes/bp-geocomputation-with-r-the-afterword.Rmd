@@ -5,7 +5,7 @@ author: "Robin Lovelace, Jakub Nowosad, Jannes Muenchow"
 date: "2018-12-12"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteIndexEntry{geocomputation-with-r-the-afterword}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

@@ -16,7 +16,7 @@ This vignette requires the following packages to be installed and attached:
 ```{r, message=FALSE}
 library(sf)
 library(spData)
-library(tidyverse)
+library(dplyr)
 ```
 
 We will use an `sf` object `north_america` with country codes (`iso_a2`), names and geometries, as well as a `data.frame` object `wb_north_america` containing information about urban population and unemployment for three countries.

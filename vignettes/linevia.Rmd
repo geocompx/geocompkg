@@ -16,7 +16,7 @@ It depends on these packages and datasets:
 ```{r, message=FALSE, warning=FALSE}
 library(sf)
 library(stplanr)
-library(tidyverse)
+library(dplyr)
 library(spDataLarge)
 desire_lines = od2line(bristol_od, bristol_zones)
 desire_rail = top_n(desire_lines, n = 3, wt = train)
