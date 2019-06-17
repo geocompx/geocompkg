@@ -1,0 +1,123 @@
+---
+title: "Coordinate grid and graticule lines in the tmap package"
+author: "Robin Lovelace, Jakub Nowosad, Jannes Muenchow"
+date: "`r Sys.Date()`"
+output: 
+  rmarkdown::html_vignette:
+      toc: true
+      number_sections: true
+vignette: >
+  %\VignetteIndexEntry{tmap-grid}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, eval = FALSE,
+                      fig.width = 8, fig.height = 4)
+```
+
+This vignette builds on the [making maps chapter](https://geocompr.robinlovelace.net/adv-map.html) of [the Geocomputation with R book](https://geocompr.github.io/).
+<!-- Its goal is to demonstrate all possible map styles available in the **tmap** package. -->
+
+## Prerequisites {-}
+
+The examples below assume the following packages are attached:
+
+```{r, eval=FALSE, echo=FALSE}
+library(devtools)
+install_github("mtennekes/tmaptools")
+install_github("mtennekes/tmap")
+```
+
+```{r}
+library(spData) # example datasets
+library(tmap)   # map creation
+library(sf)     # spatial data reprojection
+```
+
+# ...
+
+<!-- two default ways -->
+
+```{r}
+tm_shape(nz) + 
+  tm_polygons() +
+  tm_grid()
+```
+
+```{r}
+tm_shape(nz) + 
+  tm_polygons() +
+  tm_graticules()
+```
+
+# ... customizing
+
+```{r}
+tm_shape(nz) +
+  tm_grid() + 
+  tm_polygons()
+```
+
+```{r}
+tm_shape(nz) +
+  tm_graticules() + 
+  tm_polygons()
+```
+
+```{r}
+tm_shape(nz) +
+  tm_grid(labels.inside.frame = TRUE) + 
+  tm_polygons()
+```
+
+```{r}
+tm_shape(nz) +
+  tm_grid(labels.inside.frame = TRUE) + 
+  tm_polygons()
+```
+
+```{r}
+tm_shape(nz) +
+  tm_grid(n.x = 4, n.y = 2) + 
+  tm_polygons()
+```
+
+```{r}
+tm_shape(nz) +
+  tm_grid(ticks = TRUE, lines = FALSE) +
+  tm_polygons()
+```
+
+```{r}
+tm_shape(nz) +
+  tm_grid(ticks = FALSE, lines = TRUE) +
+  tm_polygons()
+```
+
+```{r}
+tm_shape(nz) +
+  tm_grid() +
+  tm_polygons()
+```
+
+```{r}
+tm_shape(nz) +
+  tm_grid(col = "red", lwd = 3, labels.size = 0.8) +
+  tm_polygons()
+```
+
+```{r}
+tm_shape(world) + 
+  tm_graticules() + 
+  tm_polygons()
+```
+
+```{r}
+tm_shape(world) + 
+  tm_graticules() + 
+  tm_polygons() +
+  tm_layout(inner.margins = 0)
+```
+
