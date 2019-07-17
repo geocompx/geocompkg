@@ -1,7 +1,7 @@
 ---
-title: "Spatial data with R"
+title: "Geocomputation with R"
 subtitle: '<br/>An Introduction'
-author: "Robin Lovelace, Nick Bearman"
+author: "Robin Lovelace"
 date: 'University of Leeds, `r Sys.Date()`'
 output:
   xaringan::moon_reader:
@@ -33,6 +33,7 @@ cd ~/geocompr/geocompkg
 
 ```{r setup, include=FALSE}
 # setup
+
 options(htmltools.dir.version = FALSE)
 library(RefManageR)
 BibOptions(check.entries = FALSE, 
@@ -42,7 +43,7 @@ BibOptions(check.entries = FALSE,
            first.inits = FALSE,
            hyperlink = FALSE, 
            dashed = FALSE)
-my_bib = ReadBib("refs-geostat.bib", check = FALSE)
+my_bib = ReadBib("refs.bib", check = FALSE)
 ```
 
 
@@ -167,3 +168,13 @@ library(splancs)
 - See https://geocompr.github.io/presentations/attr.html for attribut operations
 
 - See https://geocompr.robinlovelace.net/spatial-operations.html
+
+
+---
+
+# References
+
+```{r, 'refs', results="asis", echo=FALSE}
+PrintBibliography(my_bib)
+# RefManageR::WriteBib(my_bib, "refs-geostat.bib")
+```
