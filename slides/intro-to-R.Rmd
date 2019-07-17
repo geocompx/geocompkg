@@ -22,7 +22,7 @@ BibOptions(check.entries = FALSE,
            first.inits = FALSE,
            hyperlink = FALSE, 
            dashed = FALSE)
-my_bib = ReadBib("refs-geostat.bib", check = FALSE)
+my_bib = ReadBib("refs.bib", check = FALSE)
 ```
 
 
@@ -313,4 +313,18 @@ Books
 - Advanced R programming
 
 - Efficient R programming
+
+---
+
+# References + contact
+
+- To contact us about the book - go to [github.com/Robinlovelace/geocompr](https://github.com/Robinlovelace/geocompr)
+- Social media: [#geocompr](https://twitter.com/hashtag/geocompr)
+<!-- - Good old fashioned email: r.lovelace at leeds dot ac dot uk -->
+--
+
+```{r, 'refs', results="asis", echo=FALSE}
+PrintBibliography(my_bib)
+# RefManageR::WriteBib(my_bib, "refs-geostat.bib")
+```
 
