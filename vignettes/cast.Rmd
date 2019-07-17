@@ -10,7 +10,7 @@ vignette: >
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, eval = FALSE)
 ```
 
 This vignette provides some further detail on the Type transformations section (see https://geocompr.robinlovelace.net/geometric-operations.html#type-trans ) of [the Geocomputation with R book](https://geocompr.github.io/).
