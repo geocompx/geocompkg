@@ -1,0 +1,26 @@
+---
+title: "Introducing Geocomputation with R: a practical workshop"
+author: "Robin Lovelace, Jakub Nowosad, Jannes Muenchow"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{geocompr-intro}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+The aim of this [workshop](http://conference.rgs.org/AC2019/b9dba158-90b4-4740-9737-fd108ca91215) is to get beginners up-to-speed with the the reproducible research and open source revolutions in geographic research, and how you can empower yourself with new open source tools of the geographic trade.
+
+This event, sponsored by the Quantitative Methods Research Group and led by Dr Robin Lovelace from the University of Leeds, will provide an introductory, hands-on, and fun session getting started with spatial data in R.
+The workshop will bring together data, maps and R (soon-to-be) enthusiasts to demonstrate the 'power of the command line' to solve geographic challenges using open source software.
+Critically, the 'data science' approach demonstrated in the course enables reproducibility, something that geographers have recently started to address with a shift to open source, community-driven tools.
+The workshop will be based on the recently published open source book Geocomputation in R the contents (https://geocompr.robinlovelace.net/) and source code (https://github.com/robinlovelace/geocompr) of which is freely available worldwide, to minimise barriers to participation in geographic research.
+
+
+You need to have prepared three things before the course: 
+
+1) A decent, charged battery
+2) The software needed for the course, meaning a recent version of R (at least R 3.6.0) and RStudio (installed within the past year)
+3) Spatial packages installed on your computer. See here for more on the pre-requisite packages: https://geocompr.robinlovelace.net/spatial-class.html#prerequisites
+
+
