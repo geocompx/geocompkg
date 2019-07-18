@@ -157,7 +157,7 @@ metro_names = dplyr::pull(metro_names, city) %>%
   ifelse(. == "Wülfrath", "Duesseldorf", .)
 
 pop_agg = aggregate(reclass$pop, fact = 20, fun = sum)
-pop_agg = pop_agg[pop_agg > 500, drop = FALSE] 
+pop_agg = pop_agg[pop_agg > 500000, drop = FALSE] 
 
 polys = pop_agg %>% 
   raster::clump() %>%
