@@ -181,7 +181,7 @@ st_caster = function(x){
     mutate(input_type = st_type(x)) %>% 
     mutate(input_geom = paste0(input_geom, "(", input_geom_length, ")"),
            result_geom = paste0(result_geom, "(", result_geom_length, ")")) %>% 
-    select(input_geom, to, result_geom_length) %>% 
+    dplyr::select(input_geom, to, result_geom_length) %>% 
     mutate(result_geom_length = if_else(result_geom_length == 0, NA_integer_, result_geom_length)) %>% 
     spread(to, result_geom_length)
   
