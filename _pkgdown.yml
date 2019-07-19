@@ -35,6 +35,8 @@ articles:
       - cast
       - us-map
       - maps
+      - tmap-grid
+      - tmap-styles
       - algorithm
       - point-pattern
       - linevia
