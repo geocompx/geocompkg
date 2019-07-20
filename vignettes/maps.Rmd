@@ -100,8 +100,8 @@ raster_template = raster(extent(alt2), resolution = 1000, crs = crs(alt2))
 
 alt3 = resample(alt2, raster_template)
 
-elevation_mat <- t(raster::as.matrix(alt3))
-shadow_mat <- ray_shade(elevation_mat)
+elevation_mat = t(raster::as.matrix(alt3))
+shadow_mat = ray_shade(elevation_mat)
 
 elevation_mat %>%
   sphere_shade(progbar = FALSE, sunangle = 45) %>%
