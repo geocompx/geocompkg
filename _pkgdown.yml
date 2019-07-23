@@ -31,22 +31,10 @@ articles:
       These vignettes provide extended examples for several methods and functions mentioned in Geocomputation with R
     contents:
       - join
-      - subsetting
-      - cast
       - us-map
-      - maps
-      - tmap-grid
-      - tmap-styles
       - algorithm
       - point-pattern
       - linevia
-  - title: "Misc"
-    desc: >
-      These vignettes provide additional miscellaneous materials related to Geocomputation with R
-    contents:
-      - benchmark
-      - erum-2018
-      - sea-level-rise
       - tidyverse-pitfalls
-      - gps-track
+
 
