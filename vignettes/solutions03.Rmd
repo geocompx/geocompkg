@@ -149,7 +149,7 @@ plot(us_popdens_change["pop_dens_diff_10_15p"])
 11) Change the columns names in `us_states` to lowercase. (Hint: helper functions - `tolower()` and `colnames()` may help).
 ```{r}
 us_states %>%
-  set_names(tolower(colnames(.)))
+  setNames(tolower(colnames(.)))
 ```
 
 12) Using `us_states` and `us_states_df` create a new object called `us_states_sel`.

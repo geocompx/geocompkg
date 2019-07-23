@@ -20,7 +20,7 @@ This vignette provides a detailed description of inset map generation, building 
 The example below assume the following packages are attached:
 
 ```{r packages, message=FALSE, warning=FALSE}
-# devtools::install_github("robinlovelace/geocompr") # install pkgs
+# devtools::install_github("geocompr/geocompkg") # install pkgs
 library(spData) # contains datasets used in this example
 library(sf)     # for handling spatial (vector) data
 library(tmap)   # map making package
