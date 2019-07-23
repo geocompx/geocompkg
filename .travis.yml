@@ -23,6 +23,7 @@ addons:
      - libnetcdf-dev
      - netcdf-bin
      - r-cran-dplyr
+     - r-cran-readr
 #     - r-cran-ncdf4
 
 r_packages:
