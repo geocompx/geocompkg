@@ -1,4 +1,3 @@
-# Header
 language: r
 cache:
   - ccache
