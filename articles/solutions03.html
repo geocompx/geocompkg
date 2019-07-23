@@ -30,7 +30,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">geocompkg | metapackage for the book Gecomputation with R</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.75</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.99</span>
       </span>
     </div>
 
@@ -65,7 +65,7 @@
       <h1>Chapter 3: Attribute operations</h1>
                         <h4 class="author">Robin Lovelace, Jakub Nowosad, Jannes Muenchow</h4>
             
-            <h4 class="date">2019-03-11</h4>
+            <h4 class="date">2019-07-23</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/geocompr/geocompkg/blob/master/vignettes/solutions03.Rmd"><code>vignettes/solutions03.Rmd</code></a></small>
       <div class="hidden name"><code>solutions03.Rmd</code></div>
@@ -80,7 +80,7 @@
 <p>The solutions assume the following packages are attached (other packages will be attached when needed):</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(sf)</a>
 <a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(raster)</a>
-<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(tidyverse)</a></code></pre></div>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(dplyr)</a></code></pre></div>
 <p>For these exercises we will use the <code>us_states</code> and <code>us_states_df</code> datasets from the <strong>spData</strong> package:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(spData)</a>
 <a class="sourceLine" id="cb2-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/data">data</a></span>(us_states)</a>
@@ -139,7 +139,7 @@
 <a class="sourceLine" id="cb4-36" data-line-number="36"><span class="co">#&gt;       xmin       ymin       xmax       ymax </span></a>
 <a class="sourceLine" id="cb4-37" data-line-number="37"><span class="co">#&gt; -124.70415   24.55868  -66.98240   49.38436</span></a></code></pre></div>
 <ol start="2" style="list-style-type: decimal">
-<li>Select columns from the <code>us_states</code> object which contain population data. Obtain the same result using a different command (bonus: try to find three ways of obtaining the same result). Hint: try to use helper functions, such as <code>contains</code> or <code>starts_with</code> from <strong>dplyr</strong> (see <code>?contains</code>).</li>
+<li>Select columns from the <code>us_states</code> object which contain population data. Obtain the same result using a different command (bonus: try to find three ways of obtaining the same result). Hint: try to use helper functions, such as <code>contains</code> or <code>starts_with</code> from <strong>dplyr</strong> (see <code><a href="https://dplyr.tidyverse.org/reference/reexports.html">?contains</a></code>).</li>
 </ol>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">us_states <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(total_pop_<span class="dv">10</span>, total_pop_<span class="dv">15</span>)</a>
 <a class="sourceLine" id="cb5-2" data-line-number="2"><span class="co">#&gt; Simple feature collection with 49 features and 2 fields</span></a>
@@ -162,7 +162,7 @@
 <a class="sourceLine" id="cb5-19" data-line-number="19"><span class="co">#&gt; 10      4429940      4625253 MULTIPOLYGON (((-92.01783 2...</span></a>
 <a class="sourceLine" id="cb5-20" data-line-number="20"></a>
 <a class="sourceLine" id="cb5-21" data-line-number="21"><span class="co"># or</span></a>
-<a class="sourceLine" id="cb5-22" data-line-number="22">us_states <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(<span class="kw">starts_with</span>(<span class="st">"total_pop"</span>))</a>
+<a class="sourceLine" id="cb5-22" data-line-number="22">us_states <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(<span class="kw"><a href="https://dplyr.tidyverse.org/reference/reexports.html">starts_with</a></span>(<span class="st">"total_pop"</span>))</a>
 <a class="sourceLine" id="cb5-23" data-line-number="23"><span class="co">#&gt; Simple feature collection with 49 features and 2 fields</span></a>
 <a class="sourceLine" id="cb5-24" data-line-number="24"><span class="co">#&gt; geometry type:  MULTIPOLYGON</span></a>
 <a class="sourceLine" id="cb5-25" data-line-number="25"><span class="co">#&gt; dimension:      XY</span></a>
@@ -183,7 +183,7 @@
 <a class="sourceLine" id="cb5-40" data-line-number="40"><span class="co">#&gt; 10      4429940      4625253 MULTIPOLYGON (((-92.01783 2...</span></a>
 <a class="sourceLine" id="cb5-41" data-line-number="41"></a>
 <a class="sourceLine" id="cb5-42" data-line-number="42"><span class="co"># or</span></a>
-<a class="sourceLine" id="cb5-43" data-line-number="43">us_states <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(<span class="kw">contains</span>(<span class="st">"total_pop"</span>))</a>
+<a class="sourceLine" id="cb5-43" data-line-number="43">us_states <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(<span class="kw"><a href="https://dplyr.tidyverse.org/reference/reexports.html">contains</a></span>(<span class="st">"total_pop"</span>))</a>
 <a class="sourceLine" id="cb5-44" data-line-number="44"><span class="co">#&gt; Simple feature collection with 49 features and 2 fields</span></a>
 <a class="sourceLine" id="cb5-45" data-line-number="45"><span class="co">#&gt; geometry type:  MULTIPOLYGON</span></a>
 <a class="sourceLine" id="cb5-46" data-line-number="46"><span class="co">#&gt; dimension:      XY</span></a>
@@ -210,7 +210,7 @@
 </li>
 </ol>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">us_states <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/filter">filter</a></span>(REGION <span class="op">==</span><span class="st"> "Midwest"</span>)</a>
+<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(REGION <span class="op">==</span><span class="st"> "Midwest"</span>)</a>
 <a class="sourceLine" id="cb6-3" data-line-number="3"><span class="co">#&gt; Simple feature collection with 12 features and 6 fields</span></a>
 <a class="sourceLine" id="cb6-4" data-line-number="4"><span class="co">#&gt; geometry type:  MULTIPOLYGON</span></a>
 <a class="sourceLine" id="cb6-5" data-line-number="5"><span class="co">#&gt; dimension:      XY</span></a>
@@ -241,7 +241,7 @@
 <a class="sourceLine" id="cb6-30" data-line-number="30"><span class="co">#&gt; 9  MULTIPOLYGON (((-85.63002 4...</span></a>
 <a class="sourceLine" id="cb6-31" data-line-number="31"><span class="co">#&gt; 10 MULTIPOLYGON (((-104.0531 4...</span></a></code></pre></div>
 <pre><code>- Belong to the West region, have an area below 250,000 km^2^ *and* in 2015 a population greater than 5,000,000 residents (hint: you may need to use the function `units::set_units()` or `as.numeric()`).</code></pre>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">us_states <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/filter">filter</a></span>(REGION <span class="op">==</span><span class="st"> "West"</span>, AREA <span class="op">&lt;</span><span class="st"> </span>units<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/units/topics/set_units">set_units</a></span>(<span class="dv">250000</span>, km<span class="op">^</span><span class="dv">2</span>),total_pop_<span class="dv">15</span> <span class="op">&gt;</span><span class="st"> </span><span class="dv">5000000</span>)</a>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">us_states <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(REGION <span class="op">==</span><span class="st"> "West"</span>, AREA <span class="op">&lt;</span><span class="st"> </span>units<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/units/topics/set_units">set_units</a></span>(<span class="dv">250000</span>, km<span class="op">^</span><span class="dv">2</span>),total_pop_<span class="dv">15</span> <span class="op">&gt;</span><span class="st"> </span><span class="dv">5000000</span>)</a>
 <a class="sourceLine" id="cb8-2" data-line-number="2"><span class="co">#&gt; Simple feature collection with 1 feature and 6 fields</span></a>
 <a class="sourceLine" id="cb8-3" data-line-number="3"><span class="co">#&gt; geometry type:  MULTIPOLYGON</span></a>
 <a class="sourceLine" id="cb8-4" data-line-number="4"><span class="co">#&gt; dimension:      XY</span></a>
@@ -253,7 +253,7 @@
 <a class="sourceLine" id="cb8-10" data-line-number="10"><span class="co">#&gt;                         geometry</span></a>
 <a class="sourceLine" id="cb8-11" data-line-number="11"><span class="co">#&gt; 1 MULTIPOLYGON (((-122.7699 4...</span></a>
 <a class="sourceLine" id="cb8-12" data-line-number="12"><span class="co"># or</span></a>
-<a class="sourceLine" id="cb8-13" data-line-number="13">us_states <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/filter">filter</a></span>(REGION <span class="op">==</span><span class="st"> "West"</span>, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/numeric">as.numeric</a></span>(AREA) <span class="op">&lt;</span><span class="st"> </span><span class="dv">250000</span>,total_pop_<span class="dv">15</span> <span class="op">&gt;</span><span class="st"> </span><span class="dv">5000000</span>)</a>
+<a class="sourceLine" id="cb8-13" data-line-number="13">us_states <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(REGION <span class="op">==</span><span class="st"> "West"</span>, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/numeric">as.numeric</a></span>(AREA) <span class="op">&lt;</span><span class="st"> </span><span class="dv">250000</span>,total_pop_<span class="dv">15</span> <span class="op">&gt;</span><span class="st"> </span><span class="dv">5000000</span>)</a>
 <a class="sourceLine" id="cb8-14" data-line-number="14"><span class="co">#&gt; Simple feature collection with 1 feature and 6 fields</span></a>
 <a class="sourceLine" id="cb8-15" data-line-number="15"><span class="co">#&gt; geometry type:  MULTIPOLYGON</span></a>
 <a class="sourceLine" id="cb8-16" data-line-number="16"><span class="co">#&gt; dimension:      XY</span></a>
@@ -265,7 +265,7 @@
 <a class="sourceLine" id="cb8-22" data-line-number="22"><span class="co">#&gt;                         geometry</span></a>
 <a class="sourceLine" id="cb8-23" data-line-number="23"><span class="co">#&gt; 1 MULTIPOLYGON (((-122.7699 4...</span></a></code></pre></div>
 <pre><code>- Belong to the South region, had an area larger than 150,000 km^2^ or a total population in 2015 larger than 7,000,000 residents.</code></pre>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">us_states <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/filter">filter</a></span>(REGION <span class="op">==</span><span class="st"> "South"</span>, AREA <span class="op">&gt;</span><span class="st"> </span>units<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/units/topics/set_units">set_units</a></span>(<span class="dv">150000</span>, km<span class="op">^</span><span class="dv">2</span>), total_pop_<span class="dv">15</span> <span class="op">&gt;</span><span class="st"> </span><span class="dv">7000000</span>)</a>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">us_states <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(REGION <span class="op">==</span><span class="st"> "South"</span>, AREA <span class="op">&gt;</span><span class="st"> </span>units<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/units/topics/set_units">set_units</a></span>(<span class="dv">150000</span>, km<span class="op">^</span><span class="dv">2</span>), total_pop_<span class="dv">15</span> <span class="op">&gt;</span><span class="st"> </span><span class="dv">7000000</span>)</a>
 <a class="sourceLine" id="cb10-2" data-line-number="2"><span class="co">#&gt; Simple feature collection with 3 features and 6 fields</span></a>
 <a class="sourceLine" id="cb10-3" data-line-number="3"><span class="co">#&gt; geometry type:  MULTIPOLYGON</span></a>
 <a class="sourceLine" id="cb10-4" data-line-number="4"><span class="co">#&gt; dimension:      XY</span></a>
@@ -281,7 +281,7 @@
 <a class="sourceLine" id="cb10-14" data-line-number="14"><span class="co">#&gt; 2 MULTIPOLYGON (((-85.60516 3...</span></a>
 <a class="sourceLine" id="cb10-15" data-line-number="15"><span class="co">#&gt; 3 MULTIPOLYGON (((-103.0024 3...</span></a>
 <a class="sourceLine" id="cb10-16" data-line-number="16"><span class="co"># or</span></a>
-<a class="sourceLine" id="cb10-17" data-line-number="17">us_states <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/filter">filter</a></span>(REGION <span class="op">==</span><span class="st"> "South"</span>, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/numeric">as.numeric</a></span>(AREA) <span class="op">&gt;</span><span class="st"> </span><span class="dv">150000</span>, total_pop_<span class="dv">15</span> <span class="op">&gt;</span><span class="st"> </span><span class="dv">7000000</span>)</a>
+<a class="sourceLine" id="cb10-17" data-line-number="17">us_states <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(REGION <span class="op">==</span><span class="st"> "South"</span>, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/numeric">as.numeric</a></span>(AREA) <span class="op">&gt;</span><span class="st"> </span><span class="dv">150000</span>, total_pop_<span class="dv">15</span> <span class="op">&gt;</span><span class="st"> </span><span class="dv">7000000</span>)</a>
 <a class="sourceLine" id="cb10-18" data-line-number="18"><span class="co">#&gt; Simple feature collection with 3 features and 6 fields</span></a>
 <a class="sourceLine" id="cb10-19" data-line-number="19"><span class="co">#&gt; geometry type:  MULTIPOLYGON</span></a>
 <a class="sourceLine" id="cb10-20" data-line-number="20"><span class="co">#&gt; dimension:      XY</span></a>
@@ -299,7 +299,7 @@
 <ol start="4" style="list-style-type: decimal">
 <li>What was the total population in 2015 in the <code>us_states</code> dataset? What was the minimum and maximum total population in 2015?</li>
 </ol>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">us_states <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">summarize</span>(<span class="dt">total_pop =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/sum">sum</a></span>(total_pop_<span class="dv">15</span>),</a>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">us_states <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span>(<span class="dt">total_pop =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/sum">sum</a></span>(total_pop_<span class="dv">15</span>),</a>
 <a class="sourceLine" id="cb11-2" data-line-number="2">                        <span class="dt">min_pop =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Extremes">min</a></span>(total_pop_<span class="dv">15</span>),</a>
 <a class="sourceLine" id="cb11-3" data-line-number="3">                        <span class="dt">max_pop =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Extremes">max</a></span>(total_pop_<span class="dv">15</span>))</a>
 <a class="sourceLine" id="cb11-4" data-line-number="4"><span class="co">#&gt; Simple feature collection with 1 feature and 3 fields</span></a>
@@ -314,8 +314,8 @@
 <li>How many states are there in each region?</li>
 </ol>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">us_states <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb12-2" data-line-number="2"><span class="st">  </span><span class="kw">group_by</span>(REGION) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb12-3" data-line-number="3"><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">nr_of_states =</span> <span class="kw">n</span>())</a>
+<a class="sourceLine" id="cb12-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span>(REGION) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb12-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span>(<span class="dt">nr_of_states =</span> <span class="kw"><a href="https://dplyr.tidyverse.org/reference/n.html">n</a></span>())</a>
 <a class="sourceLine" id="cb12-4" data-line-number="4"><span class="co">#&gt; Simple feature collection with 4 features and 2 fields</span></a>
 <a class="sourceLine" id="cb12-5" data-line-number="5"><span class="co">#&gt; geometry type:  MULTIPOLYGON</span></a>
 <a class="sourceLine" id="cb12-6" data-line-number="6"><span class="co">#&gt; dimension:      XY</span></a>
@@ -324,7 +324,7 @@
 <a class="sourceLine" id="cb12-9" data-line-number="9"><span class="co">#&gt; proj4string:    +proj=longlat +datum=NAD83 +no_defs</span></a>
 <a class="sourceLine" id="cb12-10" data-line-number="10"><span class="co">#&gt; # A tibble: 4 x 3</span></a>
 <a class="sourceLine" id="cb12-11" data-line-number="11"><span class="co">#&gt;   REGION   nr_of_states                                            geometry</span></a>
-<a class="sourceLine" id="cb12-12" data-line-number="12"><span class="co">#&gt;   &lt;fct&gt;           &lt;int&gt;                                  &lt;MULTIPOLYGON [°]&gt;</span></a>
+<a class="sourceLine" id="cb12-12" data-line-number="12"><span class="co">#&gt; * &lt;fct&gt;           &lt;int&gt;                                  &lt;MULTIPOLYGON [°]&gt;</span></a>
 <a class="sourceLine" id="cb12-13" data-line-number="13"><span class="co">#&gt; 1 Norteast            9 (((-68.9446 44.11284, -68.82507 44.18634, -68.7702…</span></a>
 <a class="sourceLine" id="cb12-14" data-line-number="14"><span class="co">#&gt; 2 Midwest            12 (((-89.2552 47.8761, -89.17915 47.93503, -88.83571…</span></a>
 <a class="sourceLine" id="cb12-15" data-line-number="15"><span class="co">#&gt; 3 South              17 (((-81.81169 24.56874, -81.74565 24.65988, -81.443…</span></a>
@@ -333,8 +333,8 @@
 <li>What was the minimum and maximum total population in 2015 in each region? What was the total population in 2015 in each region?</li>
 </ol>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1">us_states <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb13-2" data-line-number="2"><span class="st">  </span><span class="kw">group_by</span>(REGION) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb13-3" data-line-number="3"><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">min_pop =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Extremes">min</a></span>(total_pop_<span class="dv">15</span>),</a>
+<a class="sourceLine" id="cb13-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span>(REGION) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb13-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span>(<span class="dt">min_pop =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Extremes">min</a></span>(total_pop_<span class="dv">15</span>),</a>
 <a class="sourceLine" id="cb13-4" data-line-number="4">            <span class="dt">max_pop =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Extremes">max</a></span>(total_pop_<span class="dv">15</span>),</a>
 <a class="sourceLine" id="cb13-5" data-line-number="5">            <span class="dt">tot_pop =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/sum">sum</a></span>(total_pop_<span class="dv">15</span>))</a>
 <a class="sourceLine" id="cb13-6" data-line-number="6"><span class="co">#&gt; Simple feature collection with 4 features and 4 fields</span></a>
@@ -345,7 +345,7 @@
 <a class="sourceLine" id="cb13-11" data-line-number="11"><span class="co">#&gt; proj4string:    +proj=longlat +datum=NAD83 +no_defs</span></a>
 <a class="sourceLine" id="cb13-12" data-line-number="12"><span class="co">#&gt; # A tibble: 4 x 5</span></a>
 <a class="sourceLine" id="cb13-13" data-line-number="13"><span class="co">#&gt;   REGION  min_pop  max_pop tot_pop                                 geometry</span></a>
-<a class="sourceLine" id="cb13-14" data-line-number="14"><span class="co">#&gt;   &lt;fct&gt;     &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt;                       &lt;MULTIPOLYGON [°]&gt;</span></a>
+<a class="sourceLine" id="cb13-14" data-line-number="14"><span class="co">#&gt; * &lt;fct&gt;     &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt;                       &lt;MULTIPOLYGON [°]&gt;</span></a>
 <a class="sourceLine" id="cb13-15" data-line-number="15"><span class="co">#&gt; 1 Nortea…  626604 19673174  5.60e7 (((-68.9446 44.11284, -68.82507 44.1863…</span></a>
 <a class="sourceLine" id="cb13-16" data-line-number="16"><span class="co">#&gt; 2 Midwest  721640 12873761  6.75e7 (((-89.2552 47.8761, -89.17915 47.93503…</span></a>
 <a class="sourceLine" id="cb13-17" data-line-number="17"><span class="co">#&gt; 3 South    647484 26538614  1.19e8 (((-81.81169 24.56874, -81.74565 24.659…</span></a>
@@ -354,7 +354,7 @@
 <li>Add variables from <code>us_states_df</code> to <code>us_states</code>, and create a new object called <code>us_states_stats</code>. What function did you use and why? Which variable is the key in both datasets? What is the class of the new object?</li>
 </ol>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1">us_states_stats =<span class="st"> </span>us_states <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb14-2" data-line-number="2"><span class="st">  </span><span class="kw">left_join</span>(us_states_df, <span class="dt">by =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"NAME"</span> =<span class="st"> "state"</span>))</a>
+<a class="sourceLine" id="cb14-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/join.html">left_join</a></span>(us_states_df, <span class="dt">by =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"NAME"</span> =<span class="st"> "state"</span>))</a>
 <a class="sourceLine" id="cb14-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/class">class</a></span>(us_states_stats)</a>
 <a class="sourceLine" id="cb14-4" data-line-number="4"><span class="co">#&gt; [1] "sf"         "data.frame"</span></a></code></pre></div>
 <ol start="8" style="list-style-type: decimal">
@@ -362,7 +362,7 @@
 <code>us_states_df</code> has two more rows than <code>us_states</code>. How can you find them? (hint: try to use the <code><a href="https://dplyr.tidyverse.org/reference/join.html">dplyr::anti_join()</a></code> function)</li>
 </ol>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1">us_states_df <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb15-2" data-line-number="2"><span class="st">  </span><span class="kw">anti_join</span>(us_states, <span class="dt">by =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"state"</span> =<span class="st"> "NAME"</span>))</a>
+<a class="sourceLine" id="cb15-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/join.html">anti_join</a></span>(us_states, <span class="dt">by =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"state"</span> =<span class="st"> "NAME"</span>))</a>
 <a class="sourceLine" id="cb15-3" data-line-number="3"><span class="co">#&gt; # A tibble: 2 x 5</span></a>
 <a class="sourceLine" id="cb15-4" data-line-number="4"><span class="co">#&gt;   state median_income_10 median_income_15 poverty_level_10 poverty_level_15</span></a>
 <a class="sourceLine" id="cb15-5" data-line-number="5"><span class="co">#&gt;   &lt;chr&gt;            &lt;dbl&gt;            &lt;dbl&gt;            &lt;dbl&gt;            &lt;dbl&gt;</span></a>
@@ -372,13 +372,13 @@
 <li>What was the population density in 2015 in each state? What was the population density in 2010 in each state?</li>
 </ol>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1">us_states2 =<span class="st"> </span>us_states <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb16-2" data-line-number="2"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">pop_dens_15 =</span> total_pop_<span class="dv">15</span><span class="op">/</span>AREA,</a>
+<a class="sourceLine" id="cb16-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">pop_dens_15 =</span> total_pop_<span class="dv">15</span><span class="op">/</span>AREA,</a>
 <a class="sourceLine" id="cb16-3" data-line-number="3">         <span class="dt">pop_dens_10 =</span> total_pop_<span class="dv">10</span><span class="op">/</span>AREA)</a></code></pre></div>
 <ol start="10" style="list-style-type: decimal">
 <li>How much has population density changed between 2010 and 2015 in each state? Calculate the change in percentages and map them.</li>
 </ol>
 <div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1">us_popdens_change =<span class="st"> </span>us_states2 <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb17-2" data-line-number="2"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">pop_dens_diff_10_15 =</span> pop_dens_<span class="dv">15</span> <span class="op">-</span><span class="st"> </span>pop_dens_<span class="dv">10</span>,</a>
+<a class="sourceLine" id="cb17-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">pop_dens_diff_10_15 =</span> pop_dens_<span class="dv">15</span> <span class="op">-</span><span class="st"> </span>pop_dens_<span class="dv">10</span>,</a>
 <a class="sourceLine" id="cb17-3" data-line-number="3">         <span class="dt">pop_dens_diff_10_15p =</span> (pop_dens_diff_<span class="dv">10</span>_<span class="dv">15</span><span class="op">/</span>pop_dens_<span class="dv">15</span>) <span class="op">*</span><span class="st"> </span><span class="dv">100</span>)</a>
 <a class="sourceLine" id="cb17-4" data-line-number="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(us_popdens_change[<span class="st">"pop_dens_diff_10_15p"</span>])</a></code></pre></div>
 <p><img src="solutions03_files/figure-html/unnamed-chunk-14-1.png" width="700"></p>
@@ -386,7 +386,7 @@
 <li>Change the columns names in <code>us_states</code> to lowercase. (Hint: helper functions - <code><a href="https://www.rdocumentation.org/packages/base/topics/chartr">tolower()</a></code> and <code><a href="https://www.rdocumentation.org/packages/base/topics/colnames">colnames()</a></code> may help).</li>
 </ol>
 <div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1">us_states <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb18-2" data-line-number="2"><span class="st">  </span><span class="kw">set_names</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/chartr">tolower</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/colnames">colnames</a></span>(.)))</a>
+<a class="sourceLine" id="cb18-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/setNames">setNames</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/chartr">tolower</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/colnames">colnames</a></span>(.)))</a>
 <a class="sourceLine" id="cb18-3" data-line-number="3"><span class="co">#&gt; Simple feature collection with 49 features and 6 fields</span></a>
 <a class="sourceLine" id="cb18-4" data-line-number="4"><span class="co">#&gt; geometry type:  MULTIPOLYGON</span></a>
 <a class="sourceLine" id="cb18-5" data-line-number="5"><span class="co">#&gt; dimension:      XY</span></a>
@@ -420,24 +420,24 @@
 <li>Using <code>us_states</code> and <code>us_states_df</code> create a new object called <code>us_states_sel</code>. The new object should have only two variables - <code>median_income_15</code> and <code>geometry</code>. Change the name of the <code>median_income_15</code> column to <code>Income</code>.</li>
 </ol>
 <div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1">us_states_sel =<span class="st"> </span>us_states <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb19-2" data-line-number="2"><span class="st">  </span><span class="kw">left_join</span>(us_states_df, <span class="dt">by =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"NAME"</span> =<span class="st"> "state"</span>)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb19-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/join.html">left_join</a></span>(us_states_df, <span class="dt">by =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"NAME"</span> =<span class="st"> "state"</span>)) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb19-3" data-line-number="3"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(<span class="dt">Income =</span> median_income_<span class="dv">15</span>)</a></code></pre></div>
 <ol start="13" style="list-style-type: decimal">
 <li>Calculate the change in median income between 2010 and 2015 for each state. Bonus: what was the minimum, average and maximum median income in 2015 for each region? What is the region with the largest increase of the median income?</li>
 </ol>
 <div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1">us_income_change =<span class="st"> </span>us_states <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb20-2" data-line-number="2"><span class="st">  </span><span class="kw">left_join</span>(us_states_df, <span class="dt">by =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"NAME"</span> =<span class="st"> "state"</span>)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb20-3" data-line-number="3"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">income_change =</span> median_income_<span class="dv">15</span> <span class="op">-</span><span class="st"> </span>median_income_<span class="dv">10</span>) </a>
+<a class="sourceLine" id="cb20-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/join.html">left_join</a></span>(us_states_df, <span class="dt">by =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"NAME"</span> =<span class="st"> "state"</span>)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb20-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">income_change =</span> median_income_<span class="dv">15</span> <span class="op">-</span><span class="st"> </span>median_income_<span class="dv">10</span>) </a>
 <a class="sourceLine" id="cb20-4" data-line-number="4"></a>
 <a class="sourceLine" id="cb20-5" data-line-number="5">us_income_change_reg =<span class="st"> </span>us_income_change <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb20-6" data-line-number="6"><span class="st">  </span><span class="kw">group_by</span>(REGION) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb20-7" data-line-number="7"><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">min_income_change =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Extremes">min</a></span>(income_change),</a>
+<a class="sourceLine" id="cb20-6" data-line-number="6"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span>(REGION) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb20-7" data-line-number="7"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span>(<span class="dt">min_income_change =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Extremes">min</a></span>(income_change),</a>
 <a class="sourceLine" id="cb20-8" data-line-number="8">            <span class="dt">mean_income_change =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/mean">mean</a></span>(income_change),</a>
 <a class="sourceLine" id="cb20-9" data-line-number="9">            <span class="dt">max_income_change =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Extremes">max</a></span>(income_change))</a>
 <a class="sourceLine" id="cb20-10" data-line-number="10"></a>
 <a class="sourceLine" id="cb20-11" data-line-number="11">us_income_change_reg <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb20-12" data-line-number="12"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/filter">filter</a></span>(mean_income_change <span class="op">==</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Extremes">max</a></span>(mean_income_change)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb20-13" data-line-number="13"><span class="st">  </span><span class="kw">pull</span>(REGION) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb20-12" data-line-number="12"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(mean_income_change <span class="op">==</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Extremes">max</a></span>(mean_income_change)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb20-13" data-line-number="13"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/pull.html">pull</a></span>(REGION) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb20-14" data-line-number="14"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/as.character">as.character</a></span>()</a>
 <a class="sourceLine" id="cb20-15" data-line-number="15"><span class="co">#&gt; [1] "Midwest"</span></a></code></pre></div>
 <ol start="14" style="list-style-type: decimal">
@@ -447,10 +447,10 @@
 <a class="sourceLine" id="cb21-2" data-line-number="2">           <span class="dt">ymn =</span> <span class="dv">0</span>, <span class="dt">ymx =</span> <span class="fl">4.5</span>, <span class="dt">vals =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Normal">rnorm</a></span>(<span class="dv">81</span>))</a>
 <a class="sourceLine" id="cb21-3" data-line-number="3"><span class="co"># using cell IDs</span></a>
 <a class="sourceLine" id="cb21-4" data-line-number="4">r[<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span>, <span class="dv">9</span>, <span class="dv">81</span> <span class="op">-</span><span class="st"> </span><span class="dv">9</span>, <span class="dv">81</span>)]</a>
-<a class="sourceLine" id="cb21-5" data-line-number="5"><span class="co">#&gt; [1]  0.19608958 -0.08782813  1.26153135  0.60069254</span></a>
+<a class="sourceLine" id="cb21-5" data-line-number="5"><span class="co">#&gt; [1]  0.7004588 -0.2288362 -1.7278342  0.6234553</span></a>
 <a class="sourceLine" id="cb21-6" data-line-number="6"><span class="co"># using indexing</span></a>
 <a class="sourceLine" id="cb21-7" data-line-number="7">r[<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span>, <span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/ncell">nrow</a></span>(r)), <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span>, <span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/ncell">ncol</a></span>(r))]</a>
-<a class="sourceLine" id="cb21-8" data-line-number="8"><span class="co">#&gt; [1]  0.19608958 -0.08782813  0.16653793  0.60069254</span></a>
+<a class="sourceLine" id="cb21-8" data-line-number="8"><span class="co">#&gt; [1]  0.7004588 -0.2288362  0.6120234  0.6234553</span></a>
 <a class="sourceLine" id="cb21-9" data-line-number="9"><span class="co"># corresponds to [1, 1], [1, 9], [9, 1], [9, 9]</span></a></code></pre></div>
 <ol start="15" style="list-style-type: decimal">
 <li>What is the most common class of our example raster <code>grain</code> (hint: <code><a href="https://www.rdocumentation.org/packages/raster/topics/modal">modal()</a></code>)?</li>
@@ -458,15 +458,15 @@
 <div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" data-line-number="1">grain_size =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"clay"</span>, <span class="st">"silt"</span>, <span class="st">"sand"</span>)</a>
 <a class="sourceLine" id="cb22-2" data-line-number="2">grain =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/raster">raster</a></span>(<span class="dt">nrow =</span> <span class="dv">6</span>, <span class="dt">ncol =</span> <span class="dv">6</span>, <span class="dt">res =</span> <span class="fl">0.5</span>, </a>
 <a class="sourceLine" id="cb22-3" data-line-number="3">               <span class="dt">xmn =</span> <span class="fl">-1.5</span>, <span class="dt">xmx =</span> <span class="fl">1.5</span>, <span class="dt">ymn =</span> <span class="fl">-1.5</span>, <span class="dt">ymx =</span> <span class="fl">1.5</span>,</a>
-<a class="sourceLine" id="cb22-4" data-line-number="4">               <span class="dt">vals =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/factor">factor</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/sample">sample</a></span>(grain_size, <span class="dv">36</span>, <span class="dt">replace =</span> <span class="ot">TRUE</span>), </a>
+<a class="sourceLine" id="cb22-4" data-line-number="4">               <span class="dt">vals =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/factor">factor</a></span>(<span class="kw"><a href="https://dplyr.tidyverse.org/reference/sample.html">sample</a></span>(grain_size, <span class="dv">36</span>, <span class="dt">replace =</span> <span class="ot">TRUE</span>), </a>
 <a class="sourceLine" id="cb22-5" data-line-number="5">                             <span class="dt">levels =</span> grain_size))</a>
 <a class="sourceLine" id="cb22-6" data-line-number="6"><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/cellStats">cellStats</a></span>(grain, modal) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb22-7" data-line-number="7"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/factor">factorValues</a></span>(grain, .)</a>
 <a class="sourceLine" id="cb22-8" data-line-number="8"><span class="co">#&gt;   VALUE</span></a>
-<a class="sourceLine" id="cb22-9" data-line-number="9"><span class="co">#&gt; 1  silt</span></a>
+<a class="sourceLine" id="cb22-9" data-line-number="9"><span class="co">#&gt; 1  clay</span></a>
 <a class="sourceLine" id="cb22-10" data-line-number="10"><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/factor">factorValues</a></span>(grain, <span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/modal">modal</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/getValues">values</a></span>(grain)))</a>
 <a class="sourceLine" id="cb22-11" data-line-number="11"><span class="co">#&gt;   VALUE</span></a>
-<a class="sourceLine" id="cb22-12" data-line-number="12"><span class="co">#&gt; 1  silt</span></a></code></pre></div>
+<a class="sourceLine" id="cb22-12" data-line-number="12"><span class="co">#&gt; 1  clay</span></a></code></pre></div>
 <ol start="16" style="list-style-type: decimal">
 <li>Plot the histogram and the boxplot of the <code><a href="https://www.rdocumentation.org/packages/utils/topics/data">data(dem, package = "RQGIS")</a></code> raster.</li>
 </ol>

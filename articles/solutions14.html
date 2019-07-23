@@ -30,7 +30,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">geocompkg | metapackage for the book Gecomputation with R</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.75</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.99</span>
       </span>
     </div>
 
@@ -65,7 +65,7 @@
       <h1>Chapter 14: Ecology</h1>
                         <h4 class="author">Robin Lovelace, Jakub Nowosad, Jannes Muenchow</h4>
             
-            <h4 class="date">2019-03-11</h4>
+            <h4 class="date">2019-07-23</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/geocompr/geocompkg/blob/master/vignettes/solutions14.Rmd"><code>vignettes/solutions14.Rmd</code></a></small>
       <div class="hidden name"><code>solutions14.Rmd</code></div>
@@ -1630,7 +1630,7 @@
 <a class="sourceLine" id="cb4-3" data-line-number="3"><span class="co">#********************************</span></a>
 <a class="sourceLine" id="cb4-4" data-line-number="4"></a>
 <a class="sourceLine" id="cb4-5" data-line-number="5"><span class="co"># create a task</span></a>
-<a class="sourceLine" id="cb4-6" data-line-number="6">task =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/mlr/topics/Task">makeRegrTask</a></span>(<span class="dt">data =</span> rp, <span class="dt">target =</span> <span class="st">"sc"</span>, <span class="dt">coordinates =</span> coords)</a>
+<a class="sourceLine" id="cb4-6" data-line-number="6">task =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/mlr/topics/RegrTask">makeRegrTask</a></span>(<span class="dt">data =</span> rp, <span class="dt">target =</span> <span class="st">"sc"</span>, <span class="dt">coordinates =</span> coords)</a>
 <a class="sourceLine" id="cb4-7" data-line-number="7"><span class="co"># define the learner</span></a>
 <a class="sourceLine" id="cb4-8" data-line-number="8">lrn_rf =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/mlr/topics/makeLearner">makeLearner</a></span>(<span class="dt">cl =</span> <span class="st">"regr.ranger"</span>, <span class="dt">predict.type =</span> <span class="st">"response"</span>)</a>
 <a class="sourceLine" id="cb4-9" data-line-number="9"><span class="co"># spatial partitioning</span></a>
@@ -1735,7 +1735,7 @@
 <a class="sourceLine" id="cb5-7" data-line-number="7"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_geometry">st_set_geometry</a></span>(<span class="ot">NULL</span>)</a>
 <a class="sourceLine" id="cb5-8" data-line-number="8"></a>
 <a class="sourceLine" id="cb5-9" data-line-number="9"><span class="co"># create task</span></a>
-<a class="sourceLine" id="cb5-10" data-line-number="10">task =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/mlr/topics/Task">makeRegrTask</a></span>(<span class="dt">data =</span> rp, <span class="dt">target =</span> <span class="st">"sc"</span>, <span class="dt">coordinates =</span> coords)</a>
+<a class="sourceLine" id="cb5-10" data-line-number="10">task =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/mlr/topics/RegrTask">makeRegrTask</a></span>(<span class="dt">data =</span> rp, <span class="dt">target =</span> <span class="st">"sc"</span>, <span class="dt">coordinates =</span> coords)</a>
 <a class="sourceLine" id="cb5-11" data-line-number="11"><span class="co"># learner</span></a>
 <a class="sourceLine" id="cb5-12" data-line-number="12">lrn_rf =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/mlr/topics/makeLearner">makeLearner</a></span>(<span class="dt">cl =</span> <span class="st">"regr.ranger"</span>, <span class="dt">predict.type =</span> <span class="st">"response"</span>)</a>
 <a class="sourceLine" id="cb5-13" data-line-number="13"><span class="co"># performance estimation level with 5 spatial partitions and 100 repetitions</span></a>
@@ -1797,7 +1797,7 @@
 <li>Retrieve the bias-reduced RMSE of a simple linear model using spatial cross-validation. Compare the result to the result of the random forest model by making RMSE boxplots for each modeling approach.</li>
 </ol>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="co"># create a task</span></a>
-<a class="sourceLine" id="cb6-2" data-line-number="2">task =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/mlr/topics/Task">makeRegrTask</a></span>(<span class="dt">data =</span> rp, <span class="dt">target =</span> <span class="st">"sc"</span>,</a>
+<a class="sourceLine" id="cb6-2" data-line-number="2">task =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/mlr/topics/RegrTask">makeRegrTask</a></span>(<span class="dt">data =</span> rp, <span class="dt">target =</span> <span class="st">"sc"</span>,</a>
 <a class="sourceLine" id="cb6-3" data-line-number="3">                    <span class="dt">coordinates =</span> coords)</a>
 <a class="sourceLine" id="cb6-4" data-line-number="4"><span class="co"># run listLearners to find out which models could be thrown at our task</span></a>
 <a class="sourceLine" id="cb6-5" data-line-number="5"><span class="co"># lrns = listLearners(task, warn.missing.packages = FALSE)</span></a>

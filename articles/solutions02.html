@@ -30,7 +30,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">geocompkg | metapackage for the book Gecomputation with R</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.75</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.99</span>
       </span>
     </div>
 
@@ -65,7 +65,7 @@
       <h1>Chapter 2: Geographic data in R</h1>
                         <h4 class="author">Robin Lovelace, Jakub Nowosad, Jannes Muenchow</h4>
             
-            <h4 class="date">2019-03-11</h4>
+            <h4 class="date">2019-07-23</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/geocompr/geocompkg/blob/master/vignettes/solutions02.Rmd"><code>vignettes/solutions02.Rmd</code></a></small>
       <div class="hidden name"><code>solutions02.Rmd</code></div>
@@ -79,7 +79,7 @@
 <a href="#prerequisites" class="anchor"></a>Prerequisites</h2>
 <p>The solutions assume the following packages are attached (other packages will be attached when needed):</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(sf)</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(tidyverse)</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(dplyr)</a>
 <a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(raster)</a>
 <a class="sourceLine" id="cb1-4" data-line-number="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(spData)</a></code></pre></div>
 </div>
@@ -169,7 +169,7 @@ Map of Nigeria in context illustrating sf’s plotting capabilities
 <a class="sourceLine" id="cb6-5" data-line-number="5"><span class="co">#&gt; resolution : 31.5303, 31.52466  (x, y)</span></a>
 <a class="sourceLine" id="cb6-6" data-line-number="6"><span class="co">#&gt; extent     : 301903.3, 335735.4, 4111244, 4154086  (xmin, xmax, ymin, ymax)</span></a>
 <a class="sourceLine" id="cb6-7" data-line-number="7"><span class="co">#&gt; crs        : +proj=utm +zone=12 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs </span></a>
-<a class="sourceLine" id="cb6-8" data-line-number="8"><span class="co">#&gt; source     : /home/robin/R/x86_64-pc-linux-gnu-library/3.5/spDataLarge/raster/nlcd2011.tif </span></a>
+<a class="sourceLine" id="cb6-8" data-line-number="8"><span class="co">#&gt; source     : /usr/local/lib/R/site-library/spDataLarge/raster/nlcd2011.tif </span></a>
 <a class="sourceLine" id="cb6-9" data-line-number="9"><span class="co">#&gt; names      : nlcd2011 </span></a>
 <a class="sourceLine" id="cb6-10" data-line-number="10"><span class="co">#&gt; values     : 11, 95  (min, max)</span></a></code></pre></div>
 <p>You can get information about:</p>

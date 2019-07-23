@@ -30,7 +30,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">geocompkg | metapackage for the book Gecomputation with R</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.75</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.99</span>
       </span>
     </div>
 
@@ -65,7 +65,7 @@
       <h1>Chapter 11: Statistical learning</h1>
                         <h4 class="author">Robin Lovelace, Jakub Nowosad, Jannes Muenchow</h4>
             
-            <h4 class="date">2019-03-11</h4>
+            <h4 class="date">2019-07-23</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/geocompr/geocompkg/blob/master/vignettes/solutions11.Rmd"><code>vignettes/solutions11.Rmd</code></a></small>
       <div class="hidden name"><code>solutions11.Rmd</code></div>
@@ -80,7 +80,7 @@
 <p>The solutions assume the following packages are attached (other packages will be attached when needed):</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(sf)</a>
 <a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(raster)</a>
-<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(tidyverse)</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(dplyr)</a>
 <a class="sourceLine" id="cb1-4" data-line-number="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(spData)</a>
 <a class="sourceLine" id="cb1-5" data-line-number="5"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(RSAGA)</a>
 <a class="sourceLine" id="cb1-6" data-line-number="6"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(RQGIS)</a>
@@ -107,14 +107,14 @@
 <a class="sourceLine" id="cb2-5" data-line-number="5"><span class="co">#*******************</span></a>
 <a class="sourceLine" id="cb2-6" data-line-number="6"></a>
 <a class="sourceLine" id="cb2-7" data-line-number="7"><span class="co"># select non-landslide points</span></a>
-<a class="sourceLine" id="cb2-8" data-line-number="8">non_pts =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/filter">filter</a></span>(landslides, lslpts <span class="op">==</span><span class="st"> </span><span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb2-8" data-line-number="8">non_pts =<span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(landslides, lslpts <span class="op">==</span><span class="st"> </span><span class="ot">FALSE</span>)</a>
 <a class="sourceLine" id="cb2-9" data-line-number="9"><span class="co"># select landslide points</span></a>
-<a class="sourceLine" id="cb2-10" data-line-number="10">lsl_pts =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/filter">filter</a></span>(landslides, lslpts <span class="op">==</span><span class="st"> </span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb2-10" data-line-number="10">lsl_pts =<span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(landslides, lslpts <span class="op">==</span><span class="st"> </span><span class="ot">TRUE</span>)</a>
 <a class="sourceLine" id="cb2-11" data-line-number="11"><span class="co"># randomly select 175 non-landslide points</span></a>
 <a class="sourceLine" id="cb2-12" data-line-number="12"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Random">set.seed</a></span>(<span class="dv">11042018</span>)</a>
-<a class="sourceLine" id="cb2-13" data-line-number="13">non_pts_sub =<span class="st"> </span><span class="kw">sample_n</span>(non_pts, <span class="dt">size =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/ncell">nrow</a></span>(lsl_pts))</a>
+<a class="sourceLine" id="cb2-13" data-line-number="13">non_pts_sub =<span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/sample.html">sample_n</a></span>(non_pts, <span class="dt">size =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/ncell">nrow</a></span>(lsl_pts))</a>
 <a class="sourceLine" id="cb2-14" data-line-number="14"><span class="co"># create smaller landslide dataset (lsl)</span></a>
-<a class="sourceLine" id="cb2-15" data-line-number="15">lsl =<span class="st"> </span><span class="kw">bind_rows</span>(non_pts_sub, lsl_pts)</a>
+<a class="sourceLine" id="cb2-15" data-line-number="15">lsl =<span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/bind.html">bind_rows</a></span>(non_pts_sub, lsl_pts)</a>
 <a class="sourceLine" id="cb2-16" data-line-number="16"></a>
 <a class="sourceLine" id="cb2-17" data-line-number="17"><span class="co"># digital elevation model</span></a>
 <a class="sourceLine" id="cb2-18" data-line-number="18">dem =<span class="st"> </span></a>
@@ -219,10 +219,10 @@
 <a class="sourceLine" id="cb5-10" data-line-number="10"><span class="co">#*************</span></a>
 <a class="sourceLine" id="cb5-11" data-line-number="11"></a>
 <a class="sourceLine" id="cb5-12" data-line-number="12"><span class="co"># spatial task</span></a>
-<a class="sourceLine" id="cb5-13" data-line-number="13">task =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/mlr/topics/Task">makeClassifTask</a></span>(<span class="dt">data =</span> data, <span class="dt">target =</span> <span class="st">"lslpts"</span>, </a>
+<a class="sourceLine" id="cb5-13" data-line-number="13">task =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/mlr/topics/ClassifTask">makeClassifTask</a></span>(<span class="dt">data =</span> data, <span class="dt">target =</span> <span class="st">"lslpts"</span>, </a>
 <a class="sourceLine" id="cb5-14" data-line-number="14">                       <span class="dt">positive =</span> <span class="st">"TRUE"</span>, <span class="dt">coordinates =</span> coords)</a>
 <a class="sourceLine" id="cb5-15" data-line-number="15"><span class="co"># non-spatial task</span></a>
-<a class="sourceLine" id="cb5-16" data-line-number="16">task_nsp =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/mlr/topics/Task">makeClassifTask</a></span>(<span class="dt">data =</span> data, <span class="dt">target =</span> <span class="st">"lslpts"</span>, <span class="dt">positive =</span> <span class="st">"TRUE"</span>)</a>
+<a class="sourceLine" id="cb5-16" data-line-number="16">task_nsp =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/mlr/topics/ClassifTask">makeClassifTask</a></span>(<span class="dt">data =</span> data, <span class="dt">target =</span> <span class="st">"lslpts"</span>, <span class="dt">positive =</span> <span class="st">"TRUE"</span>)</a>
 <a class="sourceLine" id="cb5-17" data-line-number="17"></a>
 <a class="sourceLine" id="cb5-18" data-line-number="18"><span class="co"># CONSTRUCT LEARNER</span></a>
 <a class="sourceLine" id="cb5-19" data-line-number="19"><span class="co">#******************</span></a>
@@ -268,7 +268,7 @@
 <a class="sourceLine" id="cb6-10" data-line-number="10"><span class="co">#*************</span></a>
 <a class="sourceLine" id="cb6-11" data-line-number="11"></a>
 <a class="sourceLine" id="cb6-12" data-line-number="12"><span class="co"># spatial task</span></a>
-<a class="sourceLine" id="cb6-13" data-line-number="13">task =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/mlr/topics/Task">makeClassifTask</a></span>(<span class="dt">data =</span> data, <span class="dt">target =</span> <span class="st">"lslpts"</span>, </a>
+<a class="sourceLine" id="cb6-13" data-line-number="13">task =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/mlr/topics/ClassifTask">makeClassifTask</a></span>(<span class="dt">data =</span> data, <span class="dt">target =</span> <span class="st">"lslpts"</span>, </a>
 <a class="sourceLine" id="cb6-14" data-line-number="14">                       <span class="dt">positive =</span> <span class="st">"TRUE"</span>, <span class="dt">coordinates =</span> coords)</a>
 <a class="sourceLine" id="cb6-15" data-line-number="15"></a>
 <a class="sourceLine" id="cb6-16" data-line-number="16"><span class="co"># CONSTRUCT LEARNER</span></a>
@@ -323,7 +323,7 @@
 <a class="sourceLine" id="cb7-10" data-line-number="10"><span class="co">#*************</span></a>
 <a class="sourceLine" id="cb7-11" data-line-number="11"></a>
 <a class="sourceLine" id="cb7-12" data-line-number="12"><span class="co"># spatial task</span></a>
-<a class="sourceLine" id="cb7-13" data-line-number="13">task =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/mlr/topics/Task">makeClassifTask</a></span>(<span class="dt">data =</span> data, <span class="dt">target =</span> <span class="st">"lslpts"</span>, </a>
+<a class="sourceLine" id="cb7-13" data-line-number="13">task =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/mlr/topics/ClassifTask">makeClassifTask</a></span>(<span class="dt">data =</span> data, <span class="dt">target =</span> <span class="st">"lslpts"</span>, </a>
 <a class="sourceLine" id="cb7-14" data-line-number="14">                       <span class="dt">positive =</span> <span class="st">"TRUE"</span>, <span class="dt">coordinates =</span> coords)</a>
 <a class="sourceLine" id="cb7-15" data-line-number="15"></a>
 <a class="sourceLine" id="cb7-16" data-line-number="16"></a>

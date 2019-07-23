@@ -30,7 +30,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">geocompkg | metapackage for the book Gecomputation with R</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.75</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.99</span>
       </span>
     </div>
 
@@ -65,7 +65,7 @@
       <h1>Chapter 9: Bridges to GIS software</h1>
                         <h4 class="author">Robin Lovelace, Jakub Nowosad, Jannes Muenchow</h4>
             
-            <h4 class="date">2019-03-11</h4>
+            <h4 class="date">2019-07-23</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/geocompr/geocompkg/blob/master/vignettes/solutions09.Rmd"><code>vignettes/solutions09.Rmd</code></a></small>
       <div class="hidden name"><code>solutions09.Rmd</code></div>
@@ -79,7 +79,7 @@
 <a href="#prerequisites" class="anchor"></a>Prerequisites</h2>
 <p>The solutions assume the following packages are attached (other packages will be attached when needed):</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(sf)</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(tidyverse)</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(dplyr)</a>
 <a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(spData)</a></code></pre></div>
 </div>
 <div id="chapter-9" class="section level1">
@@ -239,7 +239,7 @@
 <a class="sourceLine" id="cb6-9" data-line-number="9"><span class="kw"><a href="https://www.rdocumentation.org/packages/RQGIS/topics/open_help">open_help</a></span>(alg)</a>
 <a class="sourceLine" id="cb6-10" data-line-number="10"><span class="co"># let's find out about the default values</span></a>
 <a class="sourceLine" id="cb6-11" data-line-number="11"><span class="kw"><a href="https://www.rdocumentation.org/packages/RQGIS/topics/get_args_man">get_args_man</a></span>(alg)</a>
-<a class="sourceLine" id="cb6-12" data-line-number="12">point =<span class="st"> </span>random_points[<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/sample">sample</a></span>(<span class="dv">1</span><span class="op">:</span><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/ncell">nrow</a></span>(random_points), <span class="dv">1</span>), ]</a>
+<a class="sourceLine" id="cb6-12" data-line-number="12">point =<span class="st"> </span>random_points[<span class="kw"><a href="https://dplyr.tidyverse.org/reference/sample.html">sample</a></span>(<span class="dv">1</span><span class="op">:</span><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/ncell">nrow</a></span>(random_points), <span class="dv">1</span>), ]</a>
 <a class="sourceLine" id="cb6-13" data-line-number="13">coord =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste</a></span>(sf<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_coordinates">st_coordinates</a></span>(point), <span class="dt">collapse =</span> <span class="st">","</span>)</a>
 <a class="sourceLine" id="cb6-14" data-line-number="14">out =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/RQGIS/topics/run_qgis">run_qgis</a></span>(alg, <span class="dt">input =</span> dem,</a>
 <a class="sourceLine" id="cb6-15" data-line-number="15">               <span class="dt">coordinates =</span> coord,</a>

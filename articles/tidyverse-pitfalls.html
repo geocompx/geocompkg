@@ -30,7 +30,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">geocompkg | metapackage for the book Gecomputation with R</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.75</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.99</span>
       </span>
     </div>
 
@@ -65,7 +65,7 @@
       <h1>Spatial data and the tidyverse: pitfalls to avoid</h1>
                         <h4 class="author">Robin Lovelace, Jakub Nowosad, Jannes Muenchow</h4>
             
-            <h4 class="date">2019-03-11</h4>
+            <h4 class="date">2019-07-23</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/geocompr/geocompkg/blob/master/vignettes/tidyverse-pitfalls.Rmd"><code>vignettes/tidyverse-pitfalls.Rmd</code></a></small>
       <div class="hidden name"><code>tidyverse-pitfalls.Rmd</code></div>
@@ -111,10 +111,8 @@
 <h2 class="hasAnchor">
 <a href="#loading-spatial-packages" class="anchor"></a>Loading spatial packages</h2>
 <p>Now you know the context and have your R setup sorted, it’s time to begin the practical. Execute the following 2 commands to attach spatial data libraries:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(sf)</a></code></pre></div>
-<pre><code>## Linking to GEOS 3.7.0, GDAL 2.3.2, PROJ 5.2.0</code></pre>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(raster)</a></code></pre></div>
-<pre><code>## Loading required package: sp</code></pre>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(sf)</a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(raster)</a></code></pre></div>
 <p>Notice the messages: <strong>sf</strong> uses some C libraries behind the scenes. <strong>raster</strong> depends on the older <strong>sp</strong> package which <strong>sf</strong> replaces (confusing I know!).</p>
 <p>The next step is to attach the tidyverse, which brings us onto the first pitfall.</p>
 </div>
@@ -122,17 +120,7 @@
 <h2 class="hasAnchor">
 <a href="#pitfall-name-clashes" class="anchor"></a>Pitfall: name clashes</h2>
 <p>Just loading the tidyverse reveals a pitfall of using spatial data with the tidyverse that affects the <strong>raster</strong> package in particular:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(tidyverse)</a></code></pre></div>
-<pre><code>## ── Attaching packages ──────────────────────────────────────────────────────────────────────────────────────────── tidyverse 1.2.1 ──</code></pre>
-<pre><code>## ✔ ggplot2 3.1.0       ✔ purrr   0.3.1  
-## ✔ tibble  2.0.1       ✔ dplyr   0.8.0.1
-## ✔ tidyr   0.8.3       ✔ stringr 1.4.0  
-## ✔ readr   1.3.1       ✔ forcats 0.4.0</code></pre>
-<pre><code>## ── Conflicts ─────────────────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
-## ✖ tidyr::extract() masks raster::extract()
-## ✖ dplyr::filter()  masks stats::filter()
-## ✖ dplyr::lag()     masks stats::lag()
-## ✖ dplyr::select()  masks raster::select()</code></pre>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(tidyverse)</a></code></pre></div>
 <p>The first chunk of output shows that the tidyverse is attaching its packages. ✔ yes we want <strong>ggplot2</strong>, ✔ we want <strong>dplyr</strong> etc. But we also get less positive messages. ✖ Doh! there are many conflicts.</p>
 <p>In the context of spatial data this may only be a problem if you use the <strong>raster</strong> package. The final ✖ shows that <strong>dplyr</strong>’s <code><a href="https://www.rdocumentation.org/packages/raster/topics/select">select()</a></code> function has boshed (technically speaking, masked) <strong>raster</strong>’s select function. This can cause issues. To avoid this pitfall we suggest using <code><a href="https://dplyr.tidyverse.org/reference/select.html">dplyr::select()</a></code> and <code><a href="https://www.rdocumentation.org/packages/raster/topics/select">raster::select()</a></code> rather than just <code><a href="https://www.rdocumentation.org/packages/raster/topics/select">select()</a></code> when using this conflicted function name if you use <strong>raster</strong> and the <strong>tidyverse</strong>.</p>
 </div>
@@ -146,62 +134,48 @@
 <li>Together with the <strong>rgdal</strong> and <strong>rgeos</strong> package, it creates a powerful tool to works with spatial data</li>
 <li>Many spatial R packages still depend on the <strong>sp</strong> package, therefore it is important to know how to convert <strong>sp</strong> to and from <strong>sf</strong> objects</li>
 </ul>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(spData)</a>
-<a class="sourceLine" id="cb12-2" data-line-number="2">world_sp =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/coerce-methods">as</a></span>(world, <span class="st">"Spatial"</span>)</a>
-<a class="sourceLine" id="cb12-3" data-line-number="3">world_sf =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_as_sf">st_as_sf</a></span>(world_sp)</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(spData)</a>
+<a class="sourceLine" id="cb6-2" data-line-number="2">world_sp =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/coerce-methods">as</a></span>(world, <span class="st">"Spatial"</span>)</a>
+<a class="sourceLine" id="cb6-3" data-line-number="3">world_sf =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_as_sf">st_as_sf</a></span>(world_sp)</a></code></pre></div>
 <ul>
 <li>The structures in the <strong>sp</strong> packages are more complicated - <code><a href="https://www.rdocumentation.org/packages/utils/topics/str">str(world_sf)</a></code> vs <code><a href="https://www.rdocumentation.org/packages/utils/topics/str">str(world_sp)</a></code>
 </li>
 <li>
 <strong>sp</strong> doesn’t play well with the <strong>tidyverse</strong>:</li>
 </ul>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1">world_sp <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb13-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/filter">filter</a></span>(name_long <span class="op">==</span><span class="st"> "England"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">world_sp <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/filter">filter</a></span>(name_long <span class="op">==</span><span class="st"> "England"</span>)</a></code></pre></div>
 <p><code>Error in UseMethod("filter_") :    no applicable method for 'filter_' applied to an object of class "c('SpatialPolygonsDataFrame', 'SpatialPolygons', 'Spatial')"</code></p>
 </div>
 <div id="pitfall-multipolygon-objects" class="section level2">
 <h2 class="hasAnchor">
 <a href="#pitfall-multipolygon-objects" class="anchor"></a>Pitfall: multipolygon objects</h2>
 <p>This pitfall is not specific to the tidyverse but is worth being aware of. Let’s create a buffer around London of 500 km:</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1">lnd_buff =<span class="st"> </span>lnd[<span class="dv">1</span>, ] <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb14-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_transform">st_transform</a></span>(<span class="dt">crs =</span> <span class="dv">27700</span>) <span class="op">%&gt;%</span><span class="st">  </span><span class="co"># uk CRS</span></a>
-<a class="sourceLine" id="cb14-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/geos_unary">st_buffer</a></span>(<span class="dv">500000</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb14-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_transform">st_transform</a></span>(<span class="dt">crs =</span> <span class="dv">4326</span>)</a>
-<a class="sourceLine" id="cb14-5" data-line-number="5">near_lnd =<span class="st"> </span>world[lnd_buff, ]</a></code></pre></div>
-<pre><code>## although coordinates are longitude/latitude, st_intersects assumes that they are planar</code></pre>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(near_lnd<span class="op">$</span>geom)</a></code></pre></div>
-<p><img src="tidyverse-pitfalls_files/figure-html/unnamed-chunk-8-1.png" width="700"></p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">lnd_buff =<span class="st"> </span>lnd[<span class="dv">1</span>, ] <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_transform">st_transform</a></span>(<span class="dt">crs =</span> <span class="dv">27700</span>) <span class="op">%&gt;%</span><span class="st">  </span><span class="co"># uk CRS</span></a>
+<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/geos_unary">st_buffer</a></span>(<span class="dv">500000</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb8-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_transform">st_transform</a></span>(<span class="dt">crs =</span> <span class="dv">4326</span>)</a>
+<a class="sourceLine" id="cb8-5" data-line-number="5">near_lnd =<span class="st"> </span>world[lnd_buff, ]</a>
+<a class="sourceLine" id="cb8-6" data-line-number="6"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(near_lnd<span class="op">$</span>geom)</a></code></pre></div>
 <p>What is going with the country miles away?</p>
 <p>The issue is that some objects have multiple geometries:</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_geometry_type">st_geometry_type</a></span>(near_lnd)</a></code></pre></div>
-<pre><code>## [1] MULTIPOLYGON MULTIPOLYGON MULTIPOLYGON MULTIPOLYGON MULTIPOLYGON
-## [6] MULTIPOLYGON MULTIPOLYGON
-## 18 Levels: GEOMETRY POINT LINESTRING POLYGON ... TRIANGLE</code></pre>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_geometry_type">st_geometry_type</a></span>(near_lnd)</a></code></pre></div>
 <p>Which have more than 1?</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/data.frame">data.frame</a></span>(near_lnd<span class="op">$</span>name_long,</a>
-<a class="sourceLine" id="cb19-2" data-line-number="2">           <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/lapply">sapply</a></span>(near_lnd<span class="op">$</span>geom, length))</a></code></pre></div>
-<pre><code>##   near_lnd.name_long sapply.near_lnd.geom..length.
-## 1             France                             3
-## 2            Germany                             1
-## 3         Luxembourg                             1
-## 4            Belgium                             1
-## 5        Netherlands                             1
-## 6            Ireland                             1
-## 7     United Kingdom                             2</code></pre>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/data.frame">data.frame</a></span>(near_lnd<span class="op">$</span>name_long,</a>
+<a class="sourceLine" id="cb10-2" data-line-number="2">           <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/lapply">sapply</a></span>(near_lnd<span class="op">$</span>geom, length))</a></code></pre></div>
 <p>We can resolve this issue by casting them:</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1">world_poly =<span class="st"> </span>world <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb21-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_cast">st_cast</a></span>(<span class="dt">to =</span> <span class="st">"POLYGON"</span>)</a>
-<a class="sourceLine" id="cb21-3" data-line-number="3">near_lnd_new =<span class="st"> </span>world_poly[lnd_buff, ]</a>
-<a class="sourceLine" id="cb21-4" data-line-number="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(near_lnd_new))</a></code></pre></div>
-<p><img src="tidyverse-pitfalls_files/figure-html/unnamed-chunk-11-1.png" width="700"></p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">world_poly =<span class="st"> </span>world <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_cast">st_cast</a></span>(<span class="dt">to =</span> <span class="st">"POLYGON"</span>)</a>
+<a class="sourceLine" id="cb11-3" data-line-number="3">near_lnd_new =<span class="st"> </span>world_poly[lnd_buff, ]</a>
+<a class="sourceLine" id="cb11-4" data-line-number="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(near_lnd_new))</a></code></pre></div>
 </div>
 <div id="pitfall-spatial-subsetting" class="section level2">
 <h2 class="hasAnchor">
 <a href="#pitfall-spatial-subsetting" class="anchor"></a>Pitfall: spatial subsetting</h2>
 <p>The previous code chunk shows how spatial subsetting works in base R, with <code>near_lnd = world_poly[lnd_buff, ]</code>.</p>
 <p>You can also do tidy spatial subsetting:</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" data-line-number="1">near_lnd_tidy =<span class="st"> </span>world <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb22-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/filter">filter</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/geos_binary_pred">st_intersects</a></span>(., lnd_buff, <span class="dt">sparse =</span> <span class="ot">FALSE</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">near_lnd_tidy =<span class="st"> </span>world <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb12-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/filter">filter</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/geos_binary_pred">st_intersects</a></span>(., lnd_buff, <span class="dt">sparse =</span> <span class="ot">FALSE</span>))</a></code></pre></div>
 <p>But there are pitfalls:</p>
 <ul>
 <li>It’s verbose (you need <code>sparse = FALSE</code> in the spatial predicate function)</li>
@@ -211,10 +185,8 @@
 <div id="pitfall-row-names" class="section level2">
 <h2 class="hasAnchor">
 <a href="#pitfall-row-names" class="anchor"></a>Pitfall: row names</h2>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/row.names">row.names</a></span>(near_lnd_tidy)</a></code></pre></div>
-<pre><code>## [1] "1" "2" "3" "4" "5" "6" "7"</code></pre>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/row.names">row.names</a></span>(near_lnd)</a></code></pre></div>
-<pre><code>## [1] "44"  "122" "129" "130" "131" "134" "144"</code></pre>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/row.names">row.names</a></span>(near_lnd_tidy)</a>
+<a class="sourceLine" id="cb13-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/row.names">row.names</a></span>(near_lnd)</a></code></pre></div>
 <ul>
 <li>Consequences for joining - rownames can be useful!</li>
 </ul>
@@ -223,32 +195,20 @@
 <div id="pitfall-attribute-alteration" class="section level2">
 <h2 class="hasAnchor">
 <a href="#pitfall-attribute-alteration" class="anchor"></a>Pitfall: attribute alteration</h2>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" data-line-number="1">world <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb27-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/filter">filter</a></span>(name_long <span class="op">==</span><span class="st"> "United Kingdom"</span>)</a></code></pre></div>
-<pre><code>## Simple feature collection with 1 feature and 10 fields
-## geometry type:  MULTIPOLYGON
-## dimension:      XY
-## bbox:           xmin: -7.572168 ymin: 49.96 xmax: 1.681531 ymax: 58.635
-## epsg (SRID):    4326
-## proj4string:    +proj=longlat +datum=WGS84 +no_defs
-##   iso_a2      name_long continent region_un       subregion    type
-## 1     GB United Kingdom    Europe    Europe Northern Europe Country
-##   area_km2      pop  lifeExp gdpPercap                           geom
-## 1 249986.4 64613160 81.30488  38251.79 MULTIPOLYGON (((-6.197885 5...</code></pre>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1">world <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb14-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/filter">filter</a></span>(name_long <span class="op">==</span><span class="st"> "United Kingdom"</span>)</a></code></pre></div>
 <p>Base R equivalent:</p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" data-line-number="1">world[world<span class="op">$</span>name_long <span class="op">==</span><span class="st"> "United Kingdom"</span>, ]</a></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1">world[world<span class="op">$</span>name_long <span class="op">==</span><span class="st"> "United Kingdom"</span>, ]</a></code></pre></div>
 <p>Question:</p>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/identical">identical</a></span>(</a>
-<a class="sourceLine" id="cb30-2" data-line-number="2">  world <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/filter">filter</a></span>(name_long <span class="op">==</span><span class="st"> "United Kingdom"</span>),</a>
-<a class="sourceLine" id="cb30-3" data-line-number="3">  world[world<span class="op">$</span>name_long <span class="op">==</span><span class="st"> "United Kingdom"</span>, ]</a>
-<a class="sourceLine" id="cb30-4" data-line-number="4">) <span class="co"># ?</span></a></code></pre></div>
-<pre><code>## [1] FALSE</code></pre>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/identical">identical</a></span>(</a>
+<a class="sourceLine" id="cb16-2" data-line-number="2">  world <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/filter">filter</a></span>(name_long <span class="op">==</span><span class="st"> "United Kingdom"</span>),</a>
+<a class="sourceLine" id="cb16-3" data-line-number="3">  world[world<span class="op">$</span>name_long <span class="op">==</span><span class="st"> "United Kingdom"</span>, ]</a>
+<a class="sourceLine" id="cb16-4" data-line-number="4">) <span class="co"># ?</span></a></code></pre></div>
 <p>Row names usually don’t matter but they can bite.</p>
-<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" data-line-number="1">u1 =<span class="st"> </span>world <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/filter">filter</a></span>(name_long <span class="op">==</span><span class="st"> "United Kingdom"</span>)</a>
-<a class="sourceLine" id="cb32-2" data-line-number="2">u2 =<span class="st"> </span>world[world<span class="op">$</span>name_long <span class="op">==</span><span class="st"> "United Kingdom"</span>, ]</a>
-<a class="sourceLine" id="cb32-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/row.names">row.names</a></span>(u2) =<span class="st"> </span><span class="dv">1</span></a>
-<a class="sourceLine" id="cb32-4" data-line-number="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/identical">identical</a></span>(u1, u2)</a></code></pre></div>
-<pre><code>## [1] FALSE</code></pre>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1">u1 =<span class="st"> </span>world <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/filter">filter</a></span>(name_long <span class="op">==</span><span class="st"> "United Kingdom"</span>)</a>
+<a class="sourceLine" id="cb17-2" data-line-number="2">u2 =<span class="st"> </span>world[world<span class="op">$</span>name_long <span class="op">==</span><span class="st"> "United Kingdom"</span>, ]</a>
+<a class="sourceLine" id="cb17-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/row.names">row.names</a></span>(u2) =<span class="st"> </span><span class="dv">1</span></a>
+<a class="sourceLine" id="cb17-4" data-line-number="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/identical">identical</a></span>(u1, u2)</a></code></pre></div>
 <ul>
 <li>Advanced challenge: how to make u1 and u2 identical?</li>
 </ul>
@@ -256,16 +216,15 @@
 <div id="pitfall-binding-rows" class="section level2">
 <h2 class="hasAnchor">
 <a href="#pitfall-binding-rows" class="anchor"></a>Pitfall: binding rows</h2>
-<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb34-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cbind">rbind</a></span>(near_lnd, near_lnd) <span class="co"># works</span></a>
-<a class="sourceLine" id="cb34-2" data-line-number="2"><span class="kw">bind_rows</span>(near_lnd, near_lnd)</a></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cbind">rbind</a></span>(near_lnd, near_lnd) <span class="co"># works</span></a>
+<a class="sourceLine" id="cb18-2" data-line-number="2"><span class="kw">bind_rows</span>(near_lnd, near_lnd)</a></code></pre></div>
 <pre><code>Error in .subset2(x, i, exact = exact) : 
   attempt to select less than one element in get1index</code></pre>
 <p>But this does:</p>
-<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb36-1" data-line-number="1">near_lnd_data =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_geometry">st_set_geometry</a></span>(near_lnd, <span class="ot">NULL</span>)</a>
-<a class="sourceLine" id="cb36-2" data-line-number="2">d =<span class="st"> </span><span class="kw">bind_rows</span>(near_lnd_data, near_lnd_data)</a>
-<a class="sourceLine" id="cb36-3" data-line-number="3">d_sf =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/sf">st_sf</a></span>(d, <span class="dt">geometry =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(near_lnd<span class="op">$</span>geom, near_lnd<span class="op">$</span>geom))</a>
-<a class="sourceLine" id="cb36-4" data-line-number="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/plot">plot</a></span>(d_sf)</a></code></pre></div>
-<p><img src="tidyverse-pitfalls_files/figure-html/unnamed-chunk-20-1.png" width="700"></p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1">near_lnd_data =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_geometry">st_set_geometry</a></span>(near_lnd, <span class="ot">NULL</span>)</a>
+<a class="sourceLine" id="cb20-2" data-line-number="2">d =<span class="st"> </span><span class="kw">bind_rows</span>(near_lnd_data, near_lnd_data)</a>
+<a class="sourceLine" id="cb20-3" data-line-number="3">d_sf =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/sf">st_sf</a></span>(d, <span class="dt">geometry =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(near_lnd<span class="op">$</span>geom, near_lnd<span class="op">$</span>geom))</a>
+<a class="sourceLine" id="cb20-4" data-line-number="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(d_sf)</a></code></pre></div>
 </div>
 <div id="raster-data-in-the-tidyverse" class="section level2">
 <h2 class="hasAnchor">

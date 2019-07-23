@@ -1,17 +1,11 @@
-pandoc: 2.3.1
+pandoc: '2.2'
 pkgdown: 1.3.0
 pkgdown_sha: ~
 articles:
   algorithm: algorithm.html
-  benchmark: benchmark.html
-  cast: cast.html
-  erum-2018: erum-2018.html
-  gps-tracks: gps-tracks.html
   join: join.html
   linevia: linevia.html
-  maps: maps.html
   point-pattern: point-pattern.html
-  sea-level-rise: sea-level-rise.html
   solutions01: solutions01.html
   solutions02: solutions02.html
   solutions03: solutions03.html
@@ -26,7 +20,6 @@ articles:
   solutions12: solutions12.html
   solutions13: solutions13.html
   solutions14: solutions14.html
-  subsetting: subsetting.html
   tidyverse-pitfalls: tidyverse-pitfalls.html
   us-map: us-map.html
 
