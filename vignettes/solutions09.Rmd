@@ -49,6 +49,9 @@ poly_1 = st_sf(geometry = poly_1, data = data.frame(id = 1))
 poly_2 = st_polygon(list((coords_2))) %>%
   st_sfc(crs = 4326) %>%
   st_sf(data = data.frame(id = 1))
+names(poly_2)  # outputs [1] "id" "." 
+# ugly fix, think of sth. better...
+names(poly_2) = c("id", "geometry")
 st_geometry(poly_2) = "geometry"
 # visualize it
 plot(st_geometry(poly_1), xlim = c(-1, 1), ylim = c(-1, 1))
