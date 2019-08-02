@@ -11,3 +11,5 @@ Sheff2leeds.gpx
 trace.gpx
 promenade-all.geojson
 tmp.tsv
+*.pdf
+slides/libs/

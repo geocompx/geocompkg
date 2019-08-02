@@ -4,7 +4,7 @@ author: "Robin Lovelace, Jakub Nowosad, Jannes Muenchow"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{geocompr-solutions}
+  %\VignetteIndexEntry{geocompr-solutions5}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -20,7 +20,7 @@ The solutions assume the following packages are attached (other packages will be
 ```{r packages, message=FALSE, warning=FALSE}
 library(sf)
 library(raster)
-library(tidyverse)
+library(dplyr)
 library(spData)
 library(spDataLarge)
 library(RQGIS)
@@ -94,12 +94,12 @@ Hint: you need to use a two-element vector for this transformation.
     - Bonus: create a upside down map of your country.
 ```{r}
 world_sfc = st_geometry(world)
-world_sfc_mirror = world_sfc * c(1, -1)
+world_sfc_mirror = world_sfc * c(-1, -1)
 plot(world_sfc)
 plot(world_sfc_mirror)
 
 us_states_sfc = st_geometry(us_states)
-us_states_sfc_mirror = us_states_sfc * c(1, -1)
+us_states_sfc_mirror = us_states_sfc * c(-1, -1)
 plot(us_states_sfc)
 plot(us_states_sfc_mirror)
 ## nicer plot

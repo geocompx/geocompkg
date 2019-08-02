@@ -4,7 +4,7 @@ author: "Robin Lovelace, Jakub Nowosad, Jannes Muenchow"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{geocompr-solutions}
+  %\VignetteIndexEntry{geocompr-solutions4}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -20,7 +20,7 @@ The solutions assume the following packages are attached (other packages will be
 ```{r packages, message=FALSE, warning=FALSE}
 library(sf)
 library(raster)
-library(tidyverse)
+library(dplyr)
 library(spData)
 library(spDataLarge)
 ```

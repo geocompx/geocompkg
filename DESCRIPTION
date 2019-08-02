@@ -1,6 +1,6 @@
 Package: geocompkg
 Title: Geocomputation with R metapackage with solutions and extensions
-Version: 0.0.75
+Version: 0.0.99
 Authors@R: c(person("Robin", "Lovelace", role = c("aut")), 
     person("Jakub", "Nowosad", email = "nowosad.jakub@gmail.com",
     role = c("aut", "cre")),
@@ -11,6 +11,7 @@ Imports:
     bookdown,
     cartogram,
     classInt,
+    dplyr,
     geosphere,
     ggplot2,
     historydata,
@@ -22,16 +23,19 @@ Imports:
     leaflet,
     link2GI,
     lwgeom,
+    mapdeck,
     mapview,    
     mlr,
     odbc,
     osmdata,
     pool,
     pROC,
+    purrr,
     ranger,
     raster,
     rasterVis,
     rcartocolor,
+    readr,
     revgeo,
     rmapshaper,
     rgdal,
@@ -49,14 +53,15 @@ Imports:
     spDataLarge,
     stars,
     stplanr,
+    stringr,
+    tibble,
+    tidyr,
     tree,
-    tidyverse,
     tmap,
     tmaptools,
     vegan
 Remotes:
     nowosad/spDataLarge,
-    jannes-m/RQGIS,
     rspatial/raster
 URL: https://github.com/geocompr/geocompkg
 BugReports: https://github.com/Robinlovelace/geocompr/issues
