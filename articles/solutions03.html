@@ -65,7 +65,7 @@
       <h1>Chapter 3: Attribute operations</h1>
                         <h4 class="author">Robin Lovelace, Jakub Nowosad, Jannes Muenchow</h4>
             
-            <h4 class="date">2019-08-04</h4>
+            <h4 class="date">2019-08-14</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/geocompr/geocompkg/blob/master/vignettes/solutions03.Rmd"><code>vignettes/solutions03.Rmd</code></a></small>
       <div class="hidden name"><code>solutions03.Rmd</code></div>
@@ -447,10 +447,10 @@
 <a class="sourceLine" id="cb21-2" data-line-number="2">           <span class="dt">ymn =</span> <span class="dv">0</span>, <span class="dt">ymx =</span> <span class="fl">4.5</span>, <span class="dt">vals =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Normal">rnorm</a></span>(<span class="dv">81</span>))</a>
 <a class="sourceLine" id="cb21-3" data-line-number="3"><span class="co"># using cell IDs</span></a>
 <a class="sourceLine" id="cb21-4" data-line-number="4">r[<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span>, <span class="dv">9</span>, <span class="dv">81</span> <span class="op">-</span><span class="st"> </span><span class="dv">9</span>, <span class="dv">81</span>)]</a>
-<a class="sourceLine" id="cb21-5" data-line-number="5"><span class="co">#&gt; [1]  0.85349793 -0.27754299  0.06621787 -0.56863842</span></a>
+<a class="sourceLine" id="cb21-5" data-line-number="5"><span class="co">#&gt; [1] -0.6090269 -0.3906812 -0.1673157  1.1207871</span></a>
 <a class="sourceLine" id="cb21-6" data-line-number="6"><span class="co"># using indexing</span></a>
 <a class="sourceLine" id="cb21-7" data-line-number="7">r[<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span>, <span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/ncell">nrow</a></span>(r)), <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span>, <span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/ncell">ncol</a></span>(r))]</a>
-<a class="sourceLine" id="cb21-8" data-line-number="8"><span class="co">#&gt; [1]  0.8534979 -0.2775430 -0.5220508 -0.5686384</span></a>
+<a class="sourceLine" id="cb21-8" data-line-number="8"><span class="co">#&gt; [1] -0.6090269 -0.3906812  0.7907553  1.1207871</span></a>
 <a class="sourceLine" id="cb21-9" data-line-number="9"><span class="co"># corresponds to [1, 1], [1, 9], [9, 1], [9, 9]</span></a></code></pre></div>
 <ol start="15" style="list-style-type: decimal">
 <li>What is the most common class of our example raster <code>grain</code> (hint: <code><a href="https://www.rdocumentation.org/packages/raster/topics/modal">modal()</a></code>)?</li>
@@ -463,10 +463,10 @@
 <a class="sourceLine" id="cb22-6" data-line-number="6"><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/cellStats">cellStats</a></span>(grain, modal) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb22-7" data-line-number="7"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/factor">factorValues</a></span>(grain, .)</a>
 <a class="sourceLine" id="cb22-8" data-line-number="8"><span class="co">#&gt;   VALUE</span></a>
-<a class="sourceLine" id="cb22-9" data-line-number="9"><span class="co">#&gt; 1  silt</span></a>
+<a class="sourceLine" id="cb22-9" data-line-number="9"><span class="co">#&gt; 1  clay</span></a>
 <a class="sourceLine" id="cb22-10" data-line-number="10"><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/factor">factorValues</a></span>(grain, <span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/modal">modal</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/getValues">values</a></span>(grain)))</a>
 <a class="sourceLine" id="cb22-11" data-line-number="11"><span class="co">#&gt;   VALUE</span></a>
-<a class="sourceLine" id="cb22-12" data-line-number="12"><span class="co">#&gt; 1  silt</span></a></code></pre></div>
+<a class="sourceLine" id="cb22-12" data-line-number="12"><span class="co">#&gt; 1  clay</span></a></code></pre></div>
 <ol start="16" style="list-style-type: decimal">
 <li>Plot the histogram and the boxplot of the <code><a href="https://www.rdocumentation.org/packages/utils/topics/data">data(dem, package = "RQGIS")</a></code> raster.</li>
 </ol>
