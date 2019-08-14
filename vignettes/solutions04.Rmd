@@ -52,7 +52,7 @@ nz_height_combined %>%
 
 3) Generalizing the question to all regions: how many of New Zealand's 16 regions contain points which belong to the top 100 highest points in the country? Which regions?
     - Bonus: create a table listing these regions in order of the number of points and their name.
-```{r, echo=FALSE, eval=FALSE}
+```{r}
 nz_height_count = aggregate(nz_height, nz, length)
 nz_height_combined = cbind(nz, count = nz_height_count$elevation)
 nz_height_combined %>% 
