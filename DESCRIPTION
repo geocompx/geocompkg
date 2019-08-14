@@ -40,7 +40,7 @@ Imports:
     rmapshaper,
     rgdal,
     rgeos,
-    rgrass7,
+    rgrass7 (>= 0.2-1),
     rnaturalearth,
     rnaturalearthdata,
     RPostgres,
@@ -62,8 +62,7 @@ Imports:
     vegan
 Remotes:
     nowosad/spDataLarge,
-    rspatial/raster,
-    rsbivand/rgrass7
+    rspatial/raster
 URL: https://github.com/geocompr/geocompkg
 BugReports: https://github.com/Robinlovelace/geocompr/issues
 LazyData: TRUE
