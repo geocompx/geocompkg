@@ -447,10 +447,10 @@
 <a class="sourceLine" id="cb21-2" data-line-number="2">           <span class="dt">ymn =</span> <span class="dv">0</span>, <span class="dt">ymx =</span> <span class="fl">4.5</span>, <span class="dt">vals =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Normal">rnorm</a></span>(<span class="dv">81</span>))</a>
 <a class="sourceLine" id="cb21-3" data-line-number="3"><span class="co"># using cell IDs</span></a>
 <a class="sourceLine" id="cb21-4" data-line-number="4">r[<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span>, <span class="dv">9</span>, <span class="dv">81</span> <span class="op">-</span><span class="st"> </span><span class="dv">9</span>, <span class="dv">81</span>)]</a>
-<a class="sourceLine" id="cb21-5" data-line-number="5"><span class="co">#&gt; [1] 0.9192668 0.3152661 1.4693532 0.3943369</span></a>
+<a class="sourceLine" id="cb21-5" data-line-number="5"><span class="co">#&gt; [1]  1.5388545 -0.6274211  0.5955487 -0.9429469</span></a>
 <a class="sourceLine" id="cb21-6" data-line-number="6"><span class="co"># using indexing</span></a>
 <a class="sourceLine" id="cb21-7" data-line-number="7">r[<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span>, <span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/ncell">nrow</a></span>(r)), <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span>, <span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/ncell">ncol</a></span>(r))]</a>
-<a class="sourceLine" id="cb21-8" data-line-number="8"><span class="co">#&gt; [1]  0.91926678  0.31526605 -0.08990846  0.39433695</span></a>
+<a class="sourceLine" id="cb21-8" data-line-number="8"><span class="co">#&gt; [1]  1.5388545 -0.6274211 -1.2797456 -0.9429469</span></a>
 <a class="sourceLine" id="cb21-9" data-line-number="9"><span class="co"># corresponds to [1, 1], [1, 9], [9, 1], [9, 9]</span></a></code></pre></div>
 <ol start="15" style="list-style-type: decimal">
 <li>What is the most common class of our example raster <code>grain</code> (hint: <code><a href="https://www.rdocumentation.org/packages/raster/topics/modal">modal()</a></code>)?</li>
