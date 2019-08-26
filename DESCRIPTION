@@ -40,7 +40,7 @@ Imports:
     rmapshaper,
     rgdal,
     rgeos,
-    rgrass7,
+    rgrass7 (>= 0.2-1),
     rnaturalearth,
     rnaturalearthdata,
     RPostgres,

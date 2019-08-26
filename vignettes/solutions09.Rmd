@@ -48,7 +48,8 @@ poly_1 = st_sf(geometry = poly_1, data = data.frame(id = 1))
 # create a second polygon
 poly_2 = st_polygon(list((coords_2))) %>%
   st_sfc(crs = 4326) %>%
-  st_sf(data = data.frame(id = 1))
+  st_sf(geometry = ., data = data.frame(id = 1))
+st_geometry(poly_2) = "geometry"
 # visualize it
 plot(st_geometry(poly_1), xlim = c(-1, 1), ylim = c(-1, 1))
 plot(st_geometry(poly_2), add = TRUE)
@@ -156,14 +157,15 @@ link2GI::linkGRASS7(rbind(poly_1, poly_2), ver_select = TRUE)
 # let's have a look at the help of v.overlay via rgrass7
 execGRASS("g.manual", entry = "v.overlay")
 # RQGIS::open_help("grass7:v.overlay")
-writeVECT(as(poly_1, "Spatial"), vname = "poly_1")
-writeVECT(as(poly_2, "Spatial"), vname = "poly_2")
+use_sf()
+writeVECT(poly_1, vname = "poly_1")
+writeVECT(poly_2, vname = "poly_2")
 execGRASS("v.overlay", ainput = "poly_1", binput = "poly_2",
           output = "int_grass", operator = "and", flag = "overwrite")
 out_grass = readVECT("int_grass")
 plot(st_geometry(poly_1), xlim = c(-1, 1), ylim = c(-1, 1))
 plot(st_geometry(poly_2), add = TRUE)
-plot(int_grass, add = TRUE, col = "lightblue")
+plot(out_grass, add = TRUE, col = "lightblue")
 
 # INTERSECTION USING sf
 #***************************
@@ -204,6 +206,9 @@ out = run_qgis(alg, input = dem,
 # use rgrass7 directly:
 library(rgrass7)
 link2GI::linkGRASS7(dem, ver_select = TRUE)
+# If both vector and raster are used, until stars raster support is in place,
+# use_sp() will be needed. (https://github.com/rsbivand/rgrass7/issues/6)
+use_sp()
 writeRAST(as(dem, "SpatialGridDataFrame"), "dem")
 writeVECT(as(random_points, "Spatial"), vname = "points")
 execGRASS("r.viewshed", input = "dem", coordinates = sf::st_coordinates(point),
