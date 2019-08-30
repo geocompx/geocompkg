@@ -1,11 +1,14 @@
-title: geocompkg | metapackage for the book Gecomputation with R
+title: geocompkg | metapackage for the Gecomputation with R book
 
 navbar:
   left:
-    - text: "Home"
+    - text: "Vignettes and solutions"
+      href: https://geocompr.github.io/vignettes/
+
+  right:
+    - text: "Back to the main website"
       href: https://geocompr.github.io/
-    - text: "Articles"
-      href: articles/index.html
+
 
 articles:
   - title: "Exercises and solutions"
