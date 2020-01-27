@@ -239,7 +239,7 @@ library(tidyverse)
 
 The overall route assuming you're travelling from London:
 
-```{r}
+```{r simpleukmap}
 uk = spData::world %>% 
   filter(name_long == "United Kingdom")
 origin_lnd = c(-0.1, 51.5)

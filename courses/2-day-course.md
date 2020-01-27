@@ -246,7 +246,7 @@ tm_shape(uk) +
   tm_lines(col = "red", lwd = 5)
 ```
 
-![](2-day-course_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
+![](2-day-course_files/figure-gfm/simpleukmap-1.png)<!-- -->
 
 ## Course tutor
 
