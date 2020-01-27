@@ -7,8 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Chapter 7: Geographic data I/O • geocompkg | metapackage for the Gecomputation with R book</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><meta property="og:title" content="Chapter 7: Geographic data I/O">
 <meta property="og:description" content="">
 <meta name="twitter:card" content="summary">
@@ -53,13 +54,14 @@
 <!--/.navbar -->
 
       
+
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1>Chapter 7: Geographic data I/O</h1>
                         <h4 class="author">Robin Lovelace, Jakub Nowosad, Jannes Muenchow</h4>
             
-            <h4 class="date">2019-08-30</h4>
+            <h4 class="date">2020-01-27</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/geocompr/geocompkg/blob/master/vignettes/solutions07.Rmd"><code>vignettes/solutions07.Rmd</code></a></small>
       <div class="hidden name"><code>solutions07.Rmd</code></div>
@@ -72,10 +74,10 @@
 <h2 class="hasAnchor">
 <a href="#prerequisites" class="anchor"></a>Prerequisites</h2>
 <p>The solutions assume the following packages are attached (other packages will be attached when needed):</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(sf)</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(raster)</a>
-<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(dplyr)</a>
-<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(spData)</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(sf)</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(raster)</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(dplyr)</a>
+<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(spData)</a></code></pre></div>
 </div>
 <div id="chapter-7" class="section level1">
 <h1 class="hasAnchor">
@@ -87,22 +89,22 @@
 <p>Raster formats: GeoTiff, Arc ASCII, R-raster (see book for descriptions).</p>
 <p>Database formats: PostGIS, SQLite, FileGDB (see book for details).</p>
 <ol start="2" style="list-style-type: decimal">
-<li>Name at least two differences between <code><a href="https://www.rdocumentation.org/packages/sf/topics/st_read">read_sf()</a></code> and the more well-known function <code><a href="https://www.rdocumentation.org/packages/sf/topics/st_read">st_read()</a></code>.</li>
+<li>Name at least two differences between <code><a href="https://rdrr.io/pkg/sf/man/st_read.html">read_sf()</a></code> and the more well-known function <code><a href="https://rdrr.io/pkg/sf/man/st_read.html">st_read()</a></code>.</li>
 </ol>
-<p><code><a href="https://www.rdocumentation.org/packages/sf/topics/st_read">st_read()</a></code> prints outputs and keeps strings as text strings (<code><a href="https://www.rdocumentation.org/packages/sf/topics/st_read">st_read()</a></code> creates factors). This can be seen from the source code of <code><a href="https://www.rdocumentation.org/packages/sf/topics/st_read">read_sf()</a></code>, which show’s it wraps <code><a href="https://www.rdocumentation.org/packages/sf/topics/st_read">st_read()</a></code>:</p>
+<p><code><a href="https://rdrr.io/pkg/sf/man/st_read.html">st_read()</a></code> prints outputs and keeps strings as text strings (<code><a href="https://rdrr.io/pkg/sf/man/st_read.html">st_read()</a></code> creates factors). This can be seen from the source code of <code><a href="https://rdrr.io/pkg/sf/man/st_read.html">read_sf()</a></code>, which show’s it wraps <code><a href="https://rdrr.io/pkg/sf/man/st_read.html">st_read()</a></code>:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">read_sf</a>
 <a class="sourceLine" id="cb2-2" data-line-number="2"><span class="co">#&gt; function (..., quiet = TRUE, stringsAsFactors = FALSE, as_tibble = TRUE) </span></a>
 <a class="sourceLine" id="cb2-3" data-line-number="3"><span class="co">#&gt; {</span></a>
 <a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co">#&gt;     st_read(..., quiet = quiet, stringsAsFactors = stringsAsFactors, </span></a>
 <a class="sourceLine" id="cb2-5" data-line-number="5"><span class="co">#&gt;         as_tibble = as_tibble)</span></a>
 <a class="sourceLine" id="cb2-6" data-line-number="6"><span class="co">#&gt; }</span></a>
-<a class="sourceLine" id="cb2-7" data-line-number="7"><span class="co">#&gt; &lt;bytecode: 0x689f528&gt;</span></a>
+<a class="sourceLine" id="cb2-7" data-line-number="7"><span class="co">#&gt; &lt;bytecode: 0x54c5340&gt;</span></a>
 <a class="sourceLine" id="cb2-8" data-line-number="8"><span class="co">#&gt; &lt;environment: namespace:sf&gt;</span></a></code></pre></div>
 <ol start="3" style="list-style-type: decimal">
 <li>Read the <code>cycle_hire_xy.csv</code> file from the <strong>spData</strong> package as a spatial object (Hint: it is located in the <code>misc\</code> folder). What is a geometry type of the loaded object?</li>
 </ol>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">c_h =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/read.table">read.csv</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">"misc/cycle_hire_xy.csv"</span>, <span class="dt">package =</span> <span class="st">"spData"</span>)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_as_sf">st_as_sf</a></span>(<span class="dt">coords =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"X"</span>, <span class="st">"Y"</span>))</a>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">c_h =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"misc/cycle_hire_xy.csv"</span>, <span class="dt">package =</span> <span class="st">"spData"</span>)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/pkg/sf/man/st_as_sf.html">st_as_sf</a></span>(<span class="dt">coords =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"X"</span>, <span class="st">"Y"</span>))</a>
 <a class="sourceLine" id="cb3-3" data-line-number="3">c_h</a>
 <a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co">#&gt; Simple feature collection with 742 features and 5 fields</span></a>
 <a class="sourceLine" id="cb3-5" data-line-number="5"><span class="co">#&gt; geometry type:  POINT</span></a>
@@ -137,28 +139,28 @@
 <ol start="4" style="list-style-type: decimal">
 <li>Download the borders of Germany using <strong>rnaturalearth</strong>, and create a new object called <code>germany_borders</code>. Write this new object to a file of the GeoPackage format.</li>
 </ol>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(rnaturalearth)</a>
-<a class="sourceLine" id="cb4-2" data-line-number="2">germany_borders =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/rnaturalearth/topics/ne_countries">ne_countries</a></span>(<span class="dt">country =</span> <span class="st">"Germany"</span>, <span class="dt">returnclass =</span> <span class="st">"sf"</span>)</a>
-<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(germany_borders)</a>
-<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_write">st_write</a></span>(germany_borders, <span class="st">"germany_borders.gpkg"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(rnaturalearth)</a>
+<a class="sourceLine" id="cb4-2" data-line-number="2">germany_borders =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/rnaturalearth/man/ne_countries.html">ne_countries</a></span>(<span class="dt">country =</span> <span class="st">"Germany"</span>, <span class="dt">returnclass =</span> <span class="st">"sf"</span>)</a>
+<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="kw"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(germany_borders)</a>
+<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="kw"><a href="https://rdrr.io/pkg/sf/man/st_write.html">st_write</a></span>(germany_borders, <span class="st">"germany_borders.gpkg"</span>)</a></code></pre></div>
 <ol start="5" style="list-style-type: decimal">
-<li>Download the global monthly minimum temperature with a spatial resolution of five minutes using the <strong>raster</strong> package. Extract the June values, and save them to a file named <code>tmin_june.tif</code> file (hint: use <code><a href="https://www.rdocumentation.org/packages/raster/topics/subset">raster::subset()</a></code>).</li>
+<li>Download the global monthly minimum temperature with a spatial resolution of five minutes using the <strong>raster</strong> package. Extract the June values, and save them to a file named <code>tmin_june.tif</code> file (hint: use <code><a href="https://rdrr.io/pkg/raster/man/subset.html">raster::subset()</a></code>).</li>
 </ol>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">gmmt =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/getData">getData</a></span>(<span class="st">"worldclim"</span>, <span class="dt">var =</span> <span class="st">"tmin"</span>, <span class="dt">res =</span> <span class="dv">5</span>)</a>
-<a class="sourceLine" id="cb5-2" data-line-number="2">gmmt_june =<span class="st"> </span>raster<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/subset">subset</a></span>(gmmt, <span class="st">"tmin6"</span>)</a>
-<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/writeRaster">writeRaster</a></span>(gmmt_june, <span class="st">"tmin_june.tif"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">gmmt =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/raster/man/getData.html">getData</a></span>(<span class="st">"worldclim"</span>, <span class="dt">var =</span> <span class="st">"tmin"</span>, <span class="dt">res =</span> <span class="dv">5</span>)</a>
+<a class="sourceLine" id="cb5-2" data-line-number="2">gmmt_june =<span class="st"> </span>raster<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/raster/man/subset.html">subset</a></span>(gmmt, <span class="st">"tmin6"</span>)</a>
+<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="kw"><a href="https://rdrr.io/pkg/raster/man/writeRaster.html">writeRaster</a></span>(gmmt_june, <span class="st">"tmin_june.tif"</span>)</a></code></pre></div>
 <ol start="6" style="list-style-type: decimal">
 <li>Create a static map of Germany’s borders, and save it to a PNG file.</li>
 </ol>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/png">png</a></span>(<span class="dt">filename =</span> <span class="st">"germany.png"</span>, <span class="dt">width =</span> <span class="dv">350</span>, <span class="dt">height =</span> <span class="dv">500</span>)</a>
-<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(germany_borders), <span class="dt">axes =</span> <span class="ot">TRUE</span>, <span class="dt">graticule =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/dev">dev.off</a></span>()</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/grDevices/png.html">png</a></span>(<span class="dt">filename =</span> <span class="st">"germany.png"</span>, <span class="dt">width =</span> <span class="dv">350</span>, <span class="dt">height =</span> <span class="dv">500</span>)</a>
+<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(<span class="kw"><a href="https://rdrr.io/pkg/sf/man/st_geometry.html">st_geometry</a></span>(germany_borders), <span class="dt">axes =</span> <span class="ot">TRUE</span>, <span class="dt">graticule =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="kw"><a href="https://rdrr.io/r/grDevices/dev.html">dev.off</a></span>()</a></code></pre></div>
 <ol start="7" style="list-style-type: decimal">
 <li>Create an interactive map using data from the <code>cycle_hire_xy.csv</code> file. Export this map to a file called <code>cycle_hire.html</code>.</li>
 </ol>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(mapview)</a>
-<a class="sourceLine" id="cb7-2" data-line-number="2">mapview_obj =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/mapview/topics/mapView">mapview</a></span>(c_h, <span class="dt">zcol =</span> <span class="st">"nbikes"</span>, <span class="dt">legend =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/mapview/topics/mapshot">mapshot</a></span>(mapview_obj, <span class="dt">file =</span> <span class="st">"cycle_hire.html"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(mapview)</a>
+<a class="sourceLine" id="cb7-2" data-line-number="2">mapview_obj =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/mapview/man/mapView.html">mapview</a></span>(c_h, <span class="dt">zcol =</span> <span class="st">"nbikes"</span>, <span class="dt">legend =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="kw"><a href="https://rdrr.io/pkg/mapview/man/mapshot.html">mapshot</a></span>(mapview_obj, <span class="dt">file =</span> <span class="st">"cycle_hire.html"</span>)</a></code></pre></div>
 </div>
   </div>
 
@@ -177,17 +179,20 @@
 </div>
 
 
+
       <footer><div class="copyright">
   <p>Developed by Robin Lovelace, Jakub Nowosad, Jannes Muenchow.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
+
       </footer>
 </div>
 
   
+
 
   </body>
 </html>

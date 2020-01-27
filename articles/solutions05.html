@@ -7,8 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Chapter 5: Geometric operations • geocompkg | metapackage for the Gecomputation with R book</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><meta property="og:title" content="Chapter 5: Geometric operations">
 <meta property="og:description" content="">
 <meta name="twitter:card" content="summary">
@@ -53,13 +54,14 @@
 <!--/.navbar -->
 
       
+
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1>Chapter 5: Geometric operations</h1>
                         <h4 class="author">Robin Lovelace, Jakub Nowosad, Jannes Muenchow</h4>
             
-            <h4 class="date">2019-08-30</h4>
+            <h4 class="date">2020-01-27</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/geocompr/geocompkg/blob/master/vignettes/solutions05.Rmd"><code>vignettes/solutions05.Rmd</code></a></small>
       <div class="hidden name"><code>solutions05.Rmd</code></div>
@@ -72,88 +74,88 @@
 <h2 class="hasAnchor">
 <a href="#prerequisites" class="anchor"></a>Prerequisites</h2>
 <p>The solutions assume the following packages are attached (other packages will be attached when needed):</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(sf)</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(raster)</a>
-<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(dplyr)</a>
-<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(spData)</a>
-<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(spDataLarge)</a>
-<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(RQGIS)</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(sf)</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(raster)</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(dplyr)</a>
+<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(spData)</a>
+<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(spDataLarge)</a>
+<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(RQGIS)</a></code></pre></div>
 <p>Some of the exercises use a vector (<code>random_points</code>) and raster dataset (<code>ndvi</code>) from the <strong>RQGIS</strong> package. They also use a polygonal ‘convex hull’ derived from the vector dataset (<code>ch</code>) to represent the area of interest:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/data">data</a></span>(random_points)</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/data">data</a></span>(ndvi)</a>
-<a class="sourceLine" id="cb2-3" data-line-number="3">ch =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/geos_combine">st_combine</a></span>(random_points) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/geos_unary">st_convex_hull</a></span>()</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(random_points)</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(ndvi)</a>
+<a class="sourceLine" id="cb2-3" data-line-number="3">ch =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/sf/man/geos_combine.html">st_combine</a></span>(random_points) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/pkg/sf/man/geos_unary.html">st_convex_hull</a></span>()</a></code></pre></div>
 </div>
 <div id="chapter-5" class="section level1">
 <h1 class="hasAnchor">
 <a href="#chapter-5" class="anchor"></a>Chapter 5</h1>
 <ol style="list-style-type: decimal">
-<li>Generate and plot simplified versions of the <code>nz</code> dataset. Experiment with different values of <code>keep</code> (ranging from 0.5 to 0.00005) for <code>ms_simplify()</code> and <code>dTolerance</code> (from 100 to 100,000) <code><a href="https://www.rdocumentation.org/packages/sf/topics/geos_unary">st_simplify()</a></code> .
+<li>Generate and plot simplified versions of the <code>nz</code> dataset. Experiment with different values of <code>keep</code> (ranging from 0.5 to 0.00005) for <code>ms_simplify()</code> and <code>dTolerance</code> (from 100 to 100,000) <code><a href="https://rdrr.io/pkg/sf/man/geos_unary.html">st_simplify()</a></code> .
 <ul>
 <li>At what value does the form of the result start to break-down for each method, making New Zealand unrecognizable?</li>
-<li>Advanced: What is different about the geometry type of the results from <code><a href="https://www.rdocumentation.org/packages/sf/topics/geos_unary">st_simplify()</a></code> compared with the geometry type of <code>ms_simplify()</code>? What problems does this create and how can this be resolved?</li>
+<li>Advanced: What is different about the geometry type of the results from <code><a href="https://rdrr.io/pkg/sf/man/geos_unary.html">st_simplify()</a></code> compared with the geometry type of <code>ms_simplify()</code>? What problems does this create and how can this be resolved?</li>
 </ul>
 </li>
 </ol>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(rmapshaper<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/rmapshaper/topics/ms_simplify">ms_simplify</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(nz), <span class="dt">keep =</span> <span class="fl">0.5</span>))</a>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(rmapshaper<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/rmapshaper/man/ms_simplify.html">ms_simplify</a></span>(<span class="kw"><a href="https://rdrr.io/pkg/sf/man/st_geometry.html">st_geometry</a></span>(nz), <span class="dt">keep =</span> <span class="fl">0.5</span>))</a>
 <a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co">#&gt; Registered S3 method overwritten by 'geojsonlint':</span></a>
 <a class="sourceLine" id="cb3-3" data-line-number="3"><span class="co">#&gt;   method         from </span></a>
 <a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co">#&gt;   print.location dplyr</span></a></code></pre></div>
 <p><img src="solutions05_files/figure-html/unnamed-chunk-2-1.png" width="700"></p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(rmapshaper<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/rmapshaper/topics/ms_simplify">ms_simplify</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(nz), <span class="dt">keep =</span> <span class="fl">0.05</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(rmapshaper<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/rmapshaper/man/ms_simplify.html">ms_simplify</a></span>(<span class="kw"><a href="https://rdrr.io/pkg/sf/man/st_geometry.html">st_geometry</a></span>(nz), <span class="dt">keep =</span> <span class="fl">0.05</span>))</a></code></pre></div>
 <p><img src="solutions05_files/figure-html/unnamed-chunk-2-2.png" width="700"></p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="co"># Starts to breakdown here at 0.5% of the points:</span></a>
-<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(rmapshaper<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/rmapshaper/topics/ms_simplify">ms_simplify</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(nz), <span class="dt">keep =</span> <span class="fl">0.005</span>))</a></code></pre></div>
+<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(rmapshaper<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/rmapshaper/man/ms_simplify.html">ms_simplify</a></span>(<span class="kw"><a href="https://rdrr.io/pkg/sf/man/st_geometry.html">st_geometry</a></span>(nz), <span class="dt">keep =</span> <span class="fl">0.005</span>))</a></code></pre></div>
 <p><img src="solutions05_files/figure-html/unnamed-chunk-2-3.png" width="700"></p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="co"># At this point no further simplification changes the result</span></a>
-<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(rmapshaper<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/rmapshaper/topics/ms_simplify">ms_simplify</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(nz), <span class="dt">keep =</span> <span class="fl">0.0005</span>))</a>
-<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(rmapshaper<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/rmapshaper/topics/ms_simplify">ms_simplify</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(nz), <span class="dt">keep =</span> <span class="fl">0.00005</span>))</a></code></pre></div>
+<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(rmapshaper<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/rmapshaper/man/ms_simplify.html">ms_simplify</a></span>(<span class="kw"><a href="https://rdrr.io/pkg/sf/man/st_geometry.html">st_geometry</a></span>(nz), <span class="dt">keep =</span> <span class="fl">0.0005</span>))</a>
+<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="kw"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(rmapshaper<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/rmapshaper/man/ms_simplify.html">ms_simplify</a></span>(<span class="kw"><a href="https://rdrr.io/pkg/sf/man/st_geometry.html">st_geometry</a></span>(nz), <span class="dt">keep =</span> <span class="fl">0.00005</span>))</a></code></pre></div>
 <p><img src="solutions05_files/figure-html/unnamed-chunk-2-4.png" width="700"></p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/geos_unary">st_simplify</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(nz), <span class="dt">dTolerance =</span> <span class="dv">100</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(<span class="kw"><a href="https://rdrr.io/pkg/sf/man/geos_unary.html">st_simplify</a></span>(<span class="kw"><a href="https://rdrr.io/pkg/sf/man/st_geometry.html">st_geometry</a></span>(nz), <span class="dt">dTolerance =</span> <span class="dv">100</span>))</a></code></pre></div>
 <p><img src="solutions05_files/figure-html/unnamed-chunk-2-5.png" width="700"></p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/geos_unary">st_simplify</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(nz), <span class="dt">dTolerance =</span> <span class="dv">1000</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(<span class="kw"><a href="https://rdrr.io/pkg/sf/man/geos_unary.html">st_simplify</a></span>(<span class="kw"><a href="https://rdrr.io/pkg/sf/man/st_geometry.html">st_geometry</a></span>(nz), <span class="dt">dTolerance =</span> <span class="dv">1000</span>))</a></code></pre></div>
 <p><img src="solutions05_files/figure-html/unnamed-chunk-2-6.png" width="700"></p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="co"># Starts to breakdown at 10 km:</span></a>
-<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/geos_unary">st_simplify</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(nz), <span class="dt">dTolerance =</span> <span class="dv">10000</span>))</a></code></pre></div>
+<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(<span class="kw"><a href="https://rdrr.io/pkg/sf/man/geos_unary.html">st_simplify</a></span>(<span class="kw"><a href="https://rdrr.io/pkg/sf/man/st_geometry.html">st_geometry</a></span>(nz), <span class="dt">dTolerance =</span> <span class="dv">10000</span>))</a></code></pre></div>
 <p><img src="solutions05_files/figure-html/unnamed-chunk-2-7.png" width="700"></p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/geos_unary">st_simplify</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(nz), <span class="dt">dTolerance =</span> <span class="dv">100000</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(<span class="kw"><a href="https://rdrr.io/pkg/sf/man/geos_unary.html">st_simplify</a></span>(<span class="kw"><a href="https://rdrr.io/pkg/sf/man/st_geometry.html">st_geometry</a></span>(nz), <span class="dt">dTolerance =</span> <span class="dv">100000</span>))</a></code></pre></div>
 <p><img src="solutions05_files/figure-html/unnamed-chunk-2-8.png" width="700"></p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/geos_unary">st_simplify</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(nz), <span class="dt">dTolerance =</span> <span class="dv">100000</span>, <span class="dt">preserveTopology =</span> <span class="ot">TRUE</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(<span class="kw"><a href="https://rdrr.io/pkg/sf/man/geos_unary.html">st_simplify</a></span>(<span class="kw"><a href="https://rdrr.io/pkg/sf/man/st_geometry.html">st_geometry</a></span>(nz), <span class="dt">dTolerance =</span> <span class="dv">100000</span>, <span class="dt">preserveTopology =</span> <span class="ot">TRUE</span>))</a></code></pre></div>
 <p><img src="solutions05_files/figure-html/unnamed-chunk-2-9.png" width="700"></p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"></a>
 <a class="sourceLine" id="cb12-2" data-line-number="2"><span class="co"># Problem: st_simplify returns POLYGON and MULTIPOLYGON results, affecting plotting</span></a>
 <a class="sourceLine" id="cb12-3" data-line-number="3"><span class="co"># Cast into a single geometry type to resolve this</span></a>
-<a class="sourceLine" id="cb12-4" data-line-number="4">nz_simple_poly =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/geos_unary">st_simplify</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(nz), <span class="dt">dTolerance =</span> <span class="dv">10000</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb12-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/sfc">st_sfc</a></span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb12-6" data-line-number="6"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_cast">st_cast</a></span>(<span class="st">"POLYGON"</span>)</a>
+<a class="sourceLine" id="cb12-4" data-line-number="4">nz_simple_poly =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/sf/man/geos_unary.html">st_simplify</a></span>(<span class="kw"><a href="https://rdrr.io/pkg/sf/man/st_geometry.html">st_geometry</a></span>(nz), <span class="dt">dTolerance =</span> <span class="dv">10000</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb12-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/pkg/sf/man/sfc.html">st_sfc</a></span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb12-6" data-line-number="6"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/pkg/sf/man/st_cast.html">st_cast</a></span>(<span class="st">"POLYGON"</span>)</a>
 <a class="sourceLine" id="cb12-7" data-line-number="7"><span class="co">#&gt; Warning in st_cast.MULTIPOLYGON(X[[i]], ...): polygon from first part only</span></a>
 <a class="sourceLine" id="cb12-8" data-line-number="8"></a>
 <a class="sourceLine" id="cb12-9" data-line-number="9"><span class="co">#&gt; Warning in st_cast.MULTIPOLYGON(X[[i]], ...): polygon from first part only</span></a>
-<a class="sourceLine" id="cb12-10" data-line-number="10">nz_simple_multipoly =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/geos_unary">st_simplify</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(nz), <span class="dt">dTolerance =</span> <span class="dv">10000</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb12-11" data-line-number="11"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/sfc">st_sfc</a></span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb12-12" data-line-number="12"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_cast">st_cast</a></span>(<span class="st">"MULTIPOLYGON"</span>)</a>
-<a class="sourceLine" id="cb12-13" data-line-number="13"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(nz_simple_poly)</a></code></pre></div>
+<a class="sourceLine" id="cb12-10" data-line-number="10">nz_simple_multipoly =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/sf/man/geos_unary.html">st_simplify</a></span>(<span class="kw"><a href="https://rdrr.io/pkg/sf/man/st_geometry.html">st_geometry</a></span>(nz), <span class="dt">dTolerance =</span> <span class="dv">10000</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb12-11" data-line-number="11"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/pkg/sf/man/sfc.html">st_sfc</a></span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb12-12" data-line-number="12"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/pkg/sf/man/st_cast.html">st_cast</a></span>(<span class="st">"MULTIPOLYGON"</span>)</a>
+<a class="sourceLine" id="cb12-13" data-line-number="13"><span class="kw"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(nz_simple_poly)</a></code></pre></div>
 <p><img src="solutions05_files/figure-html/unnamed-chunk-2-10.png" width="700"></p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/length">length</a></span>(nz_simple_poly)</a>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/length.html">length</a></span>(nz_simple_poly)</a>
 <a class="sourceLine" id="cb13-2" data-line-number="2"><span class="co">#&gt; [1] 16</span></a>
-<a class="sourceLine" id="cb13-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/ncell">nrow</a></span>(nz)</a>
+<a class="sourceLine" id="cb13-3" data-line-number="3"><span class="kw"><a href="https://rdrr.io/pkg/raster/man/ncell.html">nrow</a></span>(nz)</a>
 <a class="sourceLine" id="cb13-4" data-line-number="4"><span class="co">#&gt; [1] 16</span></a></code></pre></div>
 <ol start="2" style="list-style-type: decimal">
-<li>In the first exercise in this <a href="https://geocompr.robinlovelace.net/spatial-data-operations.html">Chapter</a> it was established that Canterbury region had 70 of the 101 highest points in New Zealand. Using <code><a href="https://www.rdocumentation.org/packages/sf/topics/geos_unary">st_buffer()</a></code>, how many points in <code>nz_height</code> are within 100 km of Canterbury?</li>
+<li>In the first exercise in this <a href="https://geocompr.robinlovelace.net/spatial-data-operations.html">Chapter</a> it was established that Canterbury region had 70 of the 101 highest points in New Zealand. Using <code><a href="https://rdrr.io/pkg/sf/man/geos_unary.html">st_buffer()</a></code>, how many points in <code>nz_height</code> are within 100 km of Canterbury?</li>
 </ol>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1">canterbury =<span class="st"> </span>nz[nz<span class="op">$</span>Name <span class="op">==</span><span class="st"> "Canterbury"</span>, ]</a>
-<a class="sourceLine" id="cb14-2" data-line-number="2">cant_buff =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/geos_unary">st_buffer</a></span>(canterbury, <span class="dv">100</span>)</a>
+<a class="sourceLine" id="cb14-2" data-line-number="2">cant_buff =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/sf/man/geos_unary.html">st_buffer</a></span>(canterbury, <span class="dv">100</span>)</a>
 <a class="sourceLine" id="cb14-3" data-line-number="3">nz_height_near_cant =<span class="st"> </span>nz_height[cant_buff, ]</a>
-<a class="sourceLine" id="cb14-4" data-line-number="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/ncell">nrow</a></span>(nz_height_near_cant) <span class="co"># 75 - 5 more</span></a>
+<a class="sourceLine" id="cb14-4" data-line-number="4"><span class="kw"><a href="https://rdrr.io/pkg/raster/man/ncell.html">nrow</a></span>(nz_height_near_cant) <span class="co"># 75 - 5 more</span></a>
 <a class="sourceLine" id="cb14-5" data-line-number="5"><span class="co">#&gt; [1] 75</span></a></code></pre></div>
 <ol start="3" style="list-style-type: decimal">
 <li>Find the geographic centroid of New Zealand. How far is it from the geographic centroid of Canterbury?</li>
 </ol>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1">cant_cent =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/geos_unary">st_centroid</a></span>(canterbury)</a>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1">cant_cent =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/sf/man/geos_unary.html">st_centroid</a></span>(canterbury)</a>
 <a class="sourceLine" id="cb15-2" data-line-number="2"><span class="co">#&gt; Warning in st_centroid.sf(canterbury): st_centroid assumes attributes are</span></a>
 <a class="sourceLine" id="cb15-3" data-line-number="3"><span class="co">#&gt; constant over geometries of x</span></a>
-<a class="sourceLine" id="cb15-4" data-line-number="4">nz_centre =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/geos_unary">st_centroid</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/geos_combine">st_union</a></span>(nz))</a>
-<a class="sourceLine" id="cb15-5" data-line-number="5"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/geos_measures">st_distance</a></span>(cant_cent, nz_centre) <span class="co"># 234 km</span></a>
+<a class="sourceLine" id="cb15-4" data-line-number="4">nz_centre =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/sf/man/geos_unary.html">st_centroid</a></span>(<span class="kw"><a href="https://rdrr.io/pkg/sf/man/geos_combine.html">st_union</a></span>(nz))</a>
+<a class="sourceLine" id="cb15-5" data-line-number="5"><span class="kw"><a href="https://rdrr.io/pkg/sf/man/geos_measures.html">st_distance</a></span>(cant_cent, nz_centre) <span class="co"># 234 km</span></a>
 <a class="sourceLine" id="cb15-6" data-line-number="6"><span class="co">#&gt; Units: [m]</span></a>
 <a class="sourceLine" id="cb15-7" data-line-number="7"><span class="co">#&gt;          [,1]</span></a>
 <a class="sourceLine" id="cb15-8" data-line-number="8"><span class="co">#&gt; [1,] 234192.6</span></a></code></pre></div>
@@ -164,22 +166,22 @@
 </ul>
 </li>
 </ol>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1">world_sfc =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(world)</a>
-<a class="sourceLine" id="cb16-2" data-line-number="2">world_sfc_mirror =<span class="st"> </span>world_sfc <span class="op">*</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="op">-</span><span class="dv">1</span>, <span class="dv">-1</span>)</a>
-<a class="sourceLine" id="cb16-3" data-line-number="3"><span class="co">#&gt; Warning in mapply(function(x, y) {: longer argument not a multiple of</span></a>
-<a class="sourceLine" id="cb16-4" data-line-number="4"><span class="co">#&gt; length of shorter</span></a>
-<a class="sourceLine" id="cb16-5" data-line-number="5"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(world_sfc)</a></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1">world_sfc =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/sf/man/st_geometry.html">st_geometry</a></span>(world)</a>
+<a class="sourceLine" id="cb16-2" data-line-number="2">world_sfc_mirror =<span class="st"> </span>world_sfc <span class="op">*</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="op">-</span><span class="dv">1</span>, <span class="dv">-1</span>)</a>
+<a class="sourceLine" id="cb16-3" data-line-number="3"><span class="co">#&gt; Warning in mapply(function(x, y) {: longer argument not a multiple of length of</span></a>
+<a class="sourceLine" id="cb16-4" data-line-number="4"><span class="co">#&gt; shorter</span></a>
+<a class="sourceLine" id="cb16-5" data-line-number="5"><span class="kw"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(world_sfc)</a></code></pre></div>
 <p><img src="solutions05_files/figure-html/unnamed-chunk-5-1.png" width="700"></p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(world_sfc_mirror)</a></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(world_sfc_mirror)</a></code></pre></div>
 <p><img src="solutions05_files/figure-html/unnamed-chunk-5-2.png" width="700"></p>
 <div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1"></a>
-<a class="sourceLine" id="cb18-2" data-line-number="2">us_states_sfc =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(us_states)</a>
-<a class="sourceLine" id="cb18-3" data-line-number="3">us_states_sfc_mirror =<span class="st"> </span>us_states_sfc <span class="op">*</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="op">-</span><span class="dv">1</span>, <span class="dv">-1</span>)</a>
-<a class="sourceLine" id="cb18-4" data-line-number="4"><span class="co">#&gt; Warning in mapply(function(x, y) {: longer argument not a multiple of</span></a>
-<a class="sourceLine" id="cb18-5" data-line-number="5"><span class="co">#&gt; length of shorter</span></a>
-<a class="sourceLine" id="cb18-6" data-line-number="6"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(us_states_sfc)</a></code></pre></div>
+<a class="sourceLine" id="cb18-2" data-line-number="2">us_states_sfc =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/sf/man/st_geometry.html">st_geometry</a></span>(us_states)</a>
+<a class="sourceLine" id="cb18-3" data-line-number="3">us_states_sfc_mirror =<span class="st"> </span>us_states_sfc <span class="op">*</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="op">-</span><span class="dv">1</span>, <span class="dv">-1</span>)</a>
+<a class="sourceLine" id="cb18-4" data-line-number="4"><span class="co">#&gt; Warning in mapply(function(x, y) {: longer argument not a multiple of length of</span></a>
+<a class="sourceLine" id="cb18-5" data-line-number="5"><span class="co">#&gt; shorter</span></a>
+<a class="sourceLine" id="cb18-6" data-line-number="6"><span class="kw"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(us_states_sfc)</a></code></pre></div>
 <p><img src="solutions05_files/figure-html/unnamed-chunk-5-3.png" width="700"></p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(us_states_sfc_mirror)</a></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(us_states_sfc_mirror)</a></code></pre></div>
 <p><img src="solutions05_files/figure-html/unnamed-chunk-5-4.png" width="700"></p>
 <div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1">## nicer plot</a>
 <a class="sourceLine" id="cb20-2" data-line-number="2"><span class="co"># library(ggrepel)</span></a>
@@ -196,23 +198,23 @@
 <li>Subset the point in <code>p</code> that is contained within <code>x</code> <em>and</em> <code>y</code> (see this <a href="https://geocompr.robinlovelace.net/geometric-operations.html#clipping">section</a> and this <a href="https://geocompr.robinlovelace.net/geometric-operations.html#fig:venn-clip">Figure</a>).
 <ul>
 <li>Using base subsetting operators.</li>
-<li>Using an intermediary object created with <code><a href="https://www.rdocumentation.org/packages/sf/topics/geos_binary_ops">st_intersection()</a></code>.</li>
+<li>Using an intermediary object created with <code><a href="https://rdrr.io/pkg/sf/man/geos_binary_ops.html">st_intersection()</a></code>.</li>
 </ul>
 </li>
 </ol>
 <div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1"><span class="co"># data preparation</span></a>
-<a class="sourceLine" id="cb21-2" data-line-number="2">b =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/sfc">st_sfc</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st">st_point</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>, <span class="dv">1</span>)), <span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st">st_point</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span>, <span class="dv">1</span>))) <span class="co"># create 2 points</span></a>
-<a class="sourceLine" id="cb21-3" data-line-number="3">b =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/geos_unary">st_buffer</a></span>(b, <span class="dt">dist =</span> <span class="dv">1</span>) <span class="co"># convert points to circles</span></a>
+<a class="sourceLine" id="cb21-2" data-line-number="2">b =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/sf/man/sfc.html">st_sfc</a></span>(<span class="kw"><a href="https://rdrr.io/pkg/sf/man/st.html">st_point</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">0</span>, <span class="dv">1</span>)), <span class="kw"><a href="https://rdrr.io/pkg/sf/man/st.html">st_point</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">1</span>, <span class="dv">1</span>))) <span class="co"># create 2 points</span></a>
+<a class="sourceLine" id="cb21-3" data-line-number="3">b =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/sf/man/geos_unary.html">st_buffer</a></span>(b, <span class="dt">dist =</span> <span class="dv">1</span>) <span class="co"># convert points to circles</span></a>
 <a class="sourceLine" id="cb21-4" data-line-number="4">x =<span class="st"> </span>b[<span class="dv">1</span>]</a>
 <a class="sourceLine" id="cb21-5" data-line-number="5">y =<span class="st"> </span>b[<span class="dv">2</span>]</a>
-<a class="sourceLine" id="cb21-6" data-line-number="6">bb =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_bbox">st_bbox</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/geos_combine">st_union</a></span>(x, y))</a>
-<a class="sourceLine" id="cb21-7" data-line-number="7">pmat =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/matrix">matrix</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(bb[<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">1</span>, <span class="dv">4</span>, <span class="dv">1</span>, <span class="dv">2</span>)]), <span class="dt">ncol =</span> <span class="dv">2</span>, <span class="dt">byrow =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb21-8" data-line-number="8">box =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st">st_polygon</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(pmat))</a>
-<a class="sourceLine" id="cb21-9" data-line-number="9"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Random">set.seed</a></span>(<span class="dv">2017</span>)</a>
-<a class="sourceLine" id="cb21-10" data-line-number="10">p =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_sample">st_sample</a></span>(<span class="dt">x =</span> box, <span class="dt">size =</span> <span class="dv">10</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb21-6" data-line-number="6">bb =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/sf/man/st_bbox.html">st_bbox</a></span>(<span class="kw"><a href="https://rdrr.io/pkg/sf/man/geos_combine.html">st_union</a></span>(x, y))</a>
+<a class="sourceLine" id="cb21-7" data-line-number="7">pmat =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(bb[<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">1</span>, <span class="dv">4</span>, <span class="dv">1</span>, <span class="dv">2</span>)]), <span class="dt">ncol =</span> <span class="dv">2</span>, <span class="dt">byrow =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb21-8" data-line-number="8">box =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/sf/man/st.html">st_polygon</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(pmat))</a>
+<a class="sourceLine" id="cb21-9" data-line-number="9"><span class="kw"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="dv">2017</span>)</a>
+<a class="sourceLine" id="cb21-10" data-line-number="10">p =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/sf/man/st_sample.html">st_sample</a></span>(<span class="dt">x =</span> box, <span class="dt">size =</span> <span class="dv">10</span>)</a></code></pre></div>
 <div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" data-line-number="1">p_in_y =<span class="st"> </span>p[y]</a>
 <a class="sourceLine" id="cb22-2" data-line-number="2">p_in_xy =<span class="st"> </span>p_in_y[x]</a>
-<a class="sourceLine" id="cb22-3" data-line-number="3">x_and_y =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/geos_binary_ops">st_intersection</a></span>(x, y)</a>
+<a class="sourceLine" id="cb22-3" data-line-number="3">x_and_y =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/sf/man/geos_binary_ops.html">st_intersection</a></span>(x, y)</a>
 <a class="sourceLine" id="cb22-4" data-line-number="4">p[x_and_y]</a>
 <a class="sourceLine" id="cb22-5" data-line-number="5"><span class="co">#&gt; Geometry set for 1 feature </span></a>
 <a class="sourceLine" id="cb22-6" data-line-number="6"><span class="co">#&gt; geometry type:  POINT</span></a>
@@ -224,9 +226,9 @@
 <ol start="6" style="list-style-type: decimal">
 <li>Calculate the length of the boundary lines of US states in meters. Which state has the longest border and which has the shortest? Hint: The <code>st_length</code> function computes the length of a <code>LINESTRING</code> or <code>MULTILINESTRING</code> geometry.</li>
 </ol>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" data-line-number="1">us_states2163 =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_transform">st_transform</a></span>(us_states, <span class="dv">2163</span>)</a>
-<a class="sourceLine" id="cb23-2" data-line-number="2">us_states_bor =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_cast">st_cast</a></span>(us_states2163, <span class="st">"MULTILINESTRING"</span>)</a>
-<a class="sourceLine" id="cb23-3" data-line-number="3">us_states_bor<span class="op">$</span>borders =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/geos_measures">st_length</a></span>(us_states_bor)</a>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" data-line-number="1">us_states2163 =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/sf/man/st_transform.html">st_transform</a></span>(us_states, <span class="dv">2163</span>)</a>
+<a class="sourceLine" id="cb23-2" data-line-number="2">us_states_bor =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/sf/man/st_cast.html">st_cast</a></span>(us_states2163, <span class="st">"MULTILINESTRING"</span>)</a>
+<a class="sourceLine" id="cb23-3" data-line-number="3">us_states_bor<span class="op">$</span>borders =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/sf/man/geos_measures.html">st_length</a></span>(us_states_bor)</a>
 <a class="sourceLine" id="cb23-4" data-line-number="4"><span class="kw"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span>(us_states_bor, borders) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice</a></span>(<span class="dv">1</span>)</a>
 <a class="sourceLine" id="cb23-5" data-line-number="5"><span class="co">#&gt; Simple feature collection with 1 feature and 7 fields</span></a>
 <a class="sourceLine" id="cb23-6" data-line-number="6"><span class="co">#&gt; geometry type:  MULTILINESTRING</span></a>
@@ -234,10 +236,10 @@
 <a class="sourceLine" id="cb23-8" data-line-number="8"><span class="co">#&gt; bbox:           xmin: 1950825 ymin: -415971.5 xmax: 1969385 ymax: -393947.3</span></a>
 <a class="sourceLine" id="cb23-9" data-line-number="9"><span class="co">#&gt; epsg (SRID):    2163</span></a>
 <a class="sourceLine" id="cb23-10" data-line-number="10"><span class="co">#&gt; proj4string:    +proj=laea +lat_0=45 +lon_0=-100 +x_0=0 +y_0=0 +a=6370997 +b=6370997 +units=m +no_defs</span></a>
-<a class="sourceLine" id="cb23-11" data-line-number="11"><span class="co">#&gt;   GEOID                 NAME REGION          AREA total_pop_10</span></a>
-<a class="sourceLine" id="cb23-12" data-line-number="12"><span class="co">#&gt; 1    11 District of Columbia  South 178.21 [km^2]       584400</span></a>
-<a class="sourceLine" id="cb23-13" data-line-number="13"><span class="co">#&gt;   total_pop_15      borders                       geometry</span></a>
-<a class="sourceLine" id="cb23-14" data-line-number="14"><span class="co">#&gt; 1       647484 60322.91 [m] MULTILINESTRING ((1950825 -...</span></a>
+<a class="sourceLine" id="cb23-11" data-line-number="11"><span class="co">#&gt;   GEOID                 NAME REGION          AREA total_pop_10 total_pop_15</span></a>
+<a class="sourceLine" id="cb23-12" data-line-number="12"><span class="co">#&gt; 1    11 District of Columbia  South 178.21 [km^2]       584400       647484</span></a>
+<a class="sourceLine" id="cb23-13" data-line-number="13"><span class="co">#&gt;        borders                       geometry</span></a>
+<a class="sourceLine" id="cb23-14" data-line-number="14"><span class="co">#&gt; 1 60322.91 [m] MULTILINESTRING ((1950825 -...</span></a>
 <a class="sourceLine" id="cb23-15" data-line-number="15"><span class="kw"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span>(us_states_bor, <span class="op">-</span>borders) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice</a></span>(<span class="dv">1</span>)</a>
 <a class="sourceLine" id="cb23-16" data-line-number="16"><span class="co">#&gt; Simple feature collection with 1 feature and 7 fields</span></a>
 <a class="sourceLine" id="cb23-17" data-line-number="17"><span class="co">#&gt; geometry type:  MULTILINESTRING</span></a>
@@ -252,35 +254,35 @@
 <ol start="7" style="list-style-type: decimal">
 <li>Crop the <code>ndvi</code> raster using (1) the <code>random_points</code> dataset and (2) the <code>ch</code> dataset. Are there any difference in the output maps? Next, mask <code>ndvi</code> using these two datasets. Can you see any difference now? How can you explain that?</li>
 </ol>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(ndvi)</a>
-<a class="sourceLine" id="cb24-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(random_points), <span class="dt">add =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb24-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(ch, <span class="dt">add =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(ndvi)</a>
+<a class="sourceLine" id="cb24-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(<span class="kw"><a href="https://rdrr.io/pkg/sf/man/st_geometry.html">st_geometry</a></span>(random_points), <span class="dt">add =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb24-3" data-line-number="3"><span class="kw"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(ch, <span class="dt">add =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 <p><img src="solutions05_files/figure-html/unnamed-chunk-9-1.png" width="700"></p>
 <div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" data-line-number="1"></a>
-<a class="sourceLine" id="cb25-2" data-line-number="2">ndvi_crop1 =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/crop">crop</a></span>(ndvi, <span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/coerce-methods">as</a></span>(random_points, <span class="st">"Spatial"</span>)) </a>
-<a class="sourceLine" id="cb25-3" data-line-number="3">ndvi_crop2 =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/crop">crop</a></span>(ndvi, <span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/coerce-methods">as</a></span>(ch, <span class="st">"Spatial"</span>)) </a>
-<a class="sourceLine" id="cb25-4" data-line-number="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(ndvi_crop1)</a>
-<a class="sourceLine" id="cb25-5" data-line-number="5"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(ndvi_crop2)</a></code></pre></div>
+<a class="sourceLine" id="cb25-2" data-line-number="2">ndvi_crop1 =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/raster/man/crop.html">crop</a></span>(ndvi, <span class="kw"><a href="https://rdrr.io/pkg/sf/man/coerce-methods.html">as</a></span>(random_points, <span class="st">"Spatial"</span>)) </a>
+<a class="sourceLine" id="cb25-3" data-line-number="3">ndvi_crop2 =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/raster/man/crop.html">crop</a></span>(ndvi, <span class="kw"><a href="https://rdrr.io/pkg/sf/man/coerce-methods.html">as</a></span>(ch, <span class="st">"Spatial"</span>)) </a>
+<a class="sourceLine" id="cb25-4" data-line-number="4"><span class="kw"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(ndvi_crop1)</a>
+<a class="sourceLine" id="cb25-5" data-line-number="5"><span class="kw"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(ndvi_crop2)</a></code></pre></div>
 <p><img src="solutions05_files/figure-html/unnamed-chunk-9-2.png" width="700"></p>
 <div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" data-line-number="1"></a>
-<a class="sourceLine" id="cb26-2" data-line-number="2">ndvi_mask1 =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/mask">mask</a></span>(ndvi, <span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/coerce-methods">as</a></span>(random_points, <span class="st">"Spatial"</span>)) </a>
-<a class="sourceLine" id="cb26-3" data-line-number="3">ndvi_mask2 =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/mask">mask</a></span>(ndvi, <span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/coerce-methods">as</a></span>(ch, <span class="st">"Spatial"</span>)) </a>
-<a class="sourceLine" id="cb26-4" data-line-number="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(ndvi_mask1)</a></code></pre></div>
+<a class="sourceLine" id="cb26-2" data-line-number="2">ndvi_mask1 =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/raster/man/mask.html">mask</a></span>(ndvi, <span class="kw"><a href="https://rdrr.io/pkg/sf/man/coerce-methods.html">as</a></span>(random_points, <span class="st">"Spatial"</span>)) </a>
+<a class="sourceLine" id="cb26-3" data-line-number="3">ndvi_mask2 =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/raster/man/mask.html">mask</a></span>(ndvi, <span class="kw"><a href="https://rdrr.io/pkg/sf/man/coerce-methods.html">as</a></span>(ch, <span class="st">"Spatial"</span>)) </a>
+<a class="sourceLine" id="cb26-4" data-line-number="4"><span class="kw"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(ndvi_mask1)</a></code></pre></div>
 <p><img src="solutions05_files/figure-html/unnamed-chunk-9-3.png" width="700"></p>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(ndvi_mask2)</a></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(ndvi_mask2)</a></code></pre></div>
 <p><img src="solutions05_files/figure-html/unnamed-chunk-9-4.png" width="700"></p>
 <p>There are not any differences between the two output maps after cropping, but the outputs after masking are very different. In the first case, <code>ndvi</code> is cropped only to the extent of the bounding box, and both <code>random_points</code> and <code>ch</code> have exactly the same bounding box. In the second case, masking by <code>random_points</code> only keeps raster cells that are overlayed by these points, while masking by <code>ch</code> keeps all raster cells that are within the <code>ch</code> polygon.</p>
 <ol start="8" style="list-style-type: decimal">
 <li>Firstly, extract values from <code>ndvi</code> at the points represented in <code>random_points</code>. Next, extract average values of <code>ndvi</code> using a 90 buffer around each point from <code>random_points</code> and compare these two sets of values. When would extracting values by buffers be more suitable than by points alone?</li>
 </ol>
-<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" data-line-number="1">random_points_buf =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/geos_unary">st_buffer</a></span>(random_points, <span class="dt">dist =</span> <span class="dv">90</span>)</a>
-<a class="sourceLine" id="cb28-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(ndvi)</a>
-<a class="sourceLine" id="cb28-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(random_points_buf), <span class="dt">add =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb28-4" data-line-number="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(ch, <span class="dt">add =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" data-line-number="1">random_points_buf =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/sf/man/geos_unary.html">st_buffer</a></span>(random_points, <span class="dt">dist =</span> <span class="dv">90</span>)</a>
+<a class="sourceLine" id="cb28-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(ndvi)</a>
+<a class="sourceLine" id="cb28-3" data-line-number="3"><span class="kw"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(<span class="kw"><a href="https://rdrr.io/pkg/sf/man/st_geometry.html">st_geometry</a></span>(random_points_buf), <span class="dt">add =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb28-4" data-line-number="4"><span class="kw"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(ch, <span class="dt">add =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 <p><img src="solutions05_files/figure-html/unnamed-chunk-10-1.png" width="700"></p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" data-line-number="1">random_points<span class="op">$</span>ndvi1 =<span class="st"> </span>raster<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/extract">extract</a></span>(ndvi, <span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/coerce-methods">as</a></span>(random_points, <span class="st">"Spatial"</span>))</a>
-<a class="sourceLine" id="cb29-2" data-line-number="2">random_points<span class="op">$</span>ndvi2 =<span class="st"> </span>raster<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/extract">extract</a></span>(ndvi, <span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/coerce-methods">as</a></span>(random_points, <span class="st">"Spatial"</span>), <span class="dt">buffer =</span> <span class="dv">90</span>, <span class="dt">fun =</span> mean)</a>
-<a class="sourceLine" id="cb29-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(random_points<span class="op">$</span>ndvi1, random_points<span class="op">$</span>ndvi2)</a></code></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" data-line-number="1">random_points<span class="op">$</span>ndvi1 =<span class="st"> </span>raster<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/raster/man/extract.html">extract</a></span>(ndvi, <span class="kw"><a href="https://rdrr.io/pkg/sf/man/coerce-methods.html">as</a></span>(random_points, <span class="st">"Spatial"</span>))</a>
+<a class="sourceLine" id="cb29-2" data-line-number="2">random_points<span class="op">$</span>ndvi2 =<span class="st"> </span>raster<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/raster/man/extract.html">extract</a></span>(ndvi, <span class="kw"><a href="https://rdrr.io/pkg/sf/man/coerce-methods.html">as</a></span>(random_points, <span class="st">"Spatial"</span>), <span class="dt">buffer =</span> <span class="dv">90</span>, <span class="dt">fun =</span> mean)</a>
+<a class="sourceLine" id="cb29-3" data-line-number="3"><span class="kw"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(random_points<span class="op">$</span>ndvi1, random_points<span class="op">$</span>ndvi2)</a></code></pre></div>
 <p><img src="solutions05_files/figure-html/unnamed-chunk-10-2.png" width="700"></p>
 <p>Extracting values by buffers is more suitable than by points alone, for example when we expect errors in single raster cells. Average values can decrease an effect of erroneous values in some raster cells.</p>
 <ol start="9" style="list-style-type: decimal">
@@ -292,18 +294,18 @@
 </li>
 </ol>
 <div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" data-line-number="1">nz_height3100 =<span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(nz_height, elevation <span class="op">&gt;</span><span class="st"> </span><span class="dv">3100</span>)</a>
-<a class="sourceLine" id="cb30-2" data-line-number="2">new_graticule =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_graticule">st_graticule</a></span>(nz_height3100, <span class="dt">datum =</span> <span class="dv">2193</span>)</a>
-<a class="sourceLine" id="cb30-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_geometry">st_geometry</a></span>(nz_height3100), <span class="dt">graticule =</span> new_graticule, <span class="dt">axes =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb30-2" data-line-number="2">new_graticule =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/sf/man/st_graticule.html">st_graticule</a></span>(nz_height3100, <span class="dt">datum =</span> <span class="dv">2193</span>)</a>
+<a class="sourceLine" id="cb30-3" data-line-number="3"><span class="kw"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(<span class="kw"><a href="https://rdrr.io/pkg/sf/man/st_geometry.html">st_geometry</a></span>(nz_height3100), <span class="dt">graticule =</span> new_graticule, <span class="dt">axes =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 <p><img src="solutions05_files/figure-html/unnamed-chunk-11-1.png" width="700"></p>
-<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb31-1" data-line-number="1">nz_template =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/raster">raster</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/extent">extent</a></span>(nz_height3100), <span class="dt">resolution =</span> <span class="dv">3000</span>,</a>
-<a class="sourceLine" id="cb31-2" data-line-number="2">                         <span class="dt">crs =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_crs">st_crs</a></span>(nz_height3100)<span class="op">$</span>proj4string)</a>
-<a class="sourceLine" id="cb31-3" data-line-number="3">nz_raster =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/rasterize">rasterize</a></span>(nz_height3100, nz_template, </a>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb31-1" data-line-number="1">nz_template =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/raster/man/raster.html">raster</a></span>(<span class="kw"><a href="https://rdrr.io/pkg/raster/man/extent.html">extent</a></span>(nz_height3100), <span class="dt">resolution =</span> <span class="dv">3000</span>,</a>
+<a class="sourceLine" id="cb31-2" data-line-number="2">                         <span class="dt">crs =</span> <span class="kw"><a href="https://rdrr.io/pkg/sf/man/st_crs.html">st_crs</a></span>(nz_height3100)<span class="op">$</span>proj4string)</a>
+<a class="sourceLine" id="cb31-3" data-line-number="3">nz_raster =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/raster/man/rasterize.html">rasterize</a></span>(nz_height3100, nz_template, </a>
 <a class="sourceLine" id="cb31-4" data-line-number="4">                       <span class="dt">field =</span> <span class="st">"elevation"</span>, <span class="dt">fun =</span> <span class="st">"count"</span>)</a>
-<a class="sourceLine" id="cb31-5" data-line-number="5"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(nz_raster)</a></code></pre></div>
+<a class="sourceLine" id="cb31-5" data-line-number="5"><span class="kw"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(nz_raster)</a></code></pre></div>
 <p><img src="solutions05_files/figure-html/unnamed-chunk-11-2.png" width="700"></p>
-<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" data-line-number="1">nz_raster2 =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/rasterize">rasterize</a></span>(nz_height3100, nz_template, </a>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" data-line-number="1">nz_raster2 =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/raster/man/rasterize.html">rasterize</a></span>(nz_height3100, nz_template, </a>
 <a class="sourceLine" id="cb32-2" data-line-number="2">                       <span class="dt">field =</span> <span class="st">"elevation"</span>, <span class="dt">fun =</span> max)</a>
-<a class="sourceLine" id="cb32-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(nz_raster2)</a></code></pre></div>
+<a class="sourceLine" id="cb32-3" data-line-number="3"><span class="kw"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(nz_raster2)</a></code></pre></div>
 <p><img src="solutions05_files/figure-html/unnamed-chunk-11-3.png" width="700"></p>
 <ol start="10" style="list-style-type: decimal">
 <li>Aggregate the raster counting high points in New Zealand (created in the previous exercise), reduce its geographic resolution by half (so cells are 6 by 6 km) and plot the result.
@@ -313,12 +315,12 @@
 </ul>
 </li>
 </ol>
-<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb33-1" data-line-number="1">nz_raster_low =<span class="st"> </span>raster<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/aggregate">aggregate</a></span>(nz_raster, <span class="dt">fact =</span> <span class="dv">2</span>, <span class="dt">fun =</span> sum)</a>
-<a class="sourceLine" id="cb33-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/resolution">res</a></span>(nz_raster_low)</a>
-<a class="sourceLine" id="cb33-3" data-line-number="3">nz_resample =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/resample">resample</a></span>(nz_raster_low, nz_raster)</a>
-<a class="sourceLine" id="cb33-4" data-line-number="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(nz_raster_low)</a>
-<a class="sourceLine" id="cb33-5" data-line-number="5"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(nz_resample) <span class="co"># the results are spread over a greater area and there are border issues</span></a>
-<a class="sourceLine" id="cb33-6" data-line-number="6"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(nz_raster)</a></code></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb33-1" data-line-number="1">nz_raster_low =<span class="st"> </span>raster<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/raster/man/aggregate.html">aggregate</a></span>(nz_raster, <span class="dt">fact =</span> <span class="dv">2</span>, <span class="dt">fun =</span> sum)</a>
+<a class="sourceLine" id="cb33-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/pkg/raster/man/resolution.html">res</a></span>(nz_raster_low)</a>
+<a class="sourceLine" id="cb33-3" data-line-number="3">nz_resample =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/raster/man/resample.html">resample</a></span>(nz_raster_low, nz_raster)</a>
+<a class="sourceLine" id="cb33-4" data-line-number="4"><span class="kw"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(nz_raster_low)</a>
+<a class="sourceLine" id="cb33-5" data-line-number="5"><span class="kw"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(nz_resample) <span class="co"># the results are spread over a greater area and there are border issues</span></a>
+<a class="sourceLine" id="cb33-6" data-line-number="6"><span class="kw"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(nz_raster)</a></code></pre></div>
 <p>advantage: lower memory use advantage: faster processing advantage: good for viz in some cases disadvantage: removes geographic detail disadvantage: another processing step</p>
 <ol start="11" style="list-style-type: decimal">
 <li>Polygonize the <code>grain</code> dataset and filter all squares representing clay.
@@ -328,16 +330,16 @@
 </ul>
 </li>
 </ol>
-<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb34-1" data-line-number="1">grain_poly =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/rasterToPolygons">rasterToPolygons</a></span>(grain) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb34-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_as_sf">st_as_sf</a></span>()</a>
-<a class="sourceLine" id="cb34-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/raster/topics/factor">levels</a></span>(grain)</a>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb34-1" data-line-number="1">grain_poly =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/raster/man/rasterToPolygons.html">rasterToPolygons</a></span>(grain) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb34-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/pkg/sf/man/st_as_sf.html">st_as_sf</a></span>()</a>
+<a class="sourceLine" id="cb34-3" data-line-number="3"><span class="kw"><a href="https://rdrr.io/pkg/raster/man/factor.html">levels</a></span>(grain)</a>
 <a class="sourceLine" id="cb34-4" data-line-number="4"><span class="co">#&gt; [[1]]</span></a>
 <a class="sourceLine" id="cb34-5" data-line-number="5"><span class="co">#&gt;   ID VALUE</span></a>
 <a class="sourceLine" id="cb34-6" data-line-number="6"><span class="co">#&gt; 1  1  clay</span></a>
 <a class="sourceLine" id="cb34-7" data-line-number="7"><span class="co">#&gt; 2  2  silt</span></a>
 <a class="sourceLine" id="cb34-8" data-line-number="8"><span class="co">#&gt; 3  3  sand</span></a>
 <a class="sourceLine" id="cb34-9" data-line-number="9">clay =<span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(grain_poly, layer <span class="op">==</span><span class="st"> </span><span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb34-10" data-line-number="10"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(clay)</a></code></pre></div>
+<a class="sourceLine" id="cb34-10" data-line-number="10"><span class="kw"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(clay)</a></code></pre></div>
 <p><img src="solutions05_files/figure-html/unnamed-chunk-13-1.png" width="700"></p>
 <p>advantages: - can be used to subset other vector objects - can do affine transformations and use sf/dplyr verbs disadvantages: - better consistency, fast processing on some operations, functions developed for some domains</p>
 </div>
@@ -358,17 +360,20 @@
 </div>
 
 
+
       <footer><div class="copyright">
   <p>Developed by Robin Lovelace, Jakub Nowosad, Jannes Muenchow.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
+
       </footer>
 </div>
 
   
+
 
   </body>
 </html>

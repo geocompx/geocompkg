@@ -7,8 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Desire Lines Extended • geocompkg | metapackage for the Gecomputation with R book</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><meta property="og:title" content="Desire Lines Extended">
 <meta property="og:description" content="">
 <meta name="twitter:card" content="summary">
@@ -53,13 +54,14 @@
 <!--/.navbar -->
 
       
+
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1>Desire Lines Extended</h1>
                         <h4 class="author">Robin Lovelace, Jakub Nowosad, Jannes Muenchow</h4>
             
-            <h4 class="date">2019-08-30</h4>
+            <h4 class="date">2020-01-27</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/geocompr/geocompkg/blob/master/vignettes/linevia.Rmd"><code>vignettes/linevia.Rmd</code></a></small>
       <div class="hidden name"><code>linevia.Rmd</code></div>
@@ -70,37 +72,37 @@
     
 <p>This vignette builds on the <a href="https://geocompr.robinlovelace.net/transport.html">transport chapter</a> of <a href="https://geocompr.github.io/">the Geocomputation with R book</a> by showing how to create multi-stage desire lines, from the ground-up.</p>
 <p>It depends on these packages and datasets:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(sf)</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(stplanr)</a>
-<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(dplyr)</a>
-<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(spDataLarge)</a>
-<a class="sourceLine" id="cb1-5" data-line-number="5">desire_lines =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stplanr/topics/od2line">od2line</a></span>(bristol_od, bristol_zones)</a>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(sf)</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(stplanr)</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(dplyr)</a>
+<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(spDataLarge)</a>
+<a class="sourceLine" id="cb1-5" data-line-number="5">desire_lines =<span class="st"> </span><span class="kw"><a href="https://docs.ropensci.org/stplanr/reference/od2line.html">od2line</a></span>(bristol_od, bristol_zones)</a>
 <a class="sourceLine" id="cb1-6" data-line-number="6">desire_rail =<span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/top_n.html">top_n</a></span>(desire_lines, <span class="dt">n =</span> <span class="dv">3</span>, <span class="dt">wt =</span> train)</a></code></pre></div>
 <p>The first stage is to create matrices of coordinates that will subsequently be used to create matrices representing each leg:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">mat_orig =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/matrix">as.matrix</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/stplanr/topics/line2df">line2df</a></span>(desire_rail)[<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"fx"</span>, <span class="st">"fy"</span>)])</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2">mat_dest =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/matrix">as.matrix</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/stplanr/topics/line2df">line2df</a></span>(desire_rail)[<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"tx"</span>, <span class="st">"ty"</span>)])</a>
-<a class="sourceLine" id="cb2-3" data-line-number="3">mat_rail =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_coordinates">st_coordinates</a></span>(bristol_stations)</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">mat_orig =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/matrix.html">as.matrix</a></span>(<span class="kw"><a href="https://docs.ropensci.org/stplanr/reference/line2df.html">line2df</a></span>(desire_rail)[<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"fx"</span>, <span class="st">"fy"</span>)])</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">mat_dest =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/matrix.html">as.matrix</a></span>(<span class="kw"><a href="https://docs.ropensci.org/stplanr/reference/line2df.html">line2df</a></span>(desire_rail)[<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"tx"</span>, <span class="st">"ty"</span>)])</a>
+<a class="sourceLine" id="cb2-3" data-line-number="3">mat_rail =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/sf/man/st_coordinates.html">st_coordinates</a></span>(bristol_stations)</a></code></pre></div>
 <p>The outputs are three matrices representing the starting points of the trips, their destinations and possible intermediary points at public transport nodes (named <code>orig</code>, <code>dest</code> and <code>rail</code> respectively). But how to identify <em>which</em> intermediary points to use for each desire line? The <code>knn()</code> function from the <strong>nabor</strong> package (which is used internally by <strong>stplanr</strong> so it should already be installed) solves this problem by finding <em>k nearest neighbors</em> between two sets of coordinates. By setting the <code>k</code> parameter, one can define how many nearest neighbors should be returned. Of course, <code>k</code> cannot exceed the number of observations in the input (here: <code>mat_rail</code>). We are interested in just one nearest neighbor, namely, the closest railway station:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">knn_orig =<span class="st"> </span>nabor<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/nabor/topics/knn">knn</a></span>(mat_rail, <span class="dt">query =</span> mat_orig, <span class="dt">k =</span> <span class="dv">1</span>)<span class="op">$</span>nn.idx</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2">knn_dest =<span class="st"> </span>nabor<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/nabor/topics/knn">knn</a></span>(mat_rail, <span class="dt">query =</span> mat_dest, <span class="dt">k =</span> <span class="dv">1</span>)<span class="op">$</span>nn.idx</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">knn_orig =<span class="st"> </span>nabor<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/nabor/man/knn.html">knn</a></span>(mat_rail, <span class="dt">query =</span> mat_orig, <span class="dt">k =</span> <span class="dv">1</span>)<span class="op">$</span>nn.idx</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2">knn_dest =<span class="st"> </span>nabor<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/nabor/man/knn.html">knn</a></span>(mat_rail, <span class="dt">query =</span> mat_dest, <span class="dt">k =</span> <span class="dv">1</span>)<span class="op">$</span>nn.idx</a></code></pre></div>
 <p>This results not in matrices of coordinates, but row indices that can subsequently be used to subset the <code>mat_rail</code>. It is worth taking a look at the results to ensure that the process has worked properly, and to explain what has happened:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/numeric">as.numeric</a></span>(knn_orig)</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span>(knn_orig)</a></code></pre></div>
 <pre><code>## [1] 25  3  2</code></pre>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/numeric">as.numeric</a></span>(knn_dest)</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span>(knn_dest)</a></code></pre></div>
 <pre><code>## [1] 27 27 27</code></pre>
 <p>The output demonstrates that each object contains three whole numbers (the number of rows in <code>desire_rail</code>) representing the rail station closest to the origin and destination of each desire line. Note that while each ‘origin station’ is different, the destination (station <code>30</code>) is the same for all desire lines. This is to be expected because rail travel in cities tends to converge on a single large station (in this case Bristol Temple Meads). The indices can now be used to create matrices representing the rail station of origin and destination:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">mat_rail_o =<span class="st"> </span>mat_rail[knn_orig, ]</a>
 <a class="sourceLine" id="cb8-2" data-line-number="2">mat_rail_d =<span class="st"> </span>mat_rail[knn_dest, ]</a></code></pre></div>
 <p>The final stage is to convert these matrices into meaningful geographic objects, in this case simple feature ‘multilinestrings’ that capture the fact that each stage is a separate line, but part of the same overall trip:</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">mats2line =<span class="st"> </span><span class="cf">function</span>(mat1, mat2) {</a>
-<a class="sourceLine" id="cb9-2" data-line-number="2">  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/lapply">lapply</a></span>(<span class="dv">1</span><span class="op">:</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/nrow">nrow</a></span>(mat1), <span class="cf">function</span>(i) {</a>
-<a class="sourceLine" id="cb9-3" data-line-number="3">    <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cbind">rbind</a></span>(mat1[i, ], mat2[i, ]) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb9-4" data-line-number="4"><span class="st">    </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st">st_linestring</a></span>()</a>
-<a class="sourceLine" id="cb9-5" data-line-number="5">  }) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/sfc">st_sfc</a></span>()</a>
+<a class="sourceLine" id="cb9-2" data-line-number="2">  <span class="kw"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span>(<span class="dv">1</span><span class="op">:</span><span class="kw"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(mat1), <span class="cf">function</span>(i) {</a>
+<a class="sourceLine" id="cb9-3" data-line-number="3">    <span class="kw"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span>(mat1[i, ], mat2[i, ]) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb9-4" data-line-number="4"><span class="st">    </span><span class="kw"><a href="https://rdrr.io/pkg/sf/man/st.html">st_linestring</a></span>()</a>
+<a class="sourceLine" id="cb9-5" data-line-number="5">  }) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/sf/man/sfc.html">st_sfc</a></span>()</a>
 <a class="sourceLine" id="cb9-6" data-line-number="6">}</a>
-<a class="sourceLine" id="cb9-7" data-line-number="7">desire_rail<span class="op">$</span>leg_orig =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stplanr/topics/mats2line">mats2line</a></span>(mat_orig, mat_rail_o)</a>
-<a class="sourceLine" id="cb9-8" data-line-number="8">desire_rail<span class="op">$</span>leg_rail =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stplanr/topics/mats2line">mats2line</a></span>(mat_rail_o, mat_rail_d)</a>
-<a class="sourceLine" id="cb9-9" data-line-number="9">desire_rail<span class="op">$</span>leg_dest =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stplanr/topics/mats2line">mats2line</a></span>(mat_rail_d, mat_dest)</a></code></pre></div>
+<a class="sourceLine" id="cb9-7" data-line-number="7">desire_rail<span class="op">$</span>leg_orig =<span class="st"> </span><span class="kw"><a href="https://docs.ropensci.org/stplanr/reference/mats2line.html">mats2line</a></span>(mat_orig, mat_rail_o)</a>
+<a class="sourceLine" id="cb9-8" data-line-number="8">desire_rail<span class="op">$</span>leg_rail =<span class="st"> </span><span class="kw"><a href="https://docs.ropensci.org/stplanr/reference/mats2line.html">mats2line</a></span>(mat_rail_o, mat_rail_d)</a>
+<a class="sourceLine" id="cb9-9" data-line-number="9">desire_rail<span class="op">$</span>leg_dest =<span class="st"> </span><span class="kw"><a href="https://docs.ropensci.org/stplanr/reference/mats2line.html">mats2line</a></span>(mat_rail_d, mat_dest)</a></code></pre></div>
 <p>The results are visualised below:</p>
 <div class="figure">
 <img src="linevia_files/figure-html/stations-1.png" alt="Station nodes (red dots) used as intermediary points that convert straight desire lines with high rail usage (black) into three legs: to the origin station (red) via public transport (grey) and to the destination (a very short blue line)." width="700"><p class="caption">
@@ -116,17 +118,20 @@ Station nodes (red dots) used as intermediary points that convert straight desir
 </div>
 
 
+
       <footer><div class="copyright">
   <p>Developed by Robin Lovelace, Jakub Nowosad, Jannes Muenchow.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
+
       </footer>
 </div>
 
   
+
 
   </body>
 </html>

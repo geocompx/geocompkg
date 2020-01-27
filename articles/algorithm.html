@@ -7,8 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Algorithms Extended • geocompkg | metapackage for the Gecomputation with R book</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><meta property="og:title" content="Algorithms Extended">
 <meta property="og:description" content="">
 <meta name="twitter:card" content="summary">
@@ -53,13 +54,14 @@
 <!--/.navbar -->
 
       
+
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1>Algorithms Extended</h1>
                         <h4 class="author">Robin Lovelace, Jakub Nowosad, Jannes Muenchow</h4>
             
-            <h4 class="date">2019-08-30</h4>
+            <h4 class="date">2020-01-27</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/geocompr/geocompkg/blob/master/vignettes/algorithm.Rmd"><code>vignettes/algorithm.Rmd</code></a></small>
       <div class="hidden name"><code>algorithm.Rmd</code></div>
@@ -70,14 +72,14 @@
     
 <p>This vignette provides some further detail on the chapter Scripts, algorithms and functions (see <a href="https://geocompr.robinlovelace.net/algorithms.html" class="uri">https://geocompr.robinlovelace.net/algorithms.html</a> ) of <a href="https://geocompr.github.io/">the Geocomputation with R book</a>.</p>
 <p>It starts with the same input data:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">x_coords =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">10</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">12</span>, <span class="dv">20</span>, <span class="dv">10</span>)</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2">y_coords =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">15</span>, <span class="dv">0</span>)</a>
-<a class="sourceLine" id="cb1-3" data-line-number="3">poly_mat =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cbind">cbind</a></span>(x_coords, y_coords)</a>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">x_coords =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">10</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">12</span>, <span class="dv">20</span>, <span class="dv">10</span>)</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2">y_coords =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">15</span>, <span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3">poly_mat =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span>(x_coords, y_coords)</a>
 <a class="sourceLine" id="cb1-4" data-line-number="4">Origin =<span class="st"> </span>poly_mat[<span class="dv">1</span>, ] <span class="co"># create a point representing the origin</span></a>
-<a class="sourceLine" id="cb1-5" data-line-number="5">T1 =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cbind">rbind</a></span>(Origin, poly_mat[<span class="dv">2</span><span class="op">:</span><span class="dv">3</span>, ], Origin) <span class="co"># create 'triangle matrix'</span></a>
+<a class="sourceLine" id="cb1-5" data-line-number="5">T1 =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span>(Origin, poly_mat[<span class="dv">2</span><span class="op">:</span><span class="dv">3</span>, ], Origin) <span class="co"># create 'triangle matrix'</span></a>
 <a class="sourceLine" id="cb1-6" data-line-number="6">C1 =<span class="st"> </span>(T1[<span class="dv">1</span>, , <span class="dt">drop =</span> <span class="ot">FALSE</span>] <span class="op">+</span><span class="st"> </span>T1[<span class="dv">2</span>, , <span class="dt">drop =</span> <span class="ot">FALSE</span>] <span class="op">+</span><span class="st"> </span>T1[<span class="dv">3</span>, , <span class="dt">drop =</span> <span class="ot">FALSE</span>]) <span class="op">/</span><span class="st"> </span><span class="dv">3</span> <span class="co"># find centroid</span></a></code></pre></div>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">t_area =<span class="st"> </span><span class="cf">function</span>(x) {</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2">  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/MathFun">abs</a></span>(</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">  <span class="kw"><a href="https://rdrr.io/r/base/MathFun.html">abs</a></span>(</a>
 <a class="sourceLine" id="cb2-3" data-line-number="3">    x[<span class="dv">1</span>, <span class="dv">1</span>] <span class="op">*</span><span class="st"> </span>(x[<span class="dv">2</span>, <span class="dv">2</span>] <span class="op">-</span><span class="st"> </span>x[<span class="dv">3</span>, <span class="dv">2</span>]) <span class="op">+</span></a>
 <a class="sourceLine" id="cb2-4" data-line-number="4"><span class="st">    </span>x[<span class="dv">2</span>, <span class="dv">1</span>] <span class="op">*</span><span class="st"> </span>(x[<span class="dv">3</span>, <span class="dv">2</span>] <span class="op">-</span><span class="st"> </span>x[<span class="dv">1</span>, <span class="dv">2</span>]) <span class="op">+</span></a>
 <a class="sourceLine" id="cb2-5" data-line-number="5"><span class="st">    </span>x[<span class="dv">3</span>, <span class="dv">1</span>] <span class="op">*</span><span class="st"> </span>(x[<span class="dv">1</span>, <span class="dv">2</span>] <span class="op">-</span><span class="st"> </span>x[<span class="dv">2</span>, <span class="dv">2</span>])</a>
@@ -94,15 +96,15 @@
 <pre><code>## x_coords y_coords 
 ## 3.333333 3.333333</code></pre>
 <p>The next stage is to create the second triangle and calculate its area and centroid. This is done in the code chunk below, which binds the 3<sup>rd</sup> and 4<sup>th</sup> coordinates onto the 1<sup>st</sup>, and uses the same functions we created above to calculate its area and width:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">T2 =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cbind">rbind</a></span>(Origin, poly_mat[<span class="dv">3</span><span class="op">:</span><span class="dv">4</span>, ], Origin)</a>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">T2 =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span>(Origin, poly_mat[<span class="dv">3</span><span class="op">:</span><span class="dv">4</span>, ], Origin)</a>
 <a class="sourceLine" id="cb7-2" data-line-number="2">A2 =<span class="st"> </span><span class="kw">t_area</span>(T2)</a>
 <a class="sourceLine" id="cb7-3" data-line-number="3">C2 =<span class="st"> </span><span class="kw">t_centroid</span>(T2)</a></code></pre></div>
 <p>From this point it is not a big leap to see how to create the 3<sup>rd</sup> and final triangle that constitutes the polygon represented by <code>poly_mat</code>.</p>
 <p>Note: it would also be possible to create the polygons with the <strong>decido</strong> package (code not run):</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">ind =<span class="st"> </span>decido<span class="op">::</span><span class="kw">earcut</span>(poly_mat)</a>
 <a class="sourceLine" id="cb8-2" data-line-number="2">decido<span class="op">::</span><span class="kw">plot_ears</span>(poly_mat, <span class="dt">idx =</span> ind)</a>
-<a class="sourceLine" id="cb8-3" data-line-number="3">i =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/seq">seq</a></span>(<span class="dv">1</span>, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/length">length</a></span>(ind), <span class="dt">by =</span> <span class="dv">3</span>)</a>
-<a class="sourceLine" id="cb8-4" data-line-number="4">i_list =<span class="st"> </span>purrr<span class="op">::</span><span class="kw"><a href="https://purrr.tidyverse.org/reference/map.html">map</a></span>(i, <span class="op">~</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(.<span class="op">:</span>(.<span class="op">+</span><span class="dv">2</span>), .))</a>
+<a class="sourceLine" id="cb8-3" data-line-number="3">i =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="dv">1</span>, <span class="kw"><a href="https://rdrr.io/r/base/length.html">length</a></span>(ind), <span class="dt">by =</span> <span class="dv">3</span>)</a>
+<a class="sourceLine" id="cb8-4" data-line-number="4">i_list =<span class="st"> </span>purrr<span class="op">::</span><span class="kw"><a href="https://purrr.tidyverse.org/reference/map.html">map</a></span>(i, <span class="op">~</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(.<span class="op">:</span>(.<span class="op">+</span><span class="dv">2</span>), .))</a>
 <a class="sourceLine" id="cb8-5" data-line-number="5">T_all =<span class="st"> </span>purrr<span class="op">::</span><span class="kw"><a href="https://purrr.tidyverse.org/reference/map.html">map</a></span>(i_list, <span class="op">~</span>poly_mat[ind[.], ])</a></code></pre></div>
   </div>
 
@@ -113,17 +115,20 @@
 </div>
 
 
+
       <footer><div class="copyright">
   <p>Developed by Robin Lovelace, Jakub Nowosad, Jannes Muenchow.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
+
       </footer>
 </div>
 
   
+
 
   </body>
 </html>
