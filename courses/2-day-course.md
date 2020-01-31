@@ -64,13 +64,13 @@ By then end of the course participants should:
 ## Location
 
 Leeds Institute for Data Analytics, 40 University Road, LS2 9JT. It can
-be seen on [OpenStreetMap](https://www.openstreetmap.org/way/84749920),
-on the [LIDA website](https://lida.leeds.ac.uk/about-lida/contact/) and
+be seen on
+<!-- [OpenStreetMap](https://www.openstreetmap.org/way/84749920) -->
+[OpenStreetMap](https://www.openstreetmap.org/way/445317959), on the
+[LIDA website](https://lida.leeds.ac.uk/about-lida/contact/) and
 highlighted in red below (it’s a 20 minute walk from the station):
 
 ![](geolida_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
-
-    #> tmap mode set to plotting
 
 ## Online home
 
@@ -225,28 +225,30 @@ Attach the packages:
 ``` r
 library(sf)
 library(tmap)
+library(osmdata)
 library(stplanr)
 library(tidyverse)
 ```
 
-The overall route assuming you’re travelling from London:
+The route to get there from Leeds rail station can be generated with the
+following commands, if you get the map below, congratulations your
+computer has the necessary packages for the course\!
 
 ``` r
-uk = spData::world %>% 
-  filter(name_long == "United Kingdom")
-origin_lnd = c(-0.1, 51.5)
-destination = c(-1.55, 53.8)
-odmatrix = matrix(c(origin_lnd, destination), ncol = 2, byrow = TRUE)
-line_lnd = st_linestring(odmatrix) %>% 
-  st_sfc() %>% 
-  st_sf(crs = 4326)
-tm_shape(uk) +
-  tm_polygons(col = "grey") +
-  tm_shape(line_lnd) +
-  tm_lines(col = "red", lwd = 5)
+location = opq("leeds") %>% 
+  add_osm_feature(key = "name", value = "Worsley Building") %>% 
+  osmdata_sf()
+route = sf::read_sf("https://git.io/fhnAr")
+tm_shape(route) +
+  tm_lines(col = "blue", lwd = 7, alpha = 0.4) +
+  tm_shape(location$osm_polygons) +
+  tm_polygons(col = "red") +
+  tm_view(basemaps = leaflet::providers$OpenStreetMap) +
+  tm_minimap(server = leaflet::providers$OpenTopoMap, zoomLevelOffset = -10) +
+  tm_scale_bar()
 ```
 
-![](2-day-course_files/figure-gfm/simpleukmap-1.png)<!-- -->
+![](2-day-course_files/figure-gfm/simplemap-1.png)<!-- -->
 
 ## Course tutor
 
