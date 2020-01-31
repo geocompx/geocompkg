@@ -68,9 +68,10 @@ be seen on
 <!-- [OpenStreetMap](https://www.openstreetmap.org/way/84749920) -->
 [OpenStreetMap](https://www.openstreetmap.org/way/445317959), on the
 [LIDA website](https://lida.leeds.ac.uk/about-lida/contact/) and
-highlighted in red below (it’s a 20 minute walk from the station):
+highlighted in red below (it’s a 20 minute walk from Leeds train
+station):
 
-![](geolida_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
+![](2-day-course_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
 
 ## Online home
 
@@ -238,6 +239,9 @@ computer has the necessary packages for the course\!
 location = opq("leeds") %>% 
   add_osm_feature(key = "name", value = "Worsley Building") %>% 
   osmdata_sf()
+```
+
+``` r
 route = sf::read_sf("https://git.io/fhnAr")
 tm_shape(route) +
   tm_lines(col = "blue", lwd = 7, alpha = 0.4) +
