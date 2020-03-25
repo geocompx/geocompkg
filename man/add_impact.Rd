@@ -4,8 +4,11 @@
 \alias{add_impact}
 \title{Return details of issues, with input an GitHub issue URL}
 \usage{
-add_impact(url_issue, vars = c("created_at", "type", "title", "comments",
-  "state", "creator"), url_old_impact = NULL)
+add_impact(
+  url_issue,
+  vars = c("created_at", "type", "title", "comments", "state", "creator"),
+  url_old_impact = NULL
+)
 }
 \description{
 Return details of issues, with input an GitHub issue URL
