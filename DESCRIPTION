@@ -64,6 +64,7 @@ Remotes:
     nowosad/spDataLarge,
     rspatial/raster,
     r-spatial/sf,
+    r-spatial/leafem,
     mtennekes/tmaptools,
     mtennekes/tmap
 URL: https://github.com/geocompr/geocompkg
