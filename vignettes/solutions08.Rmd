@@ -56,7 +56,7 @@ Maps can be made with this object as follows:
 
 ```{r}
 plot(africa["HDI"])
-tm_shape(africa) + tm_polygons("HDI")
+# tm_shape(africa) + tm_polygons("HDI")
 ```
 
 - Base graphics is fast, widely available (has few dependencies, available on all R installations) and well-known among R users.
