@@ -62,7 +62,9 @@ Imports:
     vegan
 Remotes:
     nowosad/spDataLarge,
-    rspatial/raster
+    rspatial/raster,
+    r-spatial/sf,
+    mtennekes/tmap
 URL: https://github.com/geocompr/geocompkg
 BugReports: https://github.com/Robinlovelace/geocompr/issues
 LazyData: TRUE
