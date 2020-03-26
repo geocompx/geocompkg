@@ -65,16 +65,18 @@ tm_shape(africa) + tm_polygons("HDI")
 
 Examples using other packages are as follows:
 
-```{r, eval=FALSE}
+```{r}
 library(ggplot2)
 ggplot(africa) +
   geom_sf(aes(geometry = geom, fill = HDI)) 
-
+```
+```{r, eval=FALSE}
 library(leaflet)
 leaflet() %>% 
   addTiles() %>% 
   addPolygons(data = st_transform(africa, 4326))
-
+```
+```{r, eval=FALSE}
 library(cartogram)
 africa_carto = cartogram_cont(africa, "HDI", itermax = 5)
 tm_shape(africa_carto) + tm_polygons("HDI")
