@@ -54,9 +54,9 @@ data(nlcd, package = "spDataLarge")
 
 Maps can be made with this object as follows:
 
-```{r}
+```{r, eval=FALSE}
 plot(africa["HDI"])
-# tm_shape(africa) + tm_polygons("HDI")
+tm_shape(africa) + tm_polygons("HDI")
 ```
 
 - Base graphics is fast, widely available (has few dependencies, available on all R installations) and well-known among R users.
@@ -65,7 +65,7 @@ plot(africa["HDI"])
 
 Examples using other packages are as follows:
 
-```{r}
+```{r, eval=FALSE}
 library(ggplot2)
 ggplot(africa) +
   geom_sf(aes(geometry = geom, fill = HDI)) 
@@ -83,7 +83,7 @@ tm_shape(africa_carto) + tm_polygons("HDI")
 
 2) Extend the map of Africa created with **tmap** for the previous exercise so the legend has three bins: "High" (`HDI` above 0.7), "Medium" (`HDI` between 0.55 and 0.7) and "Low" (`HDI` below 0.55).
     - Bonus: improve the map aesthetics, for example by changing the legend title, class labels and color palette.
-```{r}
+```{r, eval=FALSE}
 # >0.8 - Very high human development
 # >0.7 - High human development
 # >0.55 - Medium human development
@@ -101,7 +101,7 @@ sm1
 3) Represent `africa`'s subregions on the map. 
 Change the default color palette and legend title.
 Next, combine this map and the map created in the previous exercise into a single plot.
-```{r}
+```{r, eval=FALSE}
 sm2 = tm_shape(africa) +
   tm_polygons(col = "subregion",
               title = "Subregion", 
@@ -144,7 +144,7 @@ print(im, vp = grid::viewport(0.2, 0.4, width = 0.35, height = 0.35))
 5) Create facet maps of countries in Eastern Africa:
     - With one facet showing HDI and the other representing population growth (hint: using variables `HDI` and `pop_growth` respectively)
     - With a 'small multiple' per country
-```{r}
+```{r, eval=FALSE}
 eastern_africa = filter(africa, subregion == "Eastern Africa")
 tm_shape(eastern_africa) +
   tm_polygons(col = c("HDI", "pop_growth")) +
@@ -231,25 +231,25 @@ Note: the input data must be fed into the map earlier to prevent the polygons di
 # fig 8.1 
 ggplot() + 
   geom_sf(data = nz, color = NA) +
-  # coord_sf(crs = st_crs(nz), datum = NA) + 
+  coord_sf(crs = st_crs(nz), datum = NA) +
   theme_void()
 ggplot() +
   geom_sf(data = nz, fill = NA) +
-  # coord_sf(crs = st_crs(nz), datum = NA) +
+  coord_sf(crs = st_crs(nz), datum = NA) +
   theme_void()
 ggplot() +
   geom_sf(data = nz) + 
-  # coord_sf(crs = st_crs(nz), datum = NA) +
+  coord_sf(crs = st_crs(nz), datum = NA) +
   theme_void()
 # fig 8.6
 ggplot() +
   geom_sf(data = nz, aes(fill = Median_income)) +
-  # coord_sf(crs = st_crs(nz), datum = NA) + 
+  coord_sf(crs = st_crs(nz), datum = NA) +
   scale_fill_distiller(palette = "Oranges", direction = 1) + 
   theme_void()
 ggplot() + 
   geom_sf(data = nz, aes(fill = Island)) + 
-  # coord_sf(crs = st_crs(nz), datum = NA) + 
+  coord_sf(crs = st_crs(nz), datum = NA) +
   scale_fill_brewer(palette = "Set3") + 
   theme_void()
 ```
@@ -259,7 +259,7 @@ Next, construct a continuous area cartogram based on total population.
 Finally, create and compare two maps of the poverty rate: (1) a standard choropleth map and (2) a map using the created cartogram boundaries.
 What is the information provided by the first and the second map?
 How do they differ from each other?
-```{r}
+```{r, eval=FALSE}}
 library(cartogram)
 # prepare the data
 us = st_transform(us_states, 2163)
