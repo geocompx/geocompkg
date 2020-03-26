@@ -259,7 +259,7 @@ Next, construct a continuous area cartogram based on total population.
 Finally, create and compare two maps of the poverty rate: (1) a standard choropleth map and (2) a map using the created cartogram boundaries.
 What is the information provided by the first and the second map?
 How do they differ from each other?
-```{r, eval=FALSE}}
+```{r, eval=FALSE}
 library(cartogram)
 # prepare the data
 us = st_transform(us_states, 2163)
