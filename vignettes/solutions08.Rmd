@@ -179,7 +179,7 @@ browseURL("m.gif")
     - With **leaflet**
     - Bonus: for each approach add a legend (if not automatically provided) and a scale bar.
     
-```{r}
+```{r, eval=FALSE}
 # with tmap:
 tmap_mode("view")
 tm_shape(eastern_africa) +
