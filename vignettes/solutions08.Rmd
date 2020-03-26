@@ -144,8 +144,10 @@ print(im, vp = grid::viewport(0.2, 0.4, width = 0.35, height = 0.35))
 5) Create facet maps of countries in Eastern Africa:
     - With one facet showing HDI and the other representing population growth (hint: using variables `HDI` and `pop_growth` respectively)
     - With a 'small multiple' per country
-```{r, eval=FALSE}
+```{r}
 eastern_africa = filter(africa, subregion == "Eastern Africa")
+```
+```{r, eval=FALSE}
 tm_shape(eastern_africa) +
   tm_polygons(col = c("HDI", "pop_growth")) +
   qtm(africa, fill = NULL)
