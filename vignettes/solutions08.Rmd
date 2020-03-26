@@ -231,25 +231,25 @@ Note: the input data must be fed into the map earlier to prevent the polygons di
 # fig 8.1 
 ggplot() + 
   geom_sf(data = nz, color = NA) +
-  coord_sf(crs = st_crs(nz), datum = NA) + 
+  # coord_sf(crs = st_crs(nz), datum = NA) + 
   theme_void()
 ggplot() +
   geom_sf(data = nz, fill = NA) +
-  coord_sf(crs = st_crs(nz), datum = NA) +
+  # coord_sf(crs = st_crs(nz), datum = NA) +
   theme_void()
 ggplot() +
   geom_sf(data = nz) + 
-  coord_sf(crs = st_crs(nz), datum = NA) +
+  # coord_sf(crs = st_crs(nz), datum = NA) +
   theme_void()
 # fig 8.6
 ggplot() +
   geom_sf(data = nz, aes(fill = Median_income)) +
-  coord_sf(crs = st_crs(nz), datum = NA) + 
+  # coord_sf(crs = st_crs(nz), datum = NA) + 
   scale_fill_distiller(palette = "Oranges", direction = 1) + 
   theme_void()
 ggplot() + 
   geom_sf(data = nz, aes(fill = Island)) + 
-  coord_sf(crs = st_crs(nz), datum = NA) + 
+  # coord_sf(crs = st_crs(nz), datum = NA) + 
   scale_fill_brewer(palette = "Set3") + 
   theme_void()
 ```
