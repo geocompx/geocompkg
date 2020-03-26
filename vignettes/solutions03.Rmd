@@ -126,7 +126,7 @@ class(us_states_stats)
 How can you find them? (hint: try to use the `dplyr::anti_join()` function)
 ```{r}
 us_states_df %>%
-  anti_join(us_states, by = c("state" = "NAME"))
+  anti_join(st_drop_geometry(us_states), by = c("state" = "NAME"))
 ```
 
 9) What was the population density in 2015 in each state?
