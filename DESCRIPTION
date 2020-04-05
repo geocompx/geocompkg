@@ -28,6 +28,7 @@ Imports:
     mlr,
     odbc,
     osmdata,
+    osrm,
     pool,
     pROC,
     purrr,
