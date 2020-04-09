@@ -67,8 +67,7 @@ Remotes:
     r-spatial/sf,
     r-spatial/leafem,
     mtennekes/tmaptools,
-    mtennekes/tmap,
-    ropensci/stplanr
+    mtennekes/tmap
 URL: https://github.com/geocompr/geocompkg
 BugReports: https://github.com/Robinlovelace/geocompr/issues
 LazyData: TRUE
