@@ -28,6 +28,7 @@ Imports:
     mlr,
     odbc,
     osmdata,
+    osrm,
     pool,
     pROC,
     purrr,
@@ -61,12 +62,7 @@ Imports:
     tmaptools,
     vegan
 Remotes:
-    nowosad/spDataLarge,
-    rspatial/raster,
-    r-spatial/sf,
-    r-spatial/leafem,
-    mtennekes/tmaptools,
-    mtennekes/tmap
+    nowosad/spDataLarge
 URL: https://github.com/geocompr/geocompkg
 BugReports: https://github.com/Robinlovelace/geocompr/issues
 LazyData: TRUE
