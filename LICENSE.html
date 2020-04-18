@@ -10,23 +10,27 @@
 
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="bootstrap-toc.css">
+<script src="bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="pkgdown.css" rel="stylesheet">
@@ -53,7 +57,7 @@
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-title-body">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -102,7 +106,7 @@
 <h2 class="hasAnchor">
 <a href="#creative-commons" class="anchor"></a>creative commons</h2>
 </div>
-<div id="attribution-noncommercial-noderivatives-4-0-international" class="section level1">
+<div id="attribution-noncommercial-noderivatives-40-international" class="section level1">
 
 <p>Creative Commons Corporation (“Creative Commons”) is not a law firm and does not provide legal services or legal advice. Distribution of Creative Commons public licenses does not create a lawyer-client or other relationship. Creative Commons makes its licenses and related information available on an “as-is” basis. Creative Commons gives no warranties regarding its licenses, any material licensed under their terms and conditions, or any related information. Creative Commons disclaims all liability for damages resulting from their use to the fullest extent possible.</p>
 <div id="using-creative-commons-public-licenses" class="section level3">
@@ -114,17 +118,17 @@
 <li><p><strong>Considerations for the public:</strong> By using one of our public licenses, a licensor grants the public permission to use the licensed material under specified terms and conditions. If the licensor’s permission is not necessary for any reason–for example, because of any applicable exception or limitation to copyright–then that use is not regulated by the license. Our licenses grant only permissions under copyright and certain other rights that a licensor has authority to grant. Use of the licensed material may still be restricted for other reasons, including because others have copyright or other rights in the material. A licensor may make special requests, such as asking that all changes be marked or described. Although not required by our licenses, you are encouraged to respect those requests where reasonable. <a href="http://wiki.creativecommons.org/Considerations_for_licensors_and_licensees#Considerations_for_licensees">More considerations for the public</a>.</p></li>
 </ul>
 </div>
-<div id="creative-commons-attribution-noncommercial-noderivatives-4-0-international-public-license" class="section level2">
+<div id="creative-commons-attribution-noncommercial-noderivatives-40-international-public-license" class="section level2">
 <h2 class="hasAnchor">
-<a href="#creative-commons-attribution-noncommercial-noderivatives-4-0-international-public-license" class="anchor"></a>Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International Public License</h2>
+<a href="#creative-commons-attribution-noncommercial-noderivatives-40-international-public-license" class="anchor"></a>Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International Public License</h2>
 <p>By exercising the Licensed Rights (defined below), You accept and agree to be bound by the terms and conditions of this Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International Public License (“Public License”). To the extent this Public License may be interpreted as a contract, You are granted the Licensed Rights in consideration of Your acceptance of these terms and conditions, and the Licensor grants You such rights in consideration of benefits the Licensor receives from making the Licensed Material available under these terms and conditions.</p>
-<div id="section-1-definitions-" class="section level3">
+<div id="section-1--definitions" class="section level3">
 <h3 class="hasAnchor">
-<a href="#section-1-definitions-" class="anchor"></a>Section 1 – Definitions.</h3>
+<a href="#section-1--definitions" class="anchor"></a>Section 1 – Definitions.</h3>
 <p>a. <strong>Adapted Material</strong> means material subject to Copyright and Similar Rights that is derived from or based upon the Licensed Material and in which the Licensed Material is translated, altered, arranged, transformed, or otherwise modified in a manner requiring permission under the Copyright and Similar Rights held by the Licensor. For purposes of this Public License, where the Licensed Material is a musical work, performance, or sound recording, Adapted Material is always produced where the Licensed Material is synched in timed relation with a moving image.</p>
 <p>b. <strong>Copyright and Similar Rights</strong> means copyright and/or similar rights closely related to copyright including, without limitation, performance, broadcast, sound recording, and Sui Generis Database Rights, without regard to how the rights are labeled or categorized. For purposes of this Public License, the rights specified in Section 2(b)(1)-(2) are not Copyright and Similar Rights.</p>
 <p>e. <strong>Effective Technological Measures</strong> means those measures that, in the absence of proper authority, may not be circumvented under laws fulfilling obligations under Article 11 of the WIPO Copyright Treaty adopted on December 20, 1996, and/or similar international agreements.</p>
-<p>f. <strong>Exceptions and Limitations</strong> means fair use, fair dealing, and/or any other exception or limitation to Copyright and Similar Rights that applies to Your use of the Licensed Material.</p>
+<p>f. <strong>Exceptions and Limitations</strong> means fair use, fair dealing, and/or any other exception or limitation to Copyright and Similar Rights that applies to Your use of the Licensed Material.</p>
 <p>h. <strong>Licensed Material</strong> means the artistic or literary work, database, or other material to which the Licensor applied this Public License.</p>
 <p>i. <strong>Licensed Rights</strong> means the rights granted to You subject to the terms and conditions of this Public License, which are limited to all Copyright and Similar Rights that apply to Your use of the Licensed Material and that the Licensor has authority to license.</p>
 <p>h. <strong>Licensor</strong> means the individual(s) or entity(ies) granting rights under this Public License.</p>
@@ -133,9 +137,9 @@
 <p>k. <strong>Sui Generis Database Rights</strong> means rights other than copyright resulting from Directive 96/9/EC of the European Parliament and of the Council of 11 March 1996 on the legal protection of databases, as amended and/or succeeded, as well as other essentially equivalent rights anywhere in the world.</p>
 <p>l. <strong>You</strong> means the individual or entity exercising the Licensed Rights under this Public License. Your has a corresponding meaning.</p>
 </div>
-<div id="section-2-scope-" class="section level3">
+<div id="section-2--scope" class="section level3">
 <h3 class="hasAnchor">
-<a href="#section-2-scope-" class="anchor"></a>Section 2 – Scope.</h3>
+<a href="#section-2--scope" class="anchor"></a>Section 2 – Scope.</h3>
 <p>a. <strong><em>License grant.</em></strong></p>
 <ol>
 <li>
@@ -147,13 +151,13 @@
 <li><p><strong>Term.</strong> The term of this Public License is specified in Section 6(a).</p></li>
 <li><p><strong>Media and formats; technical modifications allowed.</strong> The Licensor authorizes You to exercise the Licensed Rights in all media and formats whether now known or hereafter created, and to make technical modifications necessary to do so. The Licensor waives and/or agrees not to assert any right or authority to forbid You from making technical modifications necessary to exercise the Licensed Rights, including technical modifications necessary to circumvent Effective Technological Measures. For purposes of this Public License, simply making modifications authorized by this Section 2(a)(4) never produces Adapted Material.</p></li>
 </ol>
-<div class="sourceCode" id="cb1"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="fl">5.</span> __Downstream recipients.__</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb1-3" data-line-number="3">    A. __Offer from the Licensor – Licensed Material.__ Every recipient of the Licensed Material automatically receives an offer from the Licensor to exercise the Licensed Rights under the terms and conditions of this Public License.</a>
-<a class="sourceLine" id="cb1-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb1-5" data-line-number="5">    B. __No downstream restrictions.__ You may not offer or impose any additional or different terms or conditions on, or apply any Effective Technological Measures to, the Licensed Material <span class="cf">if</span> doing so restricts exercise of the Licensed Rights by any recipient of the Licensed Material.</a>
-<a class="sourceLine" id="cb1-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb1-7" data-line-number="7"><span class="fl">6.</span> __No endorsement.__ Nothing <span class="cf">in</span> this Public License constitutes or may be construed as permission to assert or imply that You are, or that Your use of the Licensed Material is, connected with, or sponsored, endorsed, or granted official status by, the Licensor or others designated to receive attribution as provided <span class="cf">in</span> Section <span class="dv">3</span>(a)(<span class="dv">1</span>)(A)(i).</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fl">5.</span> __Downstream recipients.__</span>
+<span id="cb1-2"><a href="#cb1-2"></a></span>
+<span id="cb1-3"><a href="#cb1-3"></a>    A. __Offer from the Licensor – Licensed Material.__ Every recipient of the Licensed Material automatically receives an offer from the Licensor to exercise the Licensed Rights under the terms and conditions of this Public License.</span>
+<span id="cb1-4"><a href="#cb1-4"></a></span>
+<span id="cb1-5"><a href="#cb1-5"></a>    B. __No downstream restrictions.__ You may not offer or impose any additional or different terms or conditions on, or apply any Effective Technological Measures to, the Licensed Material <span class="cf">if</span> doing so restricts exercise of the Licensed Rights by any recipient of the Licensed Material.</span>
+<span id="cb1-6"><a href="#cb1-6"></a></span>
+<span id="cb1-7"><a href="#cb1-7"></a><span class="fl">6.</span> __No endorsement.__ Nothing <span class="cf">in</span> this Public License constitutes or may be construed as permission to assert or imply that You are, or that Your use of the Licensed Material is, connected with, or sponsored, endorsed, or granted official status by, the Licensor or others designated to receive attribution as provided <span class="cf">in</span> Section <span class="dv">3</span>(a)(<span class="dv">1</span>)(A)(i).</span></code></pre></div>
 <p>b. <strong><em>Other rights.</em></strong></p>
 <ol>
 <li><p>Moral rights, such as the right of integrity, are not licensed under this Public License, nor are publicity, privacy, and/or other similar personality rights; however, to the extent possible, the Licensor waives and/or agrees not to assert any such rights held by the Licensor to the limited extent necessary to allow You to exercise the Licensed Rights, but not otherwise.</p></li>
@@ -161,9 +165,9 @@
 <li><p>To the extent possible, the Licensor waives any right to collect royalties from You for the exercise of the Licensed Rights, whether directly or through a collecting society under any voluntary or waivable statutory or compulsory licensing scheme. In all other cases the Licensor expressly reserves any right to collect such royalties, including when the Licensed Material is used other than for NonCommercial purposes.</p></li>
 </ol>
 </div>
-<div id="section-3-license-conditions-" class="section level3">
+<div id="section-3--license-conditions" class="section level3">
 <h3 class="hasAnchor">
-<a href="#section-3-license-conditions-" class="anchor"></a>Section 3 – License Conditions.</h3>
+<a href="#section-3--license-conditions" class="anchor"></a>Section 3 – License Conditions.</h3>
 <p>Your exercise of the Licensed Rights is expressly made subject to the following conditions.</p>
 <p>a. <strong><em>Attribution.</em></strong></p>
 <ol>
@@ -180,52 +184,52 @@
 <p>For the avoidance of doubt, You do not have permission under this Public License to Share Adapted Material.</p>
 </li>
 </ol>
-<div class="sourceCode" id="cb2"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="fl">2.</span> You may satisfy the conditions <span class="cf">in</span> Section <span class="dv">3</span>(a)(<span class="dv">1</span>) <span class="cf">in</span> any reasonable manner based on the medium, means, and context <span class="cf">in</span> which You Share the Licensed Material. For example, it may be reasonable to satisfy the conditions by providing a URI or hyperlink to a resource that includes the required information.</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="fl">3.</span> If requested by the Licensor, You must remove any of the information required by Section <span class="dv">3</span>(a)(<span class="dv">1</span>)(A) to the extent reasonably practicable.</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="fl">2.</span> You may satisfy the conditions <span class="cf">in</span> Section <span class="dv">3</span>(a)(<span class="dv">1</span>) <span class="cf">in</span> any reasonable manner based on the medium, means, and context <span class="cf">in</span> which You Share the Licensed Material. For example, it may be reasonable to satisfy the conditions by providing a URI or hyperlink to a resource that includes the required information.</span>
+<span id="cb2-2"><a href="#cb2-2"></a></span>
+<span id="cb2-3"><a href="#cb2-3"></a><span class="fl">3.</span> If requested by the Licensor, You must remove any of the information required by Section <span class="dv">3</span>(a)(<span class="dv">1</span>)(A) to the extent reasonably practicable.</span></code></pre></div>
 </div>
-<div id="section-4-sui-generis-database-rights-" class="section level3">
+<div id="section-4--sui-generis-database-rights" class="section level3">
 <h3 class="hasAnchor">
-<a href="#section-4-sui-generis-database-rights-" class="anchor"></a>Section 4 – Sui Generis Database Rights.</h3>
+<a href="#section-4--sui-generis-database-rights" class="anchor"></a>Section 4 – Sui Generis Database Rights.</h3>
 <p>Where the Licensed Rights include Sui Generis Database Rights that apply to Your use of the Licensed Material:</p>
 <p>a. for the avoidance of doubt, Section 2(a)(1) grants You the right to extract, reuse, reproduce, and Share all or a substantial portion of the contents of the database for NonCommercial purposes only and provided You do not Share Adapted Material;</p>
 <p>b. if You include all or a substantial portion of the database contents in a database in which You have Sui Generis Database Rights, then the database in which You have Sui Generis Database Rights (but not its individual contents) is Adapted Material; and</p>
-<p>c. You must comply with the conditions in Section 3(a) if You Share all or a substantial portion of the contents of the database.</p>
+<p>c. You must comply with the conditions in Section 3(a) if You Share all or a substantial portion of the contents of the database.</p>
 <p>For the avoidance of doubt, this Section 4 supplements and does not replace Your obligations under this Public License where the Licensed Rights include other Copyright and Similar Rights.</p>
 </div>
-<div id="section-5-disclaimer-of-warranties-and-limitation-of-liability-" class="section level3">
+<div id="section-5--disclaimer-of-warranties-and-limitation-of-liability" class="section level3">
 <h3 class="hasAnchor">
-<a href="#section-5-disclaimer-of-warranties-and-limitation-of-liability-" class="anchor"></a>Section 5 – Disclaimer of Warranties and Limitation of Liability.</h3>
+<a href="#section-5--disclaimer-of-warranties-and-limitation-of-liability" class="anchor"></a>Section 5 – Disclaimer of Warranties and Limitation of Liability.</h3>
 <p>a. <strong>Unless otherwise separately undertaken by the Licensor, to the extent possible, the Licensor offers the Licensed Material as-is and as-available, and makes no representations or warranties of any kind concerning the Licensed Material, whether express, implied, statutory, or other. This includes, without limitation, warranties of title, merchantability, fitness for a particular purpose, non-infringement, absence of latent or other defects, accuracy, or the presence or absence of errors, whether or not known or discoverable. Where disclaimers of warranties are not allowed in full or in part, this disclaimer may not apply to You.</strong></p>
 <p>b. <strong>To the extent possible, in no event will the Licensor be liable to You on any legal theory (including, without limitation, negligence) or otherwise for any direct, special, indirect, incidental, consequential, punitive, exemplary, or other losses, costs, expenses, or damages arising out of this Public License or use of the Licensed Material, even if the Licensor has been advised of the possibility of such losses, costs, expenses, or damages. Where a limitation of liability is not allowed in full or in part, this limitation may not apply to You.</strong></p>
-<p>c. The disclaimer of warranties and limitation of liability provided above shall be interpreted in a manner that, to the extent possible, most closely approximates an absolute disclaimer and waiver of all liability.</p>
+<p>c. The disclaimer of warranties and limitation of liability provided above shall be interpreted in a manner that, to the extent possible, most closely approximates an absolute disclaimer and waiver of all liability.</p>
 </div>
-<div id="section-6-term-and-termination-" class="section level3">
+<div id="section-6--term-and-termination" class="section level3">
 <h3 class="hasAnchor">
-<a href="#section-6-term-and-termination-" class="anchor"></a>Section 6 – Term and Termination.</h3>
+<a href="#section-6--term-and-termination" class="anchor"></a>Section 6 – Term and Termination.</h3>
 <p>a. This Public License applies for the term of the Copyright and Similar Rights licensed here. However, if You fail to comply with this Public License, then Your rights under this Public License terminate automatically.</p>
 <p>b. Where Your right to use the Licensed Material has terminated under Section 6(a), it reinstates:</p>
 <ol>
 <li><p>automatically as of the date the violation is cured, provided it is cured within 30 days of Your discovery of the violation; or</p></li>
 <li><p>upon express reinstatement by the Licensor.</p></li>
 </ol>
-<div class="sourceCode" id="cb3"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">For the avoidance of doubt, this Section <span class="dv">6</span>(b) does not affect any right the Licensor may have to seek remedies <span class="cf">for</span> Your violations of this Public License.</a></code></pre></div>
-<p>c. For the avoidance of doubt, the Licensor may also offer the Licensed Material under separate terms or conditions or stop distributing the Licensed Material at any time; however, doing so will not terminate this Public License.</p>
-<p>d. Sections 1, 5, 6, 7, and 8 survive termination of this Public License.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>For the avoidance of doubt, this Section <span class="dv">6</span>(b) does not affect any right the Licensor may have to seek remedies <span class="cf">for</span> Your violations of this Public License.</span></code></pre></div>
+<p>c. For the avoidance of doubt, the Licensor may also offer the Licensed Material under separate terms or conditions or stop distributing the Licensed Material at any time; however, doing so will not terminate this Public License.</p>
+<p>d. Sections 1, 5, 6, 7, and 8 survive termination of this Public License.</p>
 </div>
-<div id="section-7-other-terms-and-conditions-" class="section level3">
+<div id="section-7--other-terms-and-conditions" class="section level3">
 <h3 class="hasAnchor">
-<a href="#section-7-other-terms-and-conditions-" class="anchor"></a>Section 7 – Other Terms and Conditions.</h3>
+<a href="#section-7--other-terms-and-conditions" class="anchor"></a>Section 7 – Other Terms and Conditions.</h3>
 <p>a. The Licensor shall not be bound by any additional or different terms or conditions communicated by You unless expressly agreed.</p>
 <p>b. Any arrangements, understandings, or agreements regarding the Licensed Material not stated herein are separate from and independent of the terms and conditions of this Public License.</p>
 </div>
-<div id="section-8-interpretation-" class="section level3">
+<div id="section-8--interpretation" class="section level3">
 <h3 class="hasAnchor">
-<a href="#section-8-interpretation-" class="anchor"></a>Section 8 – Interpretation.</h3>
+<a href="#section-8--interpretation" class="anchor"></a>Section 8 – Interpretation.</h3>
 <p>a. For the avoidance of doubt, this Public License does not, and shall not be interpreted to, reduce, limit, restrict, or impose conditions on any use of the Licensed Material that could lawfully be made without permission under this Public License.</p>
 <p>b. To the extent possible, if any provision of this Public License is deemed unenforceable, it shall be automatically reformed to the minimum extent necessary to make it enforceable. If the provision cannot be reformed, it shall be severed from this Public License without affecting the enforceability of the remaining terms and conditions.</p>
-<p>c. No term or condition of this Public License will be waived and no failure to comply consented to unless expressly agreed to by the Licensor.</p>
-<p>d. Nothing in this Public License constitutes or may be interpreted as a limitation upon, or waiver of, any privileges and immunities that apply to the Licensor or You, including from the legal processes of any jurisdiction or authority.</p>
+<p>c. No term or condition of this Public License will be waived and no failure to comply consented to unless expressly agreed to by the Licensor.</p>
+<p>d. Nothing in this Public License constitutes or may be interpreted as a limitation upon, or waiver of, any privileges and immunities that apply to the Licensor or You, including from the legal processes of any jurisdiction or authority.</p>
 <blockquote>
 <p>Creative Commons is not a party to its public licenses. Notwithstanding, Creative Commons may elect to apply one of its public licenses to material it publishes and in those instances will be considered the “Licensor.” Except for the limited purpose of indicating that material is shared under a Creative Commons public license or as otherwise permitted by the Creative Commons policies published at <a href="http://creativecommons.org/policies">creativecommons.org/policies</a>, Creative Commons does not authorize the use of the trademark “Creative Commons” or any other trademark or logo of Creative Commons without its prior written consent including, without limitation, in connection with any unauthorized modifications to any of its public licenses or any other arrangements, understandings, or agreements concerning use of licensed material. For the avoidance of doubt, this paragraph does not form part of the public licenses.</p>
 <p>Creative Commons may be contacted at creativecommons.org</p>
@@ -235,6 +239,12 @@
 </div>
 
 
+  </div>
+
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 
 </div>
@@ -247,7 +257,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
 </div>
 
       </footer>

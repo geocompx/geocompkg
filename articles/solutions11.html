@@ -6,19 +6,19 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Chapter 11: Statistical learning • geocompkg | metapackage for the Gecomputation with R book</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><meta property="og:title" content="Chapter 11: Statistical learning">
-<meta property="og:description" content="">
-<meta name="twitter:card" content="summary">
+<meta property="og:description" content="geocompkg">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 </head>
-<body>
+<body data-spy="scroll" data-target="#toc">
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -58,12 +58,12 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1>Chapter 11: Statistical learning</h1>
+      <h1 data-toc-skip>Chapter 11: Statistical learning</h1>
                         <h4 class="author">Robin Lovelace, Jakub Nowosad, Jannes Muenchow</h4>
             
-            <h4 class="date">2020-01-27</h4>
+            <h4 class="date">2020-04-18</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/geocompr/geocompkg/blob/master/vignettes/solutions11.Rmd"><code>vignettes/solutions11.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/Robinlovelace/geocompr/blob/master/vignettes/solutions11.Rmd"><code>vignettes/solutions11.Rmd</code></a></small>
       <div class="hidden name"><code>solutions11.Rmd</code></div>
 
     </div>
@@ -74,14 +74,14 @@
 <h2 class="hasAnchor">
 <a href="#prerequisites" class="anchor"></a>Prerequisites</h2>
 <p>The solutions assume the following packages are attached (other packages will be attached when needed):</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(sf)</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(raster)</a>
-<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(dplyr)</a>
-<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(spData)</a>
-<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(RSAGA)</a>
-<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(RQGIS)</a>
-<a class="sourceLine" id="cb1-7" data-line-number="7"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(mlr)</a>
-<a class="sourceLine" id="cb1-8" data-line-number="8"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(tmap)</a></code></pre></div>
+<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">sf</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">raster</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">dplyr</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">spData</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">RSAGA</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">RQGIS</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">mlr</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">tmap</span>)</pre></body></html></div>
 </div>
 <div id="chapter-11" class="section level1">
 <h1 class="hasAnchor">
@@ -96,274 +96,268 @@
 </ul>
 </li>
 </ol>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="co"># attach data</span></a>
-<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="st">"landslides"</span>, <span class="dt">package =</span> <span class="st">"RSAGA"</span>)</a>
-<a class="sourceLine" id="cb2-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co"># DATA PREPROCESSING</span></a>
-<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="co">#*******************</span></a>
-<a class="sourceLine" id="cb2-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb2-7" data-line-number="7"><span class="co"># select non-landslide points</span></a>
-<a class="sourceLine" id="cb2-8" data-line-number="8">non_pts =<span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(landslides, lslpts <span class="op">==</span><span class="st"> </span><span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb2-9" data-line-number="9"><span class="co"># select landslide points</span></a>
-<a class="sourceLine" id="cb2-10" data-line-number="10">lsl_pts =<span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(landslides, lslpts <span class="op">==</span><span class="st"> </span><span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb2-11" data-line-number="11"><span class="co"># randomly select 175 non-landslide points</span></a>
-<a class="sourceLine" id="cb2-12" data-line-number="12"><span class="kw"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="dv">11042018</span>)</a>
-<a class="sourceLine" id="cb2-13" data-line-number="13">non_pts_sub =<span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/sample.html">sample_n</a></span>(non_pts, <span class="dt">size =</span> <span class="kw"><a href="https://rdrr.io/pkg/raster/man/ncell.html">nrow</a></span>(lsl_pts))</a>
-<a class="sourceLine" id="cb2-14" data-line-number="14"><span class="co"># create smaller landslide dataset (lsl)</span></a>
-<a class="sourceLine" id="cb2-15" data-line-number="15">lsl =<span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/bind.html">bind_rows</a></span>(non_pts_sub, lsl_pts)</a>
-<a class="sourceLine" id="cb2-16" data-line-number="16"></a>
-<a class="sourceLine" id="cb2-17" data-line-number="17"><span class="co"># digital elevation model</span></a>
-<a class="sourceLine" id="cb2-18" data-line-number="18">dem =<span class="st"> </span></a>
-<a class="sourceLine" id="cb2-19" data-line-number="19"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/pkg/raster/man/raster.html">raster</a></span>(dem<span class="op">$</span>data, </a>
-<a class="sourceLine" id="cb2-20" data-line-number="20">         <span class="dt">crs =</span> <span class="st">"+proj=utm +zone=17 +south +datum=WGS84 +units=m +no_defs"</span>,</a>
-<a class="sourceLine" id="cb2-21" data-line-number="21">         <span class="dt">xmn =</span> dem<span class="op">$</span>header<span class="op">$</span>xllcorner, </a>
-<a class="sourceLine" id="cb2-22" data-line-number="22">         <span class="dt">xmx =</span> dem<span class="op">$</span>header<span class="op">$</span>xllcorner <span class="op">+</span><span class="st"> </span>dem<span class="op">$</span>header<span class="op">$</span>ncols <span class="op">*</span><span class="st"> </span>dem<span class="op">$</span>header<span class="op">$</span>cellsize,</a>
-<a class="sourceLine" id="cb2-23" data-line-number="23">         <span class="dt">ymn =</span> dem<span class="op">$</span>header<span class="op">$</span>yllcorner,</a>
-<a class="sourceLine" id="cb2-24" data-line-number="24">         <span class="dt">ymx =</span> dem<span class="op">$</span>header<span class="op">$</span>yllcorner <span class="op">+</span><span class="st"> </span>dem<span class="op">$</span>header<span class="op">$</span>nrows <span class="op">*</span><span class="st"> </span>dem<span class="op">$</span>header<span class="op">$</span>cellsize)</a>
-<a class="sourceLine" id="cb2-25" data-line-number="25"></a>
-<a class="sourceLine" id="cb2-26" data-line-number="26"><span class="co"># COMPUTING TERRAIN ATTRIBUTES</span></a>
-<a class="sourceLine" id="cb2-27" data-line-number="27"><span class="co">#*******************************</span></a>
-<a class="sourceLine" id="cb2-28" data-line-number="28"></a>
-<a class="sourceLine" id="cb2-29" data-line-number="29"><span class="co"># slope, aspect, curvatures</span></a>
-<a class="sourceLine" id="cb2-30" data-line-number="30"><span class="kw"><a href="https://rdrr.io/pkg/RQGIS/man/set_env.html">set_env</a></span>(<span class="dt">dev =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb2-31" data-line-number="31"><span class="kw"><a href="https://rdrr.io/pkg/RQGIS/man/find_algorithms.html">find_algorithms</a></span>(<span class="st">"curvature"</span>)</a>
-<a class="sourceLine" id="cb2-32" data-line-number="32">alg =<span class="st"> "saga:slopeaspectcurvature"</span></a>
-<a class="sourceLine" id="cb2-33" data-line-number="33"><span class="kw"><a href="https://rdrr.io/pkg/RQGIS/man/get_usage.html">get_usage</a></span>(alg)</a>
-<a class="sourceLine" id="cb2-34" data-line-number="34"><span class="co"># terrain attributes (ta)</span></a>
-<a class="sourceLine" id="cb2-35" data-line-number="35">out =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/RQGIS/man/run_qgis.html">run_qgis</a></span>(alg, <span class="dt">ELEVATION =</span> dem, <span class="dt">METHOD =</span> <span class="dv">6</span>, <span class="dt">UNIT_SLOPE =</span> <span class="st">"degree"</span>,</a>
-<a class="sourceLine" id="cb2-36" data-line-number="36">               <span class="dt">UNIT_ASPECT =</span> <span class="st">"degree"</span>,</a>
-<a class="sourceLine" id="cb2-37" data-line-number="37">               <span class="dt">ASPECT =</span> <span class="kw"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span>(), <span class="st">"aspect.tif"</span>),</a>
-<a class="sourceLine" id="cb2-38" data-line-number="38">               <span class="dt">SLOPE =</span> <span class="kw"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span>(), <span class="st">"slope.tif"</span>),</a>
-<a class="sourceLine" id="cb2-39" data-line-number="39">               <span class="dt">C_PLAN =</span> <span class="kw"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span>(), <span class="st">"cplan.tif"</span>),</a>
-<a class="sourceLine" id="cb2-40" data-line-number="40">               <span class="dt">C_PROF =</span> <span class="kw"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span>(), <span class="st">"cprof.tif"</span>),</a>
-<a class="sourceLine" id="cb2-41" data-line-number="41">               <span class="dt">load_output =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb2-42" data-line-number="42"></a>
-<a class="sourceLine" id="cb2-43" data-line-number="43"><span class="co"># use brick because then the layers will be in memory and not on disk</span></a>
-<a class="sourceLine" id="cb2-44" data-line-number="44">ta =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/raster/man/brick.html">brick</a></span>(out[<span class="kw"><a href="https://rdrr.io/pkg/raster/man/names.html">names</a></span>(out) <span class="op">!=</span><span class="st"> "ASPECT"</span>])</a>
-<a class="sourceLine" id="cb2-45" data-line-number="45"><span class="kw"><a href="https://rdrr.io/pkg/raster/man/names.html">names</a></span>(ta) =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"slope"</span>, <span class="st">"cplan"</span>, <span class="st">"cprof"</span>)</a>
-<a class="sourceLine" id="cb2-46" data-line-number="46"><span class="co"># catchment area</span></a>
-<a class="sourceLine" id="cb2-47" data-line-number="47"><span class="kw"><a href="https://rdrr.io/pkg/RQGIS/man/find_algorithms.html">find_algorithms</a></span>(<span class="st">"[Cc]atchment"</span>)</a>
-<a class="sourceLine" id="cb2-48" data-line-number="48">alg =<span class="st"> "saga:flowaccumulationtopdown"</span></a>
-<a class="sourceLine" id="cb2-49" data-line-number="49"><span class="kw"><a href="https://rdrr.io/pkg/RQGIS/man/get_usage.html">get_usage</a></span>(alg)</a>
-<a class="sourceLine" id="cb2-50" data-line-number="50">carea =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/RQGIS/man/run_qgis.html">run_qgis</a></span>(alg, <span class="dt">ELEVATION =</span> dem, <span class="dt">METHOD =</span> <span class="dv">4</span>, </a>
-<a class="sourceLine" id="cb2-51" data-line-number="51">                 <span class="dt">FLOW =</span> <span class="kw"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span>(), <span class="st">"carea.tif"</span>),</a>
-<a class="sourceLine" id="cb2-52" data-line-number="52">                 <span class="dt">load_output =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb2-53" data-line-number="53"><span class="co"># transform carea</span></a>
-<a class="sourceLine" id="cb2-54" data-line-number="54">log_carea =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/Log.html">log10</a></span>(carea)</a>
-<a class="sourceLine" id="cb2-55" data-line-number="55"><span class="kw"><a href="https://rdrr.io/pkg/raster/man/names.html">names</a></span>(log_carea) =<span class="st"> "log_carea"</span></a>
-<a class="sourceLine" id="cb2-56" data-line-number="56"><span class="kw"><a href="https://rdrr.io/pkg/raster/man/names.html">names</a></span>(dem) =<span class="st"> "elev"</span></a>
-<a class="sourceLine" id="cb2-57" data-line-number="57"><span class="co"># add log_carea</span></a>
-<a class="sourceLine" id="cb2-58" data-line-number="58">ta =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/raster/man/addLayer.html">addLayer</a></span>(<span class="dt">x =</span> ta, dem, log_carea)</a></code></pre></div>
+<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="co"># attach data</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="st">"landslides"</span>, <span class="kw">package</span> <span class="kw">=</span> <span class="st">"RSAGA"</span>)
+
+<span class="co"># DATA PREPROCESSING</span>
+<span class="co">#*******************</span>
+
+<span class="co"># select non-landslide points</span>
+<span class="no">non_pts</span> <span class="kw">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="no">landslides</span>, <span class="no">lslpts</span> <span class="kw">==</span> <span class="fl">FALSE</span>)
+<span class="co"># select landslide points</span>
+<span class="no">lsl_pts</span> <span class="kw">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="no">landslides</span>, <span class="no">lslpts</span> <span class="kw">==</span> <span class="fl">TRUE</span>)
+<span class="co"># randomly select 175 non-landslide points</span>
+<span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="fl">11042018</span>)
+<span class="no">non_pts_sub</span> <span class="kw">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/sample.html">sample_n</a></span>(<span class="no">non_pts</span>, <span class="kw">size</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/ncell.html">nrow</a></span>(<span class="no">lsl_pts</span>))
+<span class="co"># create smaller landslide dataset (lsl)</span>
+<span class="no">lsl</span> <span class="kw">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind.html">bind_rows</a></span>(<span class="no">non_pts_sub</span>, <span class="no">lsl_pts</span>)
+
+<span class="co"># digital elevation model</span>
+<span class="no">dem</span> <span class="kw">=</span>
+  <span class="fu"><a href="https://rdrr.io/pkg/raster/man/raster.html">raster</a></span>(<span class="no">dem</span>$<span class="no">data</span>,
+         <span class="kw">crs</span> <span class="kw">=</span> <span class="st">"+proj=utm +zone=17 +south +datum=WGS84 +units=m +no_defs"</span>,
+         <span class="kw">xmn</span> <span class="kw">=</span> <span class="no">dem</span>$<span class="no">header</span>$<span class="no">xllcorner</span>,
+         <span class="kw">xmx</span> <span class="kw">=</span> <span class="no">dem</span>$<span class="no">header</span>$<span class="no">xllcorner</span> + <span class="no">dem</span>$<span class="no">header</span>$<span class="no">ncols</span> * <span class="no">dem</span>$<span class="no">header</span>$<span class="no">cellsize</span>,
+         <span class="kw">ymn</span> <span class="kw">=</span> <span class="no">dem</span>$<span class="no">header</span>$<span class="no">yllcorner</span>,
+         <span class="kw">ymx</span> <span class="kw">=</span> <span class="no">dem</span>$<span class="no">header</span>$<span class="no">yllcorner</span> + <span class="no">dem</span>$<span class="no">header</span>$<span class="no">nrows</span> * <span class="no">dem</span>$<span class="no">header</span>$<span class="no">cellsize</span>)
+
+<span class="co"># COMPUTING TERRAIN ATTRIBUTES</span>
+<span class="co">#*******************************</span>
+
+<span class="co"># slope, aspect, curvatures</span>
+<span class="fu"><a href="https://rdrr.io/pkg/RQGIS/man/set_env.html">set_env</a></span>(<span class="kw">dev</span> <span class="kw">=</span> <span class="fl">FALSE</span>)
+<span class="fu"><a href="https://rdrr.io/pkg/RQGIS/man/find_algorithms.html">find_algorithms</a></span>(<span class="st">"curvature"</span>)
+<span class="no">alg</span> <span class="kw">=</span> <span class="st">"saga:slopeaspectcurvature"</span>
+<span class="fu"><a href="https://rdrr.io/pkg/RQGIS/man/get_usage.html">get_usage</a></span>(<span class="no">alg</span>)
+<span class="co"># terrain attributes (ta)</span>
+<span class="no">out</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/RQGIS/man/run_qgis.html">run_qgis</a></span>(<span class="no">alg</span>, <span class="kw">ELEVATION</span> <span class="kw">=</span> <span class="no">dem</span>, <span class="kw">METHOD</span> <span class="kw">=</span> <span class="fl">6</span>, <span class="kw">UNIT_SLOPE</span> <span class="kw">=</span> <span class="st">"degree"</span>,
+               <span class="kw">UNIT_ASPECT</span> <span class="kw">=</span> <span class="st">"degree"</span>,
+               <span class="kw">ASPECT</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span>(), <span class="st">"aspect.tif"</span>),
+               <span class="kw">SLOPE</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span>(), <span class="st">"slope.tif"</span>),
+               <span class="kw">C_PLAN</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span>(), <span class="st">"cplan.tif"</span>),
+               <span class="kw">C_PROF</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span>(), <span class="st">"cprof.tif"</span>),
+               <span class="kw">load_output</span> <span class="kw">=</span> <span class="fl">TRUE</span>)
+
+<span class="co"># use brick because then the layers will be in memory and not on disk</span>
+<span class="no">ta</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/brick.html">brick</a></span>(<span class="no">out</span>[<span class="fu"><a href="https://rdrr.io/pkg/raster/man/names.html">names</a></span>(<span class="no">out</span>) <span class="kw">!=</span> <span class="st">"ASPECT"</span>])
+<span class="fu"><a href="https://rdrr.io/pkg/raster/man/names.html">names</a></span>(<span class="no">ta</span>) <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"slope"</span>, <span class="st">"cplan"</span>, <span class="st">"cprof"</span>)
+<span class="co"># catchment area</span>
+<span class="fu"><a href="https://rdrr.io/pkg/RQGIS/man/find_algorithms.html">find_algorithms</a></span>(<span class="st">"[Cc]atchment"</span>)
+<span class="no">alg</span> <span class="kw">=</span> <span class="st">"saga:flowaccumulationtopdown"</span>
+<span class="fu"><a href="https://rdrr.io/pkg/RQGIS/man/get_usage.html">get_usage</a></span>(<span class="no">alg</span>)
+<span class="no">carea</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/RQGIS/man/run_qgis.html">run_qgis</a></span>(<span class="no">alg</span>, <span class="kw">ELEVATION</span> <span class="kw">=</span> <span class="no">dem</span>, <span class="kw">METHOD</span> <span class="kw">=</span> <span class="fl">4</span>,
+                 <span class="kw">FLOW</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span>(), <span class="st">"carea.tif"</span>),
+                 <span class="kw">load_output</span> <span class="kw">=</span> <span class="fl">TRUE</span>)
+<span class="co"># transform carea</span>
+<span class="no">log_carea</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log10</a></span>(<span class="no">carea</span>)
+<span class="fu"><a href="https://rdrr.io/pkg/raster/man/names.html">names</a></span>(<span class="no">log_carea</span>) <span class="kw">=</span> <span class="st">"log_carea"</span>
+<span class="fu"><a href="https://rdrr.io/pkg/raster/man/names.html">names</a></span>(<span class="no">dem</span>) <span class="kw">=</span> <span class="st">"elev"</span>
+<span class="co"># add log_carea</span>
+<span class="no">ta</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/addLayer.html">addLayer</a></span>(<span class="kw">x</span> <span class="kw">=</span> <span class="no">ta</span>, <span class="no">dem</span>, <span class="no">log_carea</span>)</pre></body></html></div>
 <ol start="2" style="list-style-type: decimal">
 <li>Extract the values from the corresponding output rasters to the <code>landslides</code> data frame (<code>data(landslides, package = "RSAGA"</code>) by adding new variables called <code>slope</code>, <code>cplan</code>, <code>cprof</code>, <code>elev</code> and <code>log_carea</code>. Keep all landslide initiation points and 175 randomly selected non-landslide points (see this <a href="https://geocompr.robinlovelace.net/spatial-cv.html#case-landslide">section</a> for details).</li>
 </ol>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="co"># attach terrain attribute raster stack (in case you have skipped the previous</span></a>
-<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co"># exercise)</span></a>
-<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="kw"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="st">"ta"</span>, <span class="dt">package =</span> <span class="st">"spDataLarge"</span>)</a>
-<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co"># extract values to points, i.e., create predictors</span></a>
-<a class="sourceLine" id="cb3-5" data-line-number="5">lsl[, <span class="kw"><a href="https://rdrr.io/pkg/raster/man/names.html">names</a></span>(ta)] =<span class="st"> </span>raster<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/raster/man/extract.html">extract</a></span>(ta, lsl[, <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"x"</span>, <span class="st">"y"</span>)])</a></code></pre></div>
+<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="co"># attach terrain attribute raster stack (in case you have skipped the previous</span>
+<span class="co"># exercise)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="st">"ta"</span>, <span class="kw">package</span> <span class="kw">=</span> <span class="st">"spDataLarge"</span>)
+<span class="co"># extract values to points, i.e., create predictors</span>
+<span class="no">lsl</span>[, <span class="fu"><a href="https://rdrr.io/pkg/raster/man/names.html">names</a></span>(<span class="no">ta</span>)] <span class="kw">=</span> <span class="kw pkg">raster</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/extract.html">extract</a></span>(<span class="no">ta</span>, <span class="no">lsl</span>[, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"x"</span>, <span class="st">"y"</span>)])</pre></body></html></div>
 <ol start="3" style="list-style-type: decimal">
 <li>Use the derived terrain attribute rasters in combination with a GLM to make a spatial prediction map similar to that shown in this <a href="https://geocompr.robinlovelace.net/spatial-cv.html#fig:lsl-susc">Figure</a>. Running <code><a href="https://rdrr.io/r/utils/data.html">data("study_mask", package = "spDataLarge")</a></code> attaches a mask of the study area.</li>
 </ol>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="co"># attach data (in case you have skipped exercises 1) and 2)</span></a>
-<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="co"># landslide points with terrain attributes</span></a>
-<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="kw"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="st">"lsl"</span>, <span class="dt">package =</span> <span class="st">"spDataLarge"</span>)</a>
-<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="co"># terrain attribute raster stack</span></a>
-<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="kw"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="st">"ta"</span>, <span class="dt">package =</span> <span class="st">"spDataLarge"</span>)</a>
-<a class="sourceLine" id="cb4-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="co"># fit the model</span></a>
-<a class="sourceLine" id="cb4-8" data-line-number="8">fit =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/stats/glm.html">glm</a></span>(lslpts <span class="op">~</span><span class="st"> </span>slope <span class="op">+</span><span class="st"> </span>cplan <span class="op">+</span><span class="st"> </span>cprof <span class="op">+</span><span class="st"> </span>elev <span class="op">+</span><span class="st"> </span>log10_carea, </a>
-<a class="sourceLine" id="cb4-9" data-line-number="9">          <span class="dt">data =</span> lsl, <span class="dt">family =</span> <span class="kw"><a href="https://rdrr.io/r/stats/family.html">binomial</a></span>())</a>
-<a class="sourceLine" id="cb4-10" data-line-number="10"></a>
-<a class="sourceLine" id="cb4-11" data-line-number="11"><span class="co"># make the prediction</span></a>
-<a class="sourceLine" id="cb4-12" data-line-number="12">pred =<span class="st"> </span>raster<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/raster/man/predict.html">predict</a></span>(<span class="dt">object =</span> ta, <span class="dt">model =</span> fit, <span class="dt">type =</span> <span class="st">"response"</span>)</a>
-<a class="sourceLine" id="cb4-13" data-line-number="13"></a>
-<a class="sourceLine" id="cb4-14" data-line-number="14"><span class="co"># make the map</span></a>
-<a class="sourceLine" id="cb4-15" data-line-number="15">lsl_sf =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/sf/man/st_as_sf.html">st_as_sf</a></span>(lsl, <span class="dt">coords =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"x"</span>, <span class="st">"y"</span>), <span class="dt">crs =</span> <span class="dv">32717</span>)</a>
-<a class="sourceLine" id="cb4-16" data-line-number="16">hs =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/raster/man/hillShade.html">hillShade</a></span>(ta<span class="op">$</span>slope <span class="op">*</span><span class="st"> </span>pi <span class="op">/</span><span class="st"> </span><span class="dv">180</span>, <span class="kw"><a href="https://rdrr.io/pkg/raster/man/terrain.html">terrain</a></span>(ta<span class="op">$</span>elev, <span class="dt">opt =</span> <span class="st">"aspect"</span>))</a>
-<a class="sourceLine" id="cb4-17" data-line-number="17">rect =<span class="st"> </span>tmaptools<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/tmaptools/man/bb_poly.html">bb_poly</a></span>(hs)</a>
-<a class="sourceLine" id="cb4-18" data-line-number="18">bbx =<span class="st"> </span>tmaptools<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/tmaptools/man/bb.html">bb</a></span>(hs, <span class="dt">xlim =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="op">-</span><span class="fl">0.02</span>, <span class="dv">1</span>), <span class="dt">ylim =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="op">-</span><span class="fl">0.02</span>, <span class="dv">1</span>), <span class="dt">relative =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb4-19" data-line-number="19"><span class="kw"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span>(hs, <span class="dt">bbox =</span> bbx) <span class="op">+</span></a>
-<a class="sourceLine" id="cb4-20" data-line-number="20"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/pkg/tmap/man/tm_grid.html">tm_grid</a></span>(<span class="dt">col =</span> <span class="st">"black"</span>, <span class="dt">n.x =</span> <span class="dv">1</span>, <span class="dt">n.y =</span> <span class="dv">1</span>, <span class="dt">labels.inside.frame =</span> <span class="ot">FALSE</span>,</a>
-<a class="sourceLine" id="cb4-21" data-line-number="21">          <span class="dt">labels.rot =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">0</span>, <span class="dv">90</span>)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb4-22" data-line-number="22"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/pkg/tmap/man/tm_raster.html">tm_raster</a></span>(<span class="dt">palette =</span> <span class="st">"white"</span>, <span class="dt">legend.show =</span> <span class="ot">FALSE</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb4-23" data-line-number="23"><span class="st">  </span><span class="co"># hillshade</span></a>
-<a class="sourceLine" id="cb4-24" data-line-number="24"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span>(<span class="kw"><a href="https://rdrr.io/pkg/raster/man/mask.html">mask</a></span>(hs, study_area), <span class="dt">bbox =</span> bbx) <span class="op">+</span></a>
-<a class="sourceLine" id="cb4-25" data-line-number="25"><span class="st">    </span><span class="kw"><a href="https://rdrr.io/pkg/tmap/man/tm_raster.html">tm_raster</a></span>(<span class="dt">palette =</span> <span class="kw"><a href="https://rdrr.io/r/grDevices/gray.html">gray</a></span>(<span class="dv">0</span><span class="op">:</span><span class="dv">100</span> <span class="op">/</span><span class="st"> </span><span class="dv">100</span>), <span class="dt">n =</span> <span class="dv">100</span>, <span class="dt">legend.show =</span> <span class="ot">FALSE</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb4-26" data-line-number="26"><span class="st">    </span><span class="co"># prediction raster</span></a>
-<a class="sourceLine" id="cb4-27" data-line-number="27"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span>(<span class="kw"><a href="https://rdrr.io/pkg/raster/man/mask.html">mask</a></span>(pred, study_area)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb4-28" data-line-number="28"><span class="st">    </span><span class="kw"><a href="https://rdrr.io/pkg/tmap/man/tm_raster.html">tm_raster</a></span>(<span class="dt">alpha =</span> <span class="fl">0.5</span>, <span class="dt">palette =</span> RColorBrewer<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/RColorBrewer/man/ColorBrewer.html">brewer.pal</a></span>(<span class="dt">name =</span> <span class="st">"Reds"</span>, <span class="dv">6</span>),</a>
-<a class="sourceLine" id="cb4-29" data-line-number="29">              <span class="dt">auto.palette.mapping =</span> <span class="ot">FALSE</span>, <span class="dt">legend.show =</span> <span class="ot">TRUE</span>,</a>
-<a class="sourceLine" id="cb4-30" data-line-number="30">              <span class="dt">title =</span> <span class="st">"Susceptibility</span><span class="ch">\n</span><span class="st">probability"</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb4-31" data-line-number="31"><span class="st">    </span><span class="co"># rectangle and outer margins</span></a>
-<a class="sourceLine" id="cb4-32" data-line-number="32"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/pkg/tmap/man/qtm.html">qtm</a></span>(rect, <span class="dt">fill =</span> <span class="ot">NULL</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb4-33" data-line-number="33"><span class="st">    </span><span class="kw"><a href="https://rdrr.io/pkg/tmap/man/tm_layout.html">tm_layout</a></span>(<span class="dt">outer.margins =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0.04</span>, <span class="fl">0.04</span>, <span class="fl">0.02</span>, <span class="fl">0.02</span>), <span class="dt">frame =</span> <span class="ot">FALSE</span>,</a>
-<a class="sourceLine" id="cb4-34" data-line-number="34">              <span class="dt">legend.position =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"left"</span>, <span class="st">"bottom"</span>),</a>
-<a class="sourceLine" id="cb4-35" data-line-number="35">              <span class="dt">legend.title.size =</span> <span class="fl">0.9</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="co"># attach data (in case you have skipped exercises 1) and 2)</span>
+<span class="co"># landslide points with terrain attributes</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="st">"lsl"</span>, <span class="kw">package</span> <span class="kw">=</span> <span class="st">"spDataLarge"</span>)
+<span class="co"># terrain attribute raster stack</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="st">"ta"</span>, <span class="kw">package</span> <span class="kw">=</span> <span class="st">"spDataLarge"</span>)
+
+<span class="co"># fit the model</span>
+<span class="no">fit</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html">glm</a></span>(<span class="no">lslpts</span> ~ <span class="no">slope</span> + <span class="no">cplan</span> + <span class="no">cprof</span> + <span class="no">elev</span> + <span class="no">log10_carea</span>,
+          <span class="kw">data</span> <span class="kw">=</span> <span class="no">lsl</span>, <span class="kw">family</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/family.html">binomial</a></span>())
+
+<span class="co"># make the prediction</span>
+<span class="no">pred</span> <span class="kw">=</span> <span class="kw pkg">raster</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/predict.html">predict</a></span>(<span class="kw">object</span> <span class="kw">=</span> <span class="no">ta</span>, <span class="kw">model</span> <span class="kw">=</span> <span class="no">fit</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"response"</span>)
+
+<span class="co"># make the map</span>
+<span class="no">lsl_sf</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_as_sf.html">st_as_sf</a></span>(<span class="no">lsl</span>, <span class="kw">coords</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"x"</span>, <span class="st">"y"</span>), <span class="kw">crs</span> <span class="kw">=</span> <span class="fl">32717</span>)
+<span class="no">hs</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/hillShade.html">hillShade</a></span>(<span class="no">ta</span>$<span class="no">slope</span> * <span class="no">pi</span> / <span class="fl">180</span>, <span class="fu"><a href="https://rdrr.io/pkg/raster/man/terrain.html">terrain</a></span>(<span class="no">ta</span>$<span class="no">elev</span>, <span class="kw">opt</span> <span class="kw">=</span> <span class="st">"aspect"</span>))
+<span class="no">rect</span> <span class="kw">=</span> <span class="kw pkg">tmaptools</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmaptools/man/bb_poly.html">bb_poly</a></span>(<span class="no">hs</span>)
+<span class="no">bbx</span> <span class="kw">=</span> <span class="kw pkg">tmaptools</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmaptools/man/bb.html">bb</a></span>(<span class="no">hs</span>, <span class="kw">xlim</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(-<span class="fl">0.02</span>, <span class="fl">1</span>), <span class="kw">ylim</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(-<span class="fl">0.02</span>, <span class="fl">1</span>), <span class="kw">relative</span> <span class="kw">=</span> <span class="fl">TRUE</span>)
+<span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span>(<span class="no">hs</span>, <span class="kw">bbox</span> <span class="kw">=</span> <span class="no">bbx</span>) +
+  <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_grid.html">tm_grid</a></span>(<span class="kw">col</span> <span class="kw">=</span> <span class="st">"black"</span>, <span class="kw">n.x</span> <span class="kw">=</span> <span class="fl">1</span>, <span class="kw">n.y</span> <span class="kw">=</span> <span class="fl">1</span>, <span class="kw">labels.inside.frame</span> <span class="kw">=</span> <span class="fl">FALSE</span>,
+          <span class="kw">labels.rot</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0</span>, <span class="fl">90</span>)) +
+  <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_raster.html">tm_raster</a></span>(<span class="kw">palette</span> <span class="kw">=</span> <span class="st">"white"</span>, <span class="kw">legend.show</span> <span class="kw">=</span> <span class="fl">FALSE</span>) +
+  <span class="co"># hillshade</span>
+  <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/raster/man/mask.html">mask</a></span>(<span class="no">hs</span>, <span class="no">study_area</span>), <span class="kw">bbox</span> <span class="kw">=</span> <span class="no">bbx</span>) +
+    <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_raster.html">tm_raster</a></span>(<span class="kw">palette</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/gray.html">gray</a></span>(<span class="fl">0</span>:<span class="fl">100</span> / <span class="fl">100</span>), <span class="kw">n</span> <span class="kw">=</span> <span class="fl">100</span>, <span class="kw">legend.show</span> <span class="kw">=</span> <span class="fl">FALSE</span>) +
+    <span class="co"># prediction raster</span>
+  <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/raster/man/mask.html">mask</a></span>(<span class="no">pred</span>, <span class="no">study_area</span>)) +
+    <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_raster.html">tm_raster</a></span>(<span class="kw">alpha</span> <span class="kw">=</span> <span class="fl">0.5</span>, <span class="kw">palette</span> <span class="kw">=</span> <span class="kw pkg">RColorBrewer</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/RColorBrewer/man/ColorBrewer.html">brewer.pal</a></span>(<span class="kw">name</span> <span class="kw">=</span> <span class="st">"Reds"</span>, <span class="fl">6</span>),
+              <span class="kw">auto.palette.mapping</span> <span class="kw">=</span> <span class="fl">FALSE</span>, <span class="kw">legend.show</span> <span class="kw">=</span> <span class="fl">TRUE</span>,
+              <span class="kw">title</span> <span class="kw">=</span> <span class="st">"Susceptibility\nprobability"</span>) +
+    <span class="co"># rectangle and outer margins</span>
+  <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/qtm.html">qtm</a></span>(<span class="no">rect</span>, <span class="kw">fill</span> <span class="kw">=</span> <span class="kw">NULL</span>) +
+    <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_layout.html">tm_layout</a></span>(<span class="kw">outer.margins</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0.04</span>, <span class="fl">0.04</span>, <span class="fl">0.02</span>, <span class="fl">0.02</span>), <span class="kw">frame</span> <span class="kw">=</span> <span class="fl">FALSE</span>,
+              <span class="kw">legend.position</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"left"</span>, <span class="st">"bottom"</span>),
+              <span class="kw">legend.title.size</span> <span class="kw">=</span> <span class="fl">0.9</span>)</pre></body></html></div>
 <ol start="4" style="list-style-type: decimal">
 <li>Compute a 100-repeated 5-fold non-spatial cross-validation and spatial CV based on the GLM learner and compare the AUROC values from both resampling strategies with the help of boxplots (see this <a href="https://geocompr.robinlovelace.net/spatial-cv.html#fig:boxplot-cv">Figure</a>. Hint: You need to specify a non-spatial task and a non-spatial resampling strategy.</li>
 </ol>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="co"># attach data (in case you have skipped exercises 1) and 2)</span></a>
-<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="st">"lsl"</span>, <span class="dt">package =</span> <span class="st">"spDataLarge"</span>)  <span class="co"># landslide points with terrain attributes</span></a>
-<a class="sourceLine" id="cb5-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="co"># put the coordinates in an additional dataframe</span></a>
-<a class="sourceLine" id="cb5-5" data-line-number="5">coords =<span class="st"> </span>lsl[, <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"x"</span>, <span class="st">"y"</span>)]</a>
-<a class="sourceLine" id="cb5-6" data-line-number="6">data =<span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(lsl, <span class="op">-</span>x, <span class="op">-</span>y)</a>
-<a class="sourceLine" id="cb5-7" data-line-number="7"><span class="co"># data_nonspatial = dplyr::select(data, -x, -y)</span></a>
-<a class="sourceLine" id="cb5-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb5-9" data-line-number="9"><span class="co"># CREATE TASKS</span></a>
-<a class="sourceLine" id="cb5-10" data-line-number="10"><span class="co">#*************</span></a>
-<a class="sourceLine" id="cb5-11" data-line-number="11"></a>
-<a class="sourceLine" id="cb5-12" data-line-number="12"><span class="co"># spatial task</span></a>
-<a class="sourceLine" id="cb5-13" data-line-number="13">task =<span class="st"> </span><span class="kw"><a href="https://mlr.mlr-org.com/reference/ClassifTask.html">makeClassifTask</a></span>(<span class="dt">data =</span> data, <span class="dt">target =</span> <span class="st">"lslpts"</span>, </a>
-<a class="sourceLine" id="cb5-14" data-line-number="14">                       <span class="dt">positive =</span> <span class="st">"TRUE"</span>, <span class="dt">coordinates =</span> coords)</a>
-<a class="sourceLine" id="cb5-15" data-line-number="15"><span class="co"># non-spatial task</span></a>
-<a class="sourceLine" id="cb5-16" data-line-number="16">task_nsp =<span class="st"> </span><span class="kw"><a href="https://mlr.mlr-org.com/reference/ClassifTask.html">makeClassifTask</a></span>(<span class="dt">data =</span> data, <span class="dt">target =</span> <span class="st">"lslpts"</span>, <span class="dt">positive =</span> <span class="st">"TRUE"</span>)</a>
-<a class="sourceLine" id="cb5-17" data-line-number="17"></a>
-<a class="sourceLine" id="cb5-18" data-line-number="18"><span class="co"># CONSTRUCT LEARNER</span></a>
-<a class="sourceLine" id="cb5-19" data-line-number="19"><span class="co">#******************</span></a>
-<a class="sourceLine" id="cb5-20" data-line-number="20"></a>
-<a class="sourceLine" id="cb5-21" data-line-number="21">lrn =<span class="st"> </span><span class="kw"><a href="https://mlr.mlr-org.com/reference/makeLearner.html">makeLearner</a></span>(<span class="dt">cl =</span> <span class="st">"classif.binomial"</span>,</a>
-<a class="sourceLine" id="cb5-22" data-line-number="22">                  <span class="dt">link =</span> <span class="st">"logit"</span>,</a>
-<a class="sourceLine" id="cb5-23" data-line-number="23">                  <span class="dt">predict.type =</span> <span class="st">"prob"</span>)</a>
-<a class="sourceLine" id="cb5-24" data-line-number="24"></a>
-<a class="sourceLine" id="cb5-25" data-line-number="25"><span class="co"># DEFINE RESAMPLING STRATEGY</span></a>
-<a class="sourceLine" id="cb5-26" data-line-number="26"><span class="co">#***************************</span></a>
-<a class="sourceLine" id="cb5-27" data-line-number="27"></a>
-<a class="sourceLine" id="cb5-28" data-line-number="28"><span class="co"># 100-repeated 5-fold spatial resampling strategy</span></a>
-<a class="sourceLine" id="cb5-29" data-line-number="29">resampling =<span class="st"> </span><span class="kw"><a href="https://mlr.mlr-org.com/reference/makeResampleDesc.html">makeResampleDesc</a></span>(<span class="dt">method =</span> <span class="st">"SpRepCV"</span>, <span class="dt">folds =</span> <span class="dv">5</span>, <span class="dt">reps =</span> <span class="dv">100</span>)</a>
-<a class="sourceLine" id="cb5-30" data-line-number="30"><span class="co"># 100-repeated 5-fold non-spatial resampling strategy</span></a>
-<a class="sourceLine" id="cb5-31" data-line-number="31">resampling_nsp =<span class="st"> </span><span class="kw"><a href="https://mlr.mlr-org.com/reference/makeResampleDesc.html">makeResampleDesc</a></span>(<span class="dt">method =</span> <span class="st">"RepCV"</span>, <span class="dt">folds =</span> <span class="dv">5</span>, <span class="dt">reps =</span> <span class="dv">100</span>)</a>
-<a class="sourceLine" id="cb5-32" data-line-number="32"></a>
-<a class="sourceLine" id="cb5-33" data-line-number="33"><span class="co"># (SPATIAL) CROSS-VALIDATAION</span></a>
-<a class="sourceLine" id="cb5-34" data-line-number="34"><span class="co">#****************************</span></a>
-<a class="sourceLine" id="cb5-35" data-line-number="35"></a>
-<a class="sourceLine" id="cb5-36" data-line-number="36"><span class="co"># execute the resampling</span></a>
-<a class="sourceLine" id="cb5-37" data-line-number="37">sp_cv =<span class="st"> </span>mlr<span class="op">::</span><span class="kw"><a href="https://mlr.mlr-org.com/reference/resample.html">resample</a></span>(<span class="dt">learner =</span> lrn, <span class="dt">task =</span> task,</a>
-<a class="sourceLine" id="cb5-38" data-line-number="38">                      <span class="dt">resampling =</span> resampling,</a>
-<a class="sourceLine" id="cb5-39" data-line-number="39">                      <span class="dt">measures =</span> mlr<span class="op">::</span>auc)</a>
-<a class="sourceLine" id="cb5-40" data-line-number="40">conv_cv =<span class="st"> </span>mlr<span class="op">::</span><span class="kw"><a href="https://mlr.mlr-org.com/reference/resample.html">resample</a></span>(<span class="dt">learner =</span> lrn, <span class="dt">task =</span> task_nsp,</a>
-<a class="sourceLine" id="cb5-41" data-line-number="41">                        <span class="dt">resampling =</span> resampling_nsp,</a>
-<a class="sourceLine" id="cb5-42" data-line-number="42">                        <span class="dt">measures =</span> mlr<span class="op">::</span>auc)</a>
-<a class="sourceLine" id="cb5-43" data-line-number="43"><span class="co"># Visualization of non-spatial overfitting</span></a>
-<a class="sourceLine" id="cb5-44" data-line-number="44"><span class="kw"><a href="https://rdrr.io/pkg/raster/man/boxplot.html">boxplot</a></span>(sp_cv<span class="op">$</span>measures.test<span class="op">$</span>auc,</a>
-<a class="sourceLine" id="cb5-45" data-line-number="45">        conv_cv<span class="op">$</span>measures.test<span class="op">$</span>auc, <span class="dt">col =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"lightblue2"</span>, <span class="st">"mistyrose2"</span>),</a>
-<a class="sourceLine" id="cb5-46" data-line-number="46">        <span class="dt">names =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"spatial CV"</span>, <span class="st">"conventional CV"</span>), <span class="dt">ylab =</span> <span class="st">"AUROC"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="co"># attach data (in case you have skipped exercises 1) and 2)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="st">"lsl"</span>, <span class="kw">package</span> <span class="kw">=</span> <span class="st">"spDataLarge"</span>)  <span class="co"># landslide points with terrain attributes</span>
+
+<span class="co"># put the coordinates in an additional dataframe</span>
+<span class="no">coords</span> <span class="kw">=</span> <span class="no">lsl</span>[, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"x"</span>, <span class="st">"y"</span>)]
+<span class="no">data</span> <span class="kw">=</span> <span class="kw pkg">dplyr</span><span class="kw ns">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(<span class="no">lsl</span>, -<span class="no">x</span>, -<span class="no">y</span>)
+<span class="co"># data_nonspatial = dplyr::select(data, -x, -y)</span>
+
+<span class="co"># CREATE TASKS</span>
+<span class="co">#*************</span>
+
+<span class="co"># spatial task</span>
+<span class="no">task</span> <span class="kw">=</span> <span class="fu"><a href="https://mlr.mlr-org.com/reference/ClassifTask.html">makeClassifTask</a></span>(<span class="kw">data</span> <span class="kw">=</span> <span class="no">data</span>, <span class="kw">target</span> <span class="kw">=</span> <span class="st">"lslpts"</span>,
+                       <span class="kw">positive</span> <span class="kw">=</span> <span class="st">"TRUE"</span>, <span class="kw">coordinates</span> <span class="kw">=</span> <span class="no">coords</span>)
+<span class="co"># non-spatial task</span>
+<span class="no">task_nsp</span> <span class="kw">=</span> <span class="fu"><a href="https://mlr.mlr-org.com/reference/ClassifTask.html">makeClassifTask</a></span>(<span class="kw">data</span> <span class="kw">=</span> <span class="no">data</span>, <span class="kw">target</span> <span class="kw">=</span> <span class="st">"lslpts"</span>, <span class="kw">positive</span> <span class="kw">=</span> <span class="st">"TRUE"</span>)
+
+<span class="co"># CONSTRUCT LEARNER</span>
+<span class="co">#******************</span>
+
+<span class="no">lrn</span> <span class="kw">=</span> <span class="fu"><a href="https://mlr.mlr-org.com/reference/makeLearner.html">makeLearner</a></span>(<span class="kw">cl</span> <span class="kw">=</span> <span class="st">"classif.binomial"</span>,
+                  <span class="kw">link</span> <span class="kw">=</span> <span class="st">"logit"</span>,
+                  <span class="kw">predict.type</span> <span class="kw">=</span> <span class="st">"prob"</span>)
+
+<span class="co"># DEFINE RESAMPLING STRATEGY</span>
+<span class="co">#***************************</span>
+
+<span class="co"># 100-repeated 5-fold spatial resampling strategy</span>
+<span class="no">resampling</span> <span class="kw">=</span> <span class="fu"><a href="https://mlr.mlr-org.com/reference/makeResampleDesc.html">makeResampleDesc</a></span>(<span class="kw">method</span> <span class="kw">=</span> <span class="st">"SpRepCV"</span>, <span class="kw">folds</span> <span class="kw">=</span> <span class="fl">5</span>, <span class="kw">reps</span> <span class="kw">=</span> <span class="fl">100</span>)
+<span class="co"># 100-repeated 5-fold non-spatial resampling strategy</span>
+<span class="no">resampling_nsp</span> <span class="kw">=</span> <span class="fu"><a href="https://mlr.mlr-org.com/reference/makeResampleDesc.html">makeResampleDesc</a></span>(<span class="kw">method</span> <span class="kw">=</span> <span class="st">"RepCV"</span>, <span class="kw">folds</span> <span class="kw">=</span> <span class="fl">5</span>, <span class="kw">reps</span> <span class="kw">=</span> <span class="fl">100</span>)
+
+<span class="co"># (SPATIAL) CROSS-VALIDATAION</span>
+<span class="co">#****************************</span>
+
+<span class="co"># execute the resampling</span>
+<span class="no">sp_cv</span> <span class="kw">=</span> <span class="kw pkg">mlr</span><span class="kw ns">::</span><span class="fu"><a href="https://mlr.mlr-org.com/reference/resample.html">resample</a></span>(<span class="kw">learner</span> <span class="kw">=</span> <span class="no">lrn</span>, <span class="kw">task</span> <span class="kw">=</span> <span class="no">task</span>,
+                      <span class="kw">resampling</span> <span class="kw">=</span> <span class="no">resampling</span>,
+                      <span class="kw">measures</span> <span class="kw">=</span> <span class="kw pkg">mlr</span><span class="kw ns">::</span><span class="no"><a href="https://mlr.mlr-org.com/reference/measures.html">auc</a></span>)
+<span class="no">conv_cv</span> <span class="kw">=</span> <span class="kw pkg">mlr</span><span class="kw ns">::</span><span class="fu"><a href="https://mlr.mlr-org.com/reference/resample.html">resample</a></span>(<span class="kw">learner</span> <span class="kw">=</span> <span class="no">lrn</span>, <span class="kw">task</span> <span class="kw">=</span> <span class="no">task_nsp</span>,
+                        <span class="kw">resampling</span> <span class="kw">=</span> <span class="no">resampling_nsp</span>,
+                        <span class="kw">measures</span> <span class="kw">=</span> <span class="kw pkg">mlr</span><span class="kw ns">::</span><span class="no"><a href="https://mlr.mlr-org.com/reference/measures.html">auc</a></span>)
+<span class="co"># Visualization of non-spatial overfitting</span>
+<span class="fu"><a href="https://rdrr.io/pkg/raster/man/boxplot.html">boxplot</a></span>(<span class="no">sp_cv</span>$<span class="no">measures.test</span>$<span class="no">auc</span>,
+        <span class="no">conv_cv</span>$<span class="no">measures.test</span>$<span class="no">auc</span>, <span class="kw">col</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"lightblue2"</span>, <span class="st">"mistyrose2"</span>),
+        <span class="kw">names</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"spatial CV"</span>, <span class="st">"conventional CV"</span>), <span class="kw">ylab</span> <span class="kw">=</span> <span class="st">"AUROC"</span>)</pre></body></html></div>
 <ol start="5" style="list-style-type: decimal">
 <li>Model landslide susceptibility using a quadratic discriminant analysis (QDA). Assess the predictive performance of the QDA. What is the a difference between the spatially cross-validated mean AUROC value of the QDA and the GLM? Hint: Before running the spatial cross-validation for both learners set a seed to make sure that both use the same partitions which in turn guarantees comparability.</li>
 </ol>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="co"># attach data (in case you have skipped exercises 1) and 2)</span></a>
-<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="st">"lsl"</span>, <span class="dt">package =</span> <span class="st">"spDataLarge"</span>)  <span class="co"># landslide points with terrain attributes</span></a>
-<a class="sourceLine" id="cb6-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="co"># put the coordinates in an additional dataframe</span></a>
-<a class="sourceLine" id="cb6-5" data-line-number="5">coords =<span class="st"> </span>lsl[, <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"x"</span>, <span class="st">"y"</span>)]</a>
-<a class="sourceLine" id="cb6-6" data-line-number="6">data =<span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(lsl, <span class="op">-</span>x, <span class="op">-</span>y)</a>
-<a class="sourceLine" id="cb6-7" data-line-number="7"><span class="co"># data_nonspatial = dplyr::select(data, -x, -y)</span></a>
-<a class="sourceLine" id="cb6-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb6-9" data-line-number="9"><span class="co"># CREATE TASKS</span></a>
-<a class="sourceLine" id="cb6-10" data-line-number="10"><span class="co">#*************</span></a>
-<a class="sourceLine" id="cb6-11" data-line-number="11"></a>
-<a class="sourceLine" id="cb6-12" data-line-number="12"><span class="co"># spatial task</span></a>
-<a class="sourceLine" id="cb6-13" data-line-number="13">task =<span class="st"> </span><span class="kw"><a href="https://mlr.mlr-org.com/reference/ClassifTask.html">makeClassifTask</a></span>(<span class="dt">data =</span> data, <span class="dt">target =</span> <span class="st">"lslpts"</span>, </a>
-<a class="sourceLine" id="cb6-14" data-line-number="14">                       <span class="dt">positive =</span> <span class="st">"TRUE"</span>, <span class="dt">coordinates =</span> coords)</a>
-<a class="sourceLine" id="cb6-15" data-line-number="15"></a>
-<a class="sourceLine" id="cb6-16" data-line-number="16"><span class="co"># CONSTRUCT LEARNER</span></a>
-<a class="sourceLine" id="cb6-17" data-line-number="17"><span class="co">#******************</span></a>
-<a class="sourceLine" id="cb6-18" data-line-number="18"></a>
-<a class="sourceLine" id="cb6-19" data-line-number="19">lrn_glm =<span class="st"> </span><span class="kw"><a href="https://mlr.mlr-org.com/reference/makeLearner.html">makeLearner</a></span>(<span class="dt">cl =</span> <span class="st">"classif.binomial"</span>,</a>
-<a class="sourceLine" id="cb6-20" data-line-number="20">                      <span class="dt">link =</span> <span class="st">"logit"</span>,</a>
-<a class="sourceLine" id="cb6-21" data-line-number="21">                      <span class="dt">predict.type =</span> <span class="st">"prob"</span>)</a>
-<a class="sourceLine" id="cb6-22" data-line-number="22">lrn_qda =<span class="st"> </span><span class="kw"><a href="https://mlr.mlr-org.com/reference/makeLearner.html">makeLearner</a></span>(<span class="dt">cl =</span> <span class="st">"classif.qda"</span>,</a>
-<a class="sourceLine" id="cb6-23" data-line-number="23">                      <span class="dt">predict.type =</span> <span class="st">"prob"</span>)</a>
-<a class="sourceLine" id="cb6-24" data-line-number="24"></a>
-<a class="sourceLine" id="cb6-25" data-line-number="25"><span class="co"># find out about the models to be fitted</span></a>
-<a class="sourceLine" id="cb6-26" data-line-number="26"><span class="co"># getTaskFormula(task)</span></a>
-<a class="sourceLine" id="cb6-27" data-line-number="27"><span class="co"># train(learner = lrn_glm, task = task)</span></a>
-<a class="sourceLine" id="cb6-28" data-line-number="28"><span class="co"># getLearnerModel(train(learner = lrn_glm, task = task))</span></a>
-<a class="sourceLine" id="cb6-29" data-line-number="29"><span class="co"># train(learner = lrn_qda, task = task)</span></a>
-<a class="sourceLine" id="cb6-30" data-line-number="30"><span class="co"># getLearnerModel(train(learner = lrn_qda, task = task))</span></a>
-<a class="sourceLine" id="cb6-31" data-line-number="31"></a>
-<a class="sourceLine" id="cb6-32" data-line-number="32"><span class="co"># DEFINE RESAMPLING STRATEGY</span></a>
-<a class="sourceLine" id="cb6-33" data-line-number="33"><span class="co">#***************************</span></a>
-<a class="sourceLine" id="cb6-34" data-line-number="34"></a>
-<a class="sourceLine" id="cb6-35" data-line-number="35"><span class="co"># 100-repeated 5-fold spatial resampling strategy</span></a>
-<a class="sourceLine" id="cb6-36" data-line-number="36">resampling =<span class="st"> </span><span class="kw"><a href="https://mlr.mlr-org.com/reference/makeResampleDesc.html">makeResampleDesc</a></span>(<span class="dt">method =</span> <span class="st">"SpRepCV"</span>, <span class="dt">folds =</span> <span class="dv">5</span>, <span class="dt">reps =</span> <span class="dv">100</span>)</a>
-<a class="sourceLine" id="cb6-37" data-line-number="37"></a>
-<a class="sourceLine" id="cb6-38" data-line-number="38"><span class="co"># (SPATIAL) CROSS-VALIDATAION</span></a>
-<a class="sourceLine" id="cb6-39" data-line-number="39"><span class="co">#****************************</span></a>
-<a class="sourceLine" id="cb6-40" data-line-number="40"></a>
-<a class="sourceLine" id="cb6-41" data-line-number="41"><span class="co"># execute the resampling</span></a>
-<a class="sourceLine" id="cb6-42" data-line-number="42">sp_glm =<span class="st"> </span>mlr<span class="op">::</span><span class="kw"><a href="https://mlr.mlr-org.com/reference/resample.html">resample</a></span>(<span class="dt">learner =</span> lrn_glm, <span class="dt">task =</span> task,</a>
-<a class="sourceLine" id="cb6-43" data-line-number="43">                       <span class="dt">resampling =</span> resampling,</a>
-<a class="sourceLine" id="cb6-44" data-line-number="44">                       <span class="dt">measures =</span> mlr<span class="op">::</span>auc)</a>
-<a class="sourceLine" id="cb6-45" data-line-number="45">sp_qda =<span class="st"> </span>mlr<span class="op">::</span><span class="kw"><a href="https://mlr.mlr-org.com/reference/resample.html">resample</a></span>(<span class="dt">learner =</span> lrn_qda, <span class="dt">task =</span> task_nsp,</a>
-<a class="sourceLine" id="cb6-46" data-line-number="46">                       <span class="dt">resampling =</span> resampling_nsp,</a>
-<a class="sourceLine" id="cb6-47" data-line-number="47">                       <span class="dt">measures =</span> mlr<span class="op">::</span>auc)</a>
-<a class="sourceLine" id="cb6-48" data-line-number="48"><span class="co"># QDA has higher AUROC values on average which indicates moderately non-linear</span></a>
-<a class="sourceLine" id="cb6-49" data-line-number="49"><span class="co"># boundaries</span></a>
-<a class="sourceLine" id="cb6-50" data-line-number="50"><span class="kw"><a href="https://rdrr.io/pkg/raster/man/boxplot.html">boxplot</a></span>(sp_glm<span class="op">$</span>measures.test<span class="op">$</span>auc,</a>
-<a class="sourceLine" id="cb6-51" data-line-number="51">        sp_qda<span class="op">$</span>measures.test<span class="op">$</span>auc, <span class="dt">col =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"lightblue2"</span>, <span class="st">"mistyrose2"</span>),</a>
-<a class="sourceLine" id="cb6-52" data-line-number="52">        <span class="dt">names =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"GLM"</span>, <span class="st">"QDA"</span>), <span class="dt">ylab =</span> <span class="st">"AUROC"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="co"># attach data (in case you have skipped exercises 1) and 2)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="st">"lsl"</span>, <span class="kw">package</span> <span class="kw">=</span> <span class="st">"spDataLarge"</span>)  <span class="co"># landslide points with terrain attributes</span>
+
+<span class="co"># put the coordinates in an additional dataframe</span>
+<span class="no">coords</span> <span class="kw">=</span> <span class="no">lsl</span>[, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"x"</span>, <span class="st">"y"</span>)]
+<span class="no">data</span> <span class="kw">=</span> <span class="kw pkg">dplyr</span><span class="kw ns">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(<span class="no">lsl</span>, -<span class="no">x</span>, -<span class="no">y</span>)
+<span class="co"># data_nonspatial = dplyr::select(data, -x, -y)</span>
+
+<span class="co"># CREATE TASKS</span>
+<span class="co">#*************</span>
+
+<span class="co"># spatial task</span>
+<span class="no">task</span> <span class="kw">=</span> <span class="fu"><a href="https://mlr.mlr-org.com/reference/ClassifTask.html">makeClassifTask</a></span>(<span class="kw">data</span> <span class="kw">=</span> <span class="no">data</span>, <span class="kw">target</span> <span class="kw">=</span> <span class="st">"lslpts"</span>,
+                       <span class="kw">positive</span> <span class="kw">=</span> <span class="st">"TRUE"</span>, <span class="kw">coordinates</span> <span class="kw">=</span> <span class="no">coords</span>)
+
+<span class="co"># CONSTRUCT LEARNER</span>
+<span class="co">#******************</span>
+
+<span class="no">lrn_glm</span> <span class="kw">=</span> <span class="fu"><a href="https://mlr.mlr-org.com/reference/makeLearner.html">makeLearner</a></span>(<span class="kw">cl</span> <span class="kw">=</span> <span class="st">"classif.binomial"</span>,
+                      <span class="kw">link</span> <span class="kw">=</span> <span class="st">"logit"</span>,
+                      <span class="kw">predict.type</span> <span class="kw">=</span> <span class="st">"prob"</span>)
+<span class="no">lrn_qda</span> <span class="kw">=</span> <span class="fu"><a href="https://mlr.mlr-org.com/reference/makeLearner.html">makeLearner</a></span>(<span class="kw">cl</span> <span class="kw">=</span> <span class="st">"classif.qda"</span>,
+                      <span class="kw">predict.type</span> <span class="kw">=</span> <span class="st">"prob"</span>)
+
+<span class="co"># find out about the models to be fitted</span>
+<span class="co"># getTaskFormula(task)</span>
+<span class="co"># train(learner = lrn_glm, task = task)</span>
+<span class="co"># getLearnerModel(train(learner = lrn_glm, task = task))</span>
+<span class="co"># train(learner = lrn_qda, task = task)</span>
+<span class="co"># getLearnerModel(train(learner = lrn_qda, task = task))</span>
+
+<span class="co"># DEFINE RESAMPLING STRATEGY</span>
+<span class="co">#***************************</span>
+
+<span class="co"># 100-repeated 5-fold spatial resampling strategy</span>
+<span class="no">resampling</span> <span class="kw">=</span> <span class="fu"><a href="https://mlr.mlr-org.com/reference/makeResampleDesc.html">makeResampleDesc</a></span>(<span class="kw">method</span> <span class="kw">=</span> <span class="st">"SpRepCV"</span>, <span class="kw">folds</span> <span class="kw">=</span> <span class="fl">5</span>, <span class="kw">reps</span> <span class="kw">=</span> <span class="fl">100</span>)
+
+<span class="co"># (SPATIAL) CROSS-VALIDATAION</span>
+<span class="co">#****************************</span>
+
+<span class="co"># execute the resampling</span>
+<span class="no">sp_glm</span> <span class="kw">=</span> <span class="kw pkg">mlr</span><span class="kw ns">::</span><span class="fu"><a href="https://mlr.mlr-org.com/reference/resample.html">resample</a></span>(<span class="kw">learner</span> <span class="kw">=</span> <span class="no">lrn_glm</span>, <span class="kw">task</span> <span class="kw">=</span> <span class="no">task</span>,
+                       <span class="kw">resampling</span> <span class="kw">=</span> <span class="no">resampling</span>,
+                       <span class="kw">measures</span> <span class="kw">=</span> <span class="kw pkg">mlr</span><span class="kw ns">::</span><span class="no"><a href="https://mlr.mlr-org.com/reference/measures.html">auc</a></span>)
+<span class="no">sp_qda</span> <span class="kw">=</span> <span class="kw pkg">mlr</span><span class="kw ns">::</span><span class="fu"><a href="https://mlr.mlr-org.com/reference/resample.html">resample</a></span>(<span class="kw">learner</span> <span class="kw">=</span> <span class="no">lrn_qda</span>, <span class="kw">task</span> <span class="kw">=</span> <span class="no">task_nsp</span>,
+                       <span class="kw">resampling</span> <span class="kw">=</span> <span class="no">resampling_nsp</span>,
+                       <span class="kw">measures</span> <span class="kw">=</span> <span class="kw pkg">mlr</span><span class="kw ns">::</span><span class="no"><a href="https://mlr.mlr-org.com/reference/measures.html">auc</a></span>)
+<span class="co"># QDA has higher AUROC values on average which indicates moderately non-linear</span>
+<span class="co"># boundaries</span>
+<span class="fu"><a href="https://rdrr.io/pkg/raster/man/boxplot.html">boxplot</a></span>(<span class="no">sp_glm</span>$<span class="no">measures.test</span>$<span class="no">auc</span>,
+        <span class="no">sp_qda</span>$<span class="no">measures.test</span>$<span class="no">auc</span>, <span class="kw">col</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"lightblue2"</span>, <span class="st">"mistyrose2"</span>),
+        <span class="kw">names</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"GLM"</span>, <span class="st">"QDA"</span>), <span class="kw">ylab</span> <span class="kw">=</span> <span class="st">"AUROC"</span>)</pre></body></html></div>
 <ol start="6" style="list-style-type: decimal">
 <li>Run the SVM without tuning the hyperparameters. Use the <code>rbfdot</code> kernel with <span class="math inline">\(\sigma\)</span> = 1 and <em>C</em> = 1. Leaving the hyperparameters unspecified in <strong>kernlab</strong>’s <code>ksvm()</code> would otherwise initialize an automatic non-spatial hyperparameter tuning.</li>
 </ol>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="co"># attach data (in case you have skipped exercises 1) and 2)</span></a>
-<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="st">"lsl"</span>, <span class="dt">package =</span> <span class="st">"spDataLarge"</span>)  <span class="co"># landslide points with terrain attributes</span></a>
-<a class="sourceLine" id="cb7-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="co"># put the coordinates in an additional dataframe</span></a>
-<a class="sourceLine" id="cb7-5" data-line-number="5">coords =<span class="st"> </span>lsl[, <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"x"</span>, <span class="st">"y"</span>)]</a>
-<a class="sourceLine" id="cb7-6" data-line-number="6">data =<span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(lsl, <span class="op">-</span>x, <span class="op">-</span>y)</a>
-<a class="sourceLine" id="cb7-7" data-line-number="7"><span class="co"># data_nonspatial = dplyr::select(data, -x, -y)</span></a>
-<a class="sourceLine" id="cb7-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb7-9" data-line-number="9"><span class="co"># CREATE </span><span class="al">TASK</span></a>
-<a class="sourceLine" id="cb7-10" data-line-number="10"><span class="co">#*************</span></a>
-<a class="sourceLine" id="cb7-11" data-line-number="11"></a>
-<a class="sourceLine" id="cb7-12" data-line-number="12"><span class="co"># spatial task</span></a>
-<a class="sourceLine" id="cb7-13" data-line-number="13">task =<span class="st"> </span><span class="kw"><a href="https://mlr.mlr-org.com/reference/ClassifTask.html">makeClassifTask</a></span>(<span class="dt">data =</span> data, <span class="dt">target =</span> <span class="st">"lslpts"</span>, </a>
-<a class="sourceLine" id="cb7-14" data-line-number="14">                       <span class="dt">positive =</span> <span class="st">"TRUE"</span>, <span class="dt">coordinates =</span> coords)</a>
-<a class="sourceLine" id="cb7-15" data-line-number="15"></a>
-<a class="sourceLine" id="cb7-16" data-line-number="16"></a>
-<a class="sourceLine" id="cb7-17" data-line-number="17"><span class="co"># CONSTRUCT LEARNER</span></a>
-<a class="sourceLine" id="cb7-18" data-line-number="18"><span class="co">#******************</span></a>
-<a class="sourceLine" id="cb7-19" data-line-number="19">lrn_ksvm =<span class="st"> </span><span class="kw"><a href="https://mlr.mlr-org.com/reference/makeLearner.html">makeLearner</a></span>(<span class="st">"classif.ksvm"</span>,</a>
-<a class="sourceLine" id="cb7-20" data-line-number="20">                       <span class="dt">predict.type =</span> <span class="st">"prob"</span>,</a>
-<a class="sourceLine" id="cb7-21" data-line-number="21">                       <span class="dt">kernel =</span> <span class="st">"rbfdot"</span>,</a>
-<a class="sourceLine" id="cb7-22" data-line-number="22">                       <span class="dt">C =</span> <span class="dv">1</span>,</a>
-<a class="sourceLine" id="cb7-23" data-line-number="23">                       <span class="dt">sigma =</span> <span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb7-24" data-line-number="24"></a>
-<a class="sourceLine" id="cb7-25" data-line-number="25"><span class="co"># RESAMPLING</span></a>
-<a class="sourceLine" id="cb7-26" data-line-number="26"><span class="co">#***********</span></a>
-<a class="sourceLine" id="cb7-27" data-line-number="27"><span class="co"># 100-repeated 5-fold spatial cross-validation without any hyperparameter </span></a>
-<a class="sourceLine" id="cb7-28" data-line-number="28"><span class="co"># tuning</span></a>
-<a class="sourceLine" id="cb7-29" data-line-number="29">resampling =<span class="st"> </span><span class="kw"><a href="https://mlr.mlr-org.com/reference/makeResampleDesc.html">makeResampleDesc</a></span>(<span class="st">"SpRepCV"</span>, <span class="dt">folds =</span> <span class="dv">5</span>, <span class="dt">reps =</span> <span class="dv">100</span>)</a>
-<a class="sourceLine" id="cb7-30" data-line-number="30"></a>
-<a class="sourceLine" id="cb7-31" data-line-number="31"><span class="co"># parallel processing not really necessary (only 500 models)</span></a>
-<a class="sourceLine" id="cb7-32" data-line-number="32"><span class="co"># library(parallelMap)</span></a>
-<a class="sourceLine" id="cb7-33" data-line-number="33"><span class="co"># parallelStart(mode = "multicore", level = "mlr.resample", </span></a>
-<a class="sourceLine" id="cb7-34" data-line-number="34"><span class="co">#               cpus = parallel::detectCores() / 2)</span></a>
-<a class="sourceLine" id="cb7-35" data-line-number="35"></a>
-<a class="sourceLine" id="cb7-36" data-line-number="36"><span class="kw"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="dv">28032018</span>)</a>
-<a class="sourceLine" id="cb7-37" data-line-number="37">resa_svm_spatial =<span class="st"> </span>mlr<span class="op">::</span><span class="kw"><a href="https://mlr.mlr-org.com/reference/resample.html">resample</a></span>(<span class="dt">learner =</span> lrn_ksvm, </a>
-<a class="sourceLine" id="cb7-38" data-line-number="38">                                 <span class="dt">task =</span> task,</a>
-<a class="sourceLine" id="cb7-39" data-line-number="39">                                 <span class="dt">resampling =</span> resampling,</a>
-<a class="sourceLine" id="cb7-40" data-line-number="40">                                 <span class="dt">measures =</span> mlr<span class="op">::</span>auc,</a>
-<a class="sourceLine" id="cb7-41" data-line-number="41">                                 <span class="dt">show.info =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb7-42" data-line-number="42"><span class="co"># Aggregated Result: auc.test.mean=0.7843021</span></a>
-<a class="sourceLine" id="cb7-43" data-line-number="43"><span class="co"># parallelStop()</span></a></code></pre></div>
+<div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="co"># attach data (in case you have skipped exercises 1) and 2)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="st">"lsl"</span>, <span class="kw">package</span> <span class="kw">=</span> <span class="st">"spDataLarge"</span>)  <span class="co"># landslide points with terrain attributes</span>
+
+<span class="co"># put the coordinates in an additional dataframe</span>
+<span class="no">coords</span> <span class="kw">=</span> <span class="no">lsl</span>[, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"x"</span>, <span class="st">"y"</span>)]
+<span class="no">data</span> <span class="kw">=</span> <span class="kw pkg">dplyr</span><span class="kw ns">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(<span class="no">lsl</span>, -<span class="no">x</span>, -<span class="no">y</span>)
+<span class="co"># data_nonspatial = dplyr::select(data, -x, -y)</span>
+
+<span class="co"># CREATE TASK</span>
+<span class="co">#*************</span>
+
+<span class="co"># spatial task</span>
+<span class="no">task</span> <span class="kw">=</span> <span class="fu"><a href="https://mlr.mlr-org.com/reference/ClassifTask.html">makeClassifTask</a></span>(<span class="kw">data</span> <span class="kw">=</span> <span class="no">data</span>, <span class="kw">target</span> <span class="kw">=</span> <span class="st">"lslpts"</span>,
+                       <span class="kw">positive</span> <span class="kw">=</span> <span class="st">"TRUE"</span>, <span class="kw">coordinates</span> <span class="kw">=</span> <span class="no">coords</span>)
+
+
+<span class="co"># CONSTRUCT LEARNER</span>
+<span class="co">#******************</span>
+<span class="no">lrn_ksvm</span> <span class="kw">=</span> <span class="fu"><a href="https://mlr.mlr-org.com/reference/makeLearner.html">makeLearner</a></span>(<span class="st">"classif.ksvm"</span>,
+                       <span class="kw">predict.type</span> <span class="kw">=</span> <span class="st">"prob"</span>,
+                       <span class="kw">kernel</span> <span class="kw">=</span> <span class="st">"rbfdot"</span>,
+                       <span class="kw">C</span> <span class="kw">=</span> <span class="fl">1</span>,
+                       <span class="kw">sigma</span> <span class="kw">=</span> <span class="fl">1</span>)
+
+<span class="co"># RESAMPLING</span>
+<span class="co">#***********</span>
+<span class="co"># 100-repeated 5-fold spatial cross-validation without any hyperparameter </span>
+<span class="co"># tuning</span>
+<span class="no">resampling</span> <span class="kw">=</span> <span class="fu"><a href="https://mlr.mlr-org.com/reference/makeResampleDesc.html">makeResampleDesc</a></span>(<span class="st">"SpRepCV"</span>, <span class="kw">folds</span> <span class="kw">=</span> <span class="fl">5</span>, <span class="kw">reps</span> <span class="kw">=</span> <span class="fl">100</span>)
+
+<span class="co"># parallel processing not really necessary (only 500 models)</span>
+<span class="co"># library(parallelMap)</span>
+<span class="co"># parallelStart(mode = "multicore", level = "mlr.resample", </span>
+<span class="co">#               cpus = parallel::detectCores() / 2)</span>
+
+<span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="fl">28032018</span>)
+<span class="no">resa_svm_spatial</span> <span class="kw">=</span> <span class="kw pkg">mlr</span><span class="kw ns">::</span><span class="fu"><a href="https://mlr.mlr-org.com/reference/resample.html">resample</a></span>(<span class="kw">learner</span> <span class="kw">=</span> <span class="no">lrn_ksvm</span>,
+                                 <span class="kw">task</span> <span class="kw">=</span> <span class="no">task</span>,
+                                 <span class="kw">resampling</span> <span class="kw">=</span> <span class="no">resampling</span>,
+                                 <span class="kw">measures</span> <span class="kw">=</span> <span class="kw pkg">mlr</span><span class="kw ns">::</span><span class="no"><a href="https://mlr.mlr-org.com/reference/measures.html">auc</a></span>,
+                                 <span class="kw">show.info</span> <span class="kw">=</span> <span class="fl">TRUE</span>)
+<span class="co"># Aggregated Result: auc.test.mean=0.7843021</span>
+<span class="co"># parallelStop()</span></pre></body></html></div>
 </div>
   </div>
 
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
 
-        <div id="tocnav">
-      <h2 class="hasAnchor">
-<a href="#tocnav" class="anchor"></a>Contents</h2>
-      <ul class="nav nav-pills nav-stacked">
-<li><a href="#prerequisites">Prerequisites</a></li>
-      <li><a href="#chapter-11">Chapter 11</a></li>
-      </ul>
+        <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
+    </nav>
 </div>
-      </div>
 
 </div>
 
@@ -374,7 +368,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
 </div>
 
       </footer>
