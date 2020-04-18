@@ -1,6 +1,9 @@
 
-[![Build
-Status](https://travis-ci.org/geocompr/geocompkg.svg?branch=master)](https://travis-ci.org/geocompr/geocompkg)
+<!-- badges: start -->
+
+[![R build
+status](https://github.com/geocompr/geocompkg/workflows/R-CMD-check/badge.svg)](https://github.com/geocompr/geocompkg/actions)
+<!-- badges: end -->
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
@@ -26,7 +29,8 @@ devtools::install_github("geocompr/geocompkg")
 
 If you have any issues, check-out
 [Chapter 2](https://geocompr.robinlovelace.net/spatial-class.html) of
-the book. You may need to install **spDataLarge** from drat:
+the book. You may need to install **spDataLarge** from
+drat:
 
 ``` r
 install.packages("spDataLarge", repos = "https://nowosad.github.io/drat/",
