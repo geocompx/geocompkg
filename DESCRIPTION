@@ -63,7 +63,9 @@ Imports:
     vegan
 Remotes:
     nowosad/spDataLarge,
-    rstudio/bookdown
+    rstudio/bookdown,
+    r-spatial/RQGIS
+
 URL: https://github.com/geocompr/geocompkg
 BugReports: https://github.com/Robinlovelace/geocompr/issues
 LazyData: TRUE
