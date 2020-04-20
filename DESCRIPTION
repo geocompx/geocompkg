@@ -62,7 +62,7 @@ Imports:
     tmaptools,
     vegan
 Remotes:
-    nowosad/spDataLarge
+    nowosad/spDataLarge,
     rstudio/bookdown
 URL: https://github.com/geocompr/geocompkg
 BugReports: https://github.com/Robinlovelace/geocompr/issues
