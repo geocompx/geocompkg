@@ -65,8 +65,8 @@ Remotes:
     nowosad/spDataLarge,
     rstudio/bookdown,
     r-spatial/RQGIS,
-    mtennekes/tmaptools
-    mtennekes/tmap,
+    mtennekes/tmaptools,
+    mtennekes/tmap
 URL: https://github.com/geocompr/geocompkg
 BugReports: https://github.com/Robinlovelace/geocompr/issues
 LazyData: TRUE
