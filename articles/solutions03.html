@@ -61,7 +61,7 @@
       <h1 data-toc-skip>Chapter 3: Attribute operations</h1>
                         <h4 class="author">Robin Lovelace, Jakub Nowosad, Jannes Muenchow</h4>
             
-            <h4 class="date">2020-04-20</h4>
+            <h4 class="date">2020-04-21</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/Robinlovelace/geocompr/blob/master/vignettes/solutions03.Rmd"><code>vignettes/solutions03.Rmd</code></a></small>
       <div class="hidden name"><code>solutions03.Rmd</code></div>
@@ -441,10 +441,10 @@
            <span class="kw">ymn</span> <span class="kw">=</span> <span class="fl">0</span>, <span class="kw">ymx</span> <span class="kw">=</span> <span class="fl">4.5</span>, <span class="kw">vals</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(<span class="fl">81</span>))
 <span class="co"># using cell IDs</span>
 <span class="no">r</span>[<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>, <span class="fl">9</span>, <span class="fl">81</span> - <span class="fl">9</span>, <span class="fl">81</span>)]
-<span class="co">#&gt; [1]  0.4500100  0.6504927 -1.0753791  0.9022246</span>
+<span class="co">#&gt; [1]  1.0123934  0.6407775 -0.4517058 -0.6616224</span>
 <span class="co"># using indexing</span>
 <span class="no">r</span>[<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/pkg/raster/man/ncell.html">nrow</a></span>(<span class="no">r</span>)), <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/pkg/raster/man/ncell.html">ncol</a></span>(<span class="no">r</span>))]
-<span class="co">#&gt; [1]  0.4500100  0.6504927 -0.8542026  0.9022246</span>
+<span class="co">#&gt; [1]  1.0123934  0.6407775  1.9880594 -0.6616224</span>
 <span class="co"># corresponds to [1, 1], [1, 9], [9, 1], [9, 9]</span></pre></body></html></div>
 <ol start="15" style="list-style-type: decimal">
 <li>What is the most common class of our example raster <code>grain</code> (hint: <code><a href="https://rdrr.io/pkg/raster/man/modal.html">modal()</a></code>)?</li>
@@ -457,10 +457,10 @@
 <span class="fu"><a href="https://rdrr.io/pkg/raster/man/cellStats.html">cellStats</a></span>(<span class="no">grain</span>, <span class="no">modal</span>) <span class="kw">%&gt;%</span>
   <span class="fu"><a href="https://rdrr.io/pkg/raster/man/factor.html">factorValues</a></span>(<span class="no">grain</span>, <span class="no">.</span>)
 <span class="co">#&gt;   VALUE</span>
-<span class="co">#&gt; 1  clay</span>
+<span class="co">#&gt; 1  sand</span>
 <span class="fu"><a href="https://rdrr.io/pkg/raster/man/factor.html">factorValues</a></span>(<span class="no">grain</span>, <span class="fu"><a href="https://rdrr.io/pkg/raster/man/modal.html">modal</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/raster/man/getValues.html">values</a></span>(<span class="no">grain</span>)))
 <span class="co">#&gt;   VALUE</span>
-<span class="co">#&gt; 1  clay</span></pre></body></html></div>
+<span class="co">#&gt; 1  sand</span></pre></body></html></div>
 <ol start="16" style="list-style-type: decimal">
 <li>Plot the histogram and the boxplot of the <code><a href="https://rdrr.io/r/utils/data.html">data(dem, package = "RQGIS")</a></code> raster.</li>
 </ol>
