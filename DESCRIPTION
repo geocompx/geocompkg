@@ -67,8 +67,6 @@ Remotes:
     r-spatial/RQGIS,
     mtennekes/tmap,
     mtennekes/tmaptools
-    
-
 URL: https://github.com/geocompr/geocompkg
 BugReports: https://github.com/Robinlovelace/geocompr/issues
 LazyData: TRUE
