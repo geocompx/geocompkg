@@ -171,7 +171,7 @@ browseURL("m.gif")
 m = tm_shape(eastern_africa) +
   tm_polygons("pop_growth", style = "jenks", palette = "BuPu") +
   tm_facets(by = "name", drop.NA.facets = TRUE, ncol = 1, nrow = 1)
-tmap_animation(m, filename = "m.gif")
+tmap_animation(m, filename = "m.gif", width = 1500, height = 1500)
 browseURL("m.gif")
 ```
 
