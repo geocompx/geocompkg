@@ -53,25 +53,6 @@ URL: https://github.com/geocompr/geocompkg
 BugReports: https://github.com/Robinlovelace/geocompr/issues
 LazyData: TRUE
 RoxygenNote: 7.1.0
-Suggests:
-    bench,
-    kernlab,
-    latticeExtra,
-    link2GI,
-    mapdeck,
-    mapview,    
-    mlr,
-    odbc,
-    pool,
-    pROC,
-    ranger,
-    rnaturalearthdata,
-    RPostgres,
-    RPostgreSQL,
-    RQGIS,
-    RSAGA,
-    vegan,
-    tree
 VignetteBuilder: knitr
 Encoding: UTF-8
 License: CC BY-NC-ND 4.0
