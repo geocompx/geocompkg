@@ -43,6 +43,16 @@ Imports:
     tidyr,
     tmap,
     tmaptools
+Remotes:
+    nowosad/spDataLarge,
+    rstudio/bookdown,
+    r-spatial/RQGIS,
+    mtennekes/tmaptools,
+    mtennekes/tmap
+URL: https://github.com/geocompr/geocompkg
+BugReports: https://github.com/Robinlovelace/geocompr/issues
+LazyData: TRUE
+RoxygenNote: 7.1.0
 Suggests:
     bench,
     kernlab,
@@ -62,18 +72,6 @@ Suggests:
     RSAGA,
     vegan,
     tree
-Remotes:
-    nowosad/spDataLarge,
-    rstudio/bookdown,
-    r-spatial/RQGIS,
-    mtennekes/tmaptools,
-    mtennekes/tmap
-URL: https://github.com/geocompr/geocompkg
-BugReports: https://github.com/Robinlovelace/geocompr/issues
-LazyData: TRUE
-RoxygenNote: 7.1.0
-Suggests: knitr,
-    rmarkdown
 VignetteBuilder: knitr
 Encoding: UTF-8
 License: CC BY-NC-ND 4.0
