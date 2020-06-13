@@ -32,6 +32,7 @@ Imports:
     rgeos,
     rgrass7 (>= 0.2-1),
     rnaturalearth,
+    RQGIS,
     sf,
     sp,
     spData,
@@ -68,7 +69,6 @@ Suggests:
     rnaturalearthdata,
     RPostgres,
     RPostgreSQL,
-    RQGIS,
     RSAGA,
     vegan,
     tree
