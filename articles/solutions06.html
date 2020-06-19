@@ -55,13 +55,13 @@
 
       
 
-      </header><div class="row">
+      </header><script src="solutions06_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Chapter 6: Reprojecting geographic data</h1>
                         <h4 class="author">Robin Lovelace, Jakub Nowosad, Jannes Muenchow</h4>
             
-            <h4 class="date">2020-04-21</h4>
+            <h4 class="date">2020-06-19</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/Robinlovelace/geocompr/blob/master/vignettes/solutions06.Rmd"><code>vignettes/solutions06.Rmd</code></a></small>
       <div class="hidden name"><code>solutions06.Rmd</code></div>
@@ -74,10 +74,12 @@
 <h2 class="hasAnchor">
 <a href="#prerequisites" class="anchor"></a>Prerequisites</h2>
 <p>The solutions assume the following packages are attached (other packages will be attached when needed):</p>
-<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">sf</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">raster</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">dplyr</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">spData</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb1"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://r-spatial.github.io/sf">sf</a></span>)
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://rspatial.org/raster">raster</a></span>)
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://dplyr.tidyverse.org">dplyr</a></span>)
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://nowosad.github.io/spData">spData</a></span>)
+</pre></div>
 </div>
 <div id="chapter-6" class="section level1">
 <h1 class="hasAnchor">
@@ -93,7 +95,8 @@
 </ul>
 </li>
 </ol>
-<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_crs.html">st_crs</a></span>(<span class="no">nz</span>)
+<div class="sourceCode" id="cb2"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_crs.html">st_crs</a></span>(<span class="kw">nz</span>)
 <span class="co">#&gt; Coordinate Reference System:</span>
 <span class="co">#&gt;   User input: EPSG:2193 </span>
 <span class="co">#&gt;   wkt:</span>
@@ -118,87 +121,132 @@
 <span class="co">#&gt;     UNIT["metre",1,</span>
 <span class="co">#&gt;         AUTHORITY["EPSG","9001"]],</span>
 <span class="co">#&gt;     AUTHORITY["EPSG","2193"]]</span>
-<span class="no">nz_wgs</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_transform.html">st_transform</a></span>(<span class="no">nz</span>, <span class="fl">4326</span>)
-<span class="no">nz_crs</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_crs.html">st_crs</a></span>(<span class="no">nz</span>)
-<span class="no">nz_wgs_crs</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_crs.html">st_crs</a></span>(<span class="no">nz_wgs</span>)
-<span class="no">nz_crs</span>$<span class="no">epsg</span>
+<span class="kw">nz_wgs</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_transform.html">st_transform</a></span>(<span class="kw">nz</span>, <span class="fl">4326</span>)
+<span class="kw">nz_crs</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_crs.html">st_crs</a></span>(<span class="kw">nz</span>)
+<span class="kw">nz_wgs_crs</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_crs.html">st_crs</a></span>(<span class="kw">nz_wgs</span>)
+<span class="kw">nz_crs</span><span class="op">$</span><span class="kw">epsg</span>
 <span class="co">#&gt; [1] 2193</span>
-<span class="no">nz_wgs_crs</span>$<span class="no">epsg</span>
+<span class="kw">nz_wgs_crs</span><span class="op">$</span><span class="kw">epsg</span>
 <span class="co">#&gt; [1] 4326</span>
-<span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_bbox.html">st_bbox</a></span>(<span class="no">nz</span>)
+<span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_bbox.html">st_bbox</a></span>(<span class="kw">nz</span>)
 <span class="co">#&gt;    xmin    ymin    xmax    ymax </span>
 <span class="co">#&gt; 1090144 4748537 2089533 6191874</span>
-<span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_bbox.html">st_bbox</a></span>(<span class="no">nz_wgs</span>)
+<span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_bbox.html">st_bbox</a></span>(<span class="kw">nz_wgs</span>)
 <span class="co">#&gt;      xmin      ymin      xmax      ymax </span>
 <span class="co">#&gt; 166.42630 -47.28285 178.55037 -34.41452</span>
-<span class="no">nz_wgs_NULL_crs</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_crs.html">st_set_crs</a></span>(<span class="no">nz_wgs</span>, <span class="fl">NA</span>)
-<span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span>(<span class="kw">mfrow</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>, <span class="fl">3</span>))
-<span class="fu"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_geometry.html">st_geometry</a></span>(<span class="no">nz</span>))
-<span class="fu"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_geometry.html">st_geometry</a></span>(<span class="no">nz_wgs</span>))
-<span class="fu"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_geometry.html">st_geometry</a></span>(<span class="no">nz_wgs_NULL_crs</span>))</pre></body></html></div>
+<span class="kw">nz_wgs_NULL_crs</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_crs.html">st_set_crs</a></span>(<span class="kw">nz_wgs</span>, <span class="fl">NA</span>)
+<span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span>(mfrow = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>, <span class="fl">3</span>))
+<span class="fu"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_geometry.html">st_geometry</a></span>(<span class="kw">nz</span>))
+<span class="fu"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_geometry.html">st_geometry</a></span>(<span class="kw">nz_wgs</span>))
+<span class="fu"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_geometry.html">st_geometry</a></span>(<span class="kw">nz_wgs_NULL_crs</span>))
+</pre></div>
 <p><img src="solutions06_files/figure-html/unnamed-chunk-1-1.png" width="700"></p>
-<div class="sourceCode" id="cb3"><html><body><pre class="r"># answer: it is fatter in the East-West direction
-# because New Zealand is close to the South Pole and meridians converge there</pre></body></html></div>
+<div class="sourceCode" id="cb3"><pre class="downlit">
+<span class="co"># answer: it is fatter in the East-West direction</span>
+<span class="co"># because New Zealand is close to the South Pole and meridians converge there</span>
+</pre></div>
 <ol start="2" style="list-style-type: decimal">
 <li>Transform the <code>world</code> dataset to the transverse Mercator projection (<code>"+proj=tmerc"</code>) and plot the result. What has changed and why? Try to transform it back into WGS 84 and plot the new object. Why does the new object differ from the original one?</li>
 </ol>
-<div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="co"># see https://github.com/r-spatial/sf/issues/509</span>
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">sf</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">spData</span>)
-<span class="no">world_tmerc</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_transform.html">st_transform</a></span>(<span class="no">world</span>, <span class="st">"+proj=tmerc"</span>)
+<div class="sourceCode" id="cb4"><pre class="downlit">
+<span class="co"># see https://github.com/r-spatial/sf/issues/509</span>
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://r-spatial.github.io/sf">sf</a></span>)
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://nowosad.github.io/spData">spData</a></span>)
+<span class="kw">world_tmerc</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_transform.html">st_transform</a></span>(<span class="kw">world</span>, <span class="st">"+proj=tmerc"</span>)
 <span class="co"># plot(st_geometry(world_tmerc)) # fails on old versions of geos</span>
-<span class="no">world_4326</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_transform.html">st_transform</a></span>(<span class="no">world_tmerc</span>, <span class="fl">4326</span>)
-<span class="co"># plot(st_geometry(world_4326))</span></pre></body></html></div>
+<span class="kw">world_4326</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_transform.html">st_transform</a></span>(<span class="kw">world_tmerc</span>, <span class="fl">4326</span>)
+<span class="co"># plot(st_geometry(world_4326))</span>
+</pre></div>
 <ol start="3" style="list-style-type: decimal">
 <li>Transform the continuous raster (<code>cat_raster</code>) into NAD83 / UTM zone 12N using the nearest neighbor interpolation method. What has changed? How does it influence the results?</li>
 </ol>
-<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="no">utm12n</span> <span class="kw">=</span> <span class="st">"+proj=utm +zone=12 +ellps=GRS80 +datum=NAD83 +units=m +no_defs"</span>
-<span class="no">con_raster</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/raster.html">raster</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"raster/srtm.tif"</span>, <span class="kw">package</span> <span class="kw">=</span> <span class="st">"spDataLarge"</span>))
-<span class="no">con_raster_utm12n</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/projectRaster.html">projectRaster</a></span>(<span class="no">con_raster</span>, <span class="kw">crs</span> <span class="kw">=</span> <span class="no">utm12n</span>, <span class="kw">method</span> <span class="kw">=</span> <span class="st">"ngb"</span>)
-<span class="no">con_raster_utm12n</span>
+<div class="sourceCode" id="cb5"><pre class="downlit">
+<span class="kw">utm12n</span> <span class="op">=</span> <span class="st">"+proj=utm +zone=12 +ellps=GRS80 +datum=NAD83 +units=m +no_defs"</span>
+<span class="kw">con_raster</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/raster.html">raster</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"raster/srtm.tif"</span>, package = <span class="st">"spDataLarge"</span>))
+<span class="kw">con_raster_utm12n</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/projectRaster.html">projectRaster</a></span>(<span class="kw">con_raster</span>, crs = <span class="kw">utm12n</span>, method = <span class="st">"ngb"</span>)
+<span class="co">#&gt; Warning in rgdal::rawTransform(projfrom, projto, nrow(xy), xy[, 1], xy[, : Using</span>
+<span class="co">#&gt; PROJ not WKT2 strings</span>
+<span class="co">#&gt; Warning in rgdal::rawTransform(projection(obj), crs, nrow(xy), xy[, 1], : Using</span>
+<span class="co">#&gt; PROJ not WKT2 strings</span>
+<span class="co">#&gt; Warning in rgdal::rawTransform(projto_int, projfrom, nrow(xy), xy[, 1], : Using</span>
+<span class="co">#&gt; PROJ not WKT2 strings</span>
+<span class="kw">con_raster_utm12n</span>
 <span class="co">#&gt; class      : RasterLayer </span>
 <span class="co">#&gt; dimensions : 475, 490, 232750  (nrow, ncol, ncell)</span>
 <span class="co">#&gt; resolution : 73.8, 92.5  (x, y)</span>
 <span class="co">#&gt; extent     : 300619.2, 336781.2, 4110656, 4154593  (xmin, xmax, ymin, ymax)</span>
-<span class="co">#&gt; crs        : +proj=utm +zone=12 +ellps=GRS80 +datum=NAD83 +units=m +no_defs +towgs84=0,0,0 </span>
+<span class="co">#&gt; crs        : +proj=utm +zone=12 +datum=NAD83 +units=m +no_defs </span>
 <span class="co">#&gt; source     : memory</span>
 <span class="co">#&gt; names      : srtm </span>
 <span class="co">#&gt; values     : 1024, 2892  (min, max)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span>(<span class="kw">mfrow</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>, <span class="fl">2</span>))
-<span class="fu"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(<span class="no">con_raster</span>)
-<span class="fu"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(<span class="no">con_raster_utm12n</span>)</pre></body></html></div>
+<span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span>(mfrow = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>, <span class="fl">2</span>))
+<span class="fu"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(<span class="kw">con_raster</span>)
+<span class="fu"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(<span class="kw">con_raster_utm12n</span>)
+</pre></div>
 <p><img src="solutions06_files/figure-html/unnamed-chunk-3-1.png" width="700"></p>
 <p>There are several differences between the original and the transformed raster, including a different number of rows and columns (and subsequently cells), projection units, and slightly different distribution of values.</p>
 <ol start="4" style="list-style-type: decimal">
 <li>Transform the categorical raster (<code>cat_raster</code>) into WGS 84 using the bilinear interpolation method. What has changed? How does it influence the results?</li>
 </ol>
-<div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="no">wgs84</span> <span class="kw">=</span> <span class="st">"+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs"</span>
-<span class="no">cat_raster</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/raster.html">raster</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"raster/nlcd2011.tif"</span>, <span class="kw">package</span> <span class="kw">=</span> <span class="st">"spDataLarge"</span>))
-<span class="no">cat_raster_wgs84</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/projectRaster.html">projectRaster</a></span>(<span class="no">cat_raster</span>, <span class="kw">crs</span> <span class="kw">=</span> <span class="no">wgs84</span>, <span class="kw">method</span> <span class="kw">=</span> <span class="st">"bilinear"</span>)
-<span class="no">cat_raster_wgs84</span>
+<div class="sourceCode" id="cb6"><pre class="downlit">
+<span class="kw">wgs84</span> <span class="op">=</span> <span class="st">"+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs"</span>
+<span class="kw">cat_raster</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/raster.html">raster</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"raster/nlcd2011.tif"</span>, package = <span class="st">"spDataLarge"</span>))
+<span class="co">#&gt; Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO"): Discarded datum Unknown based on GRS80 ellipsoid in CRS definition,</span>
+<span class="co">#&gt;  but +towgs84= values preserved</span>
+<span class="kw">cat_raster_wgs84</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/projectRaster.html">projectRaster</a></span>(<span class="kw">cat_raster</span>, crs = <span class="kw">wgs84</span>, method = <span class="st">"bilinear"</span>)
+<span class="co">#&gt; Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO"): Discarded datum Unknown based on GRS80 ellipsoid in CRS definition,</span>
+<span class="co">#&gt;  but +towgs84= values preserved</span>
+
+<span class="co">#&gt; Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO"): Discarded datum Unknown based on GRS80 ellipsoid in CRS definition,</span>
+<span class="co">#&gt;  but +towgs84= values preserved</span>
+<span class="co">#&gt; Warning in rgdal::rawTransform(projfrom, projto, nrow(xy), xy[, 1], xy[, : Using</span>
+<span class="co">#&gt; PROJ not WKT2 strings</span>
+<span class="co">#&gt; Warning in rgdal::rawTransform(projection(obj), crs, nrow(xy), xy[, 1], : Using</span>
+<span class="co">#&gt; PROJ not WKT2 strings</span>
+<span class="co">#&gt; Warning in rgdal::rawTransform(projto_int, projfrom, nrow(xy), xy[, 1], : Using</span>
+<span class="co">#&gt; PROJ not WKT2 strings</span>
+<span class="co">#&gt; Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO"): Discarded datum Unknown based on GRS80 ellipsoid in CRS definition,</span>
+<span class="co">#&gt;  but +towgs84= values preserved</span>
+
+<span class="co">#&gt; Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO"): Discarded datum Unknown based on GRS80 ellipsoid in CRS definition,</span>
+<span class="co">#&gt;  but +towgs84= values preserved</span>
+
+<span class="co">#&gt; Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO"): Discarded datum Unknown based on GRS80 ellipsoid in CRS definition,</span>
+<span class="co">#&gt;  but +towgs84= values preserved</span>
+<span class="kw">cat_raster_wgs84</span>
 <span class="co">#&gt; class      : RasterLayer </span>
 <span class="co">#&gt; dimensions : 1394, 1111, 1548734  (nrow, ncol, ncell)</span>
 <span class="co">#&gt; resolution : 0.000356, 0.000284  (x, y)</span>
 <span class="co">#&gt; extent     : -113.2432, -112.8477, 37.12494, 37.52083  (xmin, xmax, ymin, ymax)</span>
-<span class="co">#&gt; crs        : +proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs +towgs84=0,0,0 </span>
+<span class="co">#&gt; crs        : +proj=longlat +datum=WGS84 +no_defs </span>
 <span class="co">#&gt; source     : memory</span>
 <span class="co">#&gt; names      : nlcd2011 </span>
 <span class="co">#&gt; values     : 5.751417, 95  (min, max)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span>(<span class="kw">mfrow</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>, <span class="fl">2</span>))
-<span class="fu"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(<span class="no">cat_raster</span>)</pre></body></html></div>
+<span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span>(mfrow = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>, <span class="fl">2</span>))
+<span class="fu"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(<span class="kw">cat_raster</span>)
+<span class="co">#&gt; Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO"): Discarded datum Unknown based on GRS80 ellipsoid in CRS definition,</span>
+<span class="co">#&gt;  but +towgs84= values preserved</span>
+
+<span class="co">#&gt; Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO"): Discarded datum Unknown based on GRS80 ellipsoid in CRS definition,</span>
+<span class="co">#&gt;  but +towgs84= values preserved</span>
+</pre></div>
 <p><img src="solutions06_files/figure-html/unnamed-chunk-4-1.png" width="700"></p>
-<div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(<span class="no">cat_raster_wgs84</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb7"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(<span class="kw">cat_raster_wgs84</span>)
+</pre></div>
 <p><img src="solutions06_files/figure-html/unnamed-chunk-4-2.png" width="700"></p>
 <p>There are several differences between the original and the transformed raster, including a different number of rows and columns (and subsequently cells), and projection units. The most important difference of the bilinear interpolation is a conversion of integer values in the original raster to float values in the output raster. This operation should be avoided because float values are not suitable to represent categorical values.</p>
 <ol start="5" style="list-style-type: decimal">
 <li>Create your own <code>proj4string</code>. It should have the Lambert Azimuthal Equal Area (<code>laea</code>) projection, the WGS84 ellipsoid, the longitude of projection center of 95 degrees west, the latitude of projection center of 60 degrees north, and its units should be in meters. Next, subset Canada from the <code>world</code> object and transform it into the new projection. Plot and compare a map before and after the transformation.</li>
 </ol>
-<div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="no">new_p4s</span> <span class="kw">=</span> <span class="st">"+proj=laea +ellps=WGS84 +lon_0=-95 +lat_0=60 +units=m"</span>
-<span class="no">canada</span> <span class="kw">=</span> <span class="kw pkg">dplyr</span><span class="kw ns">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="no">world</span>, <span class="no">name_long</span> <span class="kw">==</span> <span class="st">"Canada"</span>)
-<span class="no">new_canada</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_transform.html">st_transform</a></span>(<span class="no">canada</span>, <span class="no">new_p4s</span>)
-<span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span>(<span class="kw">mfrow</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>, <span class="fl">2</span>))
-<span class="fu"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_geometry.html">st_geometry</a></span>(<span class="no">canada</span>), <span class="kw">graticule</span> <span class="kw">=</span> <span class="fl">TRUE</span>, <span class="kw">axes</span> <span class="kw">=</span> <span class="fl">TRUE</span>)
-<span class="fu"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_geometry.html">st_geometry</a></span>(<span class="no">new_canada</span>), <span class="kw">graticule</span> <span class="kw">=</span> <span class="fl">TRUE</span>, <span class="kw">axes</span> <span class="kw">=</span> <span class="fl">TRUE</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb8"><pre class="downlit">
+<span class="kw">new_p4s</span> <span class="op">=</span> <span class="st">"+proj=laea +ellps=WGS84 +lon_0=-95 +lat_0=60 +units=m"</span>
+<span class="kw">canada</span> <span class="op">=</span> <span class="kw">dplyr</span>::<span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="kw">world</span>, <span class="kw">name_long</span> <span class="op">==</span> <span class="st">"Canada"</span>)
+<span class="kw">new_canada</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_transform.html">st_transform</a></span>(<span class="kw">canada</span>, <span class="kw">new_p4s</span>)
+<span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span>(mfrow = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>, <span class="fl">2</span>))
+<span class="fu"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_geometry.html">st_geometry</a></span>(<span class="kw">canada</span>), graticule = <span class="fl">TRUE</span>, axes = <span class="fl">TRUE</span>)
+<span class="fu"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_geometry.html">st_geometry</a></span>(<span class="kw">new_canada</span>), graticule = <span class="fl">TRUE</span>, axes = <span class="fl">TRUE</span>)
+</pre></div>
 <p><img src="solutions06_files/figure-html/unnamed-chunk-5-1.png" width="700"></p>
 </div>
   </div>

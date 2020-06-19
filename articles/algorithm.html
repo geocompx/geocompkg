@@ -55,13 +55,13 @@
 
       
 
-      </header><div class="row">
+      </header><script src="algorithm_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Algorithms Extended</h1>
                         <h4 class="author">Robin Lovelace, Jakub Nowosad, Jannes Muenchow</h4>
             
-            <h4 class="date">2020-04-21</h4>
+            <h4 class="date">2020-06-19</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/Robinlovelace/geocompr/blob/master/vignettes/algorithm.Rmd"><code>vignettes/algorithm.Rmd</code></a></small>
       <div class="hidden name"><code>algorithm.Rmd</code></div>
@@ -72,40 +72,52 @@
     
 <p>This vignette provides some further detail on the chapter Scripts, algorithms and functions (see <a href="https://geocompr.robinlovelace.net/algorithms.html" class="uri">https://geocompr.robinlovelace.net/algorithms.html</a> ) of <a href="https://geocompr.github.io/">the Geocomputation with R book</a>.</p>
 <p>It starts with the same input data:</p>
-<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="no">x_coords</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">10</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">12</span>, <span class="fl">20</span>, <span class="fl">10</span>)
-<span class="no">y_coords</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">10</span>, <span class="fl">20</span>, <span class="fl">15</span>, <span class="fl">0</span>)
-<span class="no">poly_mat</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span>(<span class="no">x_coords</span>, <span class="no">y_coords</span>)
-<span class="no">Origin</span> <span class="kw">=</span> <span class="no">poly_mat</span>[<span class="fl">1</span>, ] <span class="co"># create a point representing the origin</span>
-<span class="no">T1</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span>(<span class="no">Origin</span>, <span class="no">poly_mat</span>[<span class="fl">2</span>:<span class="fl">3</span>, ], <span class="no">Origin</span>) <span class="co"># create 'triangle matrix'</span>
-<span class="no">C1</span> <span class="kw">=</span> (<span class="no">T1</span>[<span class="fl">1</span>, , <span class="kw">drop</span> <span class="kw">=</span> <span class="fl">FALSE</span>] + <span class="no">T1</span>[<span class="fl">2</span>, , <span class="kw">drop</span> <span class="kw">=</span> <span class="fl">FALSE</span>] + <span class="no">T1</span>[<span class="fl">3</span>, , <span class="kw">drop</span> <span class="kw">=</span> <span class="fl">FALSE</span>]) / <span class="fl">3</span> <span class="co"># find centroid</span></pre></body></html></div>
-<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="no">t_area</span> <span class="kw">=</span> <span class="kw">function</span>(<span class="no">x</span>) {
+<div class="sourceCode" id="cb1"><pre class="downlit">
+<span class="kw">x_coords</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">10</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">12</span>, <span class="fl">20</span>, <span class="fl">10</span>)
+<span class="kw">y_coords</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">10</span>, <span class="fl">20</span>, <span class="fl">15</span>, <span class="fl">0</span>)
+<span class="kw">poly_mat</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span>(<span class="kw">x_coords</span>, <span class="kw">y_coords</span>)
+<span class="kw">Origin</span> <span class="op">=</span> <span class="kw">poly_mat</span>[<span class="fl">1</span>, ] <span class="co"># create a point representing the origin</span>
+<span class="kw">T1</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span>(<span class="kw">Origin</span>, <span class="kw">poly_mat</span>[<span class="fl">2</span><span class="op">:</span><span class="fl">3</span>, ], <span class="kw">Origin</span>) <span class="co"># create 'triangle matrix'</span>
+<span class="kw">C1</span> <span class="op">=</span> (<span class="kw">T1</span>[<span class="fl">1</span>, , drop = <span class="fl">FALSE</span>] <span class="op">+</span> <span class="kw">T1</span>[<span class="fl">2</span>, , drop = <span class="fl">FALSE</span>] <span class="op">+</span> <span class="kw">T1</span>[<span class="fl">3</span>, , drop = <span class="fl">FALSE</span>]) <span class="op">/</span> <span class="fl">3</span> <span class="co"># find centroid</span>
+</pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit">
+<span class="kw">t_area</span> <span class="op">=</span> <span class="fu">function</span>(<span class="kw">x</span>) {
   <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">abs</a></span>(
-    <span class="no">x</span>[<span class="fl">1</span>, <span class="fl">1</span>] * (<span class="no">x</span>[<span class="fl">2</span>, <span class="fl">2</span>] - <span class="no">x</span>[<span class="fl">3</span>, <span class="fl">2</span>]) +
-    <span class="no">x</span>[<span class="fl">2</span>, <span class="fl">1</span>] * (<span class="no">x</span>[<span class="fl">3</span>, <span class="fl">2</span>] - <span class="no">x</span>[<span class="fl">1</span>, <span class="fl">2</span>]) +
-    <span class="no">x</span>[<span class="fl">3</span>, <span class="fl">1</span>] * (<span class="no">x</span>[<span class="fl">1</span>, <span class="fl">2</span>] - <span class="no">x</span>[<span class="fl">2</span>, <span class="fl">2</span>])
-  ) / <span class="fl">2</span>
-}</pre></body></html></div>
+    <span class="kw">x</span>[<span class="fl">1</span>, <span class="fl">1</span>] <span class="op">*</span> (<span class="kw">x</span>[<span class="fl">2</span>, <span class="fl">2</span>] <span class="op">-</span> <span class="kw">x</span>[<span class="fl">3</span>, <span class="fl">2</span>]) <span class="op">+</span>
+    <span class="kw">x</span>[<span class="fl">2</span>, <span class="fl">1</span>] <span class="op">*</span> (<span class="kw">x</span>[<span class="fl">3</span>, <span class="fl">2</span>] <span class="op">-</span> <span class="kw">x</span>[<span class="fl">1</span>, <span class="fl">2</span>]) <span class="op">+</span>
+    <span class="kw">x</span>[<span class="fl">3</span>, <span class="fl">1</span>] <span class="op">*</span> (<span class="kw">x</span>[<span class="fl">1</span>, <span class="fl">2</span>] <span class="op">-</span> <span class="kw">x</span>[<span class="fl">2</span>, <span class="fl">2</span>])
+  ) <span class="op">/</span> <span class="fl">2</span>
+}
+</pre></div>
 <p>The function <code>t_area</code> generalizes the solution by taking any object <code>x</code>, assumed to have the same dimensions as the triangle represented in <code>T1</code>. We can verify it works on the triangle matrix <code>T1</code> as follows:</p>
-<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="fu">t_area</span>(<span class="no">T1</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb3"><pre class="downlit">
+<span class="fu">t_area</span>(<span class="kw">T1</span>)
+</pre></div>
 <pre><code>## [1] 50</code></pre>
 <p>Likewise we can create a function that finds the triangle’s centroid:</p>
-<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="no">t_centroid</span> <span class="kw">=</span> <span class="kw">function</span>(<span class="no">x</span>) {
-  (<span class="no">x</span>[<span class="fl">1</span>, ] + <span class="no">x</span>[<span class="fl">2</span>, ] + <span class="no">x</span>[<span class="fl">3</span>, ]) / <span class="fl">3</span>
+<div class="sourceCode" id="cb5"><pre class="downlit">
+<span class="kw">t_centroid</span> <span class="op">=</span> <span class="fu">function</span>(<span class="kw">x</span>) {
+  (<span class="kw">x</span>[<span class="fl">1</span>, ] <span class="op">+</span> <span class="kw">x</span>[<span class="fl">2</span>, ] <span class="op">+</span> <span class="kw">x</span>[<span class="fl">3</span>, ]) <span class="op">/</span> <span class="fl">3</span>
 }
-<span class="fu">t_centroid</span>(<span class="no">T1</span>)</pre></body></html></div>
+<span class="fu">t_centroid</span>(<span class="kw">T1</span>)
+</pre></div>
 <pre><code>## x_coords y_coords 
 ## 3.333333 3.333333</code></pre>
 <p>The next stage is to create the second triangle and calculate its area and centroid. This is done in the code chunk below, which binds the 3<sup>rd</sup> and 4<sup>th</sup> coordinates onto the 1<sup>st</sup>, and uses the same functions we created above to calculate its area and width:</p>
-<div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="no">T2</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span>(<span class="no">Origin</span>, <span class="no">poly_mat</span>[<span class="fl">3</span>:<span class="fl">4</span>, ], <span class="no">Origin</span>)
-<span class="no">A2</span> <span class="kw">=</span> <span class="fu">t_area</span>(<span class="no">T2</span>)
-<span class="no">C2</span> <span class="kw">=</span> <span class="fu">t_centroid</span>(<span class="no">T2</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb7"><pre class="downlit">
+<span class="kw">T2</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span>(<span class="kw">Origin</span>, <span class="kw">poly_mat</span>[<span class="fl">3</span><span class="op">:</span><span class="fl">4</span>, ], <span class="kw">Origin</span>)
+<span class="kw">A2</span> <span class="op">=</span> <span class="fu">t_area</span>(<span class="kw">T2</span>)
+<span class="kw">C2</span> <span class="op">=</span> <span class="fu">t_centroid</span>(<span class="kw">T2</span>)
+</pre></div>
 <p>From this point it is not a big leap to see how to create the 3<sup>rd</sup> and final triangle that constitutes the polygon represented by <code>poly_mat</code>.</p>
 <p>Note: it would also be possible to create the polygons with the <strong>decido</strong> package (code not run):</p>
-<div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="no">ind</span> <span class="kw">=</span> <span class="kw pkg">decido</span><span class="kw ns">::</span><span class="fu">earcut</span>(<span class="no">poly_mat</span>)
-<span class="kw pkg">decido</span><span class="kw ns">::</span><span class="fu">plot_ears</span>(<span class="no">poly_mat</span>, <span class="kw">idx</span> <span class="kw">=</span> <span class="no">ind</span>)
-<span class="no">i</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span>(<span class="no">ind</span>), <span class="kw">by</span> <span class="kw">=</span> <span class="fl">3</span>)
-<span class="no">i_list</span> <span class="kw">=</span> <span class="kw pkg">purrr</span><span class="kw ns">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html">map</a></span>(<span class="no">i</span>, ~<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="no">.</span>:(<span class="no">.</span>+<span class="fl">2</span>), <span class="no">.</span>))
-<span class="no">T_all</span> <span class="kw">=</span> <span class="kw pkg">purrr</span><span class="kw ns">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html">map</a></span>(<span class="no">i_list</span>, ~<span class="no">poly_mat</span>[<span class="no">ind</span>[<span class="no">.</span>], ])</pre></body></html></div>
+<div class="sourceCode" id="cb8"><pre class="downlit">
+<span class="kw">ind</span> <span class="op">=</span> <span class="kw">decido</span>::<span class="fu">earcut</span>(<span class="kw">poly_mat</span>)
+<span class="kw">decido</span>::<span class="fu">plot_ears</span>(<span class="kw">poly_mat</span>, idx = <span class="kw">ind</span>)
+<span class="kw">i</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span>(<span class="kw">ind</span>), by = <span class="fl">3</span>)
+<span class="kw">i_list</span> <span class="op">=</span> <span class="kw">purrr</span>::<span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html">map</a></span>(<span class="kw">i</span>, <span class="op">~</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="kw">.</span><span class="op">:</span>(<span class="kw">.</span><span class="op">+</span><span class="fl">2</span>), <span class="kw">.</span>))
+<span class="kw">T_all</span> <span class="op">=</span> <span class="kw">purrr</span>::<span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html">map</a></span>(<span class="kw">i_list</span>, <span class="op">~</span><span class="kw">poly_mat</span>[<span class="kw">ind</span>[<span class="kw">.</span>], ])
+</pre></div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

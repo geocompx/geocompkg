@@ -55,13 +55,13 @@
 
       
 
-      </header><div class="row">
+      </header><script src="tidyverse-pitfalls_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Spatial data and the tidyverse: pitfalls to avoid</h1>
                         <h4 class="author">Robin Lovelace, Jakub Nowosad, Jannes Muenchow</h4>
             
-            <h4 class="date">2020-04-21</h4>
+            <h4 class="date">2020-06-19</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/Robinlovelace/geocompr/blob/master/vignettes/tidyverse-pitfalls.Rmd"><code>vignettes/tidyverse-pitfalls.Rmd</code></a></small>
       <div class="hidden name"><code>tidyverse-pitfalls.Rmd</code></div>
@@ -73,13 +73,19 @@
 <div id="prerequisites" class="section level2">
 <h2 class="hasAnchor">
 <a href="#prerequisites" class="anchor"></a>Prerequisites</h2>
-<p>This article is about working with spatial data ‘in the tidyverse’. By this we mean handling spatial datasets using functions (such as <code><a href="https://rdrr.io/pkg/sf/man/reexports.html">%&gt;%</a></code> and <code><a href="https://rdrr.io/r/stats/filter.html">filter()</a></code>) and concepts (such as type stability) from R packages that are part of the metapackage <strong>tidyverse</strong>. You should already have an R installation set-up for spatial data analysis <a href="https://geocompr.robinlovelace.net/spatial-class.html">having read Chapter 2</a> of <a href="https://geocompr.github.io/">the Geocomputation with R book</a>.</p>
+<p>This article is about working with spatial data ‘in the tidyverse’. By this we mean handling spatial datasets using functions (such as <code><a href="https://rdrr.io/pkg/magrittr/man/pipe.html">%&gt;%</a></code> and <code><a href="https://dplyr.tidyverse.org/reference/filter.html">filter()</a></code>) and concepts (such as type stability) from R packages that are part of the metapackage <strong>tidyverse</strong>. You should already have an R installation set-up for spatial data analysis <a href="https://geocompr.robinlovelace.net/spatial-class.html">having read Chapter 2</a> of <a href="https://geocompr.github.io/">the Geocomputation with R book</a>.</p>
 <p>If not take a read there now. In any case the <strong>tidyverse</strong> can be installed from CRAN with the following command:</p>
-<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"tidyverse"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb1"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"tidyverse"</span>)
+</pre></div>
 <p>The <strong>tidyverse</strong> works with spatial data thanks to <strong>sf</strong> which is quite a recent package (first release in 2016). If you have not already got it, get <strong>sf</strong> with:</p>
-<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"sf"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb2"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"sf"</span>)
+</pre></div>
 <p>The we will also uses a dataset from the <strong>spData</strong> package, which can be installed with:</p>
-<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"spData"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb3"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"spData"</span>)
+</pre></div>
 </div>
 <div id="context" class="section level2">
 <h2 class="hasAnchor">
@@ -107,8 +113,10 @@
 <h2 class="hasAnchor">
 <a href="#loading-spatial-packages" class="anchor"></a>Loading spatial packages</h2>
 <p>Now you know the context and have your R setup sorted, it’s time to begin the practical. Execute the following 2 commands to attach spatial data libraries:</p>
-<div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">sf</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">raster</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb4"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://r-spatial.github.io/sf">sf</a></span>)
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://rspatial.org/raster">raster</a></span>)
+</pre></div>
 <p>Notice the messages: <strong>sf</strong> uses some C libraries behind the scenes. <strong>raster</strong> depends on the older <strong>sp</strong> package which <strong>sf</strong> replaces (confusing I know!).</p>
 <p>The next step is to attach the tidyverse, which brings us onto the first pitfall.</p>
 </div>
@@ -116,7 +124,9 @@
 <h2 class="hasAnchor">
 <a href="#pitfall-name-clashes" class="anchor"></a>Pitfall: name clashes</h2>
 <p>Just loading the tidyverse reveals a pitfall of using spatial data with the tidyverse that affects the <strong>raster</strong> package in particular:</p>
-<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">tidyverse</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb5"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw">tidyverse</span>)
+</pre></div>
 <p>The first chunk of output shows that the tidyverse is attaching its packages. ✔ yes we want <strong>ggplot2</strong>, ✔ we want <strong>dplyr</strong> etc. But we also get less positive messages. ✖ Doh! there are many conflicts.</p>
 <p>In the context of spatial data this may only be a problem if you use the <strong>raster</strong> package. The final ✖ shows that <strong>dplyr</strong>’s <code><a href="https://rdrr.io/pkg/raster/man/select.html">select()</a></code> function has boshed (technically speaking, masked) <strong>raster</strong>’s select function. This can cause issues. To avoid this pitfall we suggest using <code><a href="https://dplyr.tidyverse.org/reference/select.html">dplyr::select()</a></code> and <code><a href="https://rdrr.io/pkg/raster/man/select.html">raster::select()</a></code> rather than just <code><a href="https://rdrr.io/pkg/raster/man/select.html">select()</a></code> when using this conflicted function name if you use <strong>raster</strong> and the <strong>tidyverse</strong>.</p>
 </div>
@@ -130,48 +140,62 @@
 <li>Together with the <strong>rgdal</strong> and <strong>rgeos</strong> package, it creates a powerful tool to works with spatial data</li>
 <li>Many spatial R packages still depend on the <strong>sp</strong> package, therefore it is important to know how to convert <strong>sp</strong> to and from <strong>sf</strong> objects</li>
 </ul>
-<div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">spData</span>)
-<span class="no">world_sp</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/sf/man/coerce-methods.html">as</a></span>(<span class="no">world</span>, <span class="st">"Spatial"</span>)
-<span class="no">world_sf</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_as_sf.html">st_as_sf</a></span>(<span class="no">world_sp</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb6"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://nowosad.github.io/spData">spData</a></span>)
+<span class="kw">world_sp</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/sf/man/coerce-methods.html">as</a></span>(<span class="kw">world</span>, <span class="st">"Spatial"</span>)
+<span class="kw">world_sf</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_as_sf.html">st_as_sf</a></span>(<span class="kw">world_sp</span>)
+</pre></div>
 <ul>
 <li>The structures in the <strong>sp</strong> packages are more complicated - <code><a href="https://rdrr.io/r/utils/str.html">str(world_sf)</a></code> vs <code><a href="https://rdrr.io/r/utils/str.html">str(world_sp)</a></code>
 </li>
 <li>
 <strong>sp</strong> doesn’t play well with the <strong>tidyverse</strong>:</li>
 </ul>
-<div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="no">world_sp</span> <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span>(<span class="no">name_long</span> <span class="kw">==</span> <span class="st">"England"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb7"><pre class="downlit">
+<span class="kw">world_sp</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="kw">name_long</span> <span class="op">==</span> <span class="st">"England"</span>)
+</pre></div>
 <p><code>Error in UseMethod("filter_") :    no applicable method for 'filter_' applied to an object of class "c('SpatialPolygonsDataFrame', 'SpatialPolygons', 'Spatial')"</code></p>
 </div>
 <div id="pitfall-multipolygon-objects" class="section level2">
 <h2 class="hasAnchor">
 <a href="#pitfall-multipolygon-objects" class="anchor"></a>Pitfall: multipolygon objects</h2>
 <p>This pitfall is not specific to the tidyverse but is worth being aware of. Let’s create a buffer around London of 500 km:</p>
-<div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="no">lnd_buff</span> <span class="kw">=</span> <span class="no">lnd</span>[<span class="fl">1</span>, ] <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_transform.html">st_transform</a></span>(<span class="kw">crs</span> <span class="kw">=</span> <span class="fl">27700</span>) <span class="kw">%&gt;%</span>  <span class="co"># uk CRS</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/sf/man/geos_unary.html">st_buffer</a></span>(<span class="fl">500000</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_transform.html">st_transform</a></span>(<span class="kw">crs</span> <span class="kw">=</span> <span class="fl">4326</span>)
-<span class="no">near_lnd</span> <span class="kw">=</span> <span class="no">world</span>[<span class="no">lnd_buff</span>, ]
-<span class="fu"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(<span class="no">near_lnd</span>$<span class="no">geom</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb8"><pre class="downlit">
+<span class="kw">lnd_buff</span> <span class="op">=</span> <span class="kw">lnd</span>[<span class="fl">1</span>, ] <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_transform.html">st_transform</a></span>(crs = <span class="fl">27700</span>) <span class="op">%&gt;%</span>  <span class="co"># uk CRS</span>
+  <span class="fu"><a href="https://rdrr.io/pkg/sf/man/geos_unary.html">st_buffer</a></span>(<span class="fl">500000</span>) <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_transform.html">st_transform</a></span>(crs = <span class="fl">4326</span>)
+<span class="kw">near_lnd</span> <span class="op">=</span> <span class="kw">world</span>[<span class="kw">lnd_buff</span>, ]
+<span class="fu"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(<span class="kw">near_lnd</span><span class="op">$</span><span class="kw">geom</span>)
+</pre></div>
 <p>What is going with the country miles away?</p>
 <p>The issue is that some objects have multiple geometries:</p>
-<div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_geometry_type.html">st_geometry_type</a></span>(<span class="no">near_lnd</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb9"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_geometry_type.html">st_geometry_type</a></span>(<span class="kw">near_lnd</span>)
+</pre></div>
 <p>Which have more than 1?</p>
-<div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="no">near_lnd</span>$<span class="no">name_long</span>,
-           <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span>(<span class="no">near_lnd</span>$<span class="no">geom</span>, <span class="no">length</span>))</pre></body></html></div>
+<div class="sourceCode" id="cb10"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="kw">near_lnd</span><span class="op">$</span><span class="kw">name_long</span>,
+           <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span>(<span class="kw">near_lnd</span><span class="op">$</span><span class="kw">geom</span>, <span class="kw">length</span>))
+</pre></div>
 <p>We can resolve this issue by casting them:</p>
-<div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="no">world_poly</span> <span class="kw">=</span> <span class="no">world</span> <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_cast.html">st_cast</a></span>(<span class="kw">to</span> <span class="kw">=</span> <span class="st">"POLYGON"</span>)
-<span class="no">near_lnd_new</span> <span class="kw">=</span> <span class="no">world_poly</span>[<span class="no">lnd_buff</span>, ]
-<span class="fu"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_geometry.html">st_geometry</a></span>(<span class="no">near_lnd_new</span>))</pre></body></html></div>
+<div class="sourceCode" id="cb11"><pre class="downlit">
+<span class="kw">world_poly</span> <span class="op">=</span> <span class="kw">world</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_cast.html">st_cast</a></span>(to = <span class="st">"POLYGON"</span>)
+<span class="kw">near_lnd_new</span> <span class="op">=</span> <span class="kw">world_poly</span>[<span class="kw">lnd_buff</span>, ]
+<span class="fu"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_geometry.html">st_geometry</a></span>(<span class="kw">near_lnd_new</span>))
+</pre></div>
 </div>
 <div id="pitfall-spatial-subsetting" class="section level2">
 <h2 class="hasAnchor">
 <a href="#pitfall-spatial-subsetting" class="anchor"></a>Pitfall: spatial subsetting</h2>
 <p>The previous code chunk shows how spatial subsetting works in base R, with <code>near_lnd = world_poly[lnd_buff, ]</code>.</p>
 <p>You can also do tidy spatial subsetting:</p>
-<div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="no">near_lnd_tidy</span> <span class="kw">=</span> <span class="no">world</span> <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/sf/man/geos_binary_pred.html">st_intersects</a></span>(<span class="no">.</span>, <span class="no">lnd_buff</span>, <span class="kw">sparse</span> <span class="kw">=</span> <span class="fl">FALSE</span>))</pre></body></html></div>
+<div class="sourceCode" id="cb12"><pre class="downlit">
+<span class="kw">near_lnd_tidy</span> <span class="op">=</span> <span class="kw">world</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/sf/man/geos_binary_pred.html">st_intersects</a></span>(<span class="kw">.</span>, <span class="kw">lnd_buff</span>, sparse = <span class="fl">FALSE</span>))
+</pre></div>
 <p>But there are pitfalls:</p>
 <ul>
 <li>It’s verbose (you need <code>sparse = FALSE</code> in the spatial predicate function)</li>
@@ -181,8 +205,10 @@
 <div id="pitfall-row-names" class="section level2">
 <h2 class="hasAnchor">
 <a href="#pitfall-row-names" class="anchor"></a>Pitfall: row names</h2>
-<div class="sourceCode" id="cb13"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/row.names.html">row.names</a></span>(<span class="no">near_lnd_tidy</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/row.names.html">row.names</a></span>(<span class="no">near_lnd</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb13"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/row.names.html">row.names</a></span>(<span class="kw">near_lnd_tidy</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/row.names.html">row.names</a></span>(<span class="kw">near_lnd</span>)
+</pre></div>
 <ul>
 <li>Consequences for joining - rownames can be useful!</li>
 </ul>
@@ -191,20 +217,28 @@
 <div id="pitfall-attribute-alteration" class="section level2">
 <h2 class="hasAnchor">
 <a href="#pitfall-attribute-alteration" class="anchor"></a>Pitfall: attribute alteration</h2>
-<div class="sourceCode" id="cb14"><html><body><pre class="r"><span class="no">world</span> <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span>(<span class="no">name_long</span> <span class="kw">==</span> <span class="st">"United Kingdom"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb14"><pre class="downlit">
+<span class="kw">world</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="kw">name_long</span> <span class="op">==</span> <span class="st">"United Kingdom"</span>)
+</pre></div>
 <p>Base R equivalent:</p>
-<div class="sourceCode" id="cb15"><html><body><pre class="r"><span class="no">world</span>[<span class="no">world</span>$<span class="no">name_long</span> <span class="kw">==</span> <span class="st">"United Kingdom"</span>, ]</pre></body></html></div>
+<div class="sourceCode" id="cb15"><pre class="downlit">
+<span class="kw">world</span>[<span class="kw">world</span><span class="op">$</span><span class="kw">name_long</span> <span class="op">==</span> <span class="st">"United Kingdom"</span>, ]
+</pre></div>
 <p>Question:</p>
-<div class="sourceCode" id="cb16"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/identical.html">identical</a></span>(
-  <span class="no">world</span> <span class="kw">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span>(<span class="no">name_long</span> <span class="kw">==</span> <span class="st">"United Kingdom"</span>),
-  <span class="no">world</span>[<span class="no">world</span>$<span class="no">name_long</span> <span class="kw">==</span> <span class="st">"United Kingdom"</span>, ]
-) <span class="co"># ?</span></pre></body></html></div>
+<div class="sourceCode" id="cb16"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/identical.html">identical</a></span>(
+  <span class="kw">world</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="kw">name_long</span> <span class="op">==</span> <span class="st">"United Kingdom"</span>),
+  <span class="kw">world</span>[<span class="kw">world</span><span class="op">$</span><span class="kw">name_long</span> <span class="op">==</span> <span class="st">"United Kingdom"</span>, ]
+) <span class="co"># ?</span>
+</pre></div>
 <p>Row names usually don’t matter but they can bite.</p>
-<div class="sourceCode" id="cb17"><html><body><pre class="r"><span class="no">u1</span> <span class="kw">=</span> <span class="no">world</span> <span class="kw">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span>(<span class="no">name_long</span> <span class="kw">==</span> <span class="st">"United Kingdom"</span>)
-<span class="no">u2</span> <span class="kw">=</span> <span class="no">world</span>[<span class="no">world</span>$<span class="no">name_long</span> <span class="kw">==</span> <span class="st">"United Kingdom"</span>, ]
-<span class="fu"><a href="https://rdrr.io/r/base/row.names.html">row.names</a></span>(<span class="no">u2</span>) <span class="kw">=</span> <span class="fl">1</span>
-<span class="fu"><a href="https://rdrr.io/r/base/identical.html">identical</a></span>(<span class="no">u1</span>, <span class="no">u2</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb17"><pre class="downlit">
+<span class="kw">u1</span> <span class="op">=</span> <span class="kw">world</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="kw">name_long</span> <span class="op">==</span> <span class="st">"United Kingdom"</span>)
+<span class="kw">u2</span> <span class="op">=</span> <span class="kw">world</span>[<span class="kw">world</span><span class="op">$</span><span class="kw">name_long</span> <span class="op">==</span> <span class="st">"United Kingdom"</span>, ]
+<span class="fu"><a href="https://rdrr.io/r/base/row.names.html">row.names</a></span>(<span class="kw">u2</span>) <span class="op">=</span> <span class="fl">1</span>
+<span class="fu"><a href="https://rdrr.io/r/base/identical.html">identical</a></span>(<span class="kw">u1</span>, <span class="kw">u2</span>)
+</pre></div>
 <ul>
 <li>Advanced challenge: how to make u1 and u2 identical?</li>
 </ul>
@@ -212,15 +246,19 @@
 <div id="pitfall-binding-rows" class="section level2">
 <h2 class="hasAnchor">
 <a href="#pitfall-binding-rows" class="anchor"></a>Pitfall: binding rows</h2>
-<div class="sourceCode" id="cb18"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span>(<span class="no">near_lnd</span>, <span class="no">near_lnd</span>) <span class="co"># works</span>
-<span class="fu">bind_rows</span>(<span class="no">near_lnd</span>, <span class="no">near_lnd</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb18"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span>(<span class="kw">near_lnd</span>, <span class="kw">near_lnd</span>) <span class="co"># works</span>
+<span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind.html">bind_rows</a></span>(<span class="kw">near_lnd</span>, <span class="kw">near_lnd</span>)
+</pre></div>
 <pre><code>Error in .subset2(x, i, exact = exact) : 
   attempt to select less than one element in get1index</code></pre>
 <p>But this does:</p>
-<div class="sourceCode" id="cb20"><html><body><pre class="r"><span class="no">near_lnd_data</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_geometry.html">st_set_geometry</a></span>(<span class="no">near_lnd</span>, <span class="kw">NULL</span>)
-<span class="no">d</span> <span class="kw">=</span> <span class="fu">bind_rows</span>(<span class="no">near_lnd_data</span>, <span class="no">near_lnd_data</span>)
-<span class="no">d_sf</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/sf/man/sf.html">st_sf</a></span>(<span class="no">d</span>, <span class="kw">geometry</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="no">near_lnd</span>$<span class="no">geom</span>, <span class="no">near_lnd</span>$<span class="no">geom</span>))
-<span class="fu"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(<span class="no">d_sf</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb20"><pre class="downlit">
+<span class="kw">near_lnd_data</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_geometry.html">st_set_geometry</a></span>(<span class="kw">near_lnd</span>, <span class="kw">NULL</span>)
+<span class="kw">d</span> <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind.html">bind_rows</a></span>(<span class="kw">near_lnd_data</span>, <span class="kw">near_lnd_data</span>)
+<span class="kw">d_sf</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/sf/man/sf.html">st_sf</a></span>(<span class="kw">d</span>, geometry = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="kw">near_lnd</span><span class="op">$</span><span class="kw">geom</span>, <span class="kw">near_lnd</span><span class="op">$</span><span class="kw">geom</span>))
+<span class="fu"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(<span class="kw">d_sf</span>)
+</pre></div>
 </div>
 <div id="raster-data-in-the-tidyverse" class="section level2">
 <h2 class="hasAnchor">

@@ -55,7 +55,7 @@
 
       
 
-      </header><script src="solutions13_files/htmlwidgets-1.5.1/htmlwidgets.js"></script><script src="solutions13_files/jquery-1.12.4/jquery.min.js"></script><link href="solutions13_files/leaflet-1.3.1/leaflet.css" rel="stylesheet">
+      </header><script src="solutions13_files/accessible-code-block-0.0.1/empty-anchor.js"></script><script src="solutions13_files/htmlwidgets-1.5.1/htmlwidgets.js"></script><script src="solutions13_files/jquery-1.12.4/jquery.min.js"></script><link href="solutions13_files/leaflet-1.3.1/leaflet.css" rel="stylesheet">
 <script src="solutions13_files/leaflet-1.3.1/leaflet.js"></script><link href="solutions13_files/leafletfix-1.0.0/leafletfix.css" rel="stylesheet">
 <script src="solutions13_files/Proj4Leaflet-1.0.1/proj4-compressed.js"></script><script src="solutions13_files/Proj4Leaflet-1.0.1/proj4leaflet.js"></script><link href="solutions13_files/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet">
 <script src="solutions13_files/leaflet-binding-2.0.3/leaflet.js"></script><div class="row">
@@ -64,7 +64,7 @@
       <h1 data-toc-skip>Chapter 13: Geomarketing</h1>
                         <h4 class="author">Robin Lovelace, Jakub Nowosad, Jannes Muenchow</h4>
             
-            <h4 class="date">2020-04-21</h4>
+            <h4 class="date">2020-06-19</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/Robinlovelace/geocompr/blob/master/vignettes/solutions13.Rmd"><code>vignettes/solutions13.Rmd</code></a></small>
       <div class="hidden name"><code>solutions13.Rmd</code></div>
@@ -77,18 +77,21 @@
 <h2 class="hasAnchor">
 <a href="#prerequisites" class="anchor"></a>Prerequisites</h2>
 <p>The solutions assume the following packages are attached (other packages will be attached when needed):</p>
-<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">leaflet</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">sf</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">sp</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">dplyr</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">raster</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">spData</span>)</pre></body></html></div>
-<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="st">"census_de"</span>, <span class="kw">package</span> <span class="kw">=</span> <span class="st">"spDataLarge"</span>)
-<span class="no">input</span> <span class="kw">=</span> <span class="kw pkg">dplyr</span><span class="kw ns">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(<span class="no">census_de</span>, <span class="kw">x</span> <span class="kw">=</span> <span class="no">x_mp_1km</span>, <span class="kw">y</span> <span class="kw">=</span> <span class="no">y_mp_1km</span>, <span class="kw">pop</span> <span class="kw">=</span> <span class="no">Einwohner</span>,
-                      <span class="kw">women</span> <span class="kw">=</span> <span class="no">Frauen_A</span>, <span class="kw">mean_age</span> <span class="kw">=</span> <span class="no">Alter_D</span>,
-                      <span class="kw">hh_size</span> <span class="kw">=</span> <span class="no">HHGroesse_D</span>)
-<span class="no">input_tidy</span> <span class="kw">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate_all.html">mutate_all</a></span>(<span class="no">input</span>, <span class="fu"><a href="https://dplyr.tidyverse.org/reference/funs.html">funs</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span>(<span class="no">.</span> <span class="kw">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(-<span class="fl">1</span>, -<span class="fl">9</span>), <span class="fl">NA</span>, <span class="no">.</span>)))
-<span class="co">#&gt; Warning: funs() is soft deprecated as of dplyr 0.8.0</span>
+<div class="sourceCode" id="cb1"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="http://rstudio.github.io/leaflet">leaflet</a></span>)
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://r-spatial.github.io/sf">sf</a></span>)
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/edzer/sp">sp</a></span>)
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://dplyr.tidyverse.org">dplyr</a></span>)
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://rspatial.org/raster">raster</a></span>)
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://nowosad.github.io/spData">spData</a></span>)
+</pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="st">"census_de"</span>, package = <span class="st">"spDataLarge"</span>)
+<span class="kw">input</span> <span class="op">=</span> <span class="kw">dplyr</span>::<span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(<span class="kw">census_de</span>, x = <span class="kw">x_mp_1km</span>, y = <span class="kw">y_mp_1km</span>, pop = <span class="kw">Einwohner</span>,
+                      women = <span class="kw">Frauen_A</span>, mean_age = <span class="kw">Alter_D</span>,
+                      hh_size = <span class="kw">HHGroesse_D</span>)
+<span class="kw">input_tidy</span> <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate_all.html">mutate_all</a></span>(<span class="kw">input</span>, <span class="fu"><a href="https://dplyr.tidyverse.org/reference/funs.html">funs</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span>(<span class="kw">.</span> <span class="op">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="op">-</span><span class="fl">1</span>, <span class="op">-</span><span class="fl">9</span>), <span class="fl">NA</span>, <span class="kw">.</span>)))
+<span class="co">#&gt; Warning: `funs()` is deprecated as of dplyr 0.8.0.</span>
 <span class="co">#&gt; Please use a list of either functions or lambdas: </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;   # Simple named list: </span>
@@ -99,7 +102,9 @@
 <span class="co">#&gt; </span>
 <span class="co">#&gt;   # Using lambdas</span>
 <span class="co">#&gt;   list(~ mean(., trim = .2), ~ median(., na.rm = TRUE))</span>
-<span class="co">#&gt; This warning is displayed once per session.</span></pre></body></html></div>
+<span class="co">#&gt; This warning is displayed once every 8 hours.</span>
+<span class="co">#&gt; Call `lifecycle::last_warnings()` to see where this warning was generated.</span>
+</pre></div>
 </div>
 <div id="chapter-13" class="section level1">
 <h1 class="hasAnchor">
@@ -107,158 +112,187 @@
 <ol style="list-style-type: decimal">
 <li>We have used <code><a href="https://rdrr.io/pkg/raster/man/rasterFromXYZ.html">raster::rasterFromXYZ()</a></code> to convert a <code>input_tidy</code> into a raster brick. Try to achieve the same with the help of the <code><a href="https://rdrr.io/pkg/sp/man/gridded-methods.html">sp::gridded()</a></code> function.</li>
 </ol>
-<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="no">input_tidy</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_as_sf.html">st_as_sf</a></span>(<span class="no">input_tidy</span>, <span class="kw">coords</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"x"</span>, <span class="st">"y"</span>))
+<div class="sourceCode" id="cb3"><pre class="downlit">
+<span class="kw">input_tidy</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_as_sf.html">st_as_sf</a></span>(<span class="kw">input_tidy</span>, coords = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"x"</span>, <span class="st">"y"</span>))
 <span class="co"># use the correct projection (see data description)</span>
-<span class="no">input_tidy</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_crs.html">st_set_crs</a></span>(<span class="no">input_tidy</span>, <span class="fl">3035</span>)
+<span class="kw">input_tidy</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_crs.html">st_set_crs</a></span>(<span class="kw">input_tidy</span>, <span class="fl">3035</span>)
 <span class="co"># convert into an sp-object</span>
-<span class="no">input_tidy</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/sf/man/coerce-methods.html">as</a></span>(<span class="no">input_tidy</span>, <span class="st">"Spatial"</span>)
-<span class="fu"><a href="https://rdrr.io/pkg/sp/man/gridded-methods.html">gridded</a></span>(<span class="no">input_tidy</span>) <span class="kw">=</span> <span class="fl">TRUE</span>
+<span class="kw">input_tidy</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/sf/man/coerce-methods.html">as</a></span>(<span class="kw">input_tidy</span>, <span class="st">"Spatial"</span>)
+<span class="co">#&gt; Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO"): Discarded</span>
+<span class="co">#&gt; datum Unknown based on GRS80 ellipsoid in CRS definition</span>
+<span class="fu"><a href="https://rdrr.io/pkg/sp/man/gridded-methods.html">gridded</a></span>(<span class="kw">input_tidy</span>) <span class="op">=</span> <span class="fl">TRUE</span>
 <span class="co"># convert into a raster stack</span>
-<span class="no">input_ras</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/stack.html">stack</a></span>(<span class="no">input_tidy</span>)</pre></body></html></div>
+<span class="kw">input_ras</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/stack.html">stack</a></span>(<span class="kw">input_tidy</span>)
+<span class="co">#&gt; Warning in proj4string(x): CRS object has comment, which is lost in output</span>
+
+<span class="co">#&gt; Warning in proj4string(x): Discarded datum Unknown based on GRS80 ellipsoid in</span>
+<span class="co">#&gt; CRS definition</span>
+
+<span class="co">#&gt; Warning in proj4string(x): Discarded datum Unknown based on GRS80 ellipsoid in</span>
+<span class="co">#&gt; CRS definition</span>
+</pre></div>
 <ol start="2" style="list-style-type: decimal">
 <li>Download the csv file containing inhabitant information for a 100 m cell resolution (<a href="https://www.zensus2011.de/SharedDocs/Downloads/DE/Pressemitteilung/DemografischeGrunddaten/csv_Bevoelkerung_100m_Gitter.zip?__blob=publicationFile&amp;v=3" class="uri">https://www.zensus2011.de/SharedDocs/Downloads/DE/Pressemitteilung/DemografischeGrunddaten/csv_Bevoelkerung_100m_Gitter.zip?__blob=publicationFile&amp;v=3</a>). Please note that the unzipped file has a size of 1.23 GB. To read it into R you can use <code><a href="https://readr.tidyverse.org/reference/read_delim.html">readr::read_csv</a></code>. This takes 30 seconds on my machine (16 GB RAM) <code><a href="https://Rdatatable.gitlab.io/data.table/reference/fread.html">data.table::fread()</a></code> might be even faster, and returns an object of class <code>data.table()</code>. Use <code>as.tibble()</code> to convert it into a tibble. Build an inhabitant raster, aggregate it to a cell resolution of 1 km, and compare the difference with the inhabitant raster (<code>inh</code>) we have created using class mean values.</li>
 </ol>
-<div class="sourceCode" id="cb4"><html><body><pre class="r">
+<div class="sourceCode" id="cb4"><pre class="downlit">
+
 <span class="co"># Coarse inhabitant raster (1 km resolution)</span>
 <span class="co">#*******************************************</span>
 
 <span class="co"># inhabitant raster (coarse resolution); this is one of the results of the </span>
 <span class="co"># previous exercise</span>
-<span class="no">inh_coarse</span> <span class="kw">=</span> <span class="no">input_ras</span>$<span class="no">pop</span>
+<span class="kw">inh_coarse</span> <span class="op">=</span> <span class="kw">input_ras</span><span class="op">$</span><span class="kw">pop</span>
 <span class="co"># reclassify, i.e. convert the classes into inhabitant numbers</span>
-<span class="no">rcl</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">125</span>, <span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">375</span>, <span class="fl">3</span>, <span class="fl">3</span>, <span class="fl">1250</span>, <span class="fl">4</span>, <span class="fl">4</span>, <span class="fl">3000</span>, <span class="fl">5</span>, <span class="fl">5</span>, <span class="fl">6000</span>,
-               <span class="fl">6</span>, <span class="fl">6</span>, <span class="fl">8000</span>), <span class="kw">ncol</span> <span class="kw">=</span> <span class="fl">3</span>, <span class="kw">byrow</span> <span class="kw">=</span> <span class="fl">TRUE</span>)
-<span class="no">inh_coarse</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/reclassify.html">reclassify</a></span>(<span class="no">inp_coarse</span>, <span class="kw">rcl</span> <span class="kw">=</span> <span class="no">rcl</span>, <span class="kw">right</span> <span class="kw">=</span> <span class="fl">NA</span>)
+<span class="kw">rcl</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">125</span>, <span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">375</span>, <span class="fl">3</span>, <span class="fl">3</span>, <span class="fl">1250</span>, <span class="fl">4</span>, <span class="fl">4</span>, <span class="fl">3000</span>, <span class="fl">5</span>, <span class="fl">5</span>, <span class="fl">6000</span>,
+               <span class="fl">6</span>, <span class="fl">6</span>, <span class="fl">8000</span>), ncol = <span class="fl">3</span>, byrow = <span class="fl">TRUE</span>)
+<span class="kw">inh_coarse</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/reclassify.html">reclassify</a></span>(<span class="kw">inp_coarse</span>, rcl = <span class="kw">rcl</span>, right = <span class="fl">NA</span>)
 
 <span class="co"># Fine inhabitant raster (100 m resolution)</span>
 <span class="co">#******************************************</span>
 
-<span class="no">url</span> <span class="kw">=</span>
+<span class="kw">url</span> <span class="op">=</span>
   <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span>(<span class="st">"https://www.zensus2011.de/SharedDocs/Downloads/DE/Pressemitteilung/"</span>,
-         <span class="st">"DemografischeGrunddaten/csv_Bevoelkerung_100m_Gitter.zip"</span>,
+         <span class="st">"DemografischeGrunddaten/csv_Bevoelkerung_100m_Gitter.zip"</span>, 
          <span class="st">"?__blob=publicationFile&amp;v=3"</span>)
 <span class="co"># download fine raster</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/download.file.html">download.file</a></span>(<span class="kw">url</span> <span class="kw">=</span> <span class="no">url</span>, <span class="kw">destfile</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span>(), <span class="st">"census.zip"</span>),
-              <span class="kw">method</span> <span class="kw">=</span> <span class="st">"auto"</span>, <span class="kw">mode</span> <span class="kw">=</span> <span class="st">"wb"</span>)
+<span class="fu"><a href="https://rdrr.io/r/utils/download.file.html">download.file</a></span>(url = <span class="kw">url</span>, destfile = <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span>(), <span class="st">"census.zip"</span>),
+              method = <span class="st">"auto"</span>, mode = <span class="st">"wb"</span>)
 <span class="co"># list the file names</span>
-<span class="no">nms</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/utils/unzip.html">unzip</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span>(), <span class="st">"census.zip"</span>), <span class="kw">list</span> <span class="kw">=</span> <span class="fl">TRUE</span>)
+<span class="kw">nms</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/utils/unzip.html">unzip</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span>(), <span class="st">"census.zip"</span>), list = <span class="fl">TRUE</span>)
 <span class="co"># unzip only the csv file</span>
-<span class="no">base_name</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html">grep</a></span>(<span class="st">".csv$"</span>, <span class="no">nms</span>$<span class="no">Name</span>, <span class="kw">value</span> <span class="kw">=</span> <span class="fl">TRUE</span>)
-<span class="fu"><a href="https://rdrr.io/r/utils/unzip.html">unzip</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span>(), <span class="st">"census.zip"</span>), <span class="kw">files</span> <span class="kw">=</span> <span class="no">base_name</span>, <span class="kw">exdir</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span>())
+<span class="kw">base_name</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html">grep</a></span>(<span class="st">".csv$"</span>, <span class="kw">nms</span><span class="op">$</span><span class="kw">Name</span>, value = <span class="fl">TRUE</span>)
+<span class="fu"><a href="https://rdrr.io/r/utils/unzip.html">unzip</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span>(), <span class="st">"census.zip"</span>), files = <span class="kw">base_name</span>, exdir = <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span>())
 <span class="co"># read in the csv file</span>
-<span class="no">input</span> <span class="kw">=</span> <span class="kw pkg">data.table</span><span class="kw ns">::</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/fread.html">fread</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span>(), <span class="no">base_name</span>)) <span class="kw">%&gt;%</span>
-  <span class="no">as.tibble</span>
-<span class="no">input</span> <span class="kw">=</span> <span class="kw pkg">dplyr</span><span class="kw ns">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(<span class="no">input</span>, <span class="kw">x</span> <span class="kw">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/reexports.html">starts_with</a></span>(<span class="st">"x_mp_1"</span>), <span class="kw">y</span> <span class="kw">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/reexports.html">starts_with</a></span>(<span class="st">"y_mp_1"</span>),
-                        <span class="kw">inh</span> <span class="kw">=</span> <span class="no">Einwohner</span>)
+<span class="kw">input</span> <span class="op">=</span> <span class="kw">data.table</span>::<span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/fread.html">fread</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span>(), <span class="kw">base_name</span>)) <span class="op">%&gt;%</span>
+  <span class="kw">as.tibble</span>
+<span class="kw">input</span> <span class="op">=</span> <span class="kw">dplyr</span>::<span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(<span class="kw">input</span>, x = <span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html">starts_with</a></span>(<span class="st">"x_mp_1"</span>), y = <span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html">starts_with</a></span>(<span class="st">"y_mp_1"</span>),
+                        inh = <span class="kw">Einwohner</span>)
 <span class="co"># set -1 and -9 to NA</span>
-<span class="no">input</span> <span class="kw">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate_all.html">mutate_all</a></span>(<span class="no">input</span>, <span class="fu"><a href="https://dplyr.tidyverse.org/reference/funs.html">funs</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span>(<span class="no">.</span> <span class="kw">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(-<span class="fl">1</span>, -<span class="fl">9</span>), <span class="fl">NA</span>, <span class="no">.</span>)))
+<span class="kw">input</span> <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate_all.html">mutate_all</a></span>(<span class="kw">input</span>, <span class="fu"><a href="https://dplyr.tidyverse.org/reference/funs.html">funs</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span>(<span class="kw">.</span> <span class="op">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="op">-</span><span class="fl">1</span>, <span class="op">-</span><span class="fl">9</span>), <span class="fl">NA</span>, <span class="kw">.</span>)))
 <span class="co"># convert table into a raster (x and y are cell midpoints)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/sp/man/coordinates.html">coordinates</a></span>(<span class="no">input</span>) <span class="kw">=</span>~ <span class="no">x</span> + <span class="no">y</span>
+<span class="fu"><a href="https://rdrr.io/pkg/sp/man/coordinates.html">coordinates</a></span>(<span class="kw">input</span>) <span class="op">=</span><span class="op">~</span> <span class="kw">x</span> <span class="op">+</span> <span class="kw">y</span>
 <span class="co"># use the correct projection</span>
-<span class="fu"><a href="https://rdrr.io/pkg/sp/man/is.projected.html">proj4string</a></span>(<span class="no">input</span>) <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/sp/man/CRS-class.html">CRS</a></span>(<span class="st">"+init=epsg:3035"</span>)
-<span class="fu"><a href="https://rdrr.io/pkg/sp/man/gridded-methods.html">gridded</a></span>(<span class="no">input</span>) <span class="kw">=</span> <span class="fl">TRUE</span>
+<span class="fu"><a href="https://rdrr.io/pkg/sp/man/is.projected.html">proj4string</a></span>(<span class="kw">input</span>) <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/sp/man/CRS-class.html">CRS</a></span>(<span class="st">"+init=epsg:3035"</span>)
+<span class="fu"><a href="https://rdrr.io/pkg/sp/man/gridded-methods.html">gridded</a></span>(<span class="kw">input</span>) <span class="op">=</span> <span class="fl">TRUE</span>
 <span class="co"># convert into a raster stack</span>
-<span class="no">inh_fine</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/raster.html">raster</a></span>(<span class="no">input</span>)
+<span class="kw">inh_fine</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/raster.html">raster</a></span>(<span class="kw">input</span>)
 
 <span class="co"># Comparing the coarse with the fine raster</span>
 <span class="co">#******************************************</span>
 
 <span class="co"># aggregate to the resolution of the coarse raster</span>
-<span class="no">inh_fine</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/sf/man/aggregate.sf.html">aggregate</a></span>(<span class="no">inh_fine</span>, <span class="kw">fact</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/resolution.html">res</a></span>(<span class="no">inh_coarse</span>)[<span class="fl">1</span>] / <span class="fu"><a href="https://rdrr.io/pkg/raster/man/resolution.html">res</a></span>(<span class="no">inh_fine</span>)[<span class="fl">1</span>],
-                     <span class="kw">fun</span> <span class="kw">=</span> <span class="no">sum</span>)
+<span class="kw">inh_fine</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/sf/man/aggregate.sf.html">aggregate</a></span>(<span class="kw">inh_fine</span>, fact = <span class="fu"><a href="https://rdrr.io/pkg/raster/man/resolution.html">res</a></span>(<span class="kw">inh_coarse</span>)[<span class="fl">1</span>] <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/resolution.html">res</a></span>(<span class="kw">inh_fine</span>)[<span class="fl">1</span>], 
+                     fun = <span class="kw">sum</span>)
 <span class="co"># origin has to be the same</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/origin.html">origin</a></span>(<span class="no">inh_fine</span>) <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/origin.html">origin</a></span>(<span class="no">inh_coarse</span>)
+<span class="fu"><a href="https://rdrr.io/pkg/raster/man/origin.html">origin</a></span>(<span class="kw">inh_fine</span>) <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/origin.html">origin</a></span>(<span class="kw">inh_coarse</span>)
 <span class="co"># make the comparison</span>
-<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="no">inh_fine</span> - <span class="no">inh_coarse</span>)
-<span class="fu"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(<span class="no">inh_fine</span> - <span class="no">inh_coarse</span>)
-<span class="fu"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">abs</a></span>(<span class="no">inh_fine</span> - <span class="no">inh_coarse</span>) <span class="kw">&gt;</span> <span class="fl">1000</span>)
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/cellStats.html">cellStats</a></span>((<span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">abs</a></span>(<span class="no">inh_fine</span> - <span class="no">inh_coarse</span>) <span class="kw">&gt;</span> <span class="fl">1000</span>), <span class="kw">stat</span> <span class="kw">=</span> <span class="st">"sum"</span>)
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/cellStats.html">cellStats</a></span>((<span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">abs</a></span>(<span class="no">inh_fine</span> - <span class="no">inh_coarse</span>) <span class="kw">&gt;</span> <span class="fl">5000</span>), <span class="kw">stat</span> <span class="kw">=</span> <span class="st">"sum"</span>)</pre></body></html></div>
+<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="kw">inh_fine</span> <span class="op">-</span> <span class="kw">inh_coarse</span>)
+<span class="fu"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(<span class="kw">inh_fine</span> <span class="op">-</span> <span class="kw">inh_coarse</span>)
+<span class="fu"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">abs</a></span>(<span class="kw">inh_fine</span> <span class="op">-</span> <span class="kw">inh_coarse</span>) <span class="op">&gt;</span> <span class="fl">1000</span>)
+<span class="fu"><a href="https://rdrr.io/pkg/raster/man/cellStats.html">cellStats</a></span>((<span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">abs</a></span>(<span class="kw">inh_fine</span> <span class="op">-</span> <span class="kw">inh_coarse</span>) <span class="op">&gt;</span> <span class="fl">1000</span>), stat = <span class="st">"sum"</span>)
+<span class="fu"><a href="https://rdrr.io/pkg/raster/man/cellStats.html">cellStats</a></span>((<span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">abs</a></span>(<span class="kw">inh_fine</span> <span class="op">-</span> <span class="kw">inh_coarse</span>) <span class="op">&gt;</span> <span class="fl">5000</span>), stat = <span class="st">"sum"</span>)
+</pre></div>
 <ol start="3" style="list-style-type: decimal">
 <li>Suppose our bike shop predominantly sold electric bikes to older people. Change the age raster accordingly, repeat the remaining analyses and compare the changes with our original result.</li>
 </ol>
 <p>Basically, we are assuming that especially older people will use an electric bike, therefore, we increase the weights for raster cells where predominantly older people are living.</p>
-<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="no">rcl_pop</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">127</span>, <span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">375</span>, <span class="fl">3</span>, <span class="fl">3</span>, <span class="fl">1250</span>,
-                   <span class="fl">4</span>, <span class="fl">4</span>, <span class="fl">3000</span>, <span class="fl">5</span>, <span class="fl">5</span>, <span class="fl">6000</span>, <span class="fl">6</span>, <span class="fl">6</span>, <span class="fl">8000</span>),
-                 <span class="kw">ncol</span> <span class="kw">=</span> <span class="fl">3</span>, <span class="kw">byrow</span> <span class="kw">=</span> <span class="fl">TRUE</span>)
-<span class="no">rcl_women</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">3</span>, <span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">3</span>, <span class="fl">1</span>, <span class="fl">4</span>, <span class="fl">5</span>, <span class="fl">0</span>),
-                   <span class="kw">ncol</span> <span class="kw">=</span> <span class="fl">3</span>, <span class="kw">byrow</span> <span class="kw">=</span> <span class="fl">TRUE</span>)
+<div class="sourceCode" id="cb5"><pre class="downlit">
+<span class="kw">rcl_pop</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">127</span>, <span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">375</span>, <span class="fl">3</span>, <span class="fl">3</span>, <span class="fl">1250</span>, 
+                   <span class="fl">4</span>, <span class="fl">4</span>, <span class="fl">3000</span>, <span class="fl">5</span>, <span class="fl">5</span>, <span class="fl">6000</span>, <span class="fl">6</span>, <span class="fl">6</span>, <span class="fl">8000</span>), 
+                 ncol = <span class="fl">3</span>, byrow = <span class="fl">TRUE</span>)
+<span class="kw">rcl_women</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">3</span>, <span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">3</span>, <span class="fl">1</span>, <span class="fl">4</span>, <span class="fl">5</span>, <span class="fl">0</span>), 
+                   ncol = <span class="fl">3</span>, byrow = <span class="fl">TRUE</span>)
 <span class="co"># here we are giving the classes (3 to 5) containing the oldest people the</span>
 <span class="co"># highest weight</span>
-<span class="no">rcl_age</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">3</span>, <span class="fl">5</span>, <span class="fl">3</span>),
-                 <span class="kw">ncol</span> <span class="kw">=</span> <span class="fl">3</span>, <span class="kw">byrow</span> <span class="kw">=</span> <span class="fl">TRUE</span>)
-<span class="no">rcl_hh</span> <span class="kw">=</span> <span class="no">rcl_women</span>
-<span class="no">rcl</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="no">rcl_pop</span>, <span class="no">rcl_women</span>, <span class="no">rcl_age</span>, <span class="no">rcl_hh</span>)
+<span class="kw">rcl_age</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">3</span>, <span class="fl">5</span>, <span class="fl">3</span>),
+                 ncol = <span class="fl">3</span>, byrow = <span class="fl">TRUE</span>)
+<span class="kw">rcl_hh</span> <span class="op">=</span> <span class="kw">rcl_women</span>
+<span class="kw">rcl</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">rcl_pop</span>, <span class="kw">rcl_women</span>, <span class="kw">rcl_age</span>, <span class="kw">rcl_hh</span>)
 
-<span class="no">reclass</span> <span class="kw">=</span> <span class="no">input_ras</span>
-<span class="kw">for</span> (<span class="no">i</span> <span class="kw">in</span> <span class="fl">1</span>:<span class="kw pkg">raster</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/nlayers.html">nlayers</a></span>(<span class="no">reclass</span>)) {
-  <span class="no">reclass</span><span class="kw">[[</span><span class="no">i</span>]] <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/reclassify.html">reclassify</a></span>(<span class="kw">x</span> <span class="kw">=</span> <span class="no">reclass</span><span class="kw">[[</span><span class="no">i</span>]], <span class="kw">rcl</span> <span class="kw">=</span> <span class="no">rcl</span><span class="kw">[[</span><span class="no">i</span>]], <span class="kw">right</span> <span class="kw">=</span> <span class="fl">NA</span>)
+<span class="kw">reclass</span> <span class="op">=</span> <span class="kw">input_ras</span>
+<span class="co">for</span> (<span class="kw">i</span> <span class="co">in</span> <span class="fl">1</span><span class="op">:</span><span class="kw">raster</span>::<span class="fu"><a href="https://rdrr.io/pkg/raster/man/nlayers.html">nlayers</a></span>(<span class="kw">reclass</span>)) {
+  <span class="kw">reclass</span>[[<span class="kw">i</span>]] <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/reclassify.html">reclassify</a></span>(x = <span class="kw">reclass</span>[[<span class="kw">i</span>]], rcl = <span class="kw">rcl</span>[[<span class="kw">i</span>]], right = <span class="fl">NA</span>)
 }
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/names.html">names</a></span>(<span class="no">reclass</span>) <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/names.html">names</a></span>(<span class="no">input_ras</span>)</pre></body></html></div>
+<span class="co">#&gt; Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO"): Discarded</span>
+<span class="co">#&gt; datum Unknown based on GRS80 ellipsoid in CRS definition</span>
+
+<span class="co">#&gt; Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO"): Discarded</span>
+<span class="co">#&gt; datum Unknown based on GRS80 ellipsoid in CRS definition</span>
+
+<span class="co">#&gt; Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO"): Discarded</span>
+<span class="co">#&gt; datum Unknown based on GRS80 ellipsoid in CRS definition</span>
+
+<span class="co">#&gt; Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO"): Discarded</span>
+<span class="co">#&gt; datum Unknown based on GRS80 ellipsoid in CRS definition</span>
+<span class="fu"><a href="https://rdrr.io/pkg/raster/man/names.html">names</a></span>(<span class="kw">reclass</span>) <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/names.html">names</a></span>(<span class="kw">input_ras</span>)
+</pre></div>
 <p>The rest of the analysis follows exactly the code presented in the book. Supposing you have already created <code>input_ras</code> in the first exercise, the analysis would look something like this:</p>
-<div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="co"># attach data</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="st">"metro_names"</span>, <span class="st">"shops"</span>, <span class="kw">package</span> <span class="kw">=</span> <span class="st">"spDataLarge"</span>)
+<div class="sourceCode" id="cb6"><pre class="downlit">
+<span class="co"># attach data</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="st">"metro_names"</span>, <span class="st">"shops"</span>, package = <span class="st">"spDataLarge"</span>)
 
 <span class="co"># Add metro names to metros sf object</span>
 <span class="co">#************************************</span>
-<span class="no">metro_names</span> <span class="kw">=</span> <span class="kw pkg">dplyr</span><span class="kw ns">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html">pull</a></span>(<span class="no">metro_names</span>, <span class="no">city</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/raster/man/as.character.html">as.character</a></span>() <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span>(<span class="no">.</span> <span class="kw">==</span> <span class="st">"Wülfrath"</span>, <span class="st">"Duesseldorf"</span>, <span class="no">.</span>)
+<span class="kw">metro_names</span> <span class="op">=</span> <span class="kw">dplyr</span>::<span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html">pull</a></span>(<span class="kw">metro_names</span>, <span class="kw">city</span>) <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://rdrr.io/pkg/raster/man/as.character.html">as.character</a></span>() <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span>(<span class="kw">.</span> <span class="op">==</span> <span class="st">"Wülfrath"</span>, <span class="st">"Duesseldorf"</span>, <span class="kw">.</span>)
 
-<span class="no">pop_agg</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/sf/man/aggregate.sf.html">aggregate</a></span>(<span class="no">reclass</span>$<span class="no">pop</span>, <span class="kw">fact</span> <span class="kw">=</span> <span class="fl">20</span>, <span class="kw">fun</span> <span class="kw">=</span> <span class="no">sum</span>)
-<span class="no">pop_agg</span> <span class="kw">=</span> <span class="no">pop_agg</span>[<span class="no">pop_agg</span> <span class="kw">&gt;</span> <span class="fl">500000</span>, <span class="kw">drop</span> <span class="kw">=</span> <span class="fl">FALSE</span>]
+<span class="kw">pop_agg</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/sf/man/aggregate.sf.html">aggregate</a></span>(<span class="kw">reclass</span><span class="op">$</span><span class="kw">pop</span>, fact = <span class="fl">20</span>, fun = <span class="kw">sum</span>)
+<span class="kw">pop_agg</span> <span class="op">=</span> <span class="kw">pop_agg</span>[<span class="kw">pop_agg</span> <span class="op">&gt;</span> <span class="fl">500000</span>, drop = <span class="fl">FALSE</span>] 
 
-<span class="no">polys</span> <span class="kw">=</span> <span class="no">pop_agg</span> <span class="kw">%&gt;%</span>
-  <span class="kw pkg">raster</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/clump.html">clump</a></span>() <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/raster/man/rasterToPolygons.html">rasterToPolygons</a></span>() <span class="kw">%&gt;%</span>
+<span class="kw">polys</span> <span class="op">=</span> <span class="kw">pop_agg</span> <span class="op">%&gt;%</span> 
+  <span class="kw">raster</span>::<span class="fu"><a href="https://rdrr.io/pkg/raster/man/clump.html">clump</a></span>() <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://rdrr.io/pkg/raster/man/rasterToPolygons.html">rasterToPolygons</a></span>() <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_as_sf.html">st_as_sf</a></span>()
 <span class="co">#&gt; Loading required namespace: igraph</span>
 
-<span class="no">metros</span> <span class="kw">=</span> <span class="no">polys</span> <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span>(<span class="no">clumps</span>) <span class="kw">%&gt;%</span>
-  <span class="kw pkg">dplyr</span><span class="kw ns">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span>()
-<span class="no">metros</span>$<span class="no">metro_names</span> <span class="kw">=</span> <span class="no">metro_names</span>
+<span class="kw">metros</span> <span class="op">=</span> <span class="kw">polys</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span>(<span class="kw">clumps</span>) <span class="op">%&gt;%</span>
+  <span class="kw">dplyr</span>::<span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span>()
+<span class="co">#&gt; `summarise()` ungrouping output (override with `.groups` argument)</span>
+<span class="kw">metros</span><span class="op">$</span><span class="kw">metro_names</span> <span class="op">=</span> <span class="kw">metro_names</span>
 
 <span class="co"># Create shop/poi density raster</span>
 <span class="co">#*******************************</span>
-<span class="no">shops</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_transform.html">st_transform</a></span>(<span class="no">shops</span>, <span class="fu"><a href="https://rdrr.io/pkg/sp/man/is.projected.html">proj4string</a></span>(<span class="no">reclass</span>))
+<span class="kw">shops</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_transform.html">st_transform</a></span>(<span class="kw">shops</span>, <span class="fu"><a href="https://rdrr.io/pkg/sp/man/is.projected.html">proj4string</a></span>(<span class="kw">reclass</span>))
 <span class="co"># create poi raster</span>
-<span class="no">poi</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/rasterize.html">rasterize</a></span>(<span class="kw">x</span> <span class="kw">=</span> <span class="no">shops</span>, <span class="kw">y</span> <span class="kw">=</span> <span class="no">reclass</span>, <span class="kw">field</span> <span class="kw">=</span> <span class="st">"osm_id"</span>, <span class="kw">fun</span> <span class="kw">=</span> <span class="st">"count"</span>)
+<span class="kw">poi</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/rasterize.html">rasterize</a></span>(x = <span class="kw">shops</span>, y = <span class="kw">reclass</span>, field = <span class="st">"osm_id"</span>, fun = <span class="st">"count"</span>)
 <span class="co"># construct reclassification matrix</span>
-<span class="no">int</span> <span class="kw">=</span> <span class="kw pkg">classInt</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/classInt/man/classIntervals.html">classIntervals</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/raster/man/getValues.html">values</a></span>(<span class="no">poi</span>), <span class="kw">n</span> <span class="kw">=</span> <span class="fl">4</span>, <span class="kw">style</span> <span class="kw">=</span> <span class="st">"fisher"</span>)
-<span class="no">int</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span>(<span class="no">int</span>$<span class="no">brks</span>)
-<span class="no">rcl_poi</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="no">int</span>[<span class="fl">1</span>], <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="no">int</span>[-<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span>(<span class="no">int</span>))], <span class="kw">each</span> <span class="kw">=</span> <span class="fl">2</span>),
-                   <span class="no">int</span>[<span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span>(<span class="no">int</span>)] + <span class="fl">1</span>), <span class="kw">ncol</span> <span class="kw">=</span> <span class="fl">2</span>, <span class="kw">byrow</span> <span class="kw">=</span> <span class="fl">TRUE</span>)
-<span class="no">rcl_poi</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span>(<span class="no">rcl_poi</span>, <span class="fl">0</span>:<span class="fl">3</span>)
+<span class="kw">int</span> <span class="op">=</span> <span class="kw">classInt</span>::<span class="fu"><a href="https://rdrr.io/pkg/classInt/man/classIntervals.html">classIntervals</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/raster/man/getValues.html">values</a></span>(<span class="kw">poi</span>), n = <span class="fl">4</span>, style = <span class="st">"fisher"</span>)
+<span class="kw">int</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span>(<span class="kw">int</span><span class="op">$</span><span class="kw">brks</span>)
+<span class="kw">rcl_poi</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="kw">int</span>[<span class="fl">1</span>], <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="kw">int</span>[<span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span>(<span class="kw">int</span>))], each = <span class="fl">2</span>), 
+                   <span class="kw">int</span>[<span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span>(<span class="kw">int</span>)] <span class="op">+</span> <span class="fl">1</span>), ncol = <span class="fl">2</span>, byrow = <span class="fl">TRUE</span>)
+<span class="kw">rcl_poi</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span>(<span class="kw">rcl_poi</span>, <span class="fl">0</span><span class="op">:</span><span class="fl">3</span>)  
 <span class="co"># reclassify</span>
-<span class="no">poi</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/reclassify.html">reclassify</a></span>(<span class="no">poi</span>, <span class="kw">rcl</span> <span class="kw">=</span> <span class="no">rcl_poi</span>, <span class="kw">right</span> <span class="kw">=</span> <span class="fl">NA</span>)
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/names.html">names</a></span>(<span class="no">poi</span>) <span class="kw">=</span> <span class="st">"poi"</span>
+<span class="kw">poi</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/reclassify.html">reclassify</a></span>(<span class="kw">poi</span>, rcl = <span class="kw">rcl_poi</span>, right = <span class="fl">NA</span>) 
+<span class="fu"><a href="https://rdrr.io/pkg/raster/man/names.html">names</a></span>(<span class="kw">poi</span>) <span class="op">=</span> <span class="st">"poi"</span>
 <span class="co"># add poi raster</span>
-<span class="no">reclass</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/addLayer.html">addLayer</a></span>(<span class="no">reclass</span>, <span class="no">poi</span>)
+<span class="kw">reclass</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/addLayer.html">addLayer</a></span>(<span class="kw">reclass</span>, <span class="kw">poi</span>)
 <span class="co"># delete population raster</span>
-<span class="no">reclass</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/addLayer.html">dropLayer</a></span>(<span class="no">reclass</span>, <span class="st">"pop"</span>)
+<span class="kw">reclass</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/addLayer.html">dropLayer</a></span>(<span class="kw">reclass</span>, <span class="st">"pop"</span>)
 
 <span class="co"># Identify suitable locations</span>
 <span class="co">#****************************</span>
 <span class="co"># calculate the total score</span>
-<span class="no">result</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(<span class="no">reclass</span>)
+<span class="kw">result</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(<span class="kw">reclass</span>)
 
 <span class="co"># have a look at suitable bike shop locations in Berlin</span>
-<span class="no">berlin</span> <span class="kw">=</span> <span class="no">metros</span>[<span class="no">metro_names</span> <span class="kw">==</span> <span class="st">"Berlin"</span>, ]
-<span class="no">berlin_raster</span> <span class="kw">=</span> <span class="kw pkg">raster</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/crop.html">crop</a></span>(<span class="no">result</span>, <span class="fu"><a href="https://rdrr.io/pkg/sf/man/coerce-methods.html">as</a></span>(<span class="no">berlin</span>, <span class="st">"Spatial"</span>))
+<span class="kw">berlin</span> <span class="op">=</span> <span class="kw">metros</span>[<span class="kw">metro_names</span> <span class="op">==</span> <span class="st">"Berlin"</span>, ]
+<span class="kw">berlin_raster</span> <span class="op">=</span> <span class="kw">raster</span>::<span class="fu"><a href="https://rdrr.io/pkg/raster/man/crop.html">crop</a></span>(<span class="kw">result</span>, <span class="fu"><a href="https://rdrr.io/pkg/sf/man/coerce-methods.html">as</a></span>(<span class="kw">berlin</span>, <span class="st">"Spatial"</span>))
 <span class="co"># summary(berlin_raster)</span>
 <span class="co"># berlin_raster</span>
-<span class="no">berlin_raster</span> <span class="kw">=</span> <span class="no">berlin_raster</span> <span class="kw">&gt;</span> <span class="fl">9</span>
-<span class="no">berlin_raster</span> <span class="kw">=</span> <span class="no">berlin_raster</span> <span class="kw">==</span> <span class="fl">TRUE</span>
-<span class="no">berlin_raster</span>[<span class="no">berlin_raster</span> <span class="kw">==</span> <span class="fl">0</span>] <span class="kw">=</span> <span class="fl">NA</span>
+<span class="kw">berlin_raster</span> <span class="op">=</span> <span class="kw">berlin_raster</span> <span class="op">&gt;</span> <span class="fl">9</span>
+<span class="kw">berlin_raster</span> <span class="op">=</span> <span class="kw">berlin_raster</span> <span class="op">==</span> <span class="fl">TRUE</span>
+<span class="kw">berlin_raster</span>[<span class="kw">berlin_raster</span> <span class="op">==</span> <span class="fl">0</span>] <span class="op">=</span> <span class="fl">NA</span>
 <span class="co"># make the plot</span>
-<span class="fu"><a href="https://rdrr.io/pkg/leaflet/man/leaflet.html">leaflet</a></span>() <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/leaflet/man/map-layers.html">addTiles</a></span>() <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/leaflet/man/addRasterImage.html">addRasterImage</a></span>(<span class="no">berlin_raster</span>, <span class="kw">colors</span> <span class="kw">=</span> <span class="st">"darkgreen"</span>, <span class="kw">opacity</span> <span class="kw">=</span> <span class="fl">0.8</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/leaflet/man/addLegend.html">addLegend</a></span>(<span class="st">"bottomright"</span>, <span class="kw">colors</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"darkgreen"</span>),
-            <span class="kw">labels</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"potential locations"</span>), <span class="kw">title</span> <span class="kw">=</span> <span class="st">"Legend"</span>)</pre></body></html></div>
-<div id="htmlwidget-694095b1a045b23b8192" style="width:700px;height:432.632880098888px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-694095b1a045b23b8192">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addRasterImage","args":["data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAMElEQVRYhe3OMQ0AMAwDQatYw59CiqBLpUy52192AgAA8FDpVHpy4nyXw8cAAIAVLj+9BCw2fWKYAAAAAElFTkSuQmCC",[[52.696600857292,13.0820026147986],[52.3210740886184,13.6981591380976]],0.8,null,null,null]},{"method":"addLegend","args":[{"colors":["darkgreen"],"labels":["potential locations"],"na_color":null,"na_label":"NA","opacity":0.5,"position":"bottomright","type":"unknown","title":"Legend","extra":null,"layerId":null,"className":"info legend","group":null}]}],"limits":{"lat":[52.3210740886184,52.696600857292],"lng":[13.0820026147986,13.6981591380976]}},"evals":[],"jsHooks":[]}</script>
+<span class="fu"><a href="https://rdrr.io/pkg/leaflet/man/leaflet.html">leaflet</a></span>() <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://rdrr.io/pkg/leaflet/man/map-layers.html">addTiles</a></span>() <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://rdrr.io/pkg/leaflet/man/addRasterImage.html">addRasterImage</a></span>(<span class="kw">berlin_raster</span>, colors = <span class="st">"darkgreen"</span>, opacity = <span class="fl">0.8</span>) <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://rdrr.io/pkg/leaflet/man/addLegend.html">addLegend</a></span>(<span class="st">"bottomright"</span>, colors = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"darkgreen"</span>), 
+            labels = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"potential locations"</span>), title = <span class="st">"Legend"</span>)
+</pre></div>
+<div id="htmlwidget-c27f3a146617dc30b0b4" style="width:700px;height:432.632880098888px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-c27f3a146617dc30b0b4">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addRasterImage","args":["data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAMElEQVRYhe3OMQ0AMAwDQatYw59CiqBLpUy52192AgAA8FDpVHpy4nyXw8cAAIAVLj+9BCw2fWKYAAAAAElFTkSuQmCC",[[52.696600857292,13.0820026147986],[52.3210740886184,13.6981591380976]],0.8,null,null,null]},{"method":"addLegend","args":[{"colors":["darkgreen"],"labels":["potential locations"],"na_color":null,"na_label":"NA","opacity":0.5,"position":"bottomright","type":"unknown","title":"Legend","extra":null,"layerId":null,"className":"info legend","group":null}]}],"limits":{"lat":[52.3210740886184,52.696600857292],"lng":[13.0820026147986,13.6981591380976]}},"evals":[],"jsHooks":[]}</script>
 </div>
   </div>
 

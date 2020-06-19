@@ -55,13 +55,13 @@
 
       
 
-      </header><div class="row">
+      </header><script src="solutions07_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Chapter 7: Geographic data I/O</h1>
                         <h4 class="author">Robin Lovelace, Jakub Nowosad, Jannes Muenchow</h4>
             
-            <h4 class="date">2020-04-21</h4>
+            <h4 class="date">2020-06-19</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/Robinlovelace/geocompr/blob/master/vignettes/solutions07.Rmd"><code>vignettes/solutions07.Rmd</code></a></small>
       <div class="hidden name"><code>solutions07.Rmd</code></div>
@@ -74,10 +74,12 @@
 <h2 class="hasAnchor">
 <a href="#prerequisites" class="anchor"></a>Prerequisites</h2>
 <p>The solutions assume the following packages are attached (other packages will be attached when needed):</p>
-<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">sf</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">raster</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">dplyr</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">spData</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb1"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://r-spatial.github.io/sf">sf</a></span>)
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://rspatial.org/raster">raster</a></span>)
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://dplyr.tidyverse.org">dplyr</a></span>)
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://nowosad.github.io/spData">spData</a></span>)
+</pre></div>
 </div>
 <div id="chapter-7" class="section level1">
 <h1 class="hasAnchor">
@@ -92,20 +94,23 @@
 <li>Name at least two differences between <code><a href="https://rdrr.io/pkg/sf/man/st_read.html">read_sf()</a></code> and the more well-known function <code><a href="https://rdrr.io/pkg/sf/man/st_read.html">st_read()</a></code>.</li>
 </ol>
 <p><code><a href="https://rdrr.io/pkg/sf/man/st_read.html">st_read()</a></code> prints outputs and keeps strings as text strings (<code><a href="https://rdrr.io/pkg/sf/man/st_read.html">st_read()</a></code> creates factors). This can be seen from the source code of <code><a href="https://rdrr.io/pkg/sf/man/st_read.html">read_sf()</a></code>, which show’s it wraps <code><a href="https://rdrr.io/pkg/sf/man/st_read.html">st_read()</a></code>:</p>
-<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="no">read_sf</span>
+<div class="sourceCode" id="cb2"><pre class="downlit">
+<span class="kw">read_sf</span>
 <span class="co">#&gt; function (..., quiet = TRUE, stringsAsFactors = FALSE, as_tibble = TRUE) </span>
 <span class="co">#&gt; {</span>
 <span class="co">#&gt;     st_read(..., quiet = quiet, stringsAsFactors = stringsAsFactors, </span>
 <span class="co">#&gt;         as_tibble = as_tibble)</span>
 <span class="co">#&gt; }</span>
-<span class="co">#&gt; &lt;bytecode: 0x5562872fff68&gt;</span>
-<span class="co">#&gt; &lt;environment: namespace:sf&gt;</span></pre></body></html></div>
+<span class="co">#&gt; &lt;bytecode: 0x563e3da2eec0&gt;</span>
+<span class="co">#&gt; &lt;environment: namespace:sf&gt;</span>
+</pre></div>
 <ol start="3" style="list-style-type: decimal">
 <li>Read the <code>cycle_hire_xy.csv</code> file from the <strong>spData</strong> package as a spatial object (Hint: it is located in the <code>misc\</code> folder). What is a geometry type of the loaded object?</li>
 </ol>
-<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="no">c_h</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"misc/cycle_hire_xy.csv"</span>, <span class="kw">package</span> <span class="kw">=</span> <span class="st">"spData"</span>)) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_as_sf.html">st_as_sf</a></span>(<span class="kw">coords</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"X"</span>, <span class="st">"Y"</span>))
-<span class="no">c_h</span>
+<div class="sourceCode" id="cb3"><pre class="downlit">
+<span class="kw">c_h</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"misc/cycle_hire_xy.csv"</span>, package = <span class="st">"spData"</span>)) <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_as_sf.html">st_as_sf</a></span>(coords = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"X"</span>, <span class="st">"Y"</span>))
+<span class="kw">c_h</span>
 <span class="co">#&gt; Simple feature collection with 742 features and 5 fields</span>
 <span class="co">#&gt; geometry type:  POINT</span>
 <span class="co">#&gt; dimension:      XY</span>
@@ -133,33 +138,42 @@
 <span class="co">#&gt; 7    POINT (-0.1680743 51.5343)</span>
 <span class="co">#&gt; 8   POINT (-0.1701345 51.52834)</span>
 <span class="co">#&gt; 9  POINT (-0.09644075 51.50739)</span>
-<span class="co">#&gt; 10 POINT (-0.09275416 51.50597)</span></pre></body></html></div>
+<span class="co">#&gt; 10 POINT (-0.09275416 51.50597)</span>
+</pre></div>
 <p>The loaded object has the POINT geometry.</p>
 <ol start="4" style="list-style-type: decimal">
 <li>Download the borders of Germany using <strong>rnaturalearth</strong>, and create a new object called <code>germany_borders</code>. Write this new object to a file of the GeoPackage format.</li>
 </ol>
-<div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">rnaturalearth</span>)
-<span class="no">germany_borders</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/rnaturalearth/man/ne_countries.html">ne_countries</a></span>(<span class="kw">country</span> <span class="kw">=</span> <span class="st">"Germany"</span>, <span class="kw">returnclass</span> <span class="kw">=</span> <span class="st">"sf"</span>)
-<span class="fu"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(<span class="no">germany_borders</span>)
-<span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_write.html">st_write</a></span>(<span class="no">germany_borders</span>, <span class="st">"germany_borders.gpkg"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb4"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/ropenscilabs/rnaturalearth">rnaturalearth</a></span>)
+<span class="kw">germany_borders</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/rnaturalearth/man/ne_countries.html">ne_countries</a></span>(country = <span class="st">"Germany"</span>, returnclass = <span class="st">"sf"</span>)
+<span class="fu"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(<span class="kw">germany_borders</span>)
+<span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_write.html">st_write</a></span>(<span class="kw">germany_borders</span>, <span class="st">"germany_borders.gpkg"</span>)
+</pre></div>
 <ol start="5" style="list-style-type: decimal">
 <li>Download the global monthly minimum temperature with a spatial resolution of five minutes using the <strong>raster</strong> package. Extract the June values, and save them to a file named <code>tmin_june.tif</code> file (hint: use <code><a href="https://rdrr.io/pkg/raster/man/subset.html">raster::subset()</a></code>).</li>
 </ol>
-<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="no">gmmt</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/getData.html">getData</a></span>(<span class="st">"worldclim"</span>, <span class="kw">var</span> <span class="kw">=</span> <span class="st">"tmin"</span>, <span class="kw">res</span> <span class="kw">=</span> <span class="fl">5</span>)
-<span class="no">gmmt_june</span> <span class="kw">=</span> <span class="kw pkg">raster</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/subset.html">subset</a></span>(<span class="no">gmmt</span>, <span class="st">"tmin6"</span>)
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/writeRaster.html">writeRaster</a></span>(<span class="no">gmmt_june</span>, <span class="st">"tmin_june.tif"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb5"><pre class="downlit">
+<span class="kw">gmmt</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/getData.html">getData</a></span>(<span class="st">"worldclim"</span>, var = <span class="st">"tmin"</span>, res = <span class="fl">5</span>)
+<span class="kw">gmmt_june</span> <span class="op">=</span> <span class="kw">raster</span>::<span class="fu"><a href="https://rdrr.io/pkg/raster/man/subset.html">subset</a></span>(<span class="kw">gmmt</span>, <span class="st">"tmin6"</span>)
+<span class="fu"><a href="https://rdrr.io/pkg/raster/man/writeRaster.html">writeRaster</a></span>(<span class="kw">gmmt_june</span>, <span class="st">"tmin_june.tif"</span>)
+</pre></div>
 <ol start="6" style="list-style-type: decimal">
 <li>Create a static map of Germany’s borders, and save it to a PNG file.</li>
 </ol>
-<div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/grDevices/png.html">png</a></span>(<span class="kw">filename</span> <span class="kw">=</span> <span class="st">"germany.png"</span>, <span class="kw">width</span> <span class="kw">=</span> <span class="fl">350</span>, <span class="kw">height</span> <span class="kw">=</span> <span class="fl">500</span>)
-<span class="fu"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_geometry.html">st_geometry</a></span>(<span class="no">germany_borders</span>), <span class="kw">axes</span> <span class="kw">=</span> <span class="fl">TRUE</span>, <span class="kw">graticule</span> <span class="kw">=</span> <span class="fl">TRUE</span>)
-<span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html">dev.off</a></span>()</pre></body></html></div>
+<div class="sourceCode" id="cb6"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/grDevices/png.html">png</a></span>(filename = <span class="st">"germany.png"</span>, width = <span class="fl">350</span>, height = <span class="fl">500</span>)
+<span class="fu"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_geometry.html">st_geometry</a></span>(<span class="kw">germany_borders</span>), axes = <span class="fl">TRUE</span>, graticule = <span class="fl">TRUE</span>)
+<span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html">dev.off</a></span>()
+</pre></div>
 <ol start="7" style="list-style-type: decimal">
 <li>Create an interactive map using data from the <code>cycle_hire_xy.csv</code> file. Export this map to a file called <code>cycle_hire.html</code>.</li>
 </ol>
-<div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">mapview</span>)
-<span class="no">mapview_obj</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/mapview/man/mapView.html">mapview</a></span>(<span class="no">c_h</span>, <span class="kw">zcol</span> <span class="kw">=</span> <span class="st">"nbikes"</span>, <span class="kw">legend</span> <span class="kw">=</span> <span class="fl">TRUE</span>)
-<span class="fu"><a href="https://rdrr.io/pkg/mapview/man/mapshot.html">mapshot</a></span>(<span class="no">mapview_obj</span>, <span class="kw">file</span> <span class="kw">=</span> <span class="st">"cycle_hire.html"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb7"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/r-spatial/mapview">mapview</a></span>)
+<span class="kw">mapview_obj</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/mapview/man/mapView.html">mapview</a></span>(<span class="kw">c_h</span>, zcol = <span class="st">"nbikes"</span>, legend = <span class="fl">TRUE</span>)
+<span class="fu"><a href="https://rdrr.io/pkg/mapview/man/mapshot.html">mapshot</a></span>(<span class="kw">mapview_obj</span>, file = <span class="st">"cycle_hire.html"</span>)
+</pre></div>
 </div>
   </div>
 

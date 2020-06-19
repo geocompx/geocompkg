@@ -1,26 +1,6 @@
 pandoc: 2.7.3
 pkgdown: 1.5.1.9000
-pkgdown_sha: aea6864792d681f64a9e1b8c52fe24668b2e4f55
-articles:
-  algorithm: algorithm.html
-  join: join.html
-  linevia: linevia.html
-  point-pattern: point-pattern.html
-  solutions01: solutions01.html
-  solutions02: solutions02.html
-  solutions03: solutions03.html
-  solutions04: solutions04.html
-  solutions05: solutions05.html
-  solutions06: solutions06.html
-  solutions07: solutions07.html
-  solutions08: solutions08.html
-  solutions09: solutions09.html
-  solutions10: solutions10.html
-  solutions11: solutions11.html
-  solutions12: solutions12.html
-  solutions13: solutions13.html
-  solutions14: solutions14.html
-  tidyverse-pitfalls: tidyverse-pitfalls.html
-  us-map: us-map.html
-last_built: 2020-04-21T17:43Z
+pkgdown_sha: caf7cc74e008e8d0d6e53eeda93cd3cad3545bf2
+articles: []
+last_built: 2020-06-19T13:49Z
 
