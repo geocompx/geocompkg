@@ -1,6 +1,6 @@
 Package: geocompkg
 Title: Geocomputation with R metapackage with solutions and extensions
-Version: 0.0.101
+Version: 0.0.102
 Authors@R: c(person("Robin", "Lovelace", role = c("aut")), 
     person("Jakub", "Nowosad", email = "nowosad.jakub@gmail.com",
     role = c("aut", "cre")),
