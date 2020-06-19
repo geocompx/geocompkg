@@ -2,7 +2,7 @@
 <!-- badges: start -->
 
 [![R build
-status](https://github.com/geocompr/geocompkg/workflows/R-CMD-check/badge.svg)](https://github.com/geocompr/geocompkg/actions)
+status](https://github.com/geocompr/geocompkg/workflows/pkgdown/badge.svg)](https://github.com/geocompr/geocompkg/actions)
 <!-- badges: end -->
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
