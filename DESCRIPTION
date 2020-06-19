@@ -7,7 +7,6 @@ Authors@R: c(person("Robin", "Lovelace", role = c("aut")),
     person("Jannes", "Muenchow", role = c("aut")))
 Description: Vignettes and solutions to supplement the book Geocomputation with R.
 Imports:
-    bench,
     bookdown,
     cartogram,
     classInt,
@@ -17,22 +16,12 @@ Imports:
     historydata,
     htmlwidgets,
     kableExtra,
-    kernlab,
     igraph,
-    latticeExtra,
     leaflet,
-    link2GI,
     lwgeom,
-    mapdeck,
-    mapview,    
-    mlr,
-    odbc,
     osmdata,
     osrm,
-    pool,
-    pROC,
     purrr,
-    ranger,
     raster,
     rasterVis,
     rcartocolor,
@@ -44,10 +33,7 @@ Imports:
     rgrass7 (>= 0.2-1),
     rnaturalearth,
     rnaturalearthdata,
-    RPostgres,
-    RPostgreSQL,
     RQGIS,
-    RSAGA,
     sf,
     sp,
     spData,
@@ -57,10 +43,8 @@ Imports:
     stringr,
     tibble,
     tidyr,
-    tree,
     tmap,
-    tmaptools,
-    vegan
+    tmaptools
 Remotes:
     nowosad/spDataLarge,
     rstudio/bookdown,
@@ -71,8 +55,23 @@ URL: https://github.com/geocompr/geocompkg
 BugReports: https://github.com/Robinlovelace/geocompr/issues
 LazyData: TRUE
 RoxygenNote: 7.1.0
-Suggests: knitr,
-    rmarkdown
+Suggests:
+    bench,
+    kernlab,
+    latticeExtra,
+    link2GI,
+    mapdeck,
+    mapview,    
+    mlr,
+    odbc,
+    pool,
+    pROC,
+    ranger,
+    RPostgres,
+    RPostgreSQL,
+    RSAGA,
+    vegan,
+    tree
 VignetteBuilder: knitr
 Encoding: UTF-8
 License: CC BY-NC-ND 4.0
