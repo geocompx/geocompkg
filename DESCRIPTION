@@ -45,8 +45,7 @@ Imports:
     tmap,
     tmaptools
 Remotes:
-    nowosad/spDataLarge,
-    rstudio/bookdown
+    nowosad/spDataLarge
 URL: https://github.com/geocompr/geocompkg
 BugReports: https://github.com/Robinlovelace/geocompr/issues
 LazyData: TRUE
