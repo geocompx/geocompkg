@@ -33,7 +33,6 @@ Imports:
     rgrass7 (>= 0.2-1),
     rnaturalearth,
     rnaturalearthdata,
-    RQGIS,
     sf,
     sp,
     spData,
@@ -46,11 +45,7 @@ Imports:
     tmap,
     tmaptools
 Remotes:
-    nowosad/spDataLarge,
-    rstudio/bookdown,
-    r-spatial/RQGIS,
-    mtennekes/tmaptools,
-    mtennekes/tmap
+    nowosad/spDataLarge
 URL: https://github.com/geocompr/geocompkg
 BugReports: https://github.com/Robinlovelace/geocompr/issues
 LazyData: TRUE
