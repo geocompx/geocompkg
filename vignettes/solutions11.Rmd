@@ -22,9 +22,9 @@ library(sf)
 library(raster)
 library(dplyr)
 library(spData)
-library(RSAGA)
-library(RQGIS)
-library(mlr)
+# library(RSAGA)
+# library(RQGIS)
+# library(mlr)
 library(tmap)
 ```
 

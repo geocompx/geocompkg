@@ -32,7 +32,7 @@ Report the stress value and compare it to the stress value as retrieved from the
 What might explain the observed difference?
 
 ```{r, cache=TRUE}
-data("study_area", "random_points", "comm", "dem", "ndvi", package = "RQGIS")
+data("study_area", "random_points", "comm", "dem", "ndvi", package = "spDataLarge")
 pa = decostand(comm, "pa")
 pa = pa[rowSums(pa) != 0, ]
 comm = comm[rowSums(comm) != 0, ]
@@ -66,12 +66,11 @@ To complete the response-predictor matrix, extract the values of the environment
 
 ```{r, eval=FALSE}
 # first compute the terrain attributes we have also used in the chapter
-library(RQGIS)
 library(dplyr)
 library(raster)
 library(vegan)
 
-data("dem", package = "RQGIS")
+data("dem", package = "spDataLarge")
 ep = run_qgis(alg = "saga:sagawetnessindex",
               DEM = dem,
               SLOPE_TYPE = 1, 
@@ -109,7 +108,7 @@ rp = inner_join(random_points, rp, by = "id")
 Find the optimal hyperparameters and use them for making a prediction map.
 
 ```{r, eval=FALSE}
-data("dem", "study_area", package = "RQGIS")
+data("dem", "study_area", package = "spDataLarge")
 # TUNING, MODELING AND PREDICTION
 #********************************
 
