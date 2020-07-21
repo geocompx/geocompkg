@@ -61,7 +61,7 @@
       <h1 data-toc-skip>Spatial Joins Extended</h1>
                         <h4 class="author">Robin Lovelace, Jakub Nowosad, Jannes Muenchow</h4>
             
-            <h4 class="date">2020-06-23</h4>
+            <h4 class="date">2020-07-21</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/Robinlovelace/geocompr/blob/master/vignettes/join.Rmd"><code>vignettes/join.Rmd</code></a></small>
       <div class="hidden name"><code>join.Rmd</code></div>
@@ -90,11 +90,11 @@
 ## bbox:           xmin: -171.7911 ymin: 18.91619 xmax: -12.20855 ymax: 83.64513
 ## geographic CRS: WGS 84
 ## # A tibble: 3 x 3
-##                                                          geom iso_a2 name_long  
-##                                            &lt;MULTIPOLYGON [°]&gt; &lt;chr&gt;  &lt;chr&gt;      
-## 1 (((-122.84 49, -122.9742 49.00254, -124.9102 49.98456, -12… CA     Canada     
-## 2 (((-122.84 49, -120 49, -117.0312 49, -116.0482 49, -113 4… US     United Sta…
-## 3 (((-46.76379 82.62796, -43.40644 83.22516, -39.89753 83.18… GL     Greenland</code></pre>
+##   iso_a2 name_long                                                          geom
+##   &lt;chr&gt;  &lt;chr&gt;                                                &lt;MULTIPOLYGON [°]&gt;
+## 1 CA     Canada       (((-122.84 49, -122.9742 49.00254, -124.9102 49.98456, -1…
+## 2 US     United Stat… (((-122.84 49, -120 49, -117.0312 49, -116.0482 49, -113 …
+## 3 GL     Greenland    (((-46.76379 82.62796, -43.40644 83.22516, -39.89753 83.1…</code></pre>
 <div class="sourceCode" id="cb4"><pre class="downlit">
 <span class="kw">wb_north_america</span> <span class="op">=</span> <span class="kw">worldbank_df</span> <span class="op">%&gt;%</span> 
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="kw">name</span> <span class="op">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Canada"</span>, <span class="st">"Mexico"</span>, <span class="st">"United States"</span>)) <span class="op">%&gt;%</span>
@@ -120,11 +120,11 @@
 ## bbox:           xmin: -171.7911 ymin: 18.91619 xmax: -12.20855 ymax: 83.64513
 ## geographic CRS: WGS 84
 ## # A tibble: 3 x 6
-##                                 geom iso_a2 name_long  name   urban_pop unemploy
-##                   &lt;MULTIPOLYGON [°]&gt; &lt;chr&gt;  &lt;chr&gt;      &lt;chr&gt;      &lt;dbl&gt;    &lt;dbl&gt;
-## 1 (((-122.84 49, -122.9742 49.00254… CA     Canada     Canada  29014612     6.91
-## 2 (((-122.84 49, -120 49, -117.0312… US     United St… Unite… 259460378     6.17
-## 3 (((-46.76379 82.62796, -43.40644 … GL     Greenland  &lt;NA&gt;          NA    NA</code></pre>
+##   iso_a2 name_long                                geom name   urban_pop unemploy
+##   &lt;chr&gt;  &lt;chr&gt;                      &lt;MULTIPOLYGON [°]&gt; &lt;chr&gt;      &lt;dbl&gt;    &lt;dbl&gt;
+## 1 CA     Canada     (((-122.84 49, -122.9742 49.00254… Canada  29014612     6.91
+## 2 US     United St… (((-122.84 49, -120 49, -117.0312… Unite… 259460378     6.17
+## 3 GL     Greenland  (((-46.76379 82.62796, -43.40644 … &lt;NA&gt;          NA    NA</code></pre>
 <p>This has created a spatial dataset with the new variables added. The utility of this is shown in the figure below, which shows the unemployment rate (a World Bank variable) across the countries of North America.</p>
 <div class="figure">
 <img src="join_files/figure-html/unemploy-1.png" alt="Figure 1. The unemployment rate (taken from World Bank statistics) in Canada and the United States to illustrate the utility of joining attribute data on to spatial datasets." width="480"><p class="caption">
@@ -143,11 +143,11 @@ Figure 1. The unemployment rate (taken from World Bank statistics) in Canada and
 ## bbox:           xmin: -171.7911 ymin: 18.91619 xmax: -12.20855 ymax: 83.64513
 ## geographic CRS: WGS 84
 ## # A tibble: 3 x 6
-##                              geom iso_a2.x name_long iso_a2.y urban_pop unemploy
-##                &lt;MULTIPOLYGON [°]&gt; &lt;chr&gt;    &lt;chr&gt;     &lt;chr&gt;        &lt;dbl&gt;    &lt;dbl&gt;
-## 1 (((-122.84 49, -122.9742 49.00… CA       Canada    CA        29014612     6.91
-## 2 (((-122.84 49, -120 49, -117.0… US       United S… US       259460378     6.17
-## 3 (((-46.76379 82.62796, -43.406… GL       Greenland &lt;NA&gt;            NA    NA</code></pre>
+##   iso_a2.x name_long                            geom iso_a2.y urban_pop unemploy
+##   &lt;chr&gt;    &lt;chr&gt;                  &lt;MULTIPOLYGON [°]&gt; &lt;chr&gt;        &lt;dbl&gt;    &lt;dbl&gt;
+## 1 CA       Canada     (((-122.84 49, -122.9742 49.0… CA        29014612     6.91
+## 2 US       United St… (((-122.84 49, -120 49, -117.… US       259460378     6.17
+## 3 GL       Greenland  (((-46.76379 82.62796, -43.40… &lt;NA&gt;            NA    NA</code></pre>
 <p>Note that the result contains two duplicated variables - <code>iso_a2.x</code> and <code>iso_a2.y</code> because both <code>x</code> and <code>y</code> objects have the column <code>iso_a2</code>. This can be solved by specifying all the keys:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit">
 <span class="kw">left_join3</span> <span class="op">=</span> <span class="kw">north_america</span> <span class="op">%&gt;%</span> 
@@ -160,11 +160,11 @@ Figure 1. The unemployment rate (taken from World Bank statistics) in Canada and
 ## bbox:           xmin: -171.7911 ymin: 18.91619 xmax: -12.20855 ymax: 83.64513
 ## geographic CRS: WGS 84
 ## # A tibble: 3 x 5
-##                                        geom iso_a2 name_long  urban_pop unemploy
-##                          &lt;MULTIPOLYGON [°]&gt; &lt;chr&gt;  &lt;chr&gt;          &lt;dbl&gt;    &lt;dbl&gt;
-## 1 (((-122.84 49, -122.9742 49.00254, -124.… CA     Canada      29014612     6.91
-## 2 (((-122.84 49, -120 49, -117.0312 49, -1… US     United St… 259460378     6.17
-## 3 (((-46.76379 82.62796, -43.40644 83.2251… GL     Greenland         NA    NA</code></pre>
+##   iso_a2 name_long                                       geom urban_pop unemploy
+##   &lt;chr&gt;  &lt;chr&gt;                             &lt;MULTIPOLYGON [°]&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+## 1 CA     Canada      (((-122.84 49, -122.9742 49.00254, -124…  29014612     6.91
+## 2 US     United Sta… (((-122.84 49, -120 49, -117.0312 49, -… 259460378     6.17
+## 3 GL     Greenland   (((-46.76379 82.62796, -43.40644 83.225…        NA    NA</code></pre>
 <p>Joins also work when a data frame is the first argument. However, for them to work we need to drop the <code>sf</code> class.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit">
 <span class="kw">left_join4</span> <span class="op">=</span> <span class="kw">wb_north_america</span> <span class="op">%&gt;%</span>
@@ -193,10 +193,10 @@ Figure 1. The unemployment rate (taken from World Bank statistics) in Canada and
 ## bbox:           xmin: -171.7911 ymin: 18.91619 xmax: -52.6481 ymax: 83.23324
 ## geographic CRS: WGS 84
 ## # A tibble: 2 x 5
-##                                        geom iso_a2 name_long  urban_pop unemploy
-##                          &lt;MULTIPOLYGON [°]&gt; &lt;chr&gt;  &lt;chr&gt;          &lt;dbl&gt;    &lt;dbl&gt;
-## 1 (((-122.84 49, -122.9742 49.00254, -124.… CA     Canada      29014612     6.91
-## 2 (((-122.84 49, -120 49, -117.0312 49, -1… US     United St… 259460378     6.17</code></pre>
+##   iso_a2 name_long                                       geom urban_pop unemploy
+##   &lt;chr&gt;  &lt;chr&gt;                             &lt;MULTIPOLYGON [°]&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+## 1 CA     Canada      (((-122.84 49, -122.9742 49.00254, -124…  29014612     6.91
+## 2 US     United Sta… (((-122.84 49, -120 49, -117.0312 49, -… 259460378     6.17</code></pre>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

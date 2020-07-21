@@ -61,7 +61,7 @@
       <h1 data-toc-skip>Chapter 9: Bridges to GIS software</h1>
                         <h4 class="author">Robin Lovelace, Jakub Nowosad, Jannes Muenchow</h4>
             
-            <h4 class="date">2020-06-23</h4>
+            <h4 class="date">2020-07-21</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/Robinlovelace/geocompr/blob/master/vignettes/solutions09.Rmd"><code>vignettes/solutions09.Rmd</code></a></small>
       <div class="hidden name"><code>solutions09.Rmd</code></div>
@@ -132,10 +132,10 @@
 <li>Union <code>poly_1</code> and <code>poly_2</code> using <code><a href="https://rdrr.io/pkg/sf/man/geos_combine.html">st_union()</a></code> and <code>qgis:union</code>. What is the difference between the two union operations? How can we use the <strong>sf</strong> package to obtain the same result as QGIS?</li>
 </ol>
 <div class="sourceCode" id="cb4"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st"><a href="https://github.com/jannes-m/RQGIS">"RQGIS"</a></span>)
-<span class="fu"><a href="https://rdrr.io/pkg/RQGIS/man/set_env.html">set_env</a></span>(dev = <span class="fl">FALSE</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/Nowosad/spData">spDataLarge</a></span>)
+<span class="fu">set_env</span>(dev = <span class="fl">FALSE</span>)
 <span class="kw">union_sf</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/sf/man/geos_combine.html">st_union</a></span>(<span class="kw">poly_1</span>, <span class="kw">poly_2</span>)
-<span class="kw">union_qgis</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/RQGIS/man/run_qgis.html">run_qgis</a></span>(<span class="st">"qgis:union"</span>, INPUT = <span class="kw">poly_1</span>, INPUT2 = <span class="kw">poly_2</span>,
+<span class="kw">union_qgis</span> <span class="op">=</span> <span class="fu">run_qgis</span>(<span class="st">"qgis:union"</span>, INPUT = <span class="kw">poly_1</span>, INPUT2 = <span class="kw">poly_2</span>,
                  OUTPUT = <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span>(), <span class="st">"union.shp"</span>),
                  load_output = <span class="fl">TRUE</span>)
 <span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span>(mfrow = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>, <span class="fl">2</span>))
@@ -158,22 +158,22 @@
 </ol>
 <ul>
 <li>
-<strong>RQGIS</strong>, <strong>RSAGA</strong> and <strong>rgrass7</strong>
+<strong>spDataLarge</strong>, <strong>RSAGA</strong> and <strong>rgrass7</strong>
 </li>
 <li><strong>sf</strong></li>
 </ul>
 <div class="sourceCode" id="cb5"><pre class="downlit">
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://r-spatial.github.io/sf">sf</a></span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/jannes-m/RQGIS">RQGIS</a></span>)
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/Nowosad/spData">spDataLarge</a></span>)
 
 <span class="co"># INTERSECTION USING RQGIS</span>
 <span class="co">#***************************</span>
 <span class="co"># first of all, we need to find out which function might do this for us</span>
-<span class="fu"><a href="https://rdrr.io/pkg/RQGIS/man/find_algorithms.html">find_algorithms</a></span>(<span class="st">"intersec"</span>)
-<span class="fu"><a href="https://rdrr.io/pkg/RQGIS/man/open_help.html">open_help</a></span>(<span class="st">"qgis:intersection"</span>)
-<span class="fu"><a href="https://rdrr.io/pkg/RQGIS/man/get_usage.html">get_usage</a></span>(<span class="st">"qgis:intersection"</span>)
+<span class="fu">find_algorithms</span>(<span class="st">"intersec"</span>)
+<span class="fu">open_help</span>(<span class="st">"qgis:intersection"</span>)
+<span class="fu">get_usage</span>(<span class="st">"qgis:intersection"</span>)
 <span class="co"># using R named arguments#</span>
-<span class="kw">int_qgis</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/RQGIS/man/run_qgis.html">run_qgis</a></span>(<span class="st">"qgis:intersection"</span>, INPUT = <span class="kw">poly_1</span>, INPUT2 = <span class="kw">poly_2</span>,
+<span class="kw">int_qgis</span> <span class="op">=</span> <span class="fu">run_qgis</span>(<span class="st">"qgis:intersection"</span>, INPUT = <span class="kw">poly_1</span>, INPUT2 = <span class="kw">poly_2</span>,
                     OUTPUT = <span class="st">"int_qgis.shp"</span>, load_output = <span class="fl">TRUE</span>)
 <span class="co"># visualize it</span>
 <span class="fu"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_geometry.html">st_geometry</a></span>(<span class="kw">poly_1</span>), xlim = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="op">-</span><span class="fl">1</span>, <span class="fl">1</span>), ylim = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="op">-</span><span class="fl">1</span>, <span class="fl">1</span>))
@@ -234,23 +234,23 @@
 <span class="fu"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(<span class="kw">int_sf</span>, add = <span class="fl">TRUE</span>, col = <span class="st">"lightblue"</span>)
 </pre></div>
 <ol start="4" style="list-style-type: decimal">
-<li>Run <code><a href="https://rdrr.io/r/utils/data.html">data(dem, package = "RQGIS")</a></code> and <code><a href="https://rdrr.io/r/utils/data.html">data(random_points, package = "RQGIS")</a></code>. Select randomly a point from <code>random_points</code> and find all <code>dem</code> pixels that can be seen from this point (hint: viewshed). Visualize your result. For example, plot a hillshade, and on top of it the digital elevation model, your viewshed output and the point. Additionally, give <code>mapview</code> a try.</li>
+<li>Run <code><a href="https://rdrr.io/r/utils/data.html">data(dem, package = "spDataLarge")</a></code> and <code><a href="https://rdrr.io/r/utils/data.html">data(random_points, package = "spDataLarge")</a></code>. Select randomly a point from <code>random_points</code> and find all <code>dem</code> pixels that can be seen from this point (hint: viewshed). Visualize your result. For example, plot a hillshade, and on top of it the digital elevation model, your viewshed output and the point. Additionally, give <code>mapview</code> a try.</li>
 </ol>
 <div class="sourceCode" id="cb6"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/jannes-m/RQGIS">RQGIS</a></span>)
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/Nowosad/spData">spDataLarge</a></span>)
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://rspatial.org/raster">raster</a></span>)
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="kw">dem</span>, package = <span class="st">"RQGIS"</span>)
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="kw">random_points</span>, package = <span class="st">"RQGIS"</span>)
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="kw">dem</span>, package = <span class="st">"spDataLarge"</span>)
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="kw">random_points</span>, package = <span class="st">"spDataLarge"</span>)
 
-<span class="fu"><a href="https://rdrr.io/pkg/RQGIS/man/find_algorithms.html">find_algorithms</a></span>(<span class="st">"viewshed"</span>)
+<span class="fu">find_algorithms</span>(<span class="st">"viewshed"</span>)
 <span class="kw">alg</span> <span class="op">=</span> <span class="st">"grass7:r.viewshed"</span>
-<span class="fu"><a href="https://rdrr.io/pkg/RQGIS/man/get_usage.html">get_usage</a></span>(<span class="kw">alg</span>)
-<span class="fu"><a href="https://rdrr.io/pkg/RQGIS/man/open_help.html">open_help</a></span>(<span class="kw">alg</span>)
+<span class="fu">get_usage</span>(<span class="kw">alg</span>)
+<span class="fu">open_help</span>(<span class="kw">alg</span>)
 <span class="co"># let's find out about the default values</span>
-<span class="fu"><a href="https://rdrr.io/pkg/RQGIS/man/get_args_man.html">get_args_man</a></span>(<span class="kw">alg</span>)
+<span class="fu">get_args_man</span>(<span class="kw">alg</span>)
 <span class="kw">point</span> <span class="op">=</span> <span class="kw">random_points</span>[<span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span>(<span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/ncell.html">nrow</a></span>(<span class="kw">random_points</span>), <span class="fl">1</span>), ]
 <span class="kw">coord</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span>(<span class="kw">sf</span>::<span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_coordinates.html">st_coordinates</a></span>(<span class="kw">point</span>), collapse = <span class="st">","</span>)
-<span class="kw">out</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/RQGIS/man/run_qgis.html">run_qgis</a></span>(<span class="kw">alg</span>, input = <span class="kw">dem</span>,
+<span class="kw">out</span> <span class="op">=</span> <span class="fu">run_qgis</span>(<span class="kw">alg</span>, input = <span class="kw">dem</span>,
                coordinates = <span class="kw">coord</span>,
                output = <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span>(), <span class="st">"out.tif"</span>),
                load_output = <span class="fl">TRUE</span>)
@@ -282,7 +282,7 @@
   <span class="fu"><a href="https://rdrr.io/pkg/mapview/man/mapView.html">mapview</a></span>(<span class="kw">point</span>)
 </pre></div>
 <ol start="5" style="list-style-type: decimal">
-<li>Compute catchment area and catchment slope of <code><a href="https://rdrr.io/r/utils/data.html">data("dem", package = "RQGIS")</a></code> using <strong>RSAGA</strong>.</li>
+<li>Compute catchment area and catchment slope of <code><a href="https://rdrr.io/r/utils/data.html">data("dem", package = "spDataLarge")</a></code> using <strong>RSAGA</strong>.</li>
 </ol>
 <div class="sourceCode" id="cb7"><pre class="downlit">
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st"><a href="https://github.com/r-spatial/RSAGA">"RSAGA"</a></span>)
@@ -312,7 +312,7 @@
 </ol>
 <div class="sourceCode" id="cb8"><pre class="downlit">
 <span class="kw">link2GI</span>::<span class="fu"><a href="https://r-spatial.github.io/link2GI/reference/linkGDAL.html">linkGDAL</a></span>()
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="st">"dem"</span>, package = <span class="st">"RQGIS"</span>)
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="st">"dem"</span>, package = <span class="st">"spDataLarge"</span>)
 <span class="kw">file</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span>(), <span class="st">"dem.tif"</span>)
 <span class="fu"><a href="https://rdrr.io/pkg/raster/man/writeRaster.html">writeRaster</a></span>(<span class="kw">dem</span>, filename = <span class="kw">file</span>, prj = <span class="fl">TRUE</span>, format = <span class="st">"GTiff"</span>)
 <span class="kw">cmd</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span>(<span class="st">"gdalinfo"</span>, <span class="kw">file</span>)

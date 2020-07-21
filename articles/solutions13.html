@@ -64,7 +64,7 @@
       <h1 data-toc-skip>Chapter 13: Geomarketing</h1>
                         <h4 class="author">Robin Lovelace, Jakub Nowosad, Jannes Muenchow</h4>
             
-            <h4 class="date">2020-06-23</h4>
+            <h4 class="date">2020-07-21</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/Robinlovelace/geocompr/blob/master/vignettes/solutions13.Rmd"><code>vignettes/solutions13.Rmd</code></a></small>
       <div class="hidden name"><code>solutions13.Rmd</code></div>
@@ -123,13 +123,6 @@
 <span class="fu"><a href="https://rdrr.io/pkg/sp/man/gridded-methods.html">gridded</a></span>(<span class="kw">input_tidy</span>) <span class="op">=</span> <span class="fl">TRUE</span>
 <span class="co"># convert into a raster stack</span>
 <span class="kw">input_ras</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/stack.html">stack</a></span>(<span class="kw">input_tidy</span>)
-<span class="co">#&gt; Warning in proj4string(x): CRS object has comment, which is lost in output</span>
-
-<span class="co">#&gt; Warning in proj4string(x): Discarded datum Unknown based on GRS80 ellipsoid in</span>
-<span class="co">#&gt; CRS definition</span>
-
-<span class="co">#&gt; Warning in proj4string(x): Discarded datum Unknown based on GRS80 ellipsoid in</span>
-<span class="co">#&gt; CRS definition</span>
 </pre></div>
 <ol start="2" style="list-style-type: decimal">
 <li>Download the csv file containing inhabitant information for a 100 m cell resolution (<a href="https://www.zensus2011.de/SharedDocs/Downloads/DE/Pressemitteilung/DemografischeGrunddaten/csv_Bevoelkerung_100m_Gitter.zip?__blob=publicationFile&amp;v=3" class="uri">https://www.zensus2011.de/SharedDocs/Downloads/DE/Pressemitteilung/DemografischeGrunddaten/csv_Bevoelkerung_100m_Gitter.zip?__blob=publicationFile&amp;v=3</a>). Please note that the unzipped file has a size of 1.23 GB. To read it into R you can use <code><a href="https://readr.tidyverse.org/reference/read_delim.html">readr::read_csv</a></code>. This takes 30 seconds on my machine (16 GB RAM) <code><a href="https://Rdatatable.gitlab.io/data.table/reference/fread.html">data.table::fread()</a></code> might be even faster, and returns an object of class <code>data.table()</code>. Use <code>as.tibble()</code> to convert it into a tibble. Build an inhabitant raster, aggregate it to a cell resolution of 1 km, and compare the difference with the inhabitant raster (<code>inh</code>) we have created using class mean values.</li>
@@ -213,17 +206,6 @@
 <span class="co">for</span> (<span class="kw">i</span> <span class="co">in</span> <span class="fl">1</span><span class="op">:</span><span class="kw">raster</span>::<span class="fu"><a href="https://rdrr.io/pkg/raster/man/nlayers.html">nlayers</a></span>(<span class="kw">reclass</span>)) {
   <span class="kw">reclass</span>[[<span class="kw">i</span>]] <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/reclassify.html">reclassify</a></span>(x = <span class="kw">reclass</span>[[<span class="kw">i</span>]], rcl = <span class="kw">rcl</span>[[<span class="kw">i</span>]], right = <span class="fl">NA</span>)
 }
-<span class="co">#&gt; Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO"): Discarded</span>
-<span class="co">#&gt; datum Unknown based on GRS80 ellipsoid in CRS definition</span>
-
-<span class="co">#&gt; Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO"): Discarded</span>
-<span class="co">#&gt; datum Unknown based on GRS80 ellipsoid in CRS definition</span>
-
-<span class="co">#&gt; Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO"): Discarded</span>
-<span class="co">#&gt; datum Unknown based on GRS80 ellipsoid in CRS definition</span>
-
-<span class="co">#&gt; Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO"): Discarded</span>
-<span class="co">#&gt; datum Unknown based on GRS80 ellipsoid in CRS definition</span>
 <span class="fu"><a href="https://rdrr.io/pkg/raster/man/names.html">names</a></span>(<span class="kw">reclass</span>) <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/names.html">names</a></span>(<span class="kw">input_ras</span>)
 </pre></div>
 <p>The rest of the analysis follows exactly the code presented in the book. Supposing you have already created <code>input_ras</code> in the first exercise, the analysis would look something like this:</p>
@@ -291,8 +273,8 @@
   <span class="fu"><a href="https://rdrr.io/pkg/leaflet/man/addLegend.html">addLegend</a></span>(<span class="st">"bottomright"</span>, colors = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"darkgreen"</span>), 
             labels = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"potential locations"</span>), title = <span class="st">"Legend"</span>)
 </pre></div>
-<div id="htmlwidget-2cbe67a0383381056c02" style="width:700px;height:432.632880098888px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-2cbe67a0383381056c02">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addRasterImage","args":["data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAMElEQVRYhe3OMQ0AMAwDQatYw59CiqBLpUy52192AgAA8FDpVHpy4nyXw8cAAIAVLj+9BCw2fWKYAAAAAElFTkSuQmCC",[[52.696600857292,13.0820026147986],[52.3210740886184,13.6981591380976]],0.8,null,null,null]},{"method":"addLegend","args":[{"colors":["darkgreen"],"labels":["potential locations"],"na_color":null,"na_label":"NA","opacity":0.5,"position":"bottomright","type":"unknown","title":"Legend","extra":null,"layerId":null,"className":"info legend","group":null}]}],"limits":{"lat":[52.3210740886184,52.696600857292],"lng":[13.0820026147986,13.6981591380976]}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-0f383a5f48521ad20074" style="width:700px;height:432.632880098888px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-0f383a5f48521ad20074">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addRasterImage","args":["data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAMUlEQVRYhe3OsQ0AIADDsIpb+f8F2EBi7sBgHxAlAQAAgGtmNXOjGTvKk11fzwEA8NhKwAQskJmmKwAAAABJRU5ErkJggg==",[[62.8779592463221,-11.2137896998302],[62.4309750627993,-10.2302702325547]],0.8,null,null,null]},{"method":"addLegend","args":[{"colors":["darkgreen"],"labels":["potential locations"],"na_color":null,"na_label":"NA","opacity":0.5,"position":"bottomright","type":"unknown","title":"Legend","extra":null,"layerId":null,"className":"info legend","group":null}]}],"limits":{"lat":[62.4309750627993,62.8779592463221],"lng":[-11.2137896998302,-10.2302702325547]}},"evals":[],"jsHooks":[]}</script>
 </div>
   </div>
 

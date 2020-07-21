@@ -61,7 +61,7 @@
       <h1 data-toc-skip>Chapter 14: Ecology</h1>
                         <h4 class="author">Robin Lovelace, Jakub Nowosad, Jannes Muenchow</h4>
             
-            <h4 class="date">2020-06-23</h4>
+            <h4 class="date">2020-07-21</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/Robinlovelace/geocompr/blob/master/vignettes/solutions14.Rmd"><code>vignettes/solutions14.Rmd</code></a></small>
       <div class="hidden name"><code>solutions14.Rmd</code></div>
@@ -89,7 +89,7 @@
 <li>Run a NMDS using the percentage data of the community matrix. Report the stress value and compare it to the stress value as retrieved from the NMDS using presence-absence data. What might explain the observed difference?</li>
 </ol>
 <div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="st">"study_area"</span>, <span class="st">"random_points"</span>, <span class="st">"comm"</span>, <span class="st">"dem"</span>, <span class="st">"ndvi"</span>, package = <span class="st">"RQGIS"</span>)
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="st">"study_area"</span>, <span class="st">"random_points"</span>, <span class="st">"comm"</span>, <span class="st">"dem"</span>, <span class="st">"ndvi"</span>, package = <span class="st">"spDataLarge"</span>)
 <span class="kw">pa</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/vegan/man/decostand.html">decostand</a></span>(<span class="kw">comm</span>, <span class="st">"pa"</span>)
 <span class="kw">pa</span> <span class="op">=</span> <span class="kw">pa</span>[<span class="fu"><a href="https://rdrr.io/pkg/raster/man/rowSums.html">rowSums</a></span>(<span class="kw">pa</span>) != <span class="fl">0</span>, ]
 <span class="kw">comm</span> <span class="op">=</span> <span class="kw">comm</span>[<span class="fu"><a href="https://rdrr.io/pkg/raster/man/rowSums.html">rowSums</a></span>(<span class="kw">comm</span>) != <span class="fl">0</span>, ]
@@ -1586,13 +1586,12 @@
 </ol>
 <div class="sourceCode" id="cb3"><pre class="downlit">
 <span class="co"># first compute the terrain attributes we have also used in the chapter</span>
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/jannes-m/RQGIS">RQGIS</a></span>)
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://dplyr.tidyverse.org">dplyr</a></span>)
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://rspatial.org/raster">raster</a></span>)
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://cran.r-project.org">vegan</a></span>)
 
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="st">"dem"</span>, package = <span class="st">"RQGIS"</span>)
-<span class="kw">ep</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/RQGIS/man/run_qgis.html">run_qgis</a></span>(alg = <span class="st">"saga:sagawetnessindex"</span>,
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="st">"dem"</span>, package = <span class="st">"spDataLarge"</span>)
+<span class="kw">ep</span> <span class="op">=</span> <span class="fu">run_qgis</span>(alg = <span class="st">"saga:sagawetnessindex"</span>,
               DEM = <span class="kw">dem</span>,
               SLOPE_TYPE = <span class="fl">1</span>, 
               SLOPE = <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempfile</a></span>(fileext = <span class="st">".sdat"</span>),
@@ -1604,8 +1603,8 @@
 <span class="fu"><a href="https://rdrr.io/pkg/raster/man/names.html">names</a></span>(<span class="kw">ep</span>) <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"dem"</span>, <span class="st">"ndvi"</span>, <span class="st">"carea"</span>, <span class="st">"cslope"</span>)
 <span class="kw">ep</span><span class="op">$</span><span class="kw">carea</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log10</a></span>(<span class="kw">ep</span><span class="op">$</span><span class="kw">carea</span>)
 <span class="co"># computing the curvatures</span>
-<span class="fu"><a href="https://rdrr.io/pkg/RQGIS/man/get_usage.html">get_usage</a></span>(<span class="st">"grass7:r.slope.aspect"</span>)
-<span class="kw">curvs</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/RQGIS/man/run_qgis.html">run_qgis</a></span>(<span class="st">"grass7:r.slope.aspect"</span>,
+<span class="fu">get_usage</span>(<span class="st">"grass7:r.slope.aspect"</span>)
+<span class="kw">curvs</span> <span class="op">=</span> <span class="fu">run_qgis</span>(<span class="st">"grass7:r.slope.aspect"</span>,
                  elevation = <span class="kw">dem</span>,
                  pcurvature = <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span>(), <span class="st">"pcurvature.tif"</span>),
                  tcurvature = <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span>(), <span class="st">"tcurvature.tif"</span>),
@@ -1628,7 +1627,7 @@
 <li>Use the response-predictor matrix of the previous exercise to fit a random forest model. Find the optimal hyperparameters and use them for making a prediction map.</li>
 </ol>
 <div class="sourceCode" id="cb4"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="st">"dem"</span>, <span class="st">"study_area"</span>, package = <span class="st">"RQGIS"</span>)
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="st">"dem"</span>, <span class="st">"study_area"</span>, package = <span class="st">"spDataLarge"</span>)
 <span class="co"># TUNING, MODELING AND PREDICTION</span>
 <span class="co">#********************************</span>
 

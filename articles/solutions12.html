@@ -61,7 +61,7 @@
       <h1 data-toc-skip>Chapter 12: Transportation</h1>
                         <h4 class="author">Robin Lovelace, Jakub Nowosad, Jannes Muenchow</h4>
             
-            <h4 class="date">2020-06-23</h4>
+            <h4 class="date">2020-07-21</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/Robinlovelace/geocompr/blob/master/vignettes/solutions12.Rmd"><code>vignettes/solutions12.Rmd</code></a></small>
       <div class="hidden name"><code>solutions12.Rmd</code></div>
@@ -187,16 +187,12 @@
 <p>This exercise can be tackled in many ways. The code chunk below provides an example of how rasters could focus attention on important ‘hotspots’, by calculating the cells where most people may walk (using an illustrative sample of the top 20 most walked desire lines):</p>
 <div class="sourceCode" id="cb5"><pre class="downlit">
 <span class="kw">bristol_raster100</span> <span class="op">=</span> <span class="kw">raster</span>::<span class="fu"><a href="https://rdrr.io/pkg/raster/man/raster.html">raster</a></span>(<span class="kw">bristol_region</span>, ncols = <span class="fl">100</span>, nrows = <span class="fl">100</span>)
-<span class="co">#&gt; Warning in proj4string(x): CRS object has comment, which is lost in output</span>
 <span class="kw">bristol_walking</span> <span class="op">=</span> <span class="kw">raster</span>::<span class="fu"><a href="https://rdrr.io/pkg/raster/man/rasterize.html">rasterize</a></span>(
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/top_n.html">top_n</a></span>(<span class="kw">desire_lines</span>, n = <span class="fl">20</span>, wt = <span class="kw">foot</span>),
   y = <span class="kw">bristol_raster100</span>,
   field = <span class="st">"foot"</span>,
   fun = <span class="kw">sum</span>
   )
-<span class="co">#&gt; Warning in proj4string(x): CRS object has comment, which is lost in output</span>
-
-<span class="co">#&gt; Warning in proj4string(x): CRS object has comment, which is lost in output</span>
 <span class="fu"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(<span class="kw">bristol_walking</span>)
 </pre></div>
 <p><img src="solutions12_files/figure-html/unnamed-chunk-5-1.png" width="700"></p>

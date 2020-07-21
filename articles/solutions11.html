@@ -61,7 +61,7 @@
       <h1 data-toc-skip>Chapter 11: Statistical learning</h1>
                         <h4 class="author">Robin Lovelace, Jakub Nowosad, Jannes Muenchow</h4>
             
-            <h4 class="date">2020-06-23</h4>
+            <h4 class="date">2020-07-21</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/Robinlovelace/geocompr/blob/master/vignettes/solutions11.Rmd"><code>vignettes/solutions11.Rmd</code></a></small>
       <div class="hidden name"><code>solutions11.Rmd</code></div>
@@ -79,9 +79,9 @@
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://rspatial.org/raster">raster</a></span>)
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://dplyr.tidyverse.org">dplyr</a></span>)
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://nowosad.github.io/spData">spData</a></span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/r-spatial/RSAGA">RSAGA</a></span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/jannes-m/RQGIS">RQGIS</a></span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://mlr.mlr-org.com">mlr</a></span>)
+<span class="co"># library(RSAGA)</span>
+<span class="co"># library(RQGIS)</span>
+<span class="co"># library(mlr)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/mtennekes/tmap">tmap</a></span>)
 </pre></div>
 </div>
@@ -128,12 +128,12 @@
 <span class="co">#*******************************</span>
 
 <span class="co"># slope, aspect, curvatures</span>
-<span class="fu"><a href="https://rdrr.io/pkg/RQGIS/man/set_env.html">set_env</a></span>(dev = <span class="fl">FALSE</span>)
-<span class="fu"><a href="https://rdrr.io/pkg/RQGIS/man/find_algorithms.html">find_algorithms</a></span>(<span class="st">"curvature"</span>)
+<span class="fu">set_env</span>(dev = <span class="fl">FALSE</span>)
+<span class="fu">find_algorithms</span>(<span class="st">"curvature"</span>)
 <span class="kw">alg</span> <span class="op">=</span> <span class="st">"saga:slopeaspectcurvature"</span>
-<span class="fu"><a href="https://rdrr.io/pkg/RQGIS/man/get_usage.html">get_usage</a></span>(<span class="kw">alg</span>)
+<span class="fu">get_usage</span>(<span class="kw">alg</span>)
 <span class="co"># terrain attributes (ta)</span>
-<span class="kw">out</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/RQGIS/man/run_qgis.html">run_qgis</a></span>(<span class="kw">alg</span>, ELEVATION = <span class="kw">dem</span>, METHOD = <span class="fl">6</span>, UNIT_SLOPE = <span class="st">"degree"</span>,
+<span class="kw">out</span> <span class="op">=</span> <span class="fu">run_qgis</span>(<span class="kw">alg</span>, ELEVATION = <span class="kw">dem</span>, METHOD = <span class="fl">6</span>, UNIT_SLOPE = <span class="st">"degree"</span>,
                UNIT_ASPECT = <span class="st">"degree"</span>,
                ASPECT = <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span>(), <span class="st">"aspect.tif"</span>),
                SLOPE = <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span>(), <span class="st">"slope.tif"</span>),
@@ -145,10 +145,10 @@
 <span class="kw">ta</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/brick.html">brick</a></span>(<span class="kw">out</span>[<span class="fu"><a href="https://rdrr.io/pkg/raster/man/names.html">names</a></span>(<span class="kw">out</span>) != <span class="st">"ASPECT"</span>])
 <span class="fu"><a href="https://rdrr.io/pkg/raster/man/names.html">names</a></span>(<span class="kw">ta</span>) <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"slope"</span>, <span class="st">"cplan"</span>, <span class="st">"cprof"</span>)
 <span class="co"># catchment area</span>
-<span class="fu"><a href="https://rdrr.io/pkg/RQGIS/man/find_algorithms.html">find_algorithms</a></span>(<span class="st">"[Cc]atchment"</span>)
+<span class="fu">find_algorithms</span>(<span class="st">"[Cc]atchment"</span>)
 <span class="kw">alg</span> <span class="op">=</span> <span class="st">"saga:flowaccumulationtopdown"</span>
-<span class="fu"><a href="https://rdrr.io/pkg/RQGIS/man/get_usage.html">get_usage</a></span>(<span class="kw">alg</span>)
-<span class="kw">carea</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/RQGIS/man/run_qgis.html">run_qgis</a></span>(<span class="kw">alg</span>, ELEVATION = <span class="kw">dem</span>, METHOD = <span class="fl">4</span>, 
+<span class="fu">get_usage</span>(<span class="kw">alg</span>)
+<span class="kw">carea</span> <span class="op">=</span> <span class="fu">run_qgis</span>(<span class="kw">alg</span>, ELEVATION = <span class="kw">dem</span>, METHOD = <span class="fl">4</span>, 
                  FLOW = <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span>(), <span class="st">"carea.tif"</span>),
                  load_output = <span class="fl">TRUE</span>)
 <span class="co"># transform carea</span>
@@ -224,15 +224,15 @@
 <span class="co">#*************</span>
 
 <span class="co"># spatial task</span>
-<span class="kw">task</span> <span class="op">=</span> <span class="fu"><a href="https://mlr.mlr-org.com/reference/ClassifTask.html">makeClassifTask</a></span>(data = <span class="kw">data</span>, target = <span class="st">"lslpts"</span>, 
+<span class="kw">task</span> <span class="op">=</span> <span class="fu">makeClassifTask</span>(data = <span class="kw">data</span>, target = <span class="st">"lslpts"</span>, 
                        positive = <span class="st">"TRUE"</span>, coordinates = <span class="kw">coords</span>)
 <span class="co"># non-spatial task</span>
-<span class="kw">task_nsp</span> <span class="op">=</span> <span class="fu"><a href="https://mlr.mlr-org.com/reference/ClassifTask.html">makeClassifTask</a></span>(data = <span class="kw">data</span>, target = <span class="st">"lslpts"</span>, positive = <span class="st">"TRUE"</span>)
+<span class="kw">task_nsp</span> <span class="op">=</span> <span class="fu">makeClassifTask</span>(data = <span class="kw">data</span>, target = <span class="st">"lslpts"</span>, positive = <span class="st">"TRUE"</span>)
 
 <span class="co"># CONSTRUCT LEARNER</span>
 <span class="co">#******************</span>
 
-<span class="kw">lrn</span> <span class="op">=</span> <span class="fu"><a href="https://mlr.mlr-org.com/reference/makeLearner.html">makeLearner</a></span>(cl = <span class="st">"classif.binomial"</span>,
+<span class="kw">lrn</span> <span class="op">=</span> <span class="fu">makeLearner</span>(cl = <span class="st">"classif.binomial"</span>,
                   link = <span class="st">"logit"</span>,
                   predict.type = <span class="st">"prob"</span>)
 
@@ -240,9 +240,9 @@
 <span class="co">#***************************</span>
 
 <span class="co"># 100-repeated 5-fold spatial resampling strategy</span>
-<span class="kw">resampling</span> <span class="op">=</span> <span class="fu"><a href="https://mlr.mlr-org.com/reference/makeResampleDesc.html">makeResampleDesc</a></span>(method = <span class="st">"SpRepCV"</span>, folds = <span class="fl">5</span>, reps = <span class="fl">100</span>)
+<span class="kw">resampling</span> <span class="op">=</span> <span class="fu">makeResampleDesc</span>(method = <span class="st">"SpRepCV"</span>, folds = <span class="fl">5</span>, reps = <span class="fl">100</span>)
 <span class="co"># 100-repeated 5-fold non-spatial resampling strategy</span>
-<span class="kw">resampling_nsp</span> <span class="op">=</span> <span class="fu"><a href="https://mlr.mlr-org.com/reference/makeResampleDesc.html">makeResampleDesc</a></span>(method = <span class="st">"RepCV"</span>, folds = <span class="fl">5</span>, reps = <span class="fl">100</span>)
+<span class="kw">resampling_nsp</span> <span class="op">=</span> <span class="fu">makeResampleDesc</span>(method = <span class="st">"RepCV"</span>, folds = <span class="fl">5</span>, reps = <span class="fl">100</span>)
 
 <span class="co"># (SPATIAL) CROSS-VALIDATAION</span>
 <span class="co">#****************************</span>
@@ -275,16 +275,16 @@
 <span class="co">#*************</span>
 
 <span class="co"># spatial task</span>
-<span class="kw">task</span> <span class="op">=</span> <span class="fu"><a href="https://mlr.mlr-org.com/reference/ClassifTask.html">makeClassifTask</a></span>(data = <span class="kw">data</span>, target = <span class="st">"lslpts"</span>, 
+<span class="kw">task</span> <span class="op">=</span> <span class="fu">makeClassifTask</span>(data = <span class="kw">data</span>, target = <span class="st">"lslpts"</span>, 
                        positive = <span class="st">"TRUE"</span>, coordinates = <span class="kw">coords</span>)
 
 <span class="co"># CONSTRUCT LEARNER</span>
 <span class="co">#******************</span>
 
-<span class="kw">lrn_glm</span> <span class="op">=</span> <span class="fu"><a href="https://mlr.mlr-org.com/reference/makeLearner.html">makeLearner</a></span>(cl = <span class="st">"classif.binomial"</span>,
+<span class="kw">lrn_glm</span> <span class="op">=</span> <span class="fu">makeLearner</span>(cl = <span class="st">"classif.binomial"</span>,
                       link = <span class="st">"logit"</span>,
                       predict.type = <span class="st">"prob"</span>)
-<span class="kw">lrn_qda</span> <span class="op">=</span> <span class="fu"><a href="https://mlr.mlr-org.com/reference/makeLearner.html">makeLearner</a></span>(cl = <span class="st">"classif.qda"</span>,
+<span class="kw">lrn_qda</span> <span class="op">=</span> <span class="fu">makeLearner</span>(cl = <span class="st">"classif.qda"</span>,
                       predict.type = <span class="st">"prob"</span>)
 
 <span class="co"># find out about the models to be fitted</span>
@@ -298,7 +298,7 @@
 <span class="co">#***************************</span>
 
 <span class="co"># 100-repeated 5-fold spatial resampling strategy</span>
-<span class="kw">resampling</span> <span class="op">=</span> <span class="fu"><a href="https://mlr.mlr-org.com/reference/makeResampleDesc.html">makeResampleDesc</a></span>(method = <span class="st">"SpRepCV"</span>, folds = <span class="fl">5</span>, reps = <span class="fl">100</span>)
+<span class="kw">resampling</span> <span class="op">=</span> <span class="fu">makeResampleDesc</span>(method = <span class="st">"SpRepCV"</span>, folds = <span class="fl">5</span>, reps = <span class="fl">100</span>)
 
 <span class="co"># (SPATIAL) CROSS-VALIDATAION</span>
 <span class="co">#****************************</span>
@@ -332,13 +332,13 @@
 <span class="co">#*************</span>
 
 <span class="co"># spatial task</span>
-<span class="kw">task</span> <span class="op">=</span> <span class="fu"><a href="https://mlr.mlr-org.com/reference/ClassifTask.html">makeClassifTask</a></span>(data = <span class="kw">data</span>, target = <span class="st">"lslpts"</span>, 
+<span class="kw">task</span> <span class="op">=</span> <span class="fu">makeClassifTask</span>(data = <span class="kw">data</span>, target = <span class="st">"lslpts"</span>, 
                        positive = <span class="st">"TRUE"</span>, coordinates = <span class="kw">coords</span>)
 
 
 <span class="co"># CONSTRUCT LEARNER</span>
 <span class="co">#******************</span>
-<span class="kw">lrn_ksvm</span> <span class="op">=</span> <span class="fu"><a href="https://mlr.mlr-org.com/reference/makeLearner.html">makeLearner</a></span>(<span class="st">"classif.ksvm"</span>,
+<span class="kw">lrn_ksvm</span> <span class="op">=</span> <span class="fu">makeLearner</span>(<span class="st">"classif.ksvm"</span>,
                        predict.type = <span class="st">"prob"</span>,
                        kernel = <span class="st">"rbfdot"</span>,
                        C = <span class="fl">1</span>,
@@ -348,7 +348,7 @@
 <span class="co">#***********</span>
 <span class="co"># 100-repeated 5-fold spatial cross-validation without any hyperparameter </span>
 <span class="co"># tuning</span>
-<span class="kw">resampling</span> <span class="op">=</span> <span class="fu"><a href="https://mlr.mlr-org.com/reference/makeResampleDesc.html">makeResampleDesc</a></span>(<span class="st">"SpRepCV"</span>, folds = <span class="fl">5</span>, reps = <span class="fl">100</span>)
+<span class="kw">resampling</span> <span class="op">=</span> <span class="fu">makeResampleDesc</span>(<span class="st">"SpRepCV"</span>, folds = <span class="fl">5</span>, reps = <span class="fl">100</span>)
 
 <span class="co"># parallel processing not really necessary (only 500 models)</span>
 <span class="co"># library(parallelMap)</span>

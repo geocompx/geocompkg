@@ -61,7 +61,7 @@
       <h1 data-toc-skip>Chapter 6: Reprojecting geographic data</h1>
                         <h4 class="author">Robin Lovelace, Jakub Nowosad, Jannes Muenchow</h4>
             
-            <h4 class="date">2020-06-23</h4>
+            <h4 class="date">2020-07-21</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/Robinlovelace/geocompr/blob/master/vignettes/solutions06.Rmd"><code>vignettes/solutions06.Rmd</code></a></small>
       <div class="hidden name"><code>solutions06.Rmd</code></div>
@@ -164,12 +164,6 @@
 <span class="kw">utm12n</span> <span class="op">=</span> <span class="st">"+proj=utm +zone=12 +ellps=GRS80 +datum=NAD83 +units=m +no_defs"</span>
 <span class="kw">con_raster</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/raster.html">raster</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"raster/srtm.tif"</span>, package = <span class="st">"spDataLarge"</span>))
 <span class="kw">con_raster_utm12n</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/projectRaster.html">projectRaster</a></span>(<span class="kw">con_raster</span>, crs = <span class="kw">utm12n</span>, method = <span class="st">"ngb"</span>)
-<span class="co">#&gt; Warning in rgdal::rawTransform(projfrom, projto, nrow(xy), xy[, 1], xy[, : Using</span>
-<span class="co">#&gt; PROJ not WKT2 strings</span>
-<span class="co">#&gt; Warning in rgdal::rawTransform(projection(obj), crs, nrow(xy), xy[, 1], : Using</span>
-<span class="co">#&gt; PROJ not WKT2 strings</span>
-<span class="co">#&gt; Warning in rgdal::rawTransform(projto_int, projfrom, nrow(xy), xy[, 1], : Using</span>
-<span class="co">#&gt; PROJ not WKT2 strings</span>
 <span class="kw">con_raster_utm12n</span>
 <span class="co">#&gt; class      : RasterLayer </span>
 <span class="co">#&gt; dimensions : 475, 490, 232750  (nrow, ncol, ncell)</span>
@@ -194,25 +188,6 @@
 <span class="co">#&gt; Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO"): Discarded datum Unknown based on GRS80 ellipsoid in CRS definition,</span>
 <span class="co">#&gt;  but +towgs84= values preserved</span>
 <span class="kw">cat_raster_wgs84</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/projectRaster.html">projectRaster</a></span>(<span class="kw">cat_raster</span>, crs = <span class="kw">wgs84</span>, method = <span class="st">"bilinear"</span>)
-<span class="co">#&gt; Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO"): Discarded datum Unknown based on GRS80 ellipsoid in CRS definition,</span>
-<span class="co">#&gt;  but +towgs84= values preserved</span>
-
-<span class="co">#&gt; Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO"): Discarded datum Unknown based on GRS80 ellipsoid in CRS definition,</span>
-<span class="co">#&gt;  but +towgs84= values preserved</span>
-<span class="co">#&gt; Warning in rgdal::rawTransform(projfrom, projto, nrow(xy), xy[, 1], xy[, : Using</span>
-<span class="co">#&gt; PROJ not WKT2 strings</span>
-<span class="co">#&gt; Warning in rgdal::rawTransform(projection(obj), crs, nrow(xy), xy[, 1], : Using</span>
-<span class="co">#&gt; PROJ not WKT2 strings</span>
-<span class="co">#&gt; Warning in rgdal::rawTransform(projto_int, projfrom, nrow(xy), xy[, 1], : Using</span>
-<span class="co">#&gt; PROJ not WKT2 strings</span>
-<span class="co">#&gt; Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO"): Discarded datum Unknown based on GRS80 ellipsoid in CRS definition,</span>
-<span class="co">#&gt;  but +towgs84= values preserved</span>
-
-<span class="co">#&gt; Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO"): Discarded datum Unknown based on GRS80 ellipsoid in CRS definition,</span>
-<span class="co">#&gt;  but +towgs84= values preserved</span>
-
-<span class="co">#&gt; Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO"): Discarded datum Unknown based on GRS80 ellipsoid in CRS definition,</span>
-<span class="co">#&gt;  but +towgs84= values preserved</span>
 <span class="kw">cat_raster_wgs84</span>
 <span class="co">#&gt; class      : RasterLayer </span>
 <span class="co">#&gt; dimensions : 1394, 1111, 1548734  (nrow, ncol, ncell)</span>
@@ -224,11 +199,6 @@
 <span class="co">#&gt; values     : 5.751417, 95  (min, max)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span>(mfrow = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>, <span class="fl">2</span>))
 <span class="fu"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(<span class="kw">cat_raster</span>)
-<span class="co">#&gt; Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO"): Discarded datum Unknown based on GRS80 ellipsoid in CRS definition,</span>
-<span class="co">#&gt;  but +towgs84= values preserved</span>
-
-<span class="co">#&gt; Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO"): Discarded datum Unknown based on GRS80 ellipsoid in CRS definition,</span>
-<span class="co">#&gt;  but +towgs84= values preserved</span>
 </pre></div>
 <p><img src="solutions06_files/figure-html/unnamed-chunk-4-1.png" width="700"></p>
 <div class="sourceCode" id="cb7"><pre class="downlit">

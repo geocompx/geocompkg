@@ -61,7 +61,7 @@
       <h1 data-toc-skip>Chapter 3: Attribute operations</h1>
                         <h4 class="author">Robin Lovelace, Jakub Nowosad, Jannes Muenchow</h4>
             
-            <h4 class="date">2020-06-23</h4>
+            <h4 class="date">2020-07-21</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/Robinlovelace/geocompr/blob/master/vignettes/solutions03.Rmd"><code>vignettes/solutions03.Rmd</code></a></small>
       <div class="hidden name"><code>solutions03.Rmd</code></div>
@@ -481,10 +481,10 @@
            ymn = <span class="fl">0</span>, ymx = <span class="fl">4.5</span>, vals = <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(<span class="fl">81</span>))
 <span class="co"># using cell IDs</span>
 <span class="kw">r</span>[<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>, <span class="fl">9</span>, <span class="fl">81</span> <span class="op">-</span> <span class="fl">9</span>, <span class="fl">81</span>)]
-<span class="co">#&gt; [1] -0.3741816  1.4246238 -0.1609141  1.4904247</span>
+<span class="co">#&gt; [1] -0.3718006  0.7452728 -0.9752685  0.8024976</span>
 <span class="co"># using indexing</span>
 <span class="kw">r</span>[<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/pkg/raster/man/ncell.html">nrow</a></span>(<span class="kw">r</span>)), <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/pkg/raster/man/ncell.html">ncol</a></span>(<span class="kw">r</span>))]
-<span class="co">#&gt; [1] -0.3741816  1.4246238  0.5507920  1.4904247</span>
+<span class="co">#&gt; [1] -0.3718006  0.7452728  0.6786167  0.8024976</span>
 <span class="co"># corresponds to [1, 1], [1, 9], [9, 1], [9, 9]</span>
 </pre></div>
 <ol start="15" style="list-style-type: decimal">
@@ -505,24 +505,22 @@
 <span class="co">#&gt; 1  silt</span>
 </pre></div>
 <ol start="16" style="list-style-type: decimal">
-<li>Plot the histogram and the boxplot of the <code><a href="https://rdrr.io/r/utils/data.html">data(dem, package = "RQGIS")</a></code> raster.</li>
+<li>Plot the histogram and the boxplot of the <code><a href="https://rdrr.io/r/utils/data.html">data(dem, package = "spDataLarge")</a></code> raster.</li>
 </ol>
 <div class="sourceCode" id="cb23"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="kw">dem</span>, package = <span class="st">"RQGIS"</span>)
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="kw">dem</span>, package = <span class="st">"spDataLarge"</span>)
 <span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span>(mfrow = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>, <span class="fl">2</span>))
 <span class="fu"><a href="https://rdrr.io/pkg/raster/man/hist.html">hist</a></span>(<span class="kw">dem</span>)
 <span class="fu"><a href="https://rdrr.io/pkg/raster/man/boxplot.html">boxplot</a></span>(<span class="kw">dem</span>)
 </pre></div>
 <p><img src="solutions03_files/figure-html/unnamed-chunk-20-1.png" width="700"></p>
 <ol start="17" style="list-style-type: decimal">
-<li>Now attach also <code><a href="https://rdrr.io/r/utils/data.html">data(ndvi, package = "RQGIS")</a></code>. Create a raster stack using <code>dem</code> and <code>ndvi</code>, and make a <code><a href="https://rdrr.io/pkg/raster/man/pairs.html">pairs()</a></code> plot.</li>
+<li>Now attach also <code><a href="https://rdrr.io/r/utils/data.html">data(ndvi, package = "spDataLarge")</a></code>. Create a raster stack using <code>dem</code> and <code>ndvi</code>, and make a <code><a href="https://rdrr.io/pkg/raster/man/pairs.html">pairs()</a></code> plot.</li>
 </ol>
 <div class="sourceCode" id="cb24"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="kw">ndvi</span>, package = <span class="st">"RQGIS"</span>)
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="kw">ndvi</span>, package = <span class="st">"spDataLarge"</span>)
 <span class="kw">s</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/stack.html">stack</a></span>(<span class="kw">dem</span>, <span class="kw">ndvi</span>)
 <span class="fu"><a href="https://rdrr.io/pkg/raster/man/pairs.html">pairs</a></span>(<span class="kw">s</span>)
-<span class="co">#&gt; Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO"): Discarded datum Unknown based on WGS84 ellipsoid in CRS definition,</span>
-<span class="co">#&gt;  but +towgs84= values preserved</span>
 </pre></div>
 <p><img src="solutions03_files/figure-html/unnamed-chunk-21-1.png" width="700"></p>
 </div>
