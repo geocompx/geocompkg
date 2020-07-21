@@ -207,18 +207,18 @@ cellStats(grain, modal) %>%
 factorValues(grain, modal(values(grain)))
 ```
 
-16) Plot the histogram and the boxplot of the `data(dem, package = "RQGIS")` raster. 
+16) Plot the histogram and the boxplot of the `data(dem, package = "spDataLarge")` raster. 
 ```{r}
-data(dem, package = "RQGIS")
+data(dem, package = "spDataLarge")
 par(mfrow = c(1, 2))
 hist(dem)
 boxplot(dem)
 ```
 
-17) Now attach also `data(ndvi, package = "RQGIS")`. 
+17) Now attach also `data(ndvi, package = "spDataLarge")`. 
 Create a raster stack using `dem` and `ndvi`, and make a `pairs()` plot.
 ```{r}
-data(ndvi, package = "RQGIS")
+data(ndvi, package = "spDataLarge")
 s = stack(dem, ndvi)
 pairs(s)
 ```

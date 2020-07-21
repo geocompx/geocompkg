@@ -23,10 +23,10 @@ library(raster)
 library(dplyr)
 library(spData)
 library(spDataLarge)
-library(RQGIS)
+# library(RQGIS)
 ```
 
-Some of the exercises use a vector (`random_points`) and raster dataset (`ndvi`) from the **RQGIS** package.
+Some of the exercises use a vector (`random_points`) and raster dataset (`ndvi`) from the **spDataLarge** package.
 They also use a polygonal 'convex hull' derived from the vector dataset (`ch`) to represent the area of interest:
 ```{r, message=FALSE}
 data(random_points)

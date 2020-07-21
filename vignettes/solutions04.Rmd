@@ -62,12 +62,12 @@ nz_height_combined %>%
   na.omit()
 ```
 
-4) Use `data(dem, package = "RQGIS")`, and reclassify the elevation in three classes: low, medium and high.
-Secondly, attach the NDVI raster (`data(ndvi, package = "RQGIS")`) and compute the mean NDVI and the mean elevation for each altitudinal class.
+4) Use `data(dem, package = "spDataLarge")`, and reclassify the elevation in three classes: low, medium and high.
+Secondly, attach the NDVI raster (`data(ndvi, package = "spDataLarge")`) and compute the mean NDVI and the mean elevation for each altitudinal class.
 ```{r}
 library(classInt)
-data(dem, package = "RQGIS")
-data(ndvi, package = "RQGIS")
+data(dem, package = "spDataLarge")
+data(ndvi, package = "spDataLarge")
 summary(dem)
 # find quantile breaks
 brk = classIntervals(values(dem), n = 3)$brk
