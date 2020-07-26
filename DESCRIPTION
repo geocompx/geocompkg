@@ -33,6 +33,7 @@ Imports:
     rgrass7 (>= 0.2-1),
     rnaturalearth,
     rnaturalearthdata,
+    s2,
     sf,
     sp,
     spData,
