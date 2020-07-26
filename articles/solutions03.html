@@ -61,7 +61,7 @@
       <h1 data-toc-skip>Chapter 3: Attribute operations</h1>
                         <h4 class="author">Robin Lovelace, Jakub Nowosad, Jannes Muenchow</h4>
             
-            <h4 class="date">2020-07-21</h4>
+            <h4 class="date">2020-07-26</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/Robinlovelace/geocompr/blob/master/vignettes/solutions03.Rmd"><code>vignettes/solutions03.Rmd</code></a></small>
       <div class="hidden name"><code>solutions03.Rmd</code></div>
@@ -481,10 +481,10 @@
            ymn = <span class="fl">0</span>, ymx = <span class="fl">4.5</span>, vals = <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(<span class="fl">81</span>))
 <span class="co"># using cell IDs</span>
 <span class="kw">r</span>[<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>, <span class="fl">9</span>, <span class="fl">81</span> <span class="op">-</span> <span class="fl">9</span>, <span class="fl">81</span>)]
-<span class="co">#&gt; [1] -0.3718006  0.7452728 -0.9752685  0.8024976</span>
+<span class="co">#&gt; [1]  1.016473  1.334066  1.100367 -1.145678</span>
 <span class="co"># using indexing</span>
 <span class="kw">r</span>[<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/pkg/raster/man/ncell.html">nrow</a></span>(<span class="kw">r</span>)), <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/pkg/raster/man/ncell.html">ncol</a></span>(<span class="kw">r</span>))]
-<span class="co">#&gt; [1] -0.3718006  0.7452728  0.6786167  0.8024976</span>
+<span class="co">#&gt; [1]  1.0164729  1.3340656  0.2262788 -1.1456775</span>
 <span class="co"># corresponds to [1, 1], [1, 9], [9, 1], [9, 9]</span>
 </pre></div>
 <ol start="15" style="list-style-type: decimal">
@@ -499,10 +499,10 @@
 <span class="fu"><a href="https://rdrr.io/pkg/raster/man/cellStats.html">cellStats</a></span>(<span class="kw">grain</span>, <span class="kw">modal</span>) <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://rdrr.io/pkg/raster/man/factor.html">factorValues</a></span>(<span class="kw">grain</span>, <span class="kw">.</span>)
 <span class="co">#&gt;   VALUE</span>
-<span class="co">#&gt; 1  silt</span>
+<span class="co">#&gt; 1  sand</span>
 <span class="fu"><a href="https://rdrr.io/pkg/raster/man/factor.html">factorValues</a></span>(<span class="kw">grain</span>, <span class="fu"><a href="https://rdrr.io/pkg/raster/man/modal.html">modal</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/raster/man/getValues.html">values</a></span>(<span class="kw">grain</span>)))
 <span class="co">#&gt;   VALUE</span>
-<span class="co">#&gt; 1  silt</span>
+<span class="co">#&gt; 1  sand</span>
 </pre></div>
 <ol start="16" style="list-style-type: decimal">
 <li>Plot the histogram and the boxplot of the <code><a href="https://rdrr.io/r/utils/data.html">data(dem, package = "spDataLarge")</a></code> raster.</li>
