@@ -29,7 +29,7 @@ knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
 3) Name two advantages and two disadvantages of using mature packages compared with 'cutting edge' packages for spatial data (for example **sp** vs **sf**).
 
 - `+` Stability (newer packages may be more buggy)
-- `+` Number of packages currently supported (although this is changine)
+- `+` Number of packages currently supported (although this is changing)
 - `-` Slow performance for some operations
 - `-` Non standard data representation
 - `-` Fewer features
