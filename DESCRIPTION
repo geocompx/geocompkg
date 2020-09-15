@@ -73,7 +73,10 @@ Suggests:
     gh,
     httr,
     magick,
-    covr
+    covr,
+    tidytext,
+    nabor,
+    units
 VignetteBuilder: knitr
 Encoding: UTF-8
 License: CC BY-NC-ND 4.0

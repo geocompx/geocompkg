@@ -12,8 +12,7 @@ vignette: >
 ```{r setup, echo = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>",
-  eval = FALSE
+  comment = "#>"
   )
 ```
 
@@ -21,7 +20,7 @@ knitr::opts_chunk$set(
 
 The solutions assume the following packages are attached (other packages will be attached when needed):
 
-```{r packages, message=FALSE, warning=FALSE}
+```{r packages, message=FALSE, warning=FALSE, eval=FALSE}
 library(sf)
 library(raster)
 library(vegan)
@@ -35,7 +34,7 @@ library(parallelMap)
 Report the stress value and compare it to the stress value as retrieved from the NMDS using presence-absence data.
 What might explain the observed difference?
 
-```{r, cache=TRUE}
+```{r, eval=FALSE}
 data("study_area", "random_points", "comm", "dem", "ndvi", package = "spDataLarge")
 pa = decostand(comm, "pa")
 pa = pa[rowSums(pa) != 0, ]
