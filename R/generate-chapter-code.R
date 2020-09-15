@@ -11,15 +11,13 @@ generate_chapter_code = function(dir = ".", out_dir  = "code/chapters/") {
 
 #' Generate a data frame of book statistics per chapter
 generate_book_stats = function(dir = ".") {
-        library(tidytext)
-        library(dplyr)
         rmd_files = list.files(path = dir, pattern = ".Rmd")
         chapters = lapply(rmd_files, readLines)
-        chapters = lapply(chapters, function(x) data_frame(line = 1:length(x), text = x))
+        chapters = lapply(chapters, function(x) tibble::tibble(line = 1:length(x), text = x))
         chapters[[1]] %>%
-                unnest_tokens(words, text)
-        n_words = sapply(chapters, function(x) nrow(unnest_tokens(x, words, text)))
+                tidytext::unnest_tokens(words, text)
+        n_words = sapply(chapters, function(x) nrow(tidytext::unnest_tokens(x, words, text)))
         chapter = 1:length(n_words)
         date = Sys.Date()
-        data_frame(n_words, chapter, date)
+        tibble::tibble(n_words, chapter, date)
 }

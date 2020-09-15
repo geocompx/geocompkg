@@ -69,6 +69,10 @@ Suggests:
     RSAGA,
     vegan,
     tree,
+    RefManageR,
+    gh,
+    httr,
+    magick,
     covr
 VignetteBuilder: knitr
 Encoding: UTF-8
