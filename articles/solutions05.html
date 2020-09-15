@@ -61,7 +61,7 @@
       <h1 data-toc-skip>Chapter 5: Geometric operations</h1>
                         <h4 class="author">Robin Lovelace, Jakub Nowosad, Jannes Muenchow</h4>
             
-            <h4 class="date">2020-07-26</h4>
+            <h4 class="date">2020-09-15</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/Robinlovelace/geocompr/blob/master/vignettes/solutions05.Rmd"><code>vignettes/solutions05.Rmd</code></a></small>
       <div class="hidden name"><code>solutions05.Rmd</code></div>
@@ -363,6 +363,8 @@
                        field = <span class="st">"elevation"</span>, fun = <span class="st">"count"</span>)
 <span class="co">#&gt; Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO"): Discarded datum Unknown based on GRS80 ellipsoid in CRS definition,</span>
 <span class="co">#&gt;  but +towgs84= values preserved</span>
+<span class="co">#&gt; Warning in showSRID(SRS_string, format = "PROJ", multiline = "NO"): Discarded datum New_Zealand_Geodetic_Datum_2000 in CRS definition,</span>
+<span class="co">#&gt;  but +towgs84= values preserved</span>
 <span class="fu"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(<span class="kw">nz_raster</span>)
 </pre></div>
 <p><img src="solutions05_files/figure-html/unnamed-chunk-11-2.png" width="700"></p>
@@ -370,6 +372,9 @@
 <span class="kw">nz_raster2</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/rasterize.html">rasterize</a></span>(<span class="kw">nz_height3100</span>, <span class="kw">nz_template</span>, 
                        field = <span class="st">"elevation"</span>, fun = <span class="kw">max</span>)
 <span class="co">#&gt; Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO"): Discarded datum Unknown based on GRS80 ellipsoid in CRS definition,</span>
+<span class="co">#&gt;  but +towgs84= values preserved</span>
+
+<span class="co">#&gt; Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO"): Discarded datum New_Zealand_Geodetic_Datum_2000 in CRS definition,</span>
 <span class="co">#&gt;  but +towgs84= values preserved</span>
 <span class="fu"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(<span class="kw">nz_raster2</span>)
 </pre></div>
@@ -431,7 +436,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>
