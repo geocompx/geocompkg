@@ -58,7 +58,7 @@ Suggests:
     latticeExtra,
     link2GI,
     mapdeck,
-    mapview,    
+    mapview,
     mlr,
     odbc,
     pool,
@@ -68,7 +68,8 @@ Suggests:
     RPostgreSQL,
     RSAGA,
     vegan,
-    tree
+    tree,
+    covr
 VignetteBuilder: knitr
 Encoding: UTF-8
 License: CC BY-NC-ND 4.0
