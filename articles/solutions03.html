@@ -481,10 +481,10 @@
            ymn = <span class="fl">0</span>, ymx = <span class="fl">4.5</span>, vals = <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(<span class="fl">81</span>))
 <span class="co"># using cell IDs</span>
 <span class="kw">r</span>[<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>, <span class="fl">9</span>, <span class="fl">81</span> <span class="op">-</span> <span class="fl">9</span>, <span class="fl">81</span>)]
-<span class="co">#&gt; [1]  0.23318647 -0.09326064 -1.36713229 -0.20153123</span>
+<span class="co">#&gt; [1] -1.1947067  0.2306124 -0.4709918 -0.7316968</span>
 <span class="co"># using indexing</span>
 <span class="kw">r</span>[<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/pkg/raster/man/ncell.html">nrow</a></span>(<span class="kw">r</span>)), <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/pkg/raster/man/ncell.html">ncol</a></span>(<span class="kw">r</span>))]
-<span class="co">#&gt; [1]  0.23318647 -0.09326064 -0.22250232 -0.20153123</span>
+<span class="co">#&gt; [1] -1.19470669  0.23061242 -0.05097179 -0.73169675</span>
 <span class="co"># corresponds to [1, 1], [1, 9], [9, 1], [9, 9]</span>
 </pre></div>
 <ol start="15" style="list-style-type: decimal">
@@ -499,10 +499,10 @@
 <span class="fu"><a href="https://rdrr.io/pkg/raster/man/cellStats.html">cellStats</a></span>(<span class="kw">grain</span>, <span class="kw">modal</span>) <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://rdrr.io/pkg/raster/man/factor.html">factorValues</a></span>(<span class="kw">grain</span>, <span class="kw">.</span>)
 <span class="co">#&gt;   VALUE</span>
-<span class="co">#&gt; 1  sand</span>
+<span class="co">#&gt; 1  clay</span>
 <span class="fu"><a href="https://rdrr.io/pkg/raster/man/factor.html">factorValues</a></span>(<span class="kw">grain</span>, <span class="fu"><a href="https://rdrr.io/pkg/raster/man/modal.html">modal</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/raster/man/getValues.html">values</a></span>(<span class="kw">grain</span>)))
 <span class="co">#&gt;   VALUE</span>
-<span class="co">#&gt; 1  sand</span>
+<span class="co">#&gt; 1  clay</span>
 </pre></div>
 <ol start="16" style="list-style-type: decimal">
 <li>Plot the histogram and the boxplot of the <code><a href="https://rdrr.io/r/utils/data.html">data(dem, package = "spDataLarge")</a></code> raster.</li>
@@ -541,7 +541,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
