@@ -13,3 +13,5 @@ promenade-all.geojson
 tmp.tsv
 *.pdf
 slides/libs/
+*.Rds
+*.bib
