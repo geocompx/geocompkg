@@ -61,6 +61,7 @@ jobs:
         run: |
           remotes::install_deps(dependencies = TRUE)
           remotes::install_cran("rcmdcheck")
+          remotes::install_cran("pkgdown")
         shell: Rscript {0}
 
       - name: Install package
