@@ -88,7 +88,7 @@ In the code below, we create a new page and specify its layout with two rows - o
 Next, we populate the layout with maps of Alaska and the contiguous 48 states add a map of Hawaii to the bottom left of the map and specify its size.
 Lastly, we draw two dashed lines (`gp = gpar(lty = 2)`) to separate the contiguous 48 states from Alaska and Hawaii.
 
-```{r, fig.width=5.5, fig.height=4.5}
+```{r, fig.width=5.5, fig.height=4.5, eval=FALSE}
 grid.newpage()
 pushViewport(viewport(layout = grid.layout(2, 1,
                                            heights = unit(c(us_states_alaska_ratio, 1), "null"))))
@@ -99,6 +99,8 @@ print(hawaii_map, vp = viewport(x = 0.3, y = 0.07,
 grid.lines(x = c(0, 1), y = c(0.58, 0.58), gp = gpar(lty = 2))
 grid.lines(x = c(0, 0.5), y = c(0.33, 0), gp = gpar(lty = 2))
 ```
+
+![](https://user-images.githubusercontent.com/1825120/93193995-78ce2e80-f73f-11ea-805d-d59f8d9773c3.png)
 
 The result map is just an approximation, not a perfect representation, of relationships between the partial maps -- their location and size. 
 In the same time, it is an improvement upon a standard map of United States, which either shows only the contiguous 48 states or largely reduce the size of Hawaii and Alaska.

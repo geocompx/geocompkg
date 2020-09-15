@@ -1,5 +1,9 @@
 #' Return details of issues, with input an GitHub issue URL
-#' 
+#'
+#' @param url_issue The url of the issue to add
+#' @param vars Which variables to use?
+#' @param url_old_impact The previous state of the 'impact.csv' file
+#'
 #' @examples \dontrun{
 #' url_issue = "https://github.com/mtennekes/tmap/issues/196"
 #' geocompr:::add_impact(url_issue)
@@ -14,12 +18,12 @@ add_impact = function(url_issue, vars = c("created_at", "type", "title", "commen
   hard = "type|creator"
   vars_hard = vars[grepl(pattern = hard, x = vars)]
   vars_easy = vars[!grepl(pattern = hard, x = vars)]
-  
+
   res_easy = lapply(vars_easy, function(x) res_gh[[x]])
   res_hard = rep(list(NA_character_), length(vars_hard))
   names(res_hard) = vars_hard
   names(res_easy) = vars_easy
-  
+
   ne = names(res_easy) # names of easy ones (for future reference)
   if("created_at" %in% ne) {
     res_easy[["created_at"]] = as.Date(res_easy[["created_at"]])
@@ -32,7 +36,7 @@ add_impact = function(url_issue, vars = c("created_at", "type", "title", "commen
   }
   res_all = c(res_easy, res_hard)
   res_df = data.frame(res_all[vars])
-  
+
   if(!is.null(url_old_impact)) {
     new_impact = c(url = url_issue, res_df)
     u = "https://github.com/Robinlovelace/geocompr/raw/master/our-impact.csv"

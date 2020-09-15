@@ -10,6 +10,13 @@ add_impact(
   url_old_impact = NULL
 )
 }
+\arguments{
+\item{url_issue}{The url of the issue to add}
+
+\item{vars}{Which variables to use?}
+
+\item{url_old_impact}{The previous state of the 'impact.csv' file}
+}
 \description{
 Return details of issues, with input an GitHub issue URL
 }

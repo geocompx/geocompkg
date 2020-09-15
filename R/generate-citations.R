@@ -1,6 +1,6 @@
-#' Cite R packages
-#'
-#' See https://github.com/csgillespie/efficientR/blob/master/appendix.Rmd
+# Cite R packages
+#
+# See https://github.com/csgillespie/efficientR/blob/master/appendix.Rmd
 generate_citations = function() {
   desc = read.dcf("DESCRIPTION")
   headings = dimnames(desc)[[2]]
@@ -11,11 +11,11 @@ generate_citations = function() {
   pkgs = gsub(" ", "", pkgs)
   pkgs = gsub("\\(.*)", "", pkgs) # Remove versions from packages
   to_install = !pkgs %in% rownames(installed.packages())
-  
+
   if(sum(to_install) > 0){
     install.packages(pkgs[to_install])
   }
-  
+
   i = 1
   pkgs = pkgs[order(pkgs)]
   pkgs_df = data.frame(Name = pkgs, Title = NA, cite = NA, version = NA)
@@ -34,9 +34,9 @@ generate_citations = function() {
   knitr::write_bib(pkgs, file="packages.bib")
 }
 
-#' Download citations
-#' # Dependes on a zotero API key (e.g. stored in Sys.getenv("ZOTERO")):
-#' # dl_citations(f = "refs.bib", 216746, Sys.getenv("ZOTERO"), collection = "VJS7CTCC")
+# Download citations
+# # Dependes on a zotero API key (e.g. stored in Sys.getenv("ZOTERO")):
+# # dl_citations(f = "refs.bib", 216746, Sys.getenv("ZOTERO"), collection = "VJS7CTCC")
 dl_citations = function(f, user, collection, key = NULL) {
   if(is.null(key)) {
     req = paste0("https://www.zotero.org/api/groups/",
