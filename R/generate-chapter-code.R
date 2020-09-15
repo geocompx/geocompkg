@@ -1,5 +1,5 @@
-#' Extracts R code from each chapter and dumps it in the code folder
-#'
+# Extracts R code from each chapter and dumps it in the code folder
+#
 generate_chapter_code = function(dir = ".", out_dir  = "code/chapters/") {
         rmd_files = list.files(path = dir, pattern = ".Rmd")
         r_files = paste0(out_dir, rmd_files)
@@ -9,7 +9,7 @@ generate_chapter_code = function(dir = ".", out_dir  = "code/chapters/") {
         }
 }
 
-#' Generate a data frame of book statistics per chapter
+# Generate a data frame of book statistics per chapter
 generate_book_stats = function(dir = ".") {
         rmd_files = list.files(path = dir, pattern = ".Rmd")
         chapters = lapply(rmd_files, readLines)
