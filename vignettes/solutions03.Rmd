@@ -161,27 +161,37 @@ us_states_sel = us_states %>%
   dplyr::select(Income = median_income_15)
 ```
 
-13) Calculate the change in median income between 2010 and 2015 for each state.
-Bonus: what was the minimum, average and maximum median income in 2015 for each region?
-What is the region with the largest increase of the median income?
+13) Calculate the change in the number of residents living below the poverty level between 2010 and 2015 for each state. (Hint: See ?us_states_df for documentation on the poverty level columns.) Bonus: Calculate the change in the *percentage* of residents living below the poverty level in each state.
 ```{r}
-us_income_change = us_states %>%
+us_pov_change = us_states %>%
   left_join(us_states_df, by = c("NAME" = "state")) %>%
-  mutate(income_change = median_income_15 - median_income_10) 
+  mutate(pov_change = poverty_level_15 - poverty_level_10)
+ 
+# Bonus
+us_pov_pct_change = us_states %>%
+  left_join(us_states_df, by = c("NAME" = "state")) %>%
+  mutate(pov_pct_10 = (poverty_level_10 / total_pop_10) * 100, pov_pct_15 = (poverty_level_15 / total_pop_15) * 100) %>%
+  mutate(pov_pct_change = pov_pct_15 - pov_pct_10)
+```
 
-us_income_change_reg = us_income_change %>%
+14) What was the minimum, average and maximum state-level change in people living below the poverty line for each region? Bonus: What is the region with the minimum overall change in people living below the poverty line?
+
+```{r}
+us_pov_change_reg = us_pov_change %>%
   group_by(REGION) %>%
-  summarize(min_income_change = min(income_change),
-            mean_income_change = mean(income_change),
-            max_income_change = max(income_change))
+  summarize(min_state_pov_change = min(pov_change),
+            mean_state_pov_change = mean(pov_change),
+            max_state_pov_change = max(pov_change),
+            region_pov_change = sum(pov_change))
 
-us_income_change_reg %>%
-  filter(mean_income_change == max(mean_income_change)) %>%
+# Bonus
+us_pov_pct_change_reg %>%
+  filter(region_pov_change == min(region_pov_change)) %>%
   pull(REGION) %>%
   as.character()
 ```
 
-14) Create a raster from scratch with nine rows and columns and a resolution of 0.5 decimal degrees (WGS84).
+15) Create a raster from scratch with nine rows and columns and a resolution of 0.5 decimal degrees (WGS84).
 Fill it with random numbers.
 Extract the values of the four corner cells. 
 ```{r}
@@ -195,7 +205,7 @@ r[c(1, nrow(r)), c(1, ncol(r))]
 ```
 
 
-15) What is the most common class of our example raster `grain` (hint: `modal()`)?
+16) What is the most common class of our example raster `grain` (hint: `modal()`)?
 ```{r}
 grain_size = c("clay", "silt", "sand")
 grain = raster(nrow = 6, ncol = 6, res = 0.5, 
@@ -207,7 +217,7 @@ cellStats(grain, modal) %>%
 factorValues(grain, modal(values(grain)))
 ```
 
-16) Plot the histogram and the boxplot of the `data(dem, package = "spDataLarge")` raster. 
+17) Plot the histogram and the boxplot of the `data(dem, package = "spDataLarge")` raster. 
 ```{r}
 data(dem, package = "spDataLarge")
 par(mfrow = c(1, 2))
@@ -215,7 +225,7 @@ hist(dem)
 boxplot(dem)
 ```
 
-17) Now attach also `data(ndvi, package = "spDataLarge")`. 
+18) Now attach also `data(ndvi, package = "spDataLarge")`. 
 Create a raster stack using `dem` and `ndvi`, and make a `pairs()` plot.
 ```{r}
 data(ndvi, package = "spDataLarge")
