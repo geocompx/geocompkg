@@ -174,19 +174,20 @@ us_pov_pct_change = us_states %>%
   mutate(pov_pct_change = pov_pct_15 - pov_pct_10)
 ```
 
-14) What was the minimum, average and maximum state-level change in people living below the poverty line for each region? Bonus: What is the region with the minimum overall change in people living below the poverty line?
+14) What was the minimum, average and maximum state's number of people living below the poverty line in 2015 for each region? Bonus: What is the region with the largest increase in people living below the poverty line?
 
 ```{r}
 us_pov_change_reg = us_pov_change %>%
   group_by(REGION) %>%
-  summarize(min_state_pov_change = min(pov_change),
-            mean_state_pov_change = mean(pov_change),
-            max_state_pov_change = max(pov_change),
+  summarize(min_state_pov_15 = min(poverty_level_15),
+            mean_state_pov_15 = mean(poverty_level_15),
+            max_state_pov_15 = max(poverty_level_15),
+            # For the bonus question
             region_pov_change = sum(pov_change))
 
 # Bonus
-us_pov_pct_change_reg %>%
-  filter(region_pov_change == min(region_pov_change)) %>%
+us_pov_change_reg %>%
+  filter(region_pov_change == max(region_pov_change)) %>%
   pull(REGION) %>%
   as.character()
 ```
