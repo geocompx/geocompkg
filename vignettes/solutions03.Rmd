@@ -161,7 +161,8 @@ us_states_sel = us_states %>%
   dplyr::select(Income = median_income_15)
 ```
 
-13) Calculate the change in the number of residents living below the poverty level between 2010 and 2015 for each state. (Hint: See ?us_states_df for documentation on the poverty level columns.) Bonus: Calculate the change in the *percentage* of residents living below the poverty level in each state.
+13) Calculate the change in the number of residents living below the poverty level between 2010 and 2015 for each state. (Hint: See ?us_states_df for documentation on the poverty level columns.)
+Bonus: Calculate the change in the *percentage* of residents living below the poverty level in each state.
 ```{r}
 us_pov_change = us_states %>%
   left_join(us_states_df, by = c("NAME" = "state")) %>%
@@ -174,19 +175,20 @@ us_pov_pct_change = us_states %>%
   mutate(pov_pct_change = pov_pct_15 - pov_pct_10)
 ```
 
-14) What was the minimum, average and maximum state's number of people living below the poverty line in 2015 for each region? Bonus: What is the region with the largest increase in people living below the poverty line?
+14) What was the minimum, average and maximum state's number of people living below the poverty line in 2015 for each region?
+Bonus: What is the region with the largest increase in people living below the poverty line?
 
 ```{r}
 us_pov_change_reg = us_pov_change %>%
   group_by(REGION) %>%
   summarize(min_state_pov_15 = min(poverty_level_15),
             mean_state_pov_15 = mean(poverty_level_15),
-            max_state_pov_15 = max(poverty_level_15),
-            # For the bonus question
-            region_pov_change = sum(pov_change))
+            max_state_pov_15 = max(poverty_level_15))
 
 # Bonus
-us_pov_change_reg %>%
+us_pov_change %>%
+  group_by(REGION) %>%
+  summarize(region_pov_change = sum(pov_change)) %>%
   filter(region_pov_change == max(region_pov_change)) %>%
   pull(REGION) %>%
   as.character()
