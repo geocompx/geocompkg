@@ -23,8 +23,8 @@ library(raster)
 library(dplyr)
 library(spData)
 # library(RSAGA)
-# library(RQGIS)
-# library(mlr)
+library(qgisprocess)
+# library(mlr3)
 library(tmap)
 ```
 
@@ -65,36 +65,49 @@ dem =
 # COMPUTING TERRAIN ATTRIBUTES
 #*******************************
 
-# slope, aspect, curvatures
+algs = qgis_algorithms()
 set_env(dev = FALSE)
-find_algorithms("curvature")
+dplyr::filter(algs, grepl("curvature", algorithm))
 alg = "saga:slopeaspectcurvature"
-get_usage(alg)
+qgis_show_help(alg)
+qgis_arguments(alg)
 # terrain attributes (ta)
-out = run_qgis(alg, ELEVATION = dem, METHOD = 6, UNIT_SLOPE = "degree",
-               UNIT_ASPECT = "degree",
-               ASPECT = file.path(tempdir(), "aspect.tif"),
-               SLOPE = file.path(tempdir(), "slope.tif"),
-               C_PLAN = file.path(tempdir(), "cplan.tif"),
-               C_PROF = file.path(tempdir(), "cprof.tif"),
-               load_output = TRUE)
+out_nms = paste0(tempdir(), "/", c("aspect", "slope", "cplan", "cprof"), ".sdat")
+args = rlang::set_names(out_nms, c("ASPECT", "SLOPE", "C_PLAN", "C_PROF"))
 
+out = qgis_run_algorithm(alg, ELEVATION = dem, METHOD = 6, 
+                         UNIT_SLOPE = "[1] degree",
+                         UNIT_ASPECT = "[1] degree",
+                         !!!args
+                         )
 # use brick because then the layers will be in memory and not on disk
-ta = brick(out[names(out) != "ASPECT"])
+ta = brick(lapply(out[names(args)], \(x) x[1]))
+# hillshade (needs radians)
+# hs = hillShade(ta$SLOPE * pi / 180, ta$ASPECT * pi / 180, 40, 270)
+# plot(hs, col = gray(seq(0, 1, length.out = 100)), legend = FALSE)
+# plot(dem, add = TRUE, alpha = 0.6)
+# dplyr::filter(lsl, lslpts == TRUE) |> 
+#   sf::st_as_sf(coords = c("x", "y"), crs = 32717) |>
+#   plot(add = TRUE, pch = 16)
+
+ta = raster::dropLayer(ta, "ASPECT")
 names(ta) = c("slope", "cplan", "cprof")
 # catchment area
-find_algorithms("[Cc]atchment")
-alg = "saga:flowaccumulationtopdown"
-get_usage(alg)
-carea = run_qgis(alg, ELEVATION = dem, METHOD = 4, 
-                 FLOW = file.path(tempdir(), "carea.tif"),
-                 load_output = TRUE)
+dplyr::filter(algs, grepl("[Cc]atchment", algorithm))
+alg = "saga:catchmentarea"
+qgis_show_help(alg)
+qgis_arguments(alg)
+carea = qgis_run_algorithm(alg,
+                           ELEVATION = dem, 
+                           METHOD = 4, 
+                           FLOW = file.path(tempdir(), "carea.sdat"))
 # transform carea
-log_carea = log10(carea)
-names(log_carea) = "log_carea"
+carea = raster(carea$FLOW[1])
+log10_carea = log10(carea)
+names(log10_carea) = "log10_carea"
 names(dem) = "elev"
 # add log_carea
-ta = addLayer(x = ta, dem, log_carea)
+ta = addLayer(x = ta, dem, log10_carea)
 ```
 
 2) Extract the values from the corresponding output rasters to the `landslides` data frame (`data(landslides, package = "RSAGA"`) by adding new variables called `slope`, `cplan`, `cprof`, `elev` and `log_carea`. Keep all landslide initiation points and 175 randomly selected non-landslide points (see this [section](https://geocompr.robinlovelace.net/spatial-cv.html#case-landslide) for details).
@@ -112,10 +125,8 @@ Running `data("study_mask", package = "spDataLarge")` attaches a mask of the stu
 
 ```{r, eval=FALSE}
 # attach data (in case you have skipped exercises 1) and 2)
-# landslide points with terrain attributes
-data("lsl", package = "spDataLarge")
-# terrain attribute raster stack
-data("ta", package = "spDataLarge")
+# landslide points with terrain attributes and terrain attribute raster stack
+data("lsl", "ta", package = "spDataLarge")
 
 # fit the model
 fit = glm(lslpts ~ slope + cplan + cprof + elev + log10_carea, 
