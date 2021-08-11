@@ -46,7 +46,9 @@ Imports:
     tmap,
     tmaptools
 Remotes:
-    nowosad/spDataLarge
+    mlr-org/mlr3extralearners,
+    nowosad/spDataLarge,
+    paleolimbot/qgisprocess
 URL: https://github.com/geocompr/geocompkg
 BugReports: https://github.com/Robinlovelace/geocompr/issues
 LazyData: TRUE
@@ -54,15 +56,24 @@ RoxygenNote: 7.1.1
 Suggests:
     knitr,
     bench,
+    GGally,
     kernlab,
     latticeExtra,
     link2GI,
     mapdeck,
     mapview,
-    mlr,
+    mlr3,
+    mlr3extralearners,
+    mlr3learners,
+    mlr3measures,
+    mlr3spatiotempcv,
+    mlr3tuning,
+    mlr3viz,
     odbc,
     pool,
+    progressr,
     pROC,
+    qgisprocess,
     ranger,
     RPostgres,
     RPostgreSQL,
