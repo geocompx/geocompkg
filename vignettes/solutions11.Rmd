@@ -18,13 +18,15 @@ knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
 The solutions assume the following packages are attached (other packages will be attached when needed):
 
 ```{r packages, message=FALSE, warning=FALSE}
-library(sf)
-library(raster)
 library(dplyr)
-library(spData)
-# library(RSAGA)
+library(mlr3)
+library(mlr3learners)
+library(mlr3extralearners)
+library(mlr3spatiotempcv)
+library(mlr3tuning)
 library(qgisprocess)
-# library(mlr3)
+library(raster)
+library(sf)
 library(tmap)
 ```
 
@@ -40,8 +42,7 @@ library(tmap)
 # attach data
 data("landslides", package = "RSAGA")
 
-# DATA PREPROCESSING
-#*******************
+# data preprocessing
 
 # select non-landslide points
 non_pts = filter(landslides, lslpts == FALSE)
@@ -62,23 +63,22 @@ dem =
          ymn = dem$header$yllcorner,
          ymx = dem$header$yllcorner + dem$header$nrows * dem$header$cellsize)
 
-# COMPUTING TERRAIN ATTRIBUTES
-#*******************************
+# computing terrain attributes
 
 algs = qgis_algorithms()
-set_env(dev = FALSE)
 dplyr::filter(algs, grepl("curvature", algorithm))
 alg = "saga:slopeaspectcurvature"
 qgis_show_help(alg)
 qgis_arguments(alg)
 # terrain attributes (ta)
-out_nms = paste0(tempdir(), "/", c("aspect", "slope", "cplan", "cprof"), ".sdat")
+out_nms = paste0(tempdir(), "/", c("aspect", "slope", "cplan", "cprof"),
+                 ".sdat")
 args = rlang::set_names(out_nms, c("ASPECT", "SLOPE", "C_PLAN", "C_PROF"))
-
 out = qgis_run_algorithm(alg, ELEVATION = dem, METHOD = 6, 
                          UNIT_SLOPE = "[1] degree",
                          UNIT_ASPECT = "[1] degree",
-                         !!!args
+                         !!!args,
+                         .quiet = TRUE
                          )
 # use brick because then the layers will be in memory and not on disk
 ta = brick(lapply(out[names(args)], \(x) x[1]))
@@ -160,115 +160,94 @@ tm_shape(hs, bbox = bbx) +
 ```
 
 4) Compute a 100-repeated 5-fold non-spatial cross-validation and spatial CV based on the GLM learner and compare the AUROC values from both resampling strategies with the help of boxplots (see this [Figure](https://geocompr.robinlovelace.net/spatial-cv.html#fig:boxplot-cv).
-Hint: You need to specify a non-spatial task and a non-spatial resampling strategy.
+Hint: You need to specify a non-spatial resampling strategy.
 
 ```{r, eval=FALSE}
 # attach data (in case you have skipped exercises 1) and 2)
 data("lsl", package = "spDataLarge")  # landslide points with terrain attributes
 
-# put the coordinates in an additional dataframe
-coords = lsl[, c("x", "y")]
-data = dplyr::select(lsl, -x, -y)
-# data_nonspatial = dplyr::select(data, -x, -y)
+# create task
+task = TaskClassifST$new(
+  id = "lsl_ecuador",
+  backend = mlr3::as_data_backend(lsl), target = "lslpts", positive = "TRUE",
+  extra_args = list(
+    coordinate_names = c("x", "y"),
+    coords_as_features = FALSE,
+    crs = 32717)
+)
 
-# CREATE TASKS
-#*************
+# construct learners (for all subsequent exercises)
+# GLM
+lrn_glm = lrn("classif.log_reg", predict_type = "prob")
 
-# spatial task
-task = makeClassifTask(data = data, target = "lslpts", 
-                       positive = "TRUE", coordinates = coords)
-# non-spatial task
-task_nsp = makeClassifTask(data = data, target = "lslpts", positive = "TRUE")
+# SVM
+# construct SVM learner (using ksvm function from the kernlab package)
+lrn_ksvm = lrn("classif.ksvm", predict_type = "prob", kernel = "rbfdot",
+               type = "C-svc")
+# specify nested resampling and adjust learner accordingly
+# five spatially disjoint partitions
+tune_level = rsmp("spcv_coords", folds = 5)
+# use 50 randomly selected hyperparameters
+terminator = trm("evals", n_evals = 50)
+tuner = tnr("random_search")
+# define the outer limits of the randomly selected hyperparameters
+ps = ps(
+  C = p_dbl(lower = -12, upper = 15, trafo = function(x) 2^x),
+  sigma = p_dbl(lower = -15, upper = 6, trafo = function(x) 2^x)
+)
+at_ksvm = AutoTuner$new(
+  learner = lrn_ksvm,
+  resampling = tune_level,
+  measure = msr("classif.auc"),
+  search_space = ps,
+  terminator = terminator,
+  tuner = tuner
+)
 
-# CONSTRUCT LEARNER
-#******************
+# QDA
+lrn_qda = lrn("classif.qda", predict_type = "prob")
 
-lrn = makeLearner(cl = "classif.binomial",
-                  link = "logit",
-                  predict.type = "prob")
+# SVM without tuning hyperparameters
+vals = lrn_ksvm$param_set$values
+lrn_ksvm_notune = lrn_ksvm$clone()
+lrn_ksvm_notune$param_set$values = c(vals, C = 1, sigma = 1)
 
-# DEFINE RESAMPLING STRATEGY
-#***************************
+# define resampling strategies
+# specify the reampling method, i.e. spatial CV with 100 repetitions and 5 folds
+# -> in each repetition dataset will be splitted into five folds
+# method: repeated_spcv_coords -> spatial partioning
+rsmp_sp = rsmp("repeated_spcv_coords", folds = 5, repeats = 100)
+# method: repeated_cv -> non-spatial partitioning
+rsmp_nsp = rsmp("repeated_cv", folds = 5, repeats = 100)
 
-# 100-repeated 5-fold spatial resampling strategy
-resampling = makeResampleDesc(method = "SpRepCV", folds = 5, reps = 100)
-# 100-repeated 5-fold non-spatial resampling strategy
-resampling_nsp = makeResampleDesc(method = "RepCV", folds = 5, reps = 100)
-
-# (SPATIAL) CROSS-VALIDATAION
+# (spatial) cross-validataion
 #****************************
+# create your design
+grid = benchmark_grid(tasks = task, 
+                      learners = list(lrn_glm, at_ksvm, lrn_qda, 
+                                      lrn_ksvm_notune),
+                      resamplings = list(rsmp_sp, rsmp_nsp))
+# execute the cross-validation
+bmr = benchmark(grid, store_backends = FALSE)
+# save your result
+saveRDS(bmr, file = "extdata/11-bmr.rds")
 
-# execute the resampling
-sp_cv = mlr::resample(learner = lrn, task = task,
-                      resampling = resampling,
-                      measures = mlr::auc)
-conv_cv = mlr::resample(learner = lrn, task = task_nsp,
-                        resampling = resampling_nsp,
-                        measures = mlr::auc)
-# Visualization of non-spatial overfitting
-boxplot(sp_cv$measures.test$auc,
-        conv_cv$measures.test$auc, col = c("lightblue2", "mistyrose2"),
-        names = c("spatial CV", "conventional CV"), ylab = "AUROC")
+# plot your result
+autoplot(bmr, measure = msr("classif.auc"))
 ```
 
 5) Model landslide susceptibility using a quadratic discriminant analysis (QDA).
 Assess the predictive performance of the QDA. 
 What is the a difference between the spatially cross-validated mean AUROC value of the QDA and the GLM?
-Hint: Before running the spatial cross-validation for both learners set a seed to make sure that both use the same partitions which in turn guarantees comparability.
 
 ```{r, eval=FALSE}
-# attach data (in case you have skipped exercises 1) and 2)
-data("lsl", package = "spDataLarge")  # landslide points with terrain attributes
+# attach data (in case you have skipped exercise 4)
+bmr = readRDS("extdata/11-bmr.rds")
 
-# put the coordinates in an additional dataframe
-coords = lsl[, c("x", "y")]
-data = dplyr::select(lsl, -x, -y)
-# data_nonspatial = dplyr::select(data, -x, -y)
-
-# CREATE TASKS
-#*************
-
-# spatial task
-task = makeClassifTask(data = data, target = "lslpts", 
-                       positive = "TRUE", coordinates = coords)
-
-# CONSTRUCT LEARNER
-#******************
-
-lrn_glm = makeLearner(cl = "classif.binomial",
-                      link = "logit",
-                      predict.type = "prob")
-lrn_qda = makeLearner(cl = "classif.qda",
-                      predict.type = "prob")
-
-# find out about the models to be fitted
-# getTaskFormula(task)
-# train(learner = lrn_glm, task = task)
-# getLearnerModel(train(learner = lrn_glm, task = task))
-# train(learner = lrn_qda, task = task)
-# getLearnerModel(train(learner = lrn_qda, task = task))
-
-# DEFINE RESAMPLING STRATEGY
-#***************************
-
-# 100-repeated 5-fold spatial resampling strategy
-resampling = makeResampleDesc(method = "SpRepCV", folds = 5, reps = 100)
-
-# (SPATIAL) CROSS-VALIDATAION
-#****************************
-
-# execute the resampling
-sp_glm = mlr::resample(learner = lrn_glm, task = task,
-                       resampling = resampling,
-                       measures = mlr::auc)
-sp_qda = mlr::resample(learner = lrn_qda, task = task_nsp,
-                       resampling = resampling_nsp,
-                       measures = mlr::auc)
-# QDA has higher AUROC values on average which indicates moderately non-linear
-# boundaries
-boxplot(sp_glm$measures.test$auc,
-        sp_qda$measures.test$auc, col = c("lightblue2", "mistyrose2"),
-        names = c("GLM", "QDA"), ylab = "AUROC")
+# plot your result
+autoplot(bmr, measure = msr("classif.auc"))
+# QDA has higher AUROC values on average than GLM which indicates moderately
+# non-linear boundaries
 ```
 
 6) Run the SVM without tuning the hyperparameters.
@@ -276,48 +255,8 @@ Use the `rbfdot` kernel with $\sigma$ = 1 and *C* = 1.
 Leaving the hyperparameters unspecified in **kernlab**'s `ksvm()` would otherwise initialize an automatic non-spatial hyperparameter tuning.
 
 ```{r, eval=FALSE}
-# attach data (in case you have skipped exercises 1) and 2)
-data("lsl", package = "spDataLarge")  # landslide points with terrain attributes
-
-# put the coordinates in an additional dataframe
-coords = lsl[, c("x", "y")]
-data = dplyr::select(lsl, -x, -y)
-# data_nonspatial = dplyr::select(data, -x, -y)
-
-# CREATE TASK
-#*************
-
-# spatial task
-task = makeClassifTask(data = data, target = "lslpts", 
-                       positive = "TRUE", coordinates = coords)
-
-
-# CONSTRUCT LEARNER
-#******************
-lrn_ksvm = makeLearner("classif.ksvm",
-                       predict.type = "prob",
-                       kernel = "rbfdot",
-                       C = 1,
-                       sigma = 1)
-
-# RESAMPLING
-#***********
-# 100-repeated 5-fold spatial cross-validation without any hyperparameter 
-# tuning
-resampling = makeResampleDesc("SpRepCV", folds = 5, reps = 100)
-
-# parallel processing not really necessary (only 500 models)
-# library(parallelMap)
-# parallelStart(mode = "multicore", level = "mlr.resample", 
-#               cpus = parallel::detectCores() / 2)
-
-set.seed(28032018)
-resa_svm_spatial = mlr::resample(learner = lrn_ksvm, 
-                                 task = task,
-                                 resampling = resampling,
-                                 measures = mlr::auc,
-                                 show.info = TRUE)
-# Aggregated Result: auc.test.mean=0.7843021
-# parallelStop()
+# attach data (in case you have skipped exercise 4)
+bmr = readRDS("extdata/11-bmr.rds")
+# plot your result
+autoplot(bmr, measure = msr("classif.auc"))
 ```
-
