@@ -64,6 +64,7 @@ Suggests:
     pool,
     pROC,
     ranger,
+    rmarkdown,
     RPostgres,
     RPostgreSQL,
     RSAGA,
