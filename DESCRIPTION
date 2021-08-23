@@ -54,6 +54,7 @@ RoxygenNote: 7.1.1
 Suggests:
     knitr,
     bench,
+    geogrid,
     kernlab,
     latticeExtra,
     link2GI,
