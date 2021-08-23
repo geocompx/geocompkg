@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">geocompkg | metapackage for the Gecomputation with R book</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.102</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.103</span>
       </span>
     </div>
 
@@ -61,7 +61,7 @@
       <h1 data-toc-skip>Chapter 10: Scripts, algorithms and functions</h1>
                         <h4 class="author">Robin Lovelace, Jakub Nowosad, Jannes Muenchow</h4>
             
-            <h4 class="date">2020-09-15</h4>
+            <h4 class="date">2021-08-23</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/Robinlovelace/geocompr/blob/master/vignettes/solutions10.Rmd"><code>vignettes/solutions10.Rmd</code></a></small>
       <div class="hidden name"><code>solutions10.Rmd</code></div>
@@ -74,9 +74,8 @@
 <h2 class="hasAnchor">
 <a href="#prerequisites" class="anchor"></a>Prerequisites</h2>
 <p>The solutions assume the following packages are attached (other packages will be attached when needed):</p>
-<div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://r-spatial.github.io/sf">sf</a></span>)
-</pre></div>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/">sf</a></span><span class="op">)</span></code></pre></div>
 <p>They also require a few objects and functions from Chapter 10.</p>
 </div>
 <div id="chapter-10" class="section level1">
@@ -95,13 +94,12 @@
 </ul>
 </li>
 </ul>
-<div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="kw">u</span> <span class="op">=</span> <span class="st">"https://github.com/Robinlovelace/geocompr/raw/master/code/10-centroid-alg.R"</span>
-<span class="fu"><a href="https://rdrr.io/r/base/source.html">source</a></span>(<span class="kw">u</span>)
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">u</span> <span class="op">=</span> <span class="st">"https://github.com/Robinlovelace/geocompr/raw/master/code/10-centroid-alg.R"</span>
+<span class="kw"><a href="https://rdrr.io/r/base/source.html">source</a></span><span class="op">(</span><span class="va">u</span><span class="op">)</span>
 <span class="co">#&gt; No poly_mat object provided, creating object representing a 9 by 9 square</span>
 <span class="co">#&gt; [1] "The area is: 81"</span>
-<span class="co">#&gt; [1] "The coordinates of the centroid are: 4.5, 4.5"</span>
-</pre></div>
+<span class="co">#&gt; [1] "The coordinates of the centroid are: 4.5, 4.5"</span></code></pre></div>
 <ul>
 <li>Create a version of the script on your computer in an IDE such as RStudio (preferably by typing-out the script line-by-line, in your own coding style and with your own comments, rather than copy-pasting — this will help you learn how to type scripts) and, using the example of a square polygon (e.g. created with <code>poly_mat = cbind(x = c(0, 0, 9, 9, 0), y = c(0, 9, 9, 0, 0))</code>) execute the script line-by-line.
 <ul>
@@ -109,39 +107,38 @@
 </ul>
 </li>
 </ul>
-<div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="kw">poly_mat</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span>(
-  x = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">4</span>, <span class="fl">4</span>, <span class="fl">0</span>),
-  y = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0</span>, <span class="fl">4</span>, <span class="fl">4</span>, <span class="fl">0</span>, <span class="fl">0</span>)
-)
-<span class="kw">Origin</span> <span class="op">=</span> <span class="kw">poly_mat</span>[<span class="fl">1</span>, ] <span class="co"># create a point representing the origin</span>
-<span class="kw">i</span> <span class="op">=</span> <span class="fl">2</span><span class="op">:</span>(<span class="fu"><a href="https://rdrr.io/pkg/raster/man/ncell.html">nrow</a></span>(<span class="kw">poly_mat</span>) <span class="op">-</span> <span class="fl">2</span>)
-<span class="kw">T_all</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span>(<span class="kw">i</span>, <span class="fu">function</span>(<span class="kw">x</span>) {
-  <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span>(<span class="kw">Origin</span>, <span class="kw">poly_mat</span>[<span class="kw">x</span><span class="op">:</span>(<span class="kw">x</span> <span class="op">+</span> <span class="fl">1</span>), ], <span class="kw">Origin</span>)
-})
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">poly_mat</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span>
+  x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">4</span>, <span class="fl">4</span>, <span class="fl">0</span><span class="op">)</span>,
+  y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">4</span>, <span class="fl">4</span>, <span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>
+<span class="op">)</span>
+<span class="va">Origin</span> <span class="op">=</span> <span class="va">poly_mat</span><span class="op">[</span><span class="fl">1</span>, <span class="op">]</span> <span class="co"># create a point representing the origin</span>
+<span class="va">i</span> <span class="op">=</span> <span class="fl">2</span><span class="op">:</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/ncell.html">nrow</a></span><span class="op">(</span><span class="va">poly_mat</span><span class="op">)</span> <span class="op">-</span> <span class="fl">2</span><span class="op">)</span>
+<span class="va">T_all</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="va">i</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span><span class="op">(</span><span class="va">Origin</span>, <span class="va">poly_mat</span><span class="op">[</span><span class="va">x</span><span class="op">:</span><span class="op">(</span><span class="va">x</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span>, <span class="op">]</span>, <span class="va">Origin</span><span class="op">)</span>
+<span class="op">}</span><span class="op">)</span>
 
-<span class="kw">C_list</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span>(<span class="kw">T_all</span>,  <span class="fu">function</span>(<span class="kw">x</span>) (<span class="kw">x</span>[<span class="fl">1</span>, ] <span class="op">+</span> <span class="kw">x</span>[<span class="fl">2</span>, ] <span class="op">+</span> <span class="kw">x</span>[<span class="fl">3</span>, ]) <span class="op">/</span> <span class="fl">3</span>)
-<span class="kw">C</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html">do.call</a></span>(<span class="kw">rbind</span>, <span class="kw">C_list</span>)
+<span class="va">C_list</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="va">T_all</span>,  <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span>, <span class="op">]</span> <span class="op">+</span> <span class="va">x</span><span class="op">[</span><span class="fl">2</span>, <span class="op">]</span> <span class="op">+</span> <span class="va">x</span><span class="op">[</span><span class="fl">3</span>, <span class="op">]</span><span class="op">)</span> <span class="op">/</span> <span class="fl">3</span><span class="op">)</span>
+<span class="va">C</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html">do.call</a></span><span class="op">(</span><span class="va">rbind</span>, <span class="va">C_list</span><span class="op">)</span>
 
-<span class="kw">A</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">vapply</a></span>(<span class="kw">T_all</span>, <span class="fu">function</span>(<span class="kw">x</span>) {
-  <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">abs</a></span>(<span class="kw">x</span>[<span class="fl">1</span>, <span class="fl">1</span>] <span class="op">*</span> (<span class="kw">x</span>[<span class="fl">2</span>, <span class="fl">2</span>] <span class="op">-</span> <span class="kw">x</span>[<span class="fl">3</span>, <span class="fl">2</span>]) <span class="op">+</span>
-        <span class="kw">x</span>[<span class="fl">2</span>, <span class="fl">1</span>] <span class="op">*</span> (<span class="kw">x</span>[<span class="fl">3</span>, <span class="fl">2</span>] <span class="op">-</span> <span class="kw">x</span>[<span class="fl">1</span>, <span class="fl">2</span>]) <span class="op">+</span>
-        <span class="kw">x</span>[<span class="fl">3</span>, <span class="fl">1</span>] <span class="op">*</span> (<span class="kw">x</span>[<span class="fl">1</span>, <span class="fl">2</span>] <span class="op">-</span> <span class="kw">x</span>[<span class="fl">2</span>, <span class="fl">2</span>]) ) <span class="op">/</span> <span class="fl">2</span>
-}, FUN.VALUE = <span class="fu"><a href="https://rdrr.io/r/base/double.html">double</a></span>(<span class="fl">1</span>))
+<span class="va">A</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">vapply</a></span><span class="op">(</span><span class="va">T_all</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">abs</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">]</span> <span class="op">*</span> <span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">2</span>, <span class="fl">2</span><span class="op">]</span> <span class="op">-</span> <span class="va">x</span><span class="op">[</span><span class="fl">3</span>, <span class="fl">2</span><span class="op">]</span><span class="op">)</span> <span class="op">+</span>
+        <span class="va">x</span><span class="op">[</span><span class="fl">2</span>, <span class="fl">1</span><span class="op">]</span> <span class="op">*</span> <span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">3</span>, <span class="fl">2</span><span class="op">]</span> <span class="op">-</span> <span class="va">x</span><span class="op">[</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">]</span><span class="op">)</span> <span class="op">+</span>
+        <span class="va">x</span><span class="op">[</span><span class="fl">3</span>, <span class="fl">1</span><span class="op">]</span> <span class="op">*</span> <span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">]</span> <span class="op">-</span> <span class="va">x</span><span class="op">[</span><span class="fl">2</span>, <span class="fl">2</span><span class="op">]</span><span class="op">)</span> <span class="op">)</span> <span class="op">/</span> <span class="fl">2</span>
+<span class="op">}</span>, FUN.VALUE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/double.html">double</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span>
 
-<span class="kw">poly_area</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(<span class="kw">A</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span>(<span class="st">"The area is: "</span>, <span class="kw">poly_area</span>))
+<span class="va">poly_area</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">A</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"The area is: "</span>, <span class="va">poly_area</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; [1] "The area is: 16"</span>
-<span class="kw">poly_cent</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/raster/man/weighted.mean.html">weighted.mean</a></span>(<span class="kw">C</span>[, <span class="fl">1</span>], <span class="kw">A</span>), <span class="fu"><a href="https://rdrr.io/pkg/raster/man/weighted.mean.html">weighted.mean</a></span>(<span class="kw">C</span>[, <span class="fl">2</span>], <span class="kw">A</span>))
+<span class="va">poly_cent</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/weighted.mean.html">weighted.mean</a></span><span class="op">(</span><span class="va">C</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span>, <span class="va">A</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/pkg/raster/man/weighted.mean.html">weighted.mean</a></span><span class="op">(</span><span class="va">C</span><span class="op">[</span>, <span class="fl">2</span><span class="op">]</span>, <span class="va">A</span><span class="op">)</span><span class="op">)</span>
 
-<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span>(
+<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span>
   <span class="st">"The coordinates of the centroid are: "</span>,
-  <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span>(<span class="kw">poly_cent</span>[<span class="fl">1</span>], <span class="fl">2</span>),
+  <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">poly_cent</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="fl">2</span><span class="op">)</span>,
   <span class="st">", "</span>,
-  <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span>(<span class="kw">poly_cent</span>[<span class="fl">2</span>], <span class="fl">2</span>)
-))
-<span class="co">#&gt; [1] "The coordinates of the centroid are: 2, 2"</span>
-</pre></div>
+  <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">poly_cent</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span>, <span class="fl">2</span><span class="op">)</span>
+<span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; [1] "The coordinates of the centroid are: 2, 2"</span></code></pre></div>
 <ul>
 <li>What changes could be made to the script to make it more reproducible?
 <ul>
@@ -165,75 +162,71 @@
 </ul>
 </li>
 </ul>
-<div class="sourceCode" id="cb4"><pre class="downlit">
-<span class="kw">x_coords</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">10</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">12</span>, <span class="fl">20</span>, <span class="fl">10</span>)
-<span class="kw">y_coords</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">10</span>, <span class="fl">20</span>, <span class="fl">15</span>, <span class="fl">0</span>)
-<span class="kw">poly_mat</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span>(<span class="kw">x_coords</span>, <span class="kw">y_coords</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/source.html">source</a></span>(<span class="st">"https://git.io/10-centroid-alg.R"</span>)
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">x_coords</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">12</span>, <span class="fl">20</span>, <span class="fl">10</span><span class="op">)</span>
+<span class="va">y_coords</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">10</span>, <span class="fl">20</span>, <span class="fl">15</span>, <span class="fl">0</span><span class="op">)</span>
+<span class="va">poly_mat</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span><span class="va">x_coords</span>, <span class="va">y_coords</span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/source.html">source</a></span><span class="op">(</span><span class="st">"https://git.io/10-centroid-alg.R"</span><span class="op">)</span>
 <span class="co">#&gt; [1] "The area is: 245"</span>
-<span class="co">#&gt; [1] "The coordinates of the centroid are: 8.83, 9.22"</span>
-</pre></div>
+<span class="co">#&gt; [1] "The coordinates of the centroid are: 8.83, 9.22"</span></code></pre></div>
 <ul>
-<li>Are the results correct? Verify them by converting <code>poly_mat</code> into an <code>sfc</code> object (named <code>poly_sfc</code>) with <code><a href="https://rdrr.io/pkg/sf/man/st.html">st_polygon()</a></code> (hint: this function takes objects of class <code><a href="https://rdrr.io/r/base/list.html">list()</a></code>) and then using <code><a href="https://rdrr.io/pkg/sf/man/geos_measures.html">st_area()</a></code> and <code><a href="https://rdrr.io/pkg/sf/man/geos_unary.html">st_centroid()</a></code>.
+<li>Are the results correct? Verify them by converting <code>poly_mat</code> into an <code>sfc</code> object (named <code>poly_sfc</code>) with <code><a href="https://r-spatial.github.io/sf/reference/st.html">st_polygon()</a></code> (hint: this function takes objects of class <code><a href="https://rdrr.io/r/base/list.html">list()</a></code>) and then using <code><a href="https://r-spatial.github.io/sf/reference/geos_measures.html">st_area()</a></code> and <code><a href="https://r-spatial.github.io/sf/reference/geos_unary.html">st_centroid()</a></code>.
 <ul>
 <li>Answer: We can verify the answer by converting <code>poly_mat</code> into a simple feature collection as follows, which shows the calculations match:</li>
 </ul>
 </li>
 </ul>
-<div class="sourceCode" id="cb5"><pre class="downlit">
-<span class="kw">poly_sfc</span> <span class="op">=</span> <span class="kw">sf</span>::<span class="fu"><a href="https://rdrr.io/pkg/sf/man/st.html">st_polygon</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">poly_mat</span>))
-<span class="kw">sf</span>::<span class="fu"><a href="https://rdrr.io/pkg/sf/man/geos_measures.html">st_area</a></span>(<span class="kw">poly_sfc</span>)
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">poly_sfc</span> <span class="op">=</span> <span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st.html">st_polygon</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="va">poly_mat</span><span class="op">)</span><span class="op">)</span>
+<span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_measures.html">st_area</a></span><span class="op">(</span><span class="va">poly_sfc</span><span class="op">)</span>
 <span class="co">#&gt; [1] 245</span>
-<span class="kw">sf</span>::<span class="fu"><a href="https://rdrr.io/pkg/sf/man/geos_unary.html">st_centroid</a></span>(<span class="kw">poly_sfc</span>)
-<span class="co">#&gt; POINT (8.829932 9.217687)</span>
-</pre></div>
+<span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_unary.html">st_centroid</a></span><span class="op">(</span><span class="va">poly_sfc</span><span class="op">)</span>
+<span class="co">#&gt; POINT (8.829932 9.217687)</span></code></pre></div>
 </li>
 <li>
 <p>It was stated that the algorithm we created only works for <em>convex hulls</em>. Define convex hulls (see this <a href="https://geocompr.robinlovelace.net/geometric-operations.html#geometric-operations">Chapter</a>) and test the algorithm on a polygon that is <em>not</em> a convex hull. - Convex hulls are polygons with internal angles defining the perimeter that are never larger than 180 degrees. They are polygons that, if you were to put an elastic band around them, would have no empty spaces. A more detailed definition can be found on <a href="https://en.wikipedia.org/wiki/Convex_hull">Wikipedia</a>. - We can test whether or not the algorithm we created works on a polygon that is not a convex hull by creating such an object, and comparing the results with <code>sf</code> functions, as follows:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit">
-<span class="kw">poly_mat</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span>(
-x = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">4</span>, <span class="fl">4</span>, <span class="fl">2</span>, <span class="fl">0</span>),
-y = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0</span>, <span class="fl">4</span>, <span class="fl">4</span>, <span class="fl">0</span>, <span class="fl">2</span>, <span class="fl">0</span>)
-)
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">poly_mat</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span>
+x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">4</span>, <span class="fl">4</span>, <span class="fl">2</span>, <span class="fl">0</span><span class="op">)</span>,
+y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">4</span>, <span class="fl">4</span>, <span class="fl">0</span>, <span class="fl">2</span>, <span class="fl">0</span><span class="op">)</span>
+<span class="op">)</span>
 <span class="co"># data preparation</span>
 
-<span class="kw">Origin</span> <span class="op">=</span> <span class="kw">poly_mat</span>[<span class="fl">1</span>, ] <span class="co"># create a point representing the origin</span>
+<span class="va">Origin</span> <span class="op">=</span> <span class="va">poly_mat</span><span class="op">[</span><span class="fl">1</span>, <span class="op">]</span> <span class="co"># create a point representing the origin</span>
 
-<span class="kw">t_centroid</span> <span class="op">=</span> <span class="fu">function</span>(<span class="kw">x</span>) {
-(<span class="kw">x</span>[<span class="fl">1</span>, ] <span class="op">+</span> <span class="kw">x</span>[<span class="fl">2</span>, ] <span class="op">+</span> <span class="kw">x</span>[<span class="fl">3</span>, ]) <span class="op">/</span> <span class="fl">3</span>
-}
+<span class="va">t_centroid</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
+<span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span>, <span class="op">]</span> <span class="op">+</span> <span class="va">x</span><span class="op">[</span><span class="fl">2</span>, <span class="op">]</span> <span class="op">+</span> <span class="va">x</span><span class="op">[</span><span class="fl">3</span>, <span class="op">]</span><span class="op">)</span> <span class="op">/</span> <span class="fl">3</span>
+<span class="op">}</span>
 
-<span class="kw">t_area</span> <span class="op">=</span> <span class="fu">function</span>(<span class="kw">x</span>) {
-<span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">abs</a></span>(
-<span class="kw">x</span>[<span class="fl">1</span>, <span class="fl">1</span>] <span class="op">*</span> (<span class="kw">x</span>[<span class="fl">2</span>, <span class="fl">2</span>] <span class="op">-</span> <span class="kw">x</span>[<span class="fl">3</span>, <span class="fl">2</span>]) <span class="op">+</span>
-<span class="kw">x</span>[<span class="fl">2</span>, <span class="fl">1</span>] <span class="op">*</span> (<span class="kw">x</span>[<span class="fl">3</span>, <span class="fl">2</span>] <span class="op">-</span> <span class="kw">x</span>[<span class="fl">1</span>, <span class="fl">2</span>]) <span class="op">+</span>
-<span class="kw">x</span>[<span class="fl">3</span>, <span class="fl">1</span>] <span class="op">*</span> (<span class="kw">x</span>[<span class="fl">1</span>, <span class="fl">2</span>] <span class="op">-</span> <span class="kw">x</span>[<span class="fl">2</span>, <span class="fl">2</span>])
-) <span class="op">/</span> <span class="fl">2</span>
-}
+<span class="va">t_area</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
+<span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">abs</a></span><span class="op">(</span>
+<span class="va">x</span><span class="op">[</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">]</span> <span class="op">*</span> <span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">2</span>, <span class="fl">2</span><span class="op">]</span> <span class="op">-</span> <span class="va">x</span><span class="op">[</span><span class="fl">3</span>, <span class="fl">2</span><span class="op">]</span><span class="op">)</span> <span class="op">+</span>
+<span class="va">x</span><span class="op">[</span><span class="fl">2</span>, <span class="fl">1</span><span class="op">]</span> <span class="op">*</span> <span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">3</span>, <span class="fl">2</span><span class="op">]</span> <span class="op">-</span> <span class="va">x</span><span class="op">[</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">]</span><span class="op">)</span> <span class="op">+</span>
+<span class="va">x</span><span class="op">[</span><span class="fl">3</span>, <span class="fl">1</span><span class="op">]</span> <span class="op">*</span> <span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">]</span> <span class="op">-</span> <span class="va">x</span><span class="op">[</span><span class="fl">2</span>, <span class="fl">2</span><span class="op">]</span><span class="op">)</span>
+<span class="op">)</span> <span class="op">/</span> <span class="fl">2</span>
+<span class="op">}</span>
 
-<span class="kw">poly_centroid</span> <span class="op">=</span> <span class="fu">function</span>(<span class="kw">x</span>) {
-<span class="kw">i</span> <span class="op">=</span> <span class="fl">2</span><span class="op">:</span>(<span class="fu"><a href="https://rdrr.io/pkg/raster/man/ncell.html">nrow</a></span>(<span class="kw">x</span>) <span class="op">-</span> <span class="fl">2</span>)
-<span class="kw">T_all</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span>(<span class="kw">i</span>, <span class="fu">function</span>(<span class="kw">x</span>) {
-<span class="fu"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span>(<span class="kw">Origin</span>, <span class="kw">poly_mat</span>[<span class="kw">x</span><span class="op">:</span>(<span class="kw">x</span> <span class="op">+</span> <span class="fl">1</span>), ], <span class="kw">Origin</span>)
-})
-<span class="kw">C_list</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span>(<span class="kw">T_all</span>, <span class="kw">t_centroid</span>)
-<span class="kw">C</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html">do.call</a></span>(<span class="kw">rbind</span>, <span class="kw">C_list</span>)
-<span class="kw">A</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">vapply</a></span>(<span class="kw">T_all</span>, <span class="kw">t_area</span>, FUN.VALUE = <span class="fu"><a href="https://rdrr.io/r/base/double.html">double</a></span>(<span class="fl">1</span>))
-<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/raster/man/weighted.mean.html">weighted.mean</a></span>(<span class="kw">C</span>[, <span class="fl">1</span>], <span class="kw">A</span>), <span class="fu"><a href="https://rdrr.io/pkg/raster/man/weighted.mean.html">weighted.mean</a></span>(<span class="kw">C</span>[, <span class="fl">2</span>], <span class="kw">A</span>))
-}
+<span class="va">poly_centroid</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
+<span class="va">i</span> <span class="op">=</span> <span class="fl">2</span><span class="op">:</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/ncell.html">nrow</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">-</span> <span class="fl">2</span><span class="op">)</span>
+<span class="va">T_all</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="va">i</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
+<span class="fu"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span><span class="op">(</span><span class="va">Origin</span>, <span class="va">poly_mat</span><span class="op">[</span><span class="va">x</span><span class="op">:</span><span class="op">(</span><span class="va">x</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span>, <span class="op">]</span>, <span class="va">Origin</span><span class="op">)</span>
+<span class="op">}</span><span class="op">)</span>
+<span class="va">C_list</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="va">T_all</span>, <span class="va">t_centroid</span><span class="op">)</span>
+<span class="va">C</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html">do.call</a></span><span class="op">(</span><span class="va">rbind</span>, <span class="va">C_list</span><span class="op">)</span>
+<span class="va">A</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">vapply</a></span><span class="op">(</span><span class="va">T_all</span>, <span class="va">t_area</span>, FUN.VALUE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/double.html">double</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/weighted.mean.html">weighted.mean</a></span><span class="op">(</span><span class="va">C</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span>, <span class="va">A</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/pkg/raster/man/weighted.mean.html">weighted.mean</a></span><span class="op">(</span><span class="va">C</span><span class="op">[</span>, <span class="fl">2</span><span class="op">]</span>, <span class="va">A</span><span class="op">)</span><span class="op">)</span>
+<span class="op">}</span>
 
-<span class="fu"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(<span class="kw">poly_mat</span>, type = <span class="st">"lines"</span>)
+<span class="fu"><a href="https://r-spatial.github.io/sf/reference/plot.html">plot</a></span><span class="op">(</span><span class="va">poly_mat</span>, type <span class="op">=</span> <span class="st">"lines"</span><span class="op">)</span>
 <span class="co">#&gt; Warning in plot.xy(xy, type, ...): plot type 'lines' will be truncated to first</span>
-<span class="co">#&gt; character</span>
-</pre></div>
+<span class="co">#&gt; character</span></code></pre></div>
 <p><img src="solutions10_files/figure-html/unnamed-chunk-5-1.png" width="700"></p>
-<div class="sourceCode" id="cb7"><pre class="downlit">
-<span class="fu">poly_centroid</span>(<span class="kw">poly_mat</span>)
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">poly_centroid</span><span class="op">(</span><span class="va">poly_mat</span><span class="op">)</span>
 <span class="co">#&gt; [1] 2.000000 1.733333</span>
-<span class="kw">poly_sfc</span> <span class="op">=</span> <span class="kw">sf</span>::<span class="fu"><a href="https://rdrr.io/pkg/sf/man/st.html">st_polygon</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">poly_mat</span>))
-<span class="kw">sf</span>::<span class="fu"><a href="https://rdrr.io/pkg/sf/man/geos_unary.html">st_centroid</a></span>(<span class="kw">poly_sfc</span>) <span class="co"># the result is different: 2, 2.4 vs 2, 1.733</span>
-<span class="co">#&gt; POINT (2 2.444444)</span>
-</pre></div>
+<span class="va">poly_sfc</span> <span class="op">=</span> <span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st.html">st_polygon</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="va">poly_mat</span><span class="op">)</span><span class="op">)</span>
+<span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_unary.html">st_centroid</a></span><span class="op">(</span><span class="va">poly_sfc</span><span class="op">)</span> <span class="co"># the result is different: 2, 2.4 vs 2, 1.733</span>
+<span class="co">#&gt; POINT (2 2.444444)</span></code></pre></div>
 <ul>
 <li>Bonus 1: Think about why the method only works for convex hulls and note changes that would need to be made to the algorithm for other types of shape to be calculated.
 <ul>
@@ -246,22 +239,21 @@ y = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span 
 </ul>
 </li>
 </ul>
-<div class="sourceCode" id="cb8"><pre class="downlit">
-<span class="kw">x</span> <span class="op">=</span> <span class="kw">poly_mat</span>
-<span class="kw">poly_perimeter_length</span> <span class="op">=</span> <span class="fu">function</span>(<span class="kw">x</span>) {
-  <span class="kw">i</span> <span class="op">=</span> <span class="fl">2</span><span class="op">:</span>(<span class="fu"><a href="https://rdrr.io/pkg/raster/man/ncell.html">nrow</a></span>(<span class="kw">x</span>))
-  <span class="kw">seg_lengths</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span>(<span class="kw">i</span>, <span class="fu">function</span>(<span class="kw">i</span>) {<span class="fu"><a href="https://rdrr.io/r/stats/dist.html">dist</a></span>(<span class="kw">x</span>[(<span class="kw">i</span> <span class="op">-</span> <span class="fl">1</span>)<span class="op">:</span><span class="kw">i</span>, ])} )
-  <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/unlist.html">unlist</a></span>(<span class="kw">seg_lengths</span>))
-}
-<span class="fu">poly_perimeter_length</span>(<span class="kw">x</span>)
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">x</span> <span class="op">=</span> <span class="va">poly_mat</span>
+<span class="va">poly_perimeter_length</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
+  <span class="va">i</span> <span class="op">=</span> <span class="fl">2</span><span class="op">:</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/ncell.html">nrow</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>
+  <span class="va">seg_lengths</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="va">i</span>, <span class="kw">function</span><span class="op">(</span><span class="va">i</span><span class="op">)</span> <span class="op">{</span><span class="fu"><a href="https://rdrr.io/r/stats/dist.html">dist</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="op">(</span><span class="va">i</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span><span class="op">:</span><span class="va">i</span>, <span class="op">]</span><span class="op">)</span><span class="op">}</span> <span class="op">)</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unlist.html">unlist</a></span><span class="op">(</span><span class="va">seg_lengths</span><span class="op">)</span><span class="op">)</span>
+<span class="op">}</span>
+<span class="fu">poly_perimeter_length</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
 <span class="co">#&gt; [1] 17.65685</span>
-<span class="kw">sf</span>::<span class="fu"><a href="https://rdrr.io/pkg/sf/man/geos_measures.html">st_length</a></span>(<span class="kw">sf</span>::<span class="fu"><a href="https://rdrr.io/pkg/sf/man/st.html">st_linestring</a></span>(<span class="kw">poly_mat</span>))
-<span class="co">#&gt; [1] 17.65685</span>
-</pre></div>
+<span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_measures.html">st_length</a></span><span class="op">(</span><span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st.html">st_linestring</a></span><span class="op">(</span><span class="va">poly_mat</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; [1] 17.65685</span></code></pre></div>
 </li>
 </ol>
 <!-- Todo: add example of matrix representing a linestring, demonstrate code to verify the answer, suggest alternative functions to decompose as a bonus. --><ol start="4" style="list-style-type: decimal">
-<li>In this <a href="https://geocompr.robinlovelace.net/algorithms.html#functions">section</a> we created a different versions of the <code>poly_centroid()</code> function that generated outputs of class <code>sfg</code> (<code>poly_centroid_sfg()</code>) and type-stable <code>matrix</code> outputs (<code>poly_centroid_type_stable()</code>). Further extend the function by creating a version (e.g. called <code>poly_centroid_sf()</code>) that is type stable (only accepts inputs of class <code>sf</code>) <em>and</em> returns <code>sf</code> objects (hint: you may need to convert the object <code>x</code> into a matrix with the command <code><a href="https://rdrr.io/pkg/sf/man/st_coordinates.html">sf::st_coordinates(x)</a></code>.
+<li>In this <a href="https://geocompr.robinlovelace.net/algorithms.html#functions">section</a> we created a different versions of the <code>poly_centroid()</code> function that generated outputs of class <code>sfg</code> (<code>poly_centroid_sfg()</code>) and type-stable <code>matrix</code> outputs (<code>poly_centroid_type_stable()</code>). Further extend the function by creating a version (e.g. called <code>poly_centroid_sf()</code>) that is type stable (only accepts inputs of class <code>sf</code>) <em>and</em> returns <code>sf</code> objects (hint: you may need to convert the object <code>x</code> into a matrix with the command <code><a href="https://r-spatial.github.io/sf/reference/st_coordinates.html">sf::st_coordinates(x)</a></code>.
 <ul>
 <li>Verify it works by running <code>poly_centroid_sf(sf::st_sf(sf::st_sfc(poly_sfc)))</code>
 </li>
@@ -273,27 +265,26 @@ y = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span 
 </ul>
 </li>
 </ol>
-<div class="sourceCode" id="cb9"><pre class="downlit">
-<span class="kw">poly_centroid_sf</span> <span class="op">=</span> <span class="fu">function</span>(<span class="kw">x</span>) {
-  <span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html">stopifnot</a></span>(<span class="fu">is</span>(<span class="kw">x</span>, <span class="st">"sf"</span>))
-  <span class="kw">xcoords</span> <span class="op">=</span> <span class="kw">sf</span>::<span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_coordinates.html">st_coordinates</a></span>(<span class="kw">x</span>)
-  <span class="kw">centroid_coords</span> <span class="op">=</span> <span class="fu">poly_centroid</span>(<span class="kw">xcoords</span>)
-  <span class="kw">centroid_sf</span> <span class="op">=</span> <span class="kw">sf</span>::<span class="fu"><a href="https://rdrr.io/pkg/sf/man/sf.html">st_sf</a></span>(geometry = <span class="kw">sf</span>::<span class="fu"><a href="https://rdrr.io/pkg/sf/man/sfc.html">st_sfc</a></span>(<span class="kw">sf</span>::<span class="fu"><a href="https://rdrr.io/pkg/sf/man/st.html">st_point</a></span>(<span class="kw">centroid_coords</span>)))
-  <span class="kw">centroid_sf</span>
-}
-<span class="fu">poly_centroid_sf</span>(<span class="kw">sf</span>::<span class="fu"><a href="https://rdrr.io/pkg/sf/man/sf.html">st_sf</a></span>(<span class="kw">sf</span>::<span class="fu"><a href="https://rdrr.io/pkg/sf/man/sfc.html">st_sfc</a></span>(<span class="kw">poly_sfc</span>)))
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">poly_centroid_sf</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html">stopifnot</a></span><span class="op">(</span><span class="fu">is</span><span class="op">(</span><span class="va">x</span>, <span class="st">"sf"</span><span class="op">)</span><span class="op">)</span>
+  <span class="va">xcoords</span> <span class="op">=</span> <span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_coordinates.html">st_coordinates</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
+  <span class="va">centroid_coords</span> <span class="op">=</span> <span class="fu">poly_centroid</span><span class="op">(</span><span class="va">xcoords</span><span class="op">)</span>
+  <span class="va">centroid_sf</span> <span class="op">=</span> <span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/sf.html">st_sf</a></span><span class="op">(</span>geometry <span class="op">=</span> <span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/sfc.html">st_sfc</a></span><span class="op">(</span><span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st.html">st_point</a></span><span class="op">(</span><span class="va">centroid_coords</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
+  <span class="va">centroid_sf</span>
+<span class="op">}</span>
+<span class="fu">poly_centroid_sf</span><span class="op">(</span><span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/sf.html">st_sf</a></span><span class="op">(</span><span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/sfc.html">st_sfc</a></span><span class="op">(</span><span class="va">poly_sfc</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; Simple feature collection with 1 feature and 0 fields</span>
-<span class="co">#&gt; geometry type:  POINT</span>
-<span class="co">#&gt; dimension:      XY</span>
-<span class="co">#&gt; bbox:           xmin: 2 ymin: 1.733333 xmax: 2 ymax: 1.733333</span>
-<span class="co">#&gt; CRS:            NA</span>
+<span class="co">#&gt; Geometry type: POINT</span>
+<span class="co">#&gt; Dimension:     XY</span>
+<span class="co">#&gt; Bounding box:  xmin: 2 ymin: 1.733333 xmax: 2 ymax: 1.733333</span>
+<span class="co">#&gt; CRS:           NA</span>
 <span class="co">#&gt;             geometry</span>
 <span class="co">#&gt; 1 POINT (2 1.733333)</span>
-<span class="fu">poly_centroid_sf</span>(<span class="kw">poly_sfc</span>)
+<span class="fu">poly_centroid_sf</span><span class="op">(</span><span class="va">poly_sfc</span><span class="op">)</span>
 <span class="co">#&gt; Error in poly_centroid_sf(poly_sfc): is(x, "sf") is not TRUE</span>
-<span class="fu">poly_centroid_sf</span>(<span class="kw">poly_mat</span>)
-<span class="co">#&gt; Error in poly_centroid_sf(poly_mat): is(x, "sf") is not TRUE</span>
-</pre></div>
+<span class="fu">poly_centroid_sf</span><span class="op">(</span><span class="va">poly_mat</span><span class="op">)</span>
+<span class="co">#&gt; Error in poly_centroid_sf(poly_mat): is(x, "sf") is not TRUE</span></code></pre></div>
 </div>
   </div>
 

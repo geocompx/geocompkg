@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">geocompkg | metapackage for the Gecomputation with R book</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.102</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.103</span>
       </span>
     </div>
 
@@ -61,7 +61,7 @@
       <h1 data-toc-skip>Making inset maps of the USA</h1>
                         <h4 class="author">Robin Lovelace, Jakub Nowosad, Jannes Muenchow</h4>
             
-            <h4 class="date">2020-09-15</h4>
+            <h4 class="date">2021-08-23</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/Robinlovelace/geocompr/blob/master/vignettes/us-map.Rmd"><code>vignettes/us-map.Rmd</code></a></small>
       <div class="hidden name"><code>us-map.Rmd</code></div>
@@ -75,74 +75,66 @@
 <h2 class="hasAnchor">
 <a href="#prerequisites" class="anchor"></a>Prerequisites</h2>
 <p>The example below assume the following packages are attached:</p>
-<div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="co"># devtools::install_github("geocompr/geocompkg") # install pkgs</span>
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://nowosad.github.io/spData">spData</a></span>) <span class="co"># contains datasets used in this example</span>
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://r-spatial.github.io/sf">sf</a></span>)     <span class="co"># for handling spatial (vector) data</span>
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/mtennekes/tmap">tmap</a></span>)   <span class="co"># map making package</span>
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw">grid</span>)   <span class="co"># to re-arrange maps</span>
-</pre></div>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># devtools::install_github("geocompr/geocompkg") # install pkgs</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://nowosad.github.io/spData/">spData</a></span><span class="op">)</span> <span class="co"># contains datasets used in this example</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/">sf</a></span><span class="op">)</span>     <span class="co"># for handling spatial (vector) data</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/mtennekes/tmap">tmap</a></span><span class="op">)</span>   <span class="co"># map making package</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">grid</span><span class="op">)</span>   <span class="co"># to re-arrange maps</span></code></pre></div>
 </div>
 <div id="data-preparation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#data-preparation" class="anchor"></a>Data preparation</h2>
 <p>The first step is to decide on the best projection for each individual inset. For this case, we decided to use equal area projections for the maps of the contiguous 48 states, Hawaii, and Alaska. While the dataset of Hawaii and Alaska already have this type of projections, we still need to reproject the <code>us_states</code> object to US National Atlas Equal Area:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="kw">us_states2163</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_transform.html">st_transform</a></span>(<span class="kw">us_states</span>, <span class="fl">2163</span>)
-</pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">us_states2163</span> <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_transform.html">st_transform</a></span><span class="op">(</span><span class="va">us_states</span>, <span class="fl">2163</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="ratio-calculation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#ratio-calculation" class="anchor"></a>Ratio calculation</h2>
 <p>The second step is to calculate scale relations between the main map (the contiguous 48 states) and Hawaii, and between the main map and Alaska. To do so we can calculate areas of the bounding box of each object:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="kw">us_states_range</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_bbox.html">st_bbox</a></span>(<span class="kw">us_states2163</span>)[<span class="fl">4</span>] <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_bbox.html">st_bbox</a></span>(<span class="kw">us_states2163</span>)[<span class="fl">2</span>]
-<span class="kw">hawaii_range</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_bbox.html">st_bbox</a></span>(<span class="kw">hawaii</span>)[<span class="fl">4</span>] <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_bbox.html">st_bbox</a></span>(<span class="kw">hawaii</span>)[<span class="fl">2</span>]
-<span class="kw">alaska_range</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_bbox.html">st_bbox</a></span>(<span class="kw">alaska</span>)[<span class="fl">4</span>] <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_bbox.html">st_bbox</a></span>(<span class="kw">alaska</span>)[<span class="fl">2</span>]
-</pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">us_states_range</span> <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_bbox.html">st_bbox</a></span><span class="op">(</span><span class="va">us_states2163</span><span class="op">)</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span> <span class="op">-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_bbox.html">st_bbox</a></span><span class="op">(</span><span class="va">us_states2163</span><span class="op">)</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span>
+<span class="va">hawaii_range</span> <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_bbox.html">st_bbox</a></span><span class="op">(</span><span class="va">hawaii</span><span class="op">)</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span> <span class="op">-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_bbox.html">st_bbox</a></span><span class="op">(</span><span class="va">hawaii</span><span class="op">)</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span>
+<span class="va">alaska_range</span> <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_bbox.html">st_bbox</a></span><span class="op">(</span><span class="va">alaska</span><span class="op">)</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span> <span class="op">-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_bbox.html">st_bbox</a></span><span class="op">(</span><span class="va">alaska</span><span class="op">)</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span></code></pre></div>
 <p>Next, we can calculate the ratios between their areas:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit">
-<span class="kw">us_states_hawaii_ratio</span> <span class="op">=</span> <span class="kw">hawaii_range</span> <span class="op">/</span> <span class="kw">us_states_range</span>
-<span class="kw">us_states_alaska_ratio</span> <span class="op">=</span> <span class="kw">alaska_range</span> <span class="op">/</span> <span class="kw">us_states_range</span>
-</pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">us_states_hawaii_ratio</span> <span class="op">=</span> <span class="va">hawaii_range</span> <span class="op">/</span> <span class="va">us_states_range</span>
+<span class="va">us_states_alaska_ratio</span> <span class="op">=</span> <span class="va">alaska_range</span> <span class="op">/</span> <span class="va">us_states_range</span></code></pre></div>
 </div>
 <div id="single-maps-creation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#single-maps-creation" class="anchor"></a>Single maps creation</h2>
 <p>In the third step, we need to create single maps for each object. We can use the <code><a href="https://rdrr.io/pkg/tmap/man/tm_layout.html">tm_layout()</a></code> function to get rid of map frames and backgrounds or to add titles to our insets:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit">
-<span class="kw">us_states_map</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span>(<span class="kw">us_states2163</span>) <span class="op">+</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_polygons</a></span>() <span class="op">+</span> 
-  <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_layout.html">tm_layout</a></span>(frame = <span class="fl">FALSE</span>)
-</pre></div>
-<div class="sourceCode" id="cb6"><pre class="downlit">
-<span class="kw">hawaii_map</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span>(<span class="kw">hawaii</span>) <span class="op">+</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_polygons</a></span>() <span class="op">+</span> 
-  <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_layout.html">tm_layout</a></span>(title = <span class="st">"Hawaii"</span>, frame = <span class="fl">FALSE</span>, bg.color = <span class="fl">NA</span>, 
-            title.position = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"left"</span>, <span class="st">"BOTTOM"</span>)) 
-</pre></div>
-<div class="sourceCode" id="cb7"><pre class="downlit">
-<span class="kw">alaska_map</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span>(<span class="kw">alaska</span>) <span class="op">+</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_polygons</a></span>() <span class="op">+</span> 
-  <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_layout.html">tm_layout</a></span>(title = <span class="st">"Alaska"</span>, frame = <span class="fl">FALSE</span>, bg.color = <span class="fl">NA</span>, 
-            title.position = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"left"</span>, <span class="st">"TOP"</span>)) 
-</pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">us_states_map</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">us_states2163</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_polygons</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_layout.html">tm_layout</a></span><span class="op">(</span>frame <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">hawaii_map</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">hawaii</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_polygons</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_layout.html">tm_layout</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Hawaii"</span>, frame <span class="op">=</span> <span class="cn">FALSE</span>, bg.color <span class="op">=</span> <span class="cn">NA</span>, 
+            title.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"left"</span>, <span class="st">"BOTTOM"</span><span class="op">)</span><span class="op">)</span> </code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">alaska_map</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">alaska</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_polygons</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_layout.html">tm_layout</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Alaska"</span>, frame <span class="op">=</span> <span class="cn">FALSE</span>, bg.color <span class="op">=</span> <span class="cn">NA</span>, 
+            title.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"left"</span>, <span class="st">"TOP"</span><span class="op">)</span><span class="op">)</span> </code></pre></div>
 </div>
 <div id="map-arrangement" class="section level2">
 <h2 class="hasAnchor">
 <a href="#map-arrangement" class="anchor"></a>Map arrangement</h2>
 <p>The final step is to arrange the map. One of the ways to achieve this goal is to use the <strong>grid</strong> package. In the code below, we create a new page and specify its layout with two rows - one smaller (for Alaska) and one larger (for the contiguous 48 states). Next, we populate the layout with maps of Alaska and the contiguous 48 states add a map of Hawaii to the bottom left of the map and specify its size. Lastly, we draw two dashed lines (<code>gp = gpar(lty = 2)</code>) to separate the contiguous 48 states from Alaska and Hawaii.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/grid/grid.newpage.html">grid.newpage</a></span>()
-<span class="fu"><a href="https://rdrr.io/r/grid/viewports.html">pushViewport</a></span>(<span class="fu"><a href="https://rdrr.io/r/grid/viewport.html">viewport</a></span>(layout = <span class="fu"><a href="https://rdrr.io/r/grid/grid.layout.html">grid.layout</a></span>(<span class="fl">2</span>, <span class="fl">1</span>,
-                                           heights = <span class="fu"><a href="https://rdrr.io/r/grid/unit.html">unit</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="kw">us_states_alaska_ratio</span>, <span class="fl">1</span>), <span class="st">"null"</span>))))
-<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span>(<span class="kw">alaska_map</span>, vp = <span class="fu"><a href="https://rdrr.io/r/grid/viewport.html">viewport</a></span>(layout.pos.row = <span class="fl">1</span>))
-<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span>(<span class="kw">us_states_map</span>, vp = <span class="fu"><a href="https://rdrr.io/r/grid/viewport.html">viewport</a></span>(layout.pos.row = <span class="fl">2</span>))
-<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span>(<span class="kw">hawaii_map</span>, vp = <span class="fu"><a href="https://rdrr.io/r/grid/viewport.html">viewport</a></span>(x = <span class="fl">0.3</span>, y = <span class="fl">0.07</span>,
-                                height = <span class="kw">us_states_hawaii_ratio</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="kw">us_states_alaska_ratio</span>, <span class="fl">1</span>))))
-<span class="fu"><a href="https://rdrr.io/r/grid/grid.lines.html">grid.lines</a></span>(x = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0</span>, <span class="fl">1</span>), y = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0.58</span>, <span class="fl">0.58</span>), gp = <span class="fu"><a href="https://rdrr.io/r/grid/gpar.html">gpar</a></span>(lty = <span class="fl">2</span>))
-<span class="fu"><a href="https://rdrr.io/r/grid/grid.lines.html">grid.lines</a></span>(x = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0</span>, <span class="fl">0.5</span>), y = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0.33</span>, <span class="fl">0</span>), gp = <span class="fu"><a href="https://rdrr.io/r/grid/gpar.html">gpar</a></span>(lty = <span class="fl">2</span>))
-</pre></div>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/grid/grid.newpage.html">grid.newpage</a></span><span class="op">(</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/grid/viewports.html">pushViewport</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/grid/viewport.html">viewport</a></span><span class="op">(</span>layout <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/grid.layout.html">grid.layout</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">1</span>,
+                                           heights <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/unit.html">unit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">us_states_alaska_ratio</span>, <span class="fl">1</span><span class="op">)</span>, <span class="st">"null"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">alaska_map</span>, vp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/viewport.html">viewport</a></span><span class="op">(</span>layout.pos.row <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">us_states_map</span>, vp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/viewport.html">viewport</a></span><span class="op">(</span>layout.pos.row <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">hawaii_map</span>, vp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/viewport.html">viewport</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">0.3</span>, y <span class="op">=</span> <span class="fl">0.07</span>,
+                                height <span class="op">=</span> <span class="va">us_states_hawaii_ratio</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">us_states_alaska_ratio</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/grid/grid.lines.html">grid.lines</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.58</span>, <span class="fl">0.58</span><span class="op">)</span>, gp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/gpar.html">gpar</a></span><span class="op">(</span>lty <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/grid/grid.lines.html">grid.lines</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0.5</span><span class="op">)</span>, y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.33</span>, <span class="fl">0</span><span class="op">)</span>, gp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/gpar.html">gpar</a></span><span class="op">(</span>lty <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><img src="https://user-images.githubusercontent.com/1825120/93193995-78ce2e80-f73f-11ea-805d-d59f8d9773c3.png"></p>
 <p>The result map is just an approximation, not a perfect representation, of relationships between the partial maps – their location and size. In the same time, it is an improvement upon a standard map of United States, which either shows only the contiguous 48 states or largely reduce the size of Hawaii and Alaska.</p>
 </div>

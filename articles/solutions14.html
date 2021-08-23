@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">geocompkg | metapackage for the Gecomputation with R book</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.102</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.103</span>
       </span>
     </div>
 
@@ -61,7 +61,7 @@
       <h1 data-toc-skip>Chapter 14: Ecology</h1>
                         <h4 class="author">Robin Lovelace, Jakub Nowosad, Jannes Muenchow</h4>
             
-            <h4 class="date">2020-09-15</h4>
+            <h4 class="date">2021-08-23</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/Robinlovelace/geocompr/blob/master/vignettes/solutions14.Rmd"><code>vignettes/solutions14.Rmd</code></a></small>
       <div class="hidden name"><code>solutions14.Rmd</code></div>
@@ -74,13 +74,12 @@
 <h2 class="hasAnchor">
 <a href="#prerequisites" class="anchor"></a>Prerequisites</h2>
 <p>The solutions assume the following packages are attached (other packages will be attached when needed):</p>
-<div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://r-spatial.github.io/sf">sf</a></span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://rspatial.org/raster">raster</a></span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://cran.r-project.org">vegan</a></span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://mlr.mlr-org.com">mlr</a></span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://parallelmap.mlr-org.com">parallelMap</a></span>)
-</pre></div>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/">sf</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/raster">raster</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://cran.r-project.org">vegan</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://mlr.mlr-org.com">mlr</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://parallelmap.mlr-org.com">parallelMap</a></span><span class="op">)</span></code></pre></div>
 </div>
 <div id="chapter-14" class="section level1">
 <h1 class="hasAnchor">
@@ -88,249 +87,245 @@
 <ol style="list-style-type: decimal">
 <li>Run a NMDS using the percentage data of the community matrix. Report the stress value and compare it to the stress value as retrieved from the NMDS using presence-absence data. What might explain the observed difference?</li>
 </ol>
-<div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="st">"study_area"</span>, <span class="st">"random_points"</span>, <span class="st">"comm"</span>, <span class="st">"dem"</span>, <span class="st">"ndvi"</span>, package = <span class="st">"spDataLarge"</span>)
-<span class="kw">pa</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/vegan/man/decostand.html">decostand</a></span>(<span class="kw">comm</span>, <span class="st">"pa"</span>)
-<span class="kw">pa</span> <span class="op">=</span> <span class="kw">pa</span>[<span class="fu"><a href="https://rdrr.io/pkg/raster/man/rowSums.html">rowSums</a></span>(<span class="kw">pa</span>) != <span class="fl">0</span>, ]
-<span class="kw">comm</span> <span class="op">=</span> <span class="kw">comm</span>[<span class="fu"><a href="https://rdrr.io/pkg/raster/man/rowSums.html">rowSums</a></span>(<span class="kw">comm</span>) != <span class="fl">0</span>, ]
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"study_area"</span>, <span class="st">"random_points"</span>, <span class="st">"comm"</span>, <span class="st">"dem"</span>, <span class="st">"ndvi"</span>, package <span class="op">=</span> <span class="st">"spDataLarge"</span><span class="op">)</span>
+<span class="va">pa</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/vegan/man/decostand.html">decostand</a></span><span class="op">(</span><span class="va">comm</span>, <span class="st">"pa"</span><span class="op">)</span>
+<span class="va">pa</span> <span class="op">=</span> <span class="va">pa</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/rowSums.html">rowSums</a></span><span class="op">(</span><span class="va">pa</span><span class="op">)</span> <span class="op">!=</span> <span class="fl">0</span>, <span class="op">]</span>
+<span class="va">comm</span> <span class="op">=</span> <span class="va">comm</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/rowSums.html">rowSums</a></span><span class="op">(</span><span class="va">comm</span><span class="op">)</span> <span class="op">!=</span> <span class="fl">0</span>, <span class="op">]</span>
 
-<span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="fl">25072018</span>)
-<span class="kw">nmds_pa</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/vegan/man/metaMDS.html">metaMDS</a></span>(comm = <span class="kw">pa</span>, k = <span class="fl">4</span>, try = <span class="fl">500</span>)
-<span class="kw">nmds_per</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/vegan/man/metaMDS.html">metaMDS</a></span>(comm = <span class="kw">comm</span>, k = <span class="fl">4</span>, try = <span class="fl">500</span>)
-<span class="kw">nmds_pa</span><span class="op">$</span><span class="kw">stress</span>
-<span class="kw">nmds_per</span><span class="op">$</span><span class="kw">stress</span>
-</pre></div>
+<span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">25072018</span><span class="op">)</span>
+<span class="va">nmds_pa</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/vegan/man/metaMDS.html">metaMDS</a></span><span class="op">(</span>comm <span class="op">=</span> <span class="va">pa</span>, k <span class="op">=</span> <span class="fl">4</span>, try <span class="op">=</span> <span class="fl">500</span><span class="op">)</span>
+<span class="va">nmds_per</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/vegan/man/metaMDS.html">metaMDS</a></span><span class="op">(</span>comm <span class="op">=</span> <span class="va">comm</span>, k <span class="op">=</span> <span class="fl">4</span>, try <span class="op">=</span> <span class="fl">500</span><span class="op">)</span>
+<span class="va">nmds_pa</span><span class="op">$</span><span class="va">stress</span>
+<span class="va">nmds_per</span><span class="op">$</span><span class="va">stress</span></code></pre></div>
 <p>The NMDS using the presence-absence values yields a better result (<code>nmds_pa$stress</code>) than the one using percentage data (<code>nmds_per$stress</code>). This might seem surprising at first sight. On the other hand, the percentag matrix contains both more information and more noise. Another aspect is how the data was collected. Imagine a botanist in the field. It might seem feasible to differentiate between a plant which has a cover of 5% and another species that covers 10%. However, what about a herbal species that was only detected three times and consequently has a very tiny cover, e.g., 0.0001%. Maybe another herbal species was detected 6 times, is its cover then 0.0002%? The point here is that percentage data as specified during a field campaign might reflect a precision that the data does not have. This again introduces noise which in turn will worsen the ordination result. Still, it is a valuable information if one species had a higher frequency or coverage in one plot than another compared to just presence-absence data. One compromise would be to use a categorical scale such as the Londo scale.</p>
 <ol start="2" style="list-style-type: decimal">
 <li>Compute all the predictor rasters we have used in the chapter (catchment slope, catchment area), and put them into a raster stack. Add <code>dem</code> and <code>ndvi</code> to the raster stack. Next, compute profile and tangential curvature as additional predictor rasters and add them to the raster stack (hint: <code>grass7:r.slope.aspect</code>). Finally, construct a response-predictor matrix. The scores of the first NMDS axis (which were the result when using the presence-absence community matrix) rotated in accordance with elevation represent the response variable, and should be joined to <code>random_points</code> (use an inner join). To complete the response-predictor matrix, extract the values of the environmental predictor raster stack to <code>random_points</code>.</li>
 </ol>
-<div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="co"># first compute the terrain attributes we have also used in the chapter</span>
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://dplyr.tidyverse.org">dplyr</a></span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://rspatial.org/raster">raster</a></span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://cran.r-project.org">vegan</a></span>)
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># first compute the terrain attributes we have also used in the chapter</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/raster">raster</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://cran.r-project.org">vegan</a></span><span class="op">)</span>
 
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="st">"dem"</span>, package = <span class="st">"spDataLarge"</span>)
-<span class="kw">ep</span> <span class="op">=</span> <span class="fu">run_qgis</span>(alg = <span class="st">"saga:sagawetnessindex"</span>,
-              DEM = <span class="kw">dem</span>,
-              SLOPE_TYPE = <span class="fl">1</span>, 
-              SLOPE = <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempfile</a></span>(fileext = <span class="st">".sdat"</span>),
-              AREA = <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempfile</a></span>(fileext = <span class="st">".sdat"</span>),
-              load_output = <span class="fl">TRUE</span>,
-              show_output_paths = <span class="fl">FALSE</span>)
-<span class="kw">ep</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="kw">dem</span>, <span class="kw">ndvi</span>, <span class="kw">ep</span>) <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/raster/man/stack.html">stack</a></span>()
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/names.html">names</a></span>(<span class="kw">ep</span>) <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"dem"</span>, <span class="st">"ndvi"</span>, <span class="st">"carea"</span>, <span class="st">"cslope"</span>)
-<span class="kw">ep</span><span class="op">$</span><span class="kw">carea</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log10</a></span>(<span class="kw">ep</span><span class="op">$</span><span class="kw">carea</span>)
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"dem"</span>, package <span class="op">=</span> <span class="st">"spDataLarge"</span><span class="op">)</span>
+<span class="va">ep</span> <span class="op">=</span> <span class="fu">run_qgis</span><span class="op">(</span>alg <span class="op">=</span> <span class="st">"saga:sagawetnessindex"</span>,
+              DEM <span class="op">=</span> <span class="va">dem</span>,
+              SLOPE_TYPE <span class="op">=</span> <span class="fl">1</span>, 
+              SLOPE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".sdat"</span><span class="op">)</span>,
+              AREA <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".sdat"</span><span class="op">)</span>,
+              load_output <span class="op">=</span> <span class="cn">TRUE</span>,
+              show_output_paths <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+<span class="va">ep</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">dem</span>, <span class="va">ndvi</span>, <span class="va">ep</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://rdrr.io/pkg/raster/man/stack.html">stack</a></span><span class="op">(</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/pkg/raster/man/names.html">names</a></span><span class="op">(</span><span class="va">ep</span><span class="op">)</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"dem"</span>, <span class="st">"ndvi"</span>, <span class="st">"carea"</span>, <span class="st">"cslope"</span><span class="op">)</span>
+<span class="va">ep</span><span class="op">$</span><span class="va">carea</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log10</a></span><span class="op">(</span><span class="va">ep</span><span class="op">$</span><span class="va">carea</span><span class="op">)</span>
 <span class="co"># computing the curvatures</span>
-<span class="fu">get_usage</span>(<span class="st">"grass7:r.slope.aspect"</span>)
-<span class="kw">curvs</span> <span class="op">=</span> <span class="fu">run_qgis</span>(<span class="st">"grass7:r.slope.aspect"</span>,
-                 elevation = <span class="kw">dem</span>,
-                 pcurvature = <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span>(), <span class="st">"pcurvature.tif"</span>),
-                 tcurvature = <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span>(), <span class="st">"tcurvature.tif"</span>),
-                 load_output = <span class="fl">TRUE</span>)
+<span class="fu">get_usage</span><span class="op">(</span><span class="st">"grass7:r.slope.aspect"</span><span class="op">)</span>
+<span class="va">curvs</span> <span class="op">=</span> <span class="fu">run_qgis</span><span class="op">(</span><span class="st">"grass7:r.slope.aspect"</span>,
+                 elevation <span class="op">=</span> <span class="va">dem</span>,
+                 pcurvature <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"pcurvature.tif"</span><span class="op">)</span>,
+                 tcurvature <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"tcurvature.tif"</span><span class="op">)</span>,
+                 load_output <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="co"># adding curvatures to ep</span>
-<span class="kw">ep</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/addLayer.html">addLayer</a></span>(<span class="kw">ep</span>, <span class="kw">curvs</span><span class="op">$</span><span class="kw">pcurvature</span>, <span class="kw">curvs</span><span class="op">$</span><span class="kw">tcurvature</span>)
-<span class="kw">random_points</span>[, <span class="fu"><a href="https://rdrr.io/pkg/raster/man/names.html">names</a></span>(<span class="kw">ep</span>)] <span class="op">=</span> <span class="kw">raster</span>::<span class="fu"><a href="https://rdrr.io/pkg/raster/man/extract.html">extract</a></span>(<span class="kw">ep</span>, <span class="fu"><a href="https://rdrr.io/pkg/sf/man/coerce-methods.html">as</a></span>(<span class="kw">random_points</span>, <span class="st">"Spatial"</span>))
-<span class="kw">elev</span> <span class="op">=</span> <span class="kw">dplyr</span>::<span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="kw">random_points</span>, <span class="kw">id</span> <span class="op">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span>(<span class="kw">pa</span>)) <span class="op">%&gt;%</span> 
-  <span class="kw">dplyr</span>::<span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html">pull</a></span>(<span class="kw">dem</span>)
+<span class="va">ep</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/addLayer.html">addLayer</a></span><span class="op">(</span><span class="va">ep</span>, <span class="va">curvs</span><span class="op">$</span><span class="va">pcurvature</span>, <span class="va">curvs</span><span class="op">$</span><span class="va">tcurvature</span><span class="op">)</span>
+<span class="va">random_points</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/pkg/raster/man/names.html">names</a></span><span class="op">(</span><span class="va">ep</span><span class="op">)</span><span class="op">]</span> <span class="op">=</span> <span class="fu">raster</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/extract.html">extract</a></span><span class="op">(</span><span class="va">ep</span>, <span class="fu"><a href="https://r-spatial.github.io/sf/reference/coerce-methods.html">as</a></span><span class="op">(</span><span class="va">random_points</span>, <span class="st">"Spatial"</span><span class="op">)</span><span class="op">)</span>
+<span class="va">elev</span> <span class="op">=</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">random_points</span>, <span class="va">id</span> <span class="op">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="va">pa</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html">pull</a></span><span class="op">(</span><span class="va">dem</span><span class="op">)</span>
 <span class="co"># rotating NMDS in accordance with altitude (proxy for humidity)</span>
-<span class="kw">rotnmds</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/vegan/man/MDSrotate.html">MDSrotate</a></span>(<span class="kw">nmds_pa</span>, <span class="kw">elev</span>)
+<span class="va">rotnmds</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/vegan/man/MDSrotate.html">MDSrotate</a></span><span class="op">(</span><span class="va">nmds_pa</span>, <span class="va">elev</span><span class="op">)</span>
 <span class="co"># extracting the first two axes</span>
-<span class="kw">sc</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/vegan/man/scores.html">scores</a></span>(<span class="kw">rotnmds</span>, choices = <span class="fl">1</span><span class="op">:</span><span class="fl">2</span>)
-<span class="kw">rp</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(id = <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span>(<span class="kw">sc</span>)),
-                sc = <span class="kw">sc</span>[, <span class="fl">1</span>])
+<span class="va">sc</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/vegan/man/scores.html">scores</a></span><span class="op">(</span><span class="va">rotnmds</span>, choices <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">)</span>
+<span class="va">rp</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>id <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="va">sc</span><span class="op">)</span><span class="op">)</span>,
+                sc <span class="op">=</span> <span class="va">sc</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span><span class="op">)</span>
 <span class="co"># join the predictors (dem, ndvi and terrain attributes)</span>
-<span class="kw">rp</span> <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">inner_join</a></span>(<span class="kw">random_points</span>, <span class="kw">rp</span>, by = <span class="st">"id"</span>)
-</pre></div>
+<span class="va">rp</span> <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">inner_join</a></span><span class="op">(</span><span class="va">random_points</span>, <span class="va">rp</span>, by <span class="op">=</span> <span class="st">"id"</span><span class="op">)</span></code></pre></div>
 <ol start="3" style="list-style-type: decimal">
 <li>Use the response-predictor matrix of the previous exercise to fit a random forest model. Find the optimal hyperparameters and use them for making a prediction map.</li>
 </ol>
-<div class="sourceCode" id="cb4"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="st">"dem"</span>, <span class="st">"study_area"</span>, package = <span class="st">"spDataLarge"</span>)
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"dem"</span>, <span class="st">"study_area"</span>, package <span class="op">=</span> <span class="st">"spDataLarge"</span><span class="op">)</span>
 <span class="co"># TUNING, MODELING AND PREDICTION</span>
 <span class="co">#********************************</span>
 
 <span class="co"># create a task</span>
-<span class="kw">task</span> <span class="op">=</span> <span class="fu"><a href="https://mlr.mlr-org.com/reference/RegrTask.html">makeRegrTask</a></span>(data = <span class="kw">rp</span>, target = <span class="st">"sc"</span>, coordinates = <span class="kw">coords</span>)
+<span class="va">task</span> <span class="op">=</span> <span class="fu"><a href="https://mlr.mlr-org.com/reference/RegrTask.html">makeRegrTask</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">rp</span>, target <span class="op">=</span> <span class="st">"sc"</span>, coordinates <span class="op">=</span> <span class="va">coords</span><span class="op">)</span>
 <span class="co"># define the learner</span>
-<span class="kw">lrn_rf</span> <span class="op">=</span> <span class="fu"><a href="https://mlr.mlr-org.com/reference/makeLearner.html">makeLearner</a></span>(cl = <span class="st">"regr.ranger"</span>, predict.type = <span class="st">"response"</span>)
+<span class="va">lrn_rf</span> <span class="op">=</span> <span class="fu"><a href="https://mlr.mlr-org.com/reference/makeLearner.html">makeLearner</a></span><span class="op">(</span>cl <span class="op">=</span> <span class="st">"regr.ranger"</span>, predict.type <span class="op">=</span> <span class="st">"response"</span><span class="op">)</span>
 <span class="co"># spatial partitioning</span>
-<span class="kw">perf_level</span> <span class="op">=</span> <span class="fu"><a href="https://mlr.mlr-org.com/reference/makeResampleDesc.html">makeResampleDesc</a></span>(<span class="st">"SpCV"</span>, iters = <span class="fl">5</span>)
+<span class="va">perf_level</span> <span class="op">=</span> <span class="fu"><a href="https://mlr.mlr-org.com/reference/makeResampleDesc.html">makeResampleDesc</a></span><span class="op">(</span><span class="st">"SpCV"</span>, iters <span class="op">=</span> <span class="fl">5</span><span class="op">)</span>
 <span class="co"># specifying random search</span>
-<span class="kw">ctrl</span> <span class="op">=</span> <span class="fu"><a href="https://mlr.mlr-org.com/reference/makeTuneControlRandom.html">makeTuneControlRandom</a></span>(maxit = <span class="fl">50L</span>)
+<span class="va">ctrl</span> <span class="op">=</span> <span class="fu"><a href="https://mlr.mlr-org.com/reference/makeTuneControlRandom.html">makeTuneControlRandom</a></span><span class="op">(</span>maxit <span class="op">=</span> <span class="fl">50L</span><span class="op">)</span>
 <span class="co"># specifying the search space</span>
-<span class="kw">ps</span> <span class="op">=</span> <span class="fu">makeParamSet</span>(
-  <span class="fu">makeIntegerParam</span>(<span class="st">"mtry"</span>, lower = <span class="fl">1</span>, upper = <span class="fu"><a href="https://rdrr.io/pkg/raster/man/ncell.html">ncol</a></span>(<span class="kw">rp</span>) <span class="op">-</span> <span class="fl">1</span>),
-  <span class="fu">makeNumericParam</span>(<span class="st">"sample.fraction"</span>, lower = <span class="fl">0.2</span>, upper = <span class="fl">0.9</span>),
-  <span class="fu">makeIntegerParam</span>(<span class="st">"min.node.size"</span>, lower = <span class="fl">1</span>, upper = <span class="fl">10</span>)
-)
+<span class="va">ps</span> <span class="op">=</span> <span class="fu">makeParamSet</span><span class="op">(</span>
+  <span class="fu">makeIntegerParam</span><span class="op">(</span><span class="st">"mtry"</span>, lower <span class="op">=</span> <span class="fl">1</span>, upper <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/ncell.html">ncol</a></span><span class="op">(</span><span class="va">rp</span><span class="op">)</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span>,
+  <span class="fu">makeNumericParam</span><span class="op">(</span><span class="st">"sample.fraction"</span>, lower <span class="op">=</span> <span class="fl">0.2</span>, upper <span class="op">=</span> <span class="fl">0.9</span><span class="op">)</span>,
+  <span class="fu">makeIntegerParam</span><span class="op">(</span><span class="st">"min.node.size"</span>, lower <span class="op">=</span> <span class="fl">1</span>, upper <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>
+<span class="op">)</span>
 <span class="co"># hyperparamter tuning</span>
-<span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="fl">07092018</span>)
-<span class="kw">tune</span> <span class="op">=</span> <span class="fu"><a href="https://mlr.mlr-org.com/reference/tuneParams.html">tuneParams</a></span>(learner = <span class="kw">lrn_rf</span>,
-                  task = <span class="kw">task</span>,
-                  resampling = <span class="kw">perf_level</span>,
-                  par.set = <span class="kw">ps</span>,
-                  control = <span class="kw">ctrl</span>,
-                  measures = <span class="kw">mlr</span>::<span class="kw"><a href="https://mlr.mlr-org.com/reference/measures.html">rmse</a></span>)
+<span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">07092018</span><span class="op">)</span>
+<span class="va">tune</span> <span class="op">=</span> <span class="fu"><a href="https://mlr.mlr-org.com/reference/tuneParams.html">tuneParams</a></span><span class="op">(</span>learner <span class="op">=</span> <span class="va">lrn_rf</span>,
+                  task <span class="op">=</span> <span class="va">task</span>,
+                  resampling <span class="op">=</span> <span class="va">perf_level</span>,
+                  par.set <span class="op">=</span> <span class="va">ps</span>,
+                  control <span class="op">=</span> <span class="va">ctrl</span>,
+                  measures <span class="op">=</span> <span class="fu">mlr</span><span class="fu">::</span><span class="va"><a href="https://mlr.mlr-org.com/reference/measures.html">rmse</a></span><span class="op">)</span>
 <span class="co"># saveRDS(tune, "extdata/rf_tune_50it.rds")</span>
 <span class="co"># define a learner using the optimal hyperparameter combination</span>
-<span class="kw">lrn_rf</span> <span class="op">=</span> <span class="fu"><a href="https://mlr.mlr-org.com/reference/makeLearner.html">makeLearner</a></span>(cl = <span class="st">"regr.ranger"</span>,
-                     predict.type = <span class="st">"response"</span>,
-                     mtry = <span class="kw">tune</span><span class="op">$</span><span class="kw">x</span><span class="op">$</span><span class="kw">mtry</span>,
-                     sample.fraction = <span class="kw">tune</span><span class="op">$</span><span class="kw">x</span><span class="op">$</span><span class="kw">sample.fraction</span>,
-                     min.node.size = <span class="kw">tune</span><span class="op">$</span><span class="kw">x</span><span class="op">$</span><span class="kw">min.node.size</span>)
+<span class="va">lrn_rf</span> <span class="op">=</span> <span class="fu"><a href="https://mlr.mlr-org.com/reference/makeLearner.html">makeLearner</a></span><span class="op">(</span>cl <span class="op">=</span> <span class="st">"regr.ranger"</span>,
+                     predict.type <span class="op">=</span> <span class="st">"response"</span>,
+                     mtry <span class="op">=</span> <span class="va">tune</span><span class="op">$</span><span class="va">x</span><span class="op">$</span><span class="va">mtry</span>,
+                     sample.fraction <span class="op">=</span> <span class="va">tune</span><span class="op">$</span><span class="va">x</span><span class="op">$</span><span class="va">sample.fraction</span>,
+                     min.node.size <span class="op">=</span> <span class="va">tune</span><span class="op">$</span><span class="va">x</span><span class="op">$</span><span class="va">min.node.size</span><span class="op">)</span>
 <span class="co"># doing the same more elegantly using setHyperPars()</span>
 <span class="co"># lrn_rf = setHyperPars(makeLearner("regr.ranger", predict.type = "response"),</span>
 <span class="co">#                       par.vals = tune$x)</span>
 <span class="co"># train model</span>
-<span class="kw">model_rf</span> <span class="op">=</span> <span class="fu"><a href="https://mlr.mlr-org.com/reference/train.html">train</a></span>(<span class="kw">lrn_rf</span>, <span class="kw">task</span>)
+<span class="va">model_rf</span> <span class="op">=</span> <span class="fu"><a href="https://mlr.mlr-org.com/reference/train.html">train</a></span><span class="op">(</span><span class="va">lrn_rf</span>, <span class="va">task</span><span class="op">)</span>
 
 <span class="co"># make the prediction, but before that check if there are NAs in our raster</span>
 <span class="co"># stack...</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/plot.html">plot</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span>(<span class="kw">ep</span>))
+<span class="fu"><a href="https://rdrr.io/pkg/raster/man/plot.html">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">ep</span><span class="op">)</span><span class="op">)</span>
 <span class="co"># there are, but these just correspond to the outer frame, hence we can delete</span>
 <span class="co"># them safely. Otherwise, the predict function will complain later on</span>
-<span class="kw">ep</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/trim.html">trim</a></span>(<span class="kw">ep</span><span class="op">$</span><span class="kw">pcurvature</span>, values = <span class="fl">NaN</span>) <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/raster/man/crop.html">crop</a></span>(<span class="kw">ep</span>, <span class="kw">.</span>)
+<span class="va">ep</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/trim.html">trim</a></span><span class="op">(</span><span class="va">ep</span><span class="op">$</span><span class="va">pcurvature</span>, values <span class="op">=</span> <span class="cn">NaN</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://rdrr.io/pkg/raster/man/crop.html">crop</a></span><span class="op">(</span><span class="va">ep</span>, <span class="va">.</span><span class="op">)</span>
 <span class="co"># check if it worked</span>
-<span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span>(<span class="kw">ep</span>)  <span class="co"># no NAs, perfect</span>
+<span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">ep</span><span class="op">)</span>  <span class="co"># no NAs, perfect</span>
 <span class="co"># convert raster stack into a dataframe</span>
-<span class="kw">new_data</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/as.data.frame.html">as.data.frame</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/raster/man/as.matrix.html">as.matrix</a></span>(<span class="kw">ep</span>))
+<span class="va">new_data</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/as.matrix.html">as.matrix</a></span><span class="op">(</span><span class="va">ep</span><span class="op">)</span><span class="op">)</span>
 <span class="co"># apply the model to the dataframe</span>
-<span class="kw">pred_rf</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/predict.html">predict</a></span>(<span class="kw">model_rf</span>, newdata = <span class="kw">new_data</span>, na.rm = <span class="fl">TRUE</span>)
+<span class="va">pred_rf</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/predict.html">predict</a></span><span class="op">(</span><span class="va">model_rf</span>, newdata <span class="op">=</span> <span class="va">new_data</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 
 <span class="co"># put the predicted values into a raster</span>
-<span class="kw">pred</span> <span class="op">=</span> <span class="kw">ep</span><span class="op">$</span><span class="kw">dem</span>
+<span class="va">pred</span> <span class="op">=</span> <span class="va">ep</span><span class="op">$</span><span class="va">dem</span>
 <span class="co"># replace altitudinal values by rf-prediction values</span>
-<span class="kw">pred</span>[] <span class="op">=</span> <span class="kw">pred_rf</span><span class="op">$</span><span class="kw">data</span><span class="op">$</span><span class="kw">response</span>
+<span class="va">pred</span><span class="op">[</span><span class="op">]</span> <span class="op">=</span> <span class="va">pred_rf</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="va">response</span>
 
 <span class="co"># PREDICTION MAP</span>
 <span class="co">#***************</span>
 
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st"><a href="http://latticeextra.r-forge.r-project.org">"latticeExtra"</a></span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">"grid"</span>)
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="http://latticeextra.r-forge.r-project.org/">"latticeExtra"</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st">"grid"</span><span class="op">)</span>
 
 <span class="co"># create a color palette</span>
-<span class="kw">blue</span> <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/link2GI/reference/rgb.html">rgb</a></span>(<span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">146</span>, maxColorValue = <span class="fl">255</span>)
-<span class="kw">lightblue</span> <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/link2GI/reference/rgb.html">rgb</a></span>(<span class="fl">0</span>, <span class="fl">129</span>, <span class="fl">255</span>, maxColorValue = <span class="fl">255</span>)
-<span class="kw">turquoise</span> <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/link2GI/reference/rgb.html">rgb</a></span>(<span class="fl">0</span>, <span class="fl">233</span>, <span class="fl">255</span>, maxColorValue = <span class="fl">255</span>)
-<span class="kw">green</span> <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/link2GI/reference/rgb.html">rgb</a></span>(<span class="fl">142</span>, <span class="fl">255</span>, <span class="fl">11</span>, maxColorValue = <span class="fl">255</span>)
-<span class="kw">yellow</span> <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/link2GI/reference/rgb.html">rgb</a></span>(<span class="fl">245</span>, <span class="fl">255</span>, <span class="fl">8</span>, maxColorValue = <span class="fl">255</span>)
-<span class="kw">orange</span> <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/link2GI/reference/rgb.html">rgb</a></span>(<span class="fl">255</span>, <span class="fl">173</span>, <span class="fl">0</span>, maxColorValue = <span class="fl">255</span>)
-<span class="kw">lightred</span> <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/link2GI/reference/rgb.html">rgb</a></span>(<span class="fl">255</span>, <span class="fl">67</span>, <span class="fl">0</span>, maxColorValue = <span class="fl">255</span>)
-<span class="kw">red</span> <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/link2GI/reference/rgb.html">rgb</a></span>(<span class="fl">170</span>, <span class="fl">0</span>, <span class="fl">0</span>, maxColorValue = <span class="fl">255</span>)
-<span class="kw">pal</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/colorRamp.html">colorRampPalette</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="kw">blue</span>, <span class="kw">lightblue</span>, <span class="kw">turquoise</span>, <span class="kw">green</span>, <span class="kw">yellow</span>,
-                         <span class="kw">orange</span>, <span class="kw">lightred</span>, <span class="kw">red</span>))
+<span class="va">blue</span> <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/link2GI/reference/rgb.html">rgb</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">146</span>, maxColorValue <span class="op">=</span> <span class="fl">255</span><span class="op">)</span>
+<span class="va">lightblue</span> <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/link2GI/reference/rgb.html">rgb</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">129</span>, <span class="fl">255</span>, maxColorValue <span class="op">=</span> <span class="fl">255</span><span class="op">)</span>
+<span class="va">turquoise</span> <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/link2GI/reference/rgb.html">rgb</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">233</span>, <span class="fl">255</span>, maxColorValue <span class="op">=</span> <span class="fl">255</span><span class="op">)</span>
+<span class="va">green</span> <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/link2GI/reference/rgb.html">rgb</a></span><span class="op">(</span><span class="fl">142</span>, <span class="fl">255</span>, <span class="fl">11</span>, maxColorValue <span class="op">=</span> <span class="fl">255</span><span class="op">)</span>
+<span class="va">yellow</span> <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/link2GI/reference/rgb.html">rgb</a></span><span class="op">(</span><span class="fl">245</span>, <span class="fl">255</span>, <span class="fl">8</span>, maxColorValue <span class="op">=</span> <span class="fl">255</span><span class="op">)</span>
+<span class="va">orange</span> <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/link2GI/reference/rgb.html">rgb</a></span><span class="op">(</span><span class="fl">255</span>, <span class="fl">173</span>, <span class="fl">0</span>, maxColorValue <span class="op">=</span> <span class="fl">255</span><span class="op">)</span>
+<span class="va">lightred</span> <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/link2GI/reference/rgb.html">rgb</a></span><span class="op">(</span><span class="fl">255</span>, <span class="fl">67</span>, <span class="fl">0</span>, maxColorValue <span class="op">=</span> <span class="fl">255</span><span class="op">)</span>
+<span class="va">red</span> <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/link2GI/reference/rgb.html">rgb</a></span><span class="op">(</span><span class="fl">170</span>, <span class="fl">0</span>, <span class="fl">0</span>, maxColorValue <span class="op">=</span> <span class="fl">255</span><span class="op">)</span>
+<span class="va">pal</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/colorRamp.html">colorRampPalette</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">blue</span>, <span class="va">lightblue</span>, <span class="va">turquoise</span>, <span class="va">green</span>, <span class="va">yellow</span>,
+                         <span class="va">orange</span>, <span class="va">lightred</span>, <span class="va">red</span><span class="op">)</span><span class="op">)</span>
 
 <span class="co"># restrict the prediction to the study area</span>
-<span class="kw">pred</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/mask.html">mask</a></span>(<span class="kw">pred</span>, <span class="kw">study_area</span>) <span class="op">%&gt;%</span>
-  <span class="kw">trim</span>
+<span class="va">pred</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/mask.html">mask</a></span><span class="op">(</span><span class="va">pred</span>, <span class="va">study_area</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="va">trim</span>
 
 <span class="co"># create a hillshade</span>
-<span class="kw">hs</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/hillShade.html">hillShade</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/raster/man/terrain.html">terrain</a></span>(<span class="kw">dem</span>), <span class="fu"><a href="https://rdrr.io/pkg/raster/man/terrain.html">terrain</a></span>(<span class="kw">dem</span>, <span class="st">"aspect"</span>)) <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/raster/man/mask.html">mask</a></span>(<span class="kw">.</span>, <span class="kw">study_area</span>)
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/spplot.html">spplot</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/raster/man/extend.html">extend</a></span>(<span class="kw">pred</span>, <span class="fl">2</span>), col.regions = <span class="fu">pal</span>(<span class="fl">50</span>), alpha.regions = <span class="fl">0.7</span>,
-       scales = <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(draw = <span class="fl">TRUE</span>,
-                     tck = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>, <span class="fl">0</span>),
-                     cex = <span class="fl">0.8</span>),
-       colorkey = <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(space = <span class="st">"right"</span>, width = <span class="fl">0.5</span>, height = <span class="fl">0.5</span>,
-                       axis.line = <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(col = <span class="st">"black"</span>)),
-       sp.layout = <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(
+<span class="va">hs</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/hillShade.html">hillShade</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/terrain.html">terrain</a></span><span class="op">(</span><span class="va">dem</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/pkg/raster/man/terrain.html">terrain</a></span><span class="op">(</span><span class="va">dem</span>, <span class="st">"aspect"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://rdrr.io/pkg/raster/man/mask.html">mask</a></span><span class="op">(</span><span class="va">.</span>, <span class="va">study_area</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/pkg/raster/man/spplot.html">spplot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/extend.html">extend</a></span><span class="op">(</span><span class="va">pred</span>, <span class="fl">2</span><span class="op">)</span>, col.regions <span class="op">=</span> <span class="fu">pal</span><span class="op">(</span><span class="fl">50</span><span class="op">)</span>, alpha.regions <span class="op">=</span> <span class="fl">0.7</span>,
+       scales <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>draw <span class="op">=</span> <span class="cn">TRUE</span>,
+                     tck <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span>,
+                     cex <span class="op">=</span> <span class="fl">0.8</span><span class="op">)</span>,
+       colorkey <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>space <span class="op">=</span> <span class="st">"right"</span>, width <span class="op">=</span> <span class="fl">0.5</span>, height <span class="op">=</span> <span class="fl">0.5</span>,
+                       axis.line <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"black"</span><span class="op">)</span><span class="op">)</span>,
+       sp.layout <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>
          <span class="co"># list("sp.points", as(random_points, "Spatial"), pch = 16,</span>
          <span class="co">#      col = "black", cex = 0.8, first = FALSE),</span>
-         <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="st">"sp.polygons"</span>, <span class="fu"><a href="https://rdrr.io/pkg/sf/man/coerce-methods.html">as</a></span>(<span class="kw">study_area</span>, <span class="st">"Spatial"</span>),
-              col = <span class="st">"black"</span>, first = <span class="fl">FALSE</span>, lwd = <span class="fl">3</span>)
-       )
-) <span class="op">+</span>
-  <span class="kw">latticeExtra</span>::<span class="fu"><a href="https://rdrr.io/pkg/latticeExtra/man/as.layer.html">as.layer</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/raster/man/spplot.html">spplot</a></span>(<span class="kw">hs</span>, col.regions = <span class="fu"><a href="https://rdrr.io/r/grDevices/gray.html">gray</a></span>(<span class="fl">0</span><span class="op">:</span><span class="fl">100</span> <span class="op">/</span> <span class="fl">100</span>)),
-                         under = <span class="fl">TRUE</span>)
-</pre></div>
+         <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="st">"sp.polygons"</span>, <span class="fu"><a href="https://r-spatial.github.io/sf/reference/coerce-methods.html">as</a></span><span class="op">(</span><span class="va">study_area</span>, <span class="st">"Spatial"</span><span class="op">)</span>,
+              col <span class="op">=</span> <span class="st">"black"</span>, first <span class="op">=</span> <span class="cn">FALSE</span>, lwd <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>
+       <span class="op">)</span>
+<span class="op">)</span> <span class="op">+</span>
+  <span class="fu">latticeExtra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/latticeExtra/man/as.layer.html">as.layer</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/spplot.html">spplot</a></span><span class="op">(</span><span class="va">hs</span>, col.regions <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/gray.html">gray</a></span><span class="op">(</span><span class="fl">0</span><span class="op">:</span><span class="fl">100</span> <span class="op">/</span> <span class="fl">100</span><span class="op">)</span><span class="op">)</span>,
+                         under <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <ol start="4" style="list-style-type: decimal">
 <li>Retrieve the bias-reduced RMSE of a random forest model using spatial cross-validation including the estimation of optimal hyperparameter combinations (random search with 50 iterations) in an inner tuning loop (see <a href="https://geocompr.robinlovelace.net/spatial-cv.html#svm">section</a>). Parallelize the tuning level (see section <a href="https://geocompr.robinlovelace.net/spatial-cv.html#svm">section</a>). Report the mean RMSE and use a boxplot to visualize all retrieved RMSEs.</li>
 </ol>
-<div class="sourceCode" id="cb5"><pre class="downlit">
-<span class="co"># extract the coordinates into a separate dataframe</span>
-<span class="kw">coords</span> <span class="op">=</span> <span class="kw">sf</span>::<span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_coordinates.html">st_coordinates</a></span>(<span class="kw">rp</span>) <span class="op">%&gt;%</span>
-  <span class="kw">as.data.frame</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html">rename</a></span>(x = <span class="kw">X</span>, y = <span class="kw">Y</span>)
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># extract the coordinates into a separate dataframe</span>
+<span class="va">coords</span> <span class="op">=</span> <span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_coordinates.html">st_coordinates</a></span><span class="op">(</span><span class="va">rp</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="va">as.data.frame</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html">rename</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">X</span>, y <span class="op">=</span> <span class="va">Y</span><span class="op">)</span>
 <span class="co"># only keep response and predictors which should be used for the modeling</span>
-<span class="kw">rp</span> <span class="op">=</span> <span class="kw">dplyr</span>::<span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(<span class="kw">rp</span>, <span class="op">-</span><span class="kw">id</span>, <span class="op">-</span><span class="kw">spri</span>) <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_geometry.html">st_set_geometry</a></span>(<span class="kw">NULL</span>)
+<span class="va">rp</span> <span class="op">=</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">rp</span>, <span class="op">-</span><span class="va">id</span>, <span class="op">-</span><span class="va">spri</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html">st_set_geometry</a></span><span class="op">(</span><span class="cn">NULL</span><span class="op">)</span>
 
 <span class="co"># create task</span>
-<span class="kw">task</span> <span class="op">=</span> <span class="fu"><a href="https://mlr.mlr-org.com/reference/RegrTask.html">makeRegrTask</a></span>(data = <span class="kw">rp</span>, target = <span class="st">"sc"</span>, coordinates = <span class="kw">coords</span>)
+<span class="va">task</span> <span class="op">=</span> <span class="fu"><a href="https://mlr.mlr-org.com/reference/RegrTask.html">makeRegrTask</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">rp</span>, target <span class="op">=</span> <span class="st">"sc"</span>, coordinates <span class="op">=</span> <span class="va">coords</span><span class="op">)</span>
 <span class="co"># learner</span>
-<span class="kw">lrn_rf</span> <span class="op">=</span> <span class="fu"><a href="https://mlr.mlr-org.com/reference/makeLearner.html">makeLearner</a></span>(cl = <span class="st">"regr.ranger"</span>, predict.type = <span class="st">"response"</span>)
+<span class="va">lrn_rf</span> <span class="op">=</span> <span class="fu"><a href="https://mlr.mlr-org.com/reference/makeLearner.html">makeLearner</a></span><span class="op">(</span>cl <span class="op">=</span> <span class="st">"regr.ranger"</span>, predict.type <span class="op">=</span> <span class="st">"response"</span><span class="op">)</span>
 <span class="co"># performance estimation level with 5 spatial partitions and 100 repetitions</span>
-<span class="kw">perf_level</span> <span class="op">=</span> <span class="fu"><a href="https://mlr.mlr-org.com/reference/makeResampleDesc.html">makeResampleDesc</a></span>(method = <span class="st">"SpRepCV"</span>, folds = <span class="fl">5</span>, reps = <span class="fl">100</span>)
+<span class="va">perf_level</span> <span class="op">=</span> <span class="fu"><a href="https://mlr.mlr-org.com/reference/makeResampleDesc.html">makeResampleDesc</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"SpRepCV"</span>, folds <span class="op">=</span> <span class="fl">5</span>, reps <span class="op">=</span> <span class="fl">100</span><span class="op">)</span>
 <span class="co"># five spatially disjoint partitions in the tune level (one repetition)</span>
-<span class="kw">tune_level</span> <span class="op">=</span> <span class="fu"><a href="https://mlr.mlr-org.com/reference/makeResampleDesc.html">makeResampleDesc</a></span>(method = <span class="st">"SpCV"</span>, iters = <span class="fl">5</span>)
+<span class="va">tune_level</span> <span class="op">=</span> <span class="fu"><a href="https://mlr.mlr-org.com/reference/makeResampleDesc.html">makeResampleDesc</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"SpCV"</span>, iters <span class="op">=</span> <span class="fl">5</span><span class="op">)</span>
 <span class="co"># random search with 50 iterations</span>
-<span class="kw">ctrl</span> <span class="op">=</span> <span class="fu"><a href="https://mlr.mlr-org.com/reference/makeTuneControlRandom.html">makeTuneControlRandom</a></span>(maxit = <span class="fl">50</span>)
+<span class="va">ctrl</span> <span class="op">=</span> <span class="fu"><a href="https://mlr.mlr-org.com/reference/makeTuneControlRandom.html">makeTuneControlRandom</a></span><span class="op">(</span>maxit <span class="op">=</span> <span class="fl">50</span><span class="op">)</span>
 <span class="co"># specifying the search space</span>
-<span class="kw">ps</span> <span class="op">=</span> <span class="fu">makeParamSet</span>(
-  <span class="fu">makeIntegerParam</span>(<span class="st">"mtry"</span>, lower = <span class="fl">1</span>, upper = <span class="fu"><a href="https://rdrr.io/pkg/raster/man/ncell.html">ncol</a></span>(<span class="kw">rp</span>) <span class="op">-</span> <span class="fl">1</span>),
-  <span class="fu">makeNumericParam</span>(<span class="st">"sample.fraction"</span>, lower = <span class="fl">0.2</span>, upper = <span class="fl">0.9</span>),
-  <span class="fu">makeIntegerParam</span>(<span class="st">"min.node.size"</span>, lower = <span class="fl">1</span>, upper = <span class="fl">10</span>)
-)
+<span class="va">ps</span> <span class="op">=</span> <span class="fu">makeParamSet</span><span class="op">(</span>
+  <span class="fu">makeIntegerParam</span><span class="op">(</span><span class="st">"mtry"</span>, lower <span class="op">=</span> <span class="fl">1</span>, upper <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/ncell.html">ncol</a></span><span class="op">(</span><span class="va">rp</span><span class="op">)</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span>,
+  <span class="fu">makeNumericParam</span><span class="op">(</span><span class="st">"sample.fraction"</span>, lower <span class="op">=</span> <span class="fl">0.2</span>, upper <span class="op">=</span> <span class="fl">0.9</span><span class="op">)</span>,
+  <span class="fu">makeIntegerParam</span><span class="op">(</span><span class="st">"min.node.size"</span>, lower <span class="op">=</span> <span class="fl">1</span>, upper <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>
+<span class="op">)</span>
 <span class="co"># wrap it all up</span>
-<span class="kw">wrapped_lrn_rf</span> <span class="op">=</span> <span class="fu"><a href="https://mlr.mlr-org.com/reference/makeTuneWrapper.html">makeTuneWrapper</a></span>(learner = <span class="kw">lrn_rf</span>,
+<span class="va">wrapped_lrn_rf</span> <span class="op">=</span> <span class="fu"><a href="https://mlr.mlr-org.com/reference/makeTuneWrapper.html">makeTuneWrapper</a></span><span class="op">(</span>learner <span class="op">=</span> <span class="va">lrn_rf</span>,
                                    <span class="co"># inner loop (tunning level)</span>
-                                   resampling = <span class="kw">tune_level</span>,
+                                   resampling <span class="op">=</span> <span class="va">tune_level</span>,
                                    <span class="co"># hyperparameter seach space</span>
-                                   par.set = <span class="kw">ps</span>,
+                                   par.set <span class="op">=</span> <span class="va">ps</span>,
                                    <span class="co"># random search</span>
-                                   control = <span class="kw">ctrl</span>,
-                                   show.info = <span class="fl">TRUE</span>,
+                                   control <span class="op">=</span> <span class="va">ctrl</span>,
+                                   show.info <span class="op">=</span> <span class="cn">TRUE</span>,
                                    <span class="co"># performance measure</span>
-                                   measures = <span class="kw">mlr</span>::<span class="kw"><a href="https://mlr.mlr-org.com/reference/measures.html">rmse</a></span>)
+                                   measures <span class="op">=</span> <span class="fu">mlr</span><span class="fu">::</span><span class="va"><a href="https://mlr.mlr-org.com/reference/measures.html">rmse</a></span><span class="op">)</span>
 <span class="co"># make sure that the modeling goes on even if one model fails</span>
-<span class="fu"><a href="https://mlr.mlr-org.com/reference/configureMlr.html">configureMlr</a></span>(on.learner.error = <span class="st">"warn"</span>, on.error.dump = <span class="fl">TRUE</span>)
+<span class="fu"><a href="https://mlr.mlr-org.com/reference/configureMlr.html">configureMlr</a></span><span class="op">(</span>on.learner.error <span class="op">=</span> <span class="st">"warn"</span>, on.error.dump <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 
 <span class="co"># initialize parallelization</span>
-<span class="co">if</span> (<span class="fu"><a href="https://rdrr.io/r/base/Sys.info.html">Sys.info</a></span>()[<span class="st">"sysname"</span>] <span class="op">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Linux"</span>, <span class="st">"Darwin"</span>)) {
-  <span class="fu"><a href="https://parallelmap.mlr-org.com/reference/parallelStart.html">parallelStart</a></span>(mode = <span class="st">"multicore"</span>,
+<span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.info.html">Sys.info</a></span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="st">"sysname"</span><span class="op">]</span> <span class="op">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Linux"</span>, <span class="st">"Darwin"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
+  <span class="fu"><a href="https://parallelmap.mlr-org.com/reference/parallelStart.html">parallelStart</a></span><span class="op">(</span>mode <span class="op">=</span> <span class="st">"multicore"</span>,
                 <span class="co"># parallelize the hyperparameter tuning level</span>
-                level = <span class="st">"mlr.tuneParams"</span>,
+                level <span class="op">=</span> <span class="st">"mlr.tuneParams"</span>,
                 <span class="co"># just use half of the available cores</span>
-                cpus = <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span>(<span class="kw">parallel</span>::<span class="fu"><a href="https://rdrr.io/r/parallel/detectCores.html">detectCores</a></span>() <span class="op">/</span> <span class="fl">2</span>),
-                mc.set.seed = <span class="fl">TRUE</span>)
-}
+                cpus <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="fu">parallel</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/parallel/detectCores.html">detectCores</a></span><span class="op">(</span><span class="op">)</span> <span class="op">/</span> <span class="fl">2</span><span class="op">)</span>,
+                mc.set.seed <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<span class="op">}</span>
 
-<span class="co">if</span> (<span class="fu"><a href="https://rdrr.io/r/base/Sys.info.html">Sys.info</a></span>()[<span class="st">"sysname"</span>] <span class="op">==</span> <span class="st">"Windows"</span>) {
-  <span class="fu"><a href="https://parallelmap.mlr-org.com/reference/parallelStart.html">parallelStartSocket</a></span>(level = <span class="st">"mlr.tuneParams"</span>,
-                      cpus =  <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span>(<span class="kw">parallel</span>::<span class="fu"><a href="https://rdrr.io/r/parallel/detectCores.html">detectCores</a></span>() <span class="op">/</span> <span class="fl">2</span>))
-}
+<span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.info.html">Sys.info</a></span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="st">"sysname"</span><span class="op">]</span> <span class="op">==</span> <span class="st">"Windows"</span><span class="op">)</span> <span class="op">{</span>
+  <span class="fu"><a href="https://parallelmap.mlr-org.com/reference/parallelStart.html">parallelStartSocket</a></span><span class="op">(</span>level <span class="op">=</span> <span class="st">"mlr.tuneParams"</span>,
+                      cpus <span class="op">=</span>  <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="fu">parallel</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/parallel/detectCores.html">detectCores</a></span><span class="op">(</span><span class="op">)</span> <span class="op">/</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span>
+<span class="op">}</span>
 
 <span class="co"># run the spatial cross-validation</span>
-<span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="fl">12345</span>)
-<span class="kw">result_rf</span> <span class="op">=</span> <span class="kw">mlr</span>::<span class="fu"><a href="https://mlr.mlr-org.com/reference/resample.html">resample</a></span>(learner = <span class="kw">wrapped_lrn_rf</span>,
-                          task = <span class="kw">task</span>,
-                          resampling = <span class="kw">perf_level</span>,
-                          extract = <span class="kw">getTuneResult</span>,
-                          measures = <span class="kw">mlr</span>::<span class="kw"><a href="https://mlr.mlr-org.com/reference/measures.html">rmse</a></span>)
+<span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">12345</span><span class="op">)</span>
+<span class="va">result_rf</span> <span class="op">=</span> <span class="fu">mlr</span><span class="fu">::</span><span class="fu"><a href="https://mlr.mlr-org.com/reference/resample.html">resample</a></span><span class="op">(</span>learner <span class="op">=</span> <span class="va">wrapped_lrn_rf</span>,
+                          task <span class="op">=</span> <span class="va">task</span>,
+                          resampling <span class="op">=</span> <span class="va">perf_level</span>,
+                          extract <span class="op">=</span> <span class="va">getTuneResult</span>,
+                          measures <span class="op">=</span> <span class="fu">mlr</span><span class="fu">::</span><span class="va"><a href="https://mlr.mlr-org.com/reference/measures.html">rmse</a></span><span class="op">)</span>
 <span class="co"># stop parallelization</span>
-<span class="fu"><a href="https://parallelmap.mlr-org.com/reference/parallelStop.html">parallelStop</a></span>()
+<span class="fu"><a href="https://parallelmap.mlr-org.com/reference/parallelStop.html">parallelStop</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co"># save your result, e.g.:</span>
 <span class="co"># saveRDS(result_rf, file = "extdata/rf_sp_sp_50it.rds")</span>
 
 <span class="co"># Visualization of non-spatial overfitting</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/boxplot.html">boxplot</a></span>(<span class="kw">result_rf</span><span class="op">$</span><span class="kw">measures.test</span><span class="op">$</span><span class="kw">rmse</span>, ylab = <span class="st">"RMSE"</span>)
-</pre></div>
+<span class="fu"><a href="https://rdrr.io/pkg/raster/man/boxplot.html">boxplot</a></span><span class="op">(</span><span class="va">result_rf</span><span class="op">$</span><span class="va">measures.test</span><span class="op">$</span><span class="va">rmse</span>, ylab <span class="op">=</span> <span class="st">"RMSE"</span><span class="op">)</span></code></pre></div>
 <ol start="5" style="list-style-type: decimal">
 <li>Retrieve the bias-reduced RMSE of a simple linear model using spatial cross-validation. Compare the result to the result of the random forest model by making RMSE boxplots for each modeling approach.</li>
 </ol>
-<div class="sourceCode" id="cb6"><pre class="downlit">
-<span class="co"># create a task</span>
-<span class="kw">task</span> <span class="op">=</span> <span class="fu"><a href="https://mlr.mlr-org.com/reference/RegrTask.html">makeRegrTask</a></span>(data = <span class="kw">rp</span>, target = <span class="st">"sc"</span>,
-                    coordinates = <span class="kw">coords</span>)
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># create a task</span>
+<span class="va">task</span> <span class="op">=</span> <span class="fu"><a href="https://mlr.mlr-org.com/reference/RegrTask.html">makeRegrTask</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">rp</span>, target <span class="op">=</span> <span class="st">"sc"</span>,
+                    coordinates <span class="op">=</span> <span class="va">coords</span><span class="op">)</span>
 <span class="co"># run listLearners to find out which models could be thrown at our task</span>
 <span class="co"># lrns = listLearners(task, warn.missing.packages = FALSE)</span>
 <span class="co"># dplyr::select(lrns, class, name, short.name, package)</span>
 
 <span class="co"># define a learner</span>
-<span class="kw">lrn</span> <span class="op">=</span> <span class="fu"><a href="https://mlr.mlr-org.com/reference/makeLearner.html">makeLearner</a></span>(cl = <span class="st">"regr.lm"</span>, predict.type = <span class="st">"response"</span>)
+<span class="va">lrn</span> <span class="op">=</span> <span class="fu"><a href="https://mlr.mlr-org.com/reference/makeLearner.html">makeLearner</a></span><span class="op">(</span>cl <span class="op">=</span> <span class="st">"regr.lm"</span>, predict.type <span class="op">=</span> <span class="st">"response"</span><span class="op">)</span>
 <span class="co"># simple lm of the stats package</span>
 <span class="co"># getLearnerPackages(lrn)</span>
 <span class="co"># helpLearner(lrn)</span>
@@ -338,17 +333,16 @@
 <span class="co"># getLearnerModel(train(lrn, task))</span>
 
 <span class="co"># performance level</span>
-<span class="kw">perf_level</span> <span class="op">=</span> <span class="fu"><a href="https://mlr.mlr-org.com/reference/makeResampleDesc.html">makeResampleDesc</a></span>(method = <span class="st">"SpRepCV"</span>, folds = <span class="fl">5</span>, reps = <span class="fl">100</span>)
-<span class="kw">result_lm</span> <span class="op">=</span> <span class="kw">mlr</span>::<span class="fu"><a href="https://mlr.mlr-org.com/reference/resample.html">resample</a></span>(learner = <span class="kw">lrn</span>,
-                          task = <span class="kw">task</span>,
-                          resampling = <span class="kw">perf_level</span>,
-                          measures = <span class="kw">mlr</span>::<span class="kw"><a href="https://mlr.mlr-org.com/reference/measures.html">rmse</a></span>)
+<span class="va">perf_level</span> <span class="op">=</span> <span class="fu"><a href="https://mlr.mlr-org.com/reference/makeResampleDesc.html">makeResampleDesc</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"SpRepCV"</span>, folds <span class="op">=</span> <span class="fl">5</span>, reps <span class="op">=</span> <span class="fl">100</span><span class="op">)</span>
+<span class="va">result_lm</span> <span class="op">=</span> <span class="fu">mlr</span><span class="fu">::</span><span class="fu"><a href="https://mlr.mlr-org.com/reference/resample.html">resample</a></span><span class="op">(</span>learner <span class="op">=</span> <span class="va">lrn</span>,
+                          task <span class="op">=</span> <span class="va">task</span>,
+                          resampling <span class="op">=</span> <span class="va">perf_level</span>,
+                          measures <span class="op">=</span> <span class="fu">mlr</span><span class="fu">::</span><span class="va"><a href="https://mlr.mlr-org.com/reference/measures.html">rmse</a></span><span class="op">)</span>
 <span class="co"># save your result, e.g.:</span>
 <span class="co"># saveRDS(result_lm, "extdata/lm_sp.rds")</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/boxplot.html">boxplot</a></span>(<span class="kw">result_rf</span><span class="op">$</span><span class="kw">measures.test</span><span class="op">$</span><span class="kw">rmse</span>, <span class="kw">result_lm</span><span class="op">$</span><span class="kw">measures.test</span><span class="op">$</span><span class="kw">rmse</span>,
-        col = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"lightblue2"</span>, <span class="st">"mistyrose2"</span>),
-        names = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"random forest"</span>, <span class="st">"lm"</span>), ylab = <span class="st">"RMSE"</span>)
-</pre></div>
+<span class="fu"><a href="https://rdrr.io/pkg/raster/man/boxplot.html">boxplot</a></span><span class="op">(</span><span class="va">result_rf</span><span class="op">$</span><span class="va">measures.test</span><span class="op">$</span><span class="va">rmse</span>, <span class="va">result_lm</span><span class="op">$</span><span class="va">measures.test</span><span class="op">$</span><span class="va">rmse</span>,
+        col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"lightblue2"</span>, <span class="st">"mistyrose2"</span><span class="op">)</span>,
+        names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"random forest"</span>, <span class="st">"lm"</span><span class="op">)</span>, ylab <span class="op">=</span> <span class="st">"RMSE"</span><span class="op">)</span></code></pre></div>
 <p>In fact, <code>lm</code> performs better than a random forest model. But keep in mind that the used dataset is small in terms of observations and predictors and that the response-predictor relationships are also relatively linear.</p>
 </div>
   </div>

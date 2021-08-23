@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">geocompkg | metapackage for the Gecomputation with R book</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.102</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.103</span>
       </span>
     </div>
 
@@ -61,7 +61,7 @@
       <h1 data-toc-skip>Chapter 8: Making maps with R</h1>
                         <h4 class="author">Robin Lovelace, Jakub Nowosad, Jannes Muenchow</h4>
             
-            <h4 class="date">2020-09-15</h4>
+            <h4 class="date">2021-08-23</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/Robinlovelace/geocompr/blob/master/vignettes/solutions08.Rmd"><code>vignettes/solutions08.Rmd</code></a></small>
       <div class="hidden name"><code>solutions08.Rmd</code></div>
@@ -74,34 +74,31 @@
 <h2 class="hasAnchor">
 <a href="#prerequisites" class="anchor"></a>Prerequisites</h2>
 <p>The solutions assume the following packages are attached (other packages will be attached when needed):</p>
-<div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://r-spatial.github.io/sf">sf</a></span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://rspatial.org/raster">raster</a></span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://dplyr.tidyverse.org">dplyr</a></span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://nowosad.github.io/spData">spData</a></span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/mtennekes/tmap">tmap</a></span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="http://rstudio.github.io/leaflet">leaflet</a></span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/sjewo/cartogram">cartogram</a></span>)
-</pre></div>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/">sf</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/raster">raster</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://nowosad.github.io/spData/">spData</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/mtennekes/tmap">tmap</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rstudio.github.io/leaflet/">leaflet</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/sjewo/cartogram">cartogram</a></span><span class="op">)</span></code></pre></div>
 <p>These exercises rely on a new object, <code>africa</code>. Create it using the <code>world</code> and <code>worldbank_df</code> datasets from the <strong>spData</strong> package as follows (see Chapter <a href="https://geocompr.robinlovelace.net/attr.html">3</a>):</p>
-<div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="kw">africa</span> <span class="op">=</span> <span class="kw">world</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="kw">continent</span> <span class="op">==</span> <span class="st">"Africa"</span>, <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span>(<span class="kw">iso_a2</span>)) <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span>(<span class="kw">worldbank_df</span>, by = <span class="st">"iso_a2"</span>) <span class="op">%&gt;%</span> 
-  <span class="kw">dplyr</span>::<span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(<span class="kw">name</span>, <span class="kw">subregion</span>, <span class="kw">gdpPercap</span>, <span class="kw">HDI</span>, <span class="kw">pop_growth</span>) <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_transform.html">st_transform</a></span>(<span class="st">"+proj=aea +lat_1=20 +lat_2=-23 +lat_0=0 +lon_0=25"</span>)
-</pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">africa</span> <span class="op">=</span> <span class="va">world</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">continent</span> <span class="op">==</span> <span class="st">"Africa"</span>, <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">iso_a2</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span><span class="op">(</span><span class="va">worldbank_df</span>, by <span class="op">=</span> <span class="st">"iso_a2"</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">name</span>, <span class="va">subregion</span>, <span class="va">gdpPercap</span>, <span class="va">HDI</span>, <span class="va">pop_growth</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_transform.html">st_transform</a></span><span class="op">(</span><span class="st">"+proj=aea +lat_1=20 +lat_2=-23 +lat_0=0 +lon_0=25"</span><span class="op">)</span></code></pre></div>
 <p>We will also use <code>zion</code> and <code>nlcd</code> datasets from <strong>spDataLarge</strong>:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="kw">zion</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_read.html">st_read</a></span>((<span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"vector/zion.gpkg"</span>, package = <span class="st">"spDataLarge"</span>)))
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="kw">nlcd</span>, package = <span class="st">"spDataLarge"</span>)
-</pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">zion</span> <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_read.html">st_read</a></span><span class="op">(</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"vector/zion.gpkg"</span>, package <span class="op">=</span> <span class="st">"spDataLarge"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">nlcd</span>, package <span class="op">=</span> <span class="st">"spDataLarge"</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="chapter-8" class="section level1">
 <h1 class="hasAnchor">
 <a href="#chapter-8" class="anchor"></a>Chapter 8</h1>
 <ol style="list-style-type: decimal">
-<li>Create a map showing the geographic distribution of the Human Development Index (<code>HDI</code>) across Africa with base <strong>graphics</strong> (hint: use <code><a href="https://rdrr.io/pkg/sf/man/plot.html">plot()</a></code>) and <strong>tmap</strong> packages (hint: use <code>tm_shape(africa) + ...</code>).
+<li>Create a map showing the geographic distribution of the Human Development Index (<code>HDI</code>) across Africa with base <strong>graphics</strong> (hint: use <code><a href="https://r-spatial.github.io/sf/reference/plot.html">plot()</a></code>) and <strong>tmap</strong> packages (hint: use <code>tm_shape(africa) + ...</code>).
 <ul>
 <li>Name two advantages of each, based on the experience.</li>
 <li>Name three other mapping packages and an advantage of each.</li>
@@ -110,10 +107,9 @@
 </li>
 </ol>
 <p>Maps can be made with this object as follows:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(<span class="kw">africa</span>[<span class="st">"HDI"</span>])
-<span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span>(<span class="kw">africa</span>) <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_polygons</a></span>(<span class="st">"HDI"</span>)
-</pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://r-spatial.github.io/sf/reference/plot.html">plot</a></span><span class="op">(</span><span class="va">africa</span><span class="op">[</span><span class="st">"HDI"</span><span class="op">]</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">africa</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_polygons</a></span><span class="op">(</span><span class="st">"HDI"</span><span class="op">)</span></code></pre></div>
 <ul>
 <li>Base graphics is fast, widely available (has few dependencies, available on all R installations) and well-known among R users.</li>
 <li>
@@ -122,23 +118,20 @@
 <strong>ggplot2</strong>, <strong>leaflet</strong> and <strong>cartography</strong> are other packages that could be used for the same job (there are many others). They have the following advantes: intuitive and flexible grammar; low level control over interactive elements; and the ability to create cartograms.</li>
 </ul>
 <p>Examples using other packages are as follows:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="http://ggplot2.tidyverse.org">ggplot2</a></span>)
-<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="kw">africa</span>) <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html">geom_sf</a></span>(<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(geometry = <span class="kw">geom</span>, fill = <span class="kw">HDI</span>)) 
-</pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span>
+<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">africa</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html">geom_sf</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>geometry <span class="op">=</span> <span class="va">geom</span>, fill <span class="op">=</span> <span class="va">HDI</span><span class="op">)</span><span class="op">)</span> </code></pre></div>
 <p><img src="solutions08_files/figure-html/unnamed-chunk-4-1.png" width="700"></p>
-<div class="sourceCode" id="cb6"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="http://rstudio.github.io/leaflet">leaflet</a></span>)
-<span class="fu"><a href="https://rdrr.io/pkg/leaflet/man/leaflet.html">leaflet</a></span>() <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://rdrr.io/pkg/leaflet/man/map-layers.html">addTiles</a></span>() <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://rdrr.io/pkg/leaflet/man/map-layers.html">addPolygons</a></span>(data = <span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_transform.html">st_transform</a></span>(<span class="kw">africa</span>, <span class="fl">4326</span>))
-</pre></div>
-<div class="sourceCode" id="cb7"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/sjewo/cartogram">cartogram</a></span>)
-<span class="kw">africa_carto</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/cartogram/man/cartogram_cont.html">cartogram_cont</a></span>(<span class="kw">africa</span>, <span class="st">"HDI"</span>, itermax = <span class="fl">5</span>)
-<span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span>(<span class="kw">africa_carto</span>) <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_polygons</a></span>(<span class="st">"HDI"</span>)
-</pre></div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rstudio.github.io/leaflet/">leaflet</a></span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/pkg/leaflet/man/leaflet.html">leaflet</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://rdrr.io/pkg/leaflet/man/map-layers.html">addTiles</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://rdrr.io/pkg/leaflet/man/map-layers.html">addPolygons</a></span><span class="op">(</span>data <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_transform.html">st_transform</a></span><span class="op">(</span><span class="va">africa</span>, <span class="fl">4326</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/sjewo/cartogram">cartogram</a></span><span class="op">)</span>
+<span class="va">africa_carto</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/cartogram/man/cartogram_cont.html">cartogram_cont</a></span><span class="op">(</span><span class="va">africa</span>, <span class="st">"HDI"</span>, itermax <span class="op">=</span> <span class="fl">5</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">africa_carto</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_polygons</a></span><span class="op">(</span><span class="st">"HDI"</span><span class="op">)</span></code></pre></div>
 <ol start="2" style="list-style-type: decimal">
 <li>Extend the map of Africa created with <strong>tmap</strong> for the previous exercise so the legend has three bins: “High” (<code>HDI</code> above 0.7), “Medium” (<code>HDI</code> between 0.55 and 0.7) and “Low” (<code>HDI</code> below 0.55).
 <ul>
@@ -146,30 +139,28 @@
 </ul>
 </li>
 </ol>
-<div class="sourceCode" id="cb8"><pre class="downlit">
-<span class="co"># &gt;0.8 - Very high human development</span>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># &gt;0.8 - Very high human development</span>
 <span class="co"># &gt;0.7 - High human development</span>
 <span class="co"># &gt;0.55 - Medium human development</span>
 <span class="co"># &lt;0.55 - Low human development</span>
-<span class="kw">sm1</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span>(<span class="kw">africa</span>) <span class="op">+</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_polygons</a></span>(
-  col = <span class="st">"HDI"</span>,
-  title = <span class="st">"Human Development Index"</span>,
-  breaks = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0</span>, <span class="fl">0.55</span>, <span class="fl">0.7</span>, <span class="fl">0.8</span>),
-  labels = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Low"</span>, <span class="st">"Medium"</span>, <span class="st">"High"</span>),
-  palette = <span class="st">"YlGn"</span>)
-<span class="kw">sm1</span>
-</pre></div>
+<span class="va">sm1</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">africa</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_polygons</a></span><span class="op">(</span>
+  col <span class="op">=</span> <span class="st">"HDI"</span>,
+  title <span class="op">=</span> <span class="st">"Human Development Index"</span>,
+  breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0.55</span>, <span class="fl">0.7</span>, <span class="fl">0.8</span><span class="op">)</span>,
+  labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Low"</span>, <span class="st">"Medium"</span>, <span class="st">"High"</span><span class="op">)</span>,
+  palette <span class="op">=</span> <span class="st">"YlGn"</span><span class="op">)</span>
+<span class="va">sm1</span></code></pre></div>
 <ol start="3" style="list-style-type: decimal">
 <li>Represent <code>africa</code>’s subregions on the map. Change the default color palette and legend title. Next, combine this map and the map created in the previous exercise into a single plot.</li>
 </ol>
-<div class="sourceCode" id="cb9"><pre class="downlit">
-<span class="kw">sm2</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span>(<span class="kw">africa</span>) <span class="op">+</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_polygons</a></span>(col = <span class="st">"subregion"</span>,
-              title = <span class="st">"Subregion"</span>, 
-              palette = <span class="st">"Set2"</span>)
-<span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tmap_arrange.html">tmap_arrange</a></span>(<span class="kw">sm2</span>, <span class="kw">sm1</span>)
-</pre></div>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">sm2</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">africa</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_polygons</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"subregion"</span>,
+              title <span class="op">=</span> <span class="st">"Subregion"</span>, 
+              palette <span class="op">=</span> <span class="st">"Set2"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tmap_arrange.html">tmap_arrange</a></span><span class="op">(</span><span class="va">sm2</span>, <span class="va">sm1</span><span class="op">)</span></code></pre></div>
 <ol start="4" style="list-style-type: decimal">
 <li>Create a land cover map of the Zion National Park.
 <ul>
@@ -179,32 +170,30 @@
 </ul>
 </li>
 </ol>
-<div class="sourceCode" id="cb10"><pre class="downlit">
-<span class="kw">lc_colors</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"#476ba0"</span>, <span class="st">"#aa0000"</span>, <span class="st">"#b2ada3"</span>, <span class="st">"#68aa63"</span>, <span class="st">"#a58c30"</span>,
-              <span class="st">"#c9c977"</span>, <span class="st">"#dbd83d"</span>, <span class="st">"#bad8ea"</span>)
-<span class="kw">sm3</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span>(<span class="kw">nlcd</span>) <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_raster.html">tm_raster</a></span>(<span class="st">"levels"</span>, palette = <span class="kw">lc_colors</span>, title = <span class="st">"Land cover"</span>) <span class="op">+</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span>(<span class="kw">zion</span>) <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_borders</a></span>(lwd = <span class="fl">3</span>) <span class="op">+</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_scale_bar.html">tm_scale_bar</a></span>(size = <span class="fl">1</span>, position = <span class="st">"left"</span>) <span class="op">+</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_compass.html">tm_compass</a></span>(type = <span class="st">"8star"</span>, position = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"RIGHT"</span>, <span class="st">"top"</span>)) <span class="op">+</span> 
-  <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_layout.html">tm_layout</a></span>(legend.frame = <span class="fl">TRUE</span>, legend.position = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0.6</span>, <span class="st">"top"</span>)) <span class="op">+</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_layout.html">tm_layout</a></span>(frame.lwd = <span class="fl">4</span>)
-<span class="kw">sm3</span>
-</pre></div>
-<div class="sourceCode" id="cb11"><pre class="downlit">
-<span class="kw">utah</span> <span class="op">=</span> <span class="kw">dplyr</span>::<span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="kw">us_states</span>, <span class="kw">NAME</span> <span class="op">==</span> <span class="st">"Utah"</span>)
-<span class="kw">zion_bbox</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_as_sfc.html">st_as_sfc</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_bbox.html">st_bbox</a></span>(<span class="kw">nlcd</span>))
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">lc_colors</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"#476ba0"</span>, <span class="st">"#aa0000"</span>, <span class="st">"#b2ada3"</span>, <span class="st">"#68aa63"</span>, <span class="st">"#a58c30"</span>,
+              <span class="st">"#c9c977"</span>, <span class="st">"#dbd83d"</span>, <span class="st">"#bad8ea"</span><span class="op">)</span>
+<span class="va">sm3</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">nlcd</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_raster.html">tm_raster</a></span><span class="op">(</span><span class="st">"levels"</span>, palette <span class="op">=</span> <span class="va">lc_colors</span>, title <span class="op">=</span> <span class="st">"Land cover"</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">zion</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_borders</a></span><span class="op">(</span>lwd <span class="op">=</span> <span class="fl">3</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_scale_bar.html">tm_scale_bar</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">1</span>, position <span class="op">=</span> <span class="st">"left"</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_compass.html">tm_compass</a></span><span class="op">(</span>type <span class="op">=</span> <span class="st">"8star"</span>, position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"RIGHT"</span>, <span class="st">"top"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_layout.html">tm_layout</a></span><span class="op">(</span>legend.frame <span class="op">=</span> <span class="cn">TRUE</span>, legend.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.6</span>, <span class="st">"top"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_layout.html">tm_layout</a></span><span class="op">(</span>frame.lwd <span class="op">=</span> <span class="fl">4</span><span class="op">)</span>
+<span class="va">sm3</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">utah</span> <span class="op">=</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">us_states</span>, <span class="va">NAME</span> <span class="op">==</span> <span class="st">"Utah"</span><span class="op">)</span>
+<span class="va">zion_bbox</span> <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_as_sfc.html">st_as_sfc</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_bbox.html">st_bbox</a></span><span class="op">(</span><span class="va">nlcd</span><span class="op">)</span><span class="op">)</span>
 
-<span class="kw">im</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span>(<span class="kw">utah</span>) <span class="op">+</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_polygons</a></span>(lwd = <span class="fl">3</span>, border.col = <span class="st">"black"</span>) <span class="op">+</span> 
-  <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span>(<span class="kw">zion_bbox</span>) <span class="op">+</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_polygons</a></span>(col = <span class="st">"green"</span>, lwd = <span class="fl">1</span>) <span class="op">+</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_layout.html">tm_layout</a></span>(title = <span class="st">"UTAH"</span>, title.size = <span class="fl">2</span>, title.position = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"center"</span>, <span class="st">"center"</span>)) <span class="op">+</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_layout.html">tm_layout</a></span>(frame = <span class="fl">FALSE</span>, bg.color = <span class="fl">NA</span>)
+<span class="va">im</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">utah</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_polygons</a></span><span class="op">(</span>lwd <span class="op">=</span> <span class="fl">3</span>, border.col <span class="op">=</span> <span class="st">"black"</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">zion_bbox</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_polygons</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"green"</span>, lwd <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_layout.html">tm_layout</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"UTAH"</span>, title.size <span class="op">=</span> <span class="fl">2</span>, title.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"center"</span>, <span class="st">"center"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_layout.html">tm_layout</a></span><span class="op">(</span>frame <span class="op">=</span> <span class="cn">FALSE</span>, bg.color <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span>
 
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw">grid</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span>(<span class="kw">sm3</span>, vp = <span class="kw">grid</span>::<span class="fu"><a href="https://rdrr.io/r/grid/viewport.html">viewport</a></span>(<span class="fl">0.5</span>, <span class="fl">0.5</span>, width = <span class="fl">0.95</span>, height = <span class="fl">0.95</span>))
-<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span>(<span class="kw">im</span>, vp = <span class="kw">grid</span>::<span class="fu"><a href="https://rdrr.io/r/grid/viewport.html">viewport</a></span>(<span class="fl">0.2</span>, <span class="fl">0.4</span>, width = <span class="fl">0.35</span>, height = <span class="fl">0.35</span>))
-</pre></div>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">grid</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">sm3</span>, vp <span class="op">=</span> <span class="fu">grid</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grid/viewport.html">viewport</a></span><span class="op">(</span><span class="fl">0.5</span>, <span class="fl">0.5</span>, width <span class="op">=</span> <span class="fl">0.95</span>, height <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">im</span>, vp <span class="op">=</span> <span class="fu">grid</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grid/viewport.html">viewport</a></span><span class="op">(</span><span class="fl">0.2</span>, <span class="fl">0.4</span>, width <span class="op">=</span> <span class="fl">0.35</span>, height <span class="op">=</span> <span class="fl">0.35</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <ol start="5" style="list-style-type: decimal">
 <li>Create facet maps of countries in Eastern Africa:
 <ul>
@@ -213,17 +202,15 @@
 </ul>
 </li>
 </ol>
-<div class="sourceCode" id="cb12"><pre class="downlit">
-<span class="kw">eastern_africa</span> <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="kw">africa</span>, <span class="kw">subregion</span> <span class="op">==</span> <span class="st">"Eastern Africa"</span>)
-</pre></div>
-<div class="sourceCode" id="cb13"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span>(<span class="kw">eastern_africa</span>) <span class="op">+</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_polygons</a></span>(col = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"HDI"</span>, <span class="st">"pop_growth"</span>)) <span class="op">+</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/qtm.html">qtm</a></span>(<span class="kw">africa</span>, fill = <span class="kw">NULL</span>)
-<span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span>(<span class="kw">eastern_africa</span>) <span class="op">+</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_polygons</a></span>(<span class="st">"pop_growth"</span>, style = <span class="st">"jenks"</span>, palette = <span class="st">"BuPu"</span>) <span class="op">+</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_facets.html">tm_facets</a></span>(by = <span class="st">"name"</span>, drop.NA.facets = <span class="fl">TRUE</span>)
-</pre></div>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">eastern_africa</span> <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">africa</span>, <span class="va">subregion</span> <span class="op">==</span> <span class="st">"Eastern Africa"</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">eastern_africa</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_polygons</a></span><span class="op">(</span>col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"HDI"</span>, <span class="st">"pop_growth"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/qtm.html">qtm</a></span><span class="op">(</span><span class="va">africa</span>, fill <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">eastern_africa</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_polygons</a></span><span class="op">(</span><span class="st">"pop_growth"</span>, style <span class="op">=</span> <span class="st">"jenks"</span>, palette <span class="op">=</span> <span class="st">"BuPu"</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_facets.html">tm_facets</a></span><span class="op">(</span>by <span class="op">=</span> <span class="st">"name"</span>, drop.NA.facets <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <ol start="6" style="list-style-type: decimal">
 <li>Building on the previous facet map examples, create animated maps of East Africa:
 <ul>
@@ -232,19 +219,18 @@
 </ul>
 </li>
 </ol>
-<div class="sourceCode" id="cb14"><pre class="downlit">
-<span class="kw">m</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span>(<span class="kw">eastern_africa</span>) <span class="op">+</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_polygons</a></span>(col = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"HDI"</span>, <span class="st">"pop_growth"</span>)) <span class="op">+</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/qtm.html">qtm</a></span>(<span class="kw">africa</span>, fill = <span class="kw">NULL</span>) <span class="op">+</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_facets.html">tm_facets</a></span>(ncol = <span class="fl">1</span>, nrow = <span class="fl">1</span>)
-<span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tmap_animation.html">tmap_animation</a></span>(<span class="kw">m</span>, filename = <span class="st">"m.gif"</span>)
-<span class="fu"><a href="https://rdrr.io/r/utils/browseURL.html">browseURL</a></span>(<span class="st">"m.gif"</span>)
-<span class="kw">m</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span>(<span class="kw">eastern_africa</span>) <span class="op">+</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_polygons</a></span>(<span class="st">"pop_growth"</span>, style = <span class="st">"jenks"</span>, palette = <span class="st">"BuPu"</span>) <span class="op">+</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_facets.html">tm_facets</a></span>(by = <span class="st">"name"</span>, drop.NA.facets = <span class="fl">TRUE</span>, ncol = <span class="fl">1</span>, nrow = <span class="fl">1</span>)
-<span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tmap_animation.html">tmap_animation</a></span>(<span class="kw">m</span>, filename = <span class="st">"m.gif"</span>, width = <span class="fl">1500</span>, height = <span class="fl">1500</span>)
-<span class="fu"><a href="https://rdrr.io/r/utils/browseURL.html">browseURL</a></span>(<span class="st">"m.gif"</span>)
-</pre></div>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">m</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">eastern_africa</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_polygons</a></span><span class="op">(</span>col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"HDI"</span>, <span class="st">"pop_growth"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/qtm.html">qtm</a></span><span class="op">(</span><span class="va">africa</span>, fill <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_facets.html">tm_facets</a></span><span class="op">(</span>ncol <span class="op">=</span> <span class="fl">1</span>, nrow <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tmap_animation.html">tmap_animation</a></span><span class="op">(</span><span class="va">m</span>, filename <span class="op">=</span> <span class="st">"m.gif"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/browseURL.html">browseURL</a></span><span class="op">(</span><span class="st">"m.gif"</span><span class="op">)</span>
+<span class="va">m</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">eastern_africa</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_polygons</a></span><span class="op">(</span><span class="st">"pop_growth"</span>, style <span class="op">=</span> <span class="st">"jenks"</span>, palette <span class="op">=</span> <span class="st">"BuPu"</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_facets.html">tm_facets</a></span><span class="op">(</span>by <span class="op">=</span> <span class="st">"name"</span>, drop.NA.facets <span class="op">=</span> <span class="cn">TRUE</span>, ncol <span class="op">=</span> <span class="fl">1</span>, nrow <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tmap_animation.html">tmap_animation</a></span><span class="op">(</span><span class="va">m</span>, filename <span class="op">=</span> <span class="st">"m.gif"</span>, width <span class="op">=</span> <span class="fl">1500</span>, height <span class="op">=</span> <span class="fl">1500</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/browseURL.html">browseURL</a></span><span class="op">(</span><span class="st">"m.gif"</span><span class="op">)</span></code></pre></div>
 <ol start="7" style="list-style-type: decimal">
 <li>Create an interactive map of Africa:
 <ul>
@@ -258,29 +244,26 @@
 </ul>
 </li>
 </ol>
-<div class="sourceCode" id="cb15"><pre class="downlit">
-<span class="co"># with tmap:</span>
-<span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tmap_mode.html">tmap_mode</a></span>(<span class="st">"view"</span>)
-<span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span>(<span class="kw">eastern_africa</span>) <span class="op">+</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_polygons</a></span>(<span class="st">"pop_growth"</span>) <span class="op">+</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_scale_bar.html">tm_scale_bar</a></span>() <span class="co"># bonus scale bar</span>
-<span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tmap_mode.html">tmap_mode</a></span>(<span class="st">"plot"</span>)
-</pre></div>
-<div class="sourceCode" id="cb16"><pre class="downlit">
-<span class="co"># with mapview (auto scale + legend)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/r-spatial/mapview">mapview</a></span>)
-<span class="fu"><a href="https://rdrr.io/pkg/mapview/man/mapView.html">mapview</a></span>(<span class="kw">eastern_africa</span>, zcol = <span class="st">"pop_growth"</span>)
-</pre></div>
-<div class="sourceCode" id="cb17"><pre class="downlit">
-<span class="co"># with leaflet</span>
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="http://rstudio.github.io/leaflet">leaflet</a></span>)
-<span class="kw">eastern_africa_wgs</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_transform.html">st_transform</a></span>(<span class="kw">eastern_africa</span>, <span class="fl">4326</span>)
-<span class="kw">pal</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/leaflet/man/colorNumeric.html">colorNumeric</a></span>(<span class="st">"RdYlBu"</span>, domain = <span class="kw">eastern_africa_wgs</span><span class="op">$</span><span class="kw">pop_growth</span>)
-<span class="fu"><a href="https://rdrr.io/pkg/leaflet/man/leaflet.html">leaflet</a></span>(data = <span class="kw">eastern_africa_wgs</span>) <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://rdrr.io/pkg/leaflet/man/addProviderTiles.html">addProviderTiles</a></span>(<span class="kw">providers</span><span class="op">$</span><span class="kw">OpenTopoMap</span>) <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://rdrr.io/pkg/leaflet/man/map-layers.html">addPolygons</a></span>(fillColor = <span class="op">~</span><span class="fu">pal</span>(<span class="kw">pop_growth</span>), fillOpacity = <span class="fl">.8</span>) <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://rdrr.io/pkg/leaflet/man/addLegend.html">addLegend</a></span>(pal = <span class="kw">pal</span>, values = <span class="op">~</span><span class="kw">pop_growth</span>)
-</pre></div>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># with tmap:</span>
+<span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tmap_mode.html">tmap_mode</a></span><span class="op">(</span><span class="st">"view"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">eastern_africa</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_polygons</a></span><span class="op">(</span><span class="st">"pop_growth"</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_scale_bar.html">tm_scale_bar</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># bonus scale bar</span>
+<span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tmap_mode.html">tmap_mode</a></span><span class="op">(</span><span class="st">"plot"</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># with mapview (auto scale + legend)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/mapview">mapview</a></span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/pkg/mapview/man/mapView.html">mapview</a></span><span class="op">(</span><span class="va">eastern_africa</span>, zcol <span class="op">=</span> <span class="st">"pop_growth"</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># with leaflet</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rstudio.github.io/leaflet/">leaflet</a></span><span class="op">)</span>
+<span class="va">eastern_africa_wgs</span> <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_transform.html">st_transform</a></span><span class="op">(</span><span class="va">eastern_africa</span>, <span class="fl">4326</span><span class="op">)</span>
+<span class="va">pal</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/leaflet/man/colorNumeric.html">colorNumeric</a></span><span class="op">(</span><span class="st">"RdYlBu"</span>, domain <span class="op">=</span> <span class="va">eastern_africa_wgs</span><span class="op">$</span><span class="va">pop_growth</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/pkg/leaflet/man/leaflet.html">leaflet</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">eastern_africa_wgs</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://rdrr.io/pkg/leaflet/man/addProviderTiles.html">addProviderTiles</a></span><span class="op">(</span><span class="va">providers</span><span class="op">$</span><span class="va">OpenTopoMap</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://rdrr.io/pkg/leaflet/man/map-layers.html">addPolygons</a></span><span class="op">(</span>fillColor <span class="op">=</span> <span class="op">~</span><span class="fu">pal</span><span class="op">(</span><span class="va">pop_growth</span><span class="op">)</span>, fillOpacity <span class="op">=</span> <span class="fl">.8</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://rdrr.io/pkg/leaflet/man/addLegend.html">addLegend</a></span><span class="op">(</span>pal <span class="op">=</span> <span class="va">pal</span>, values <span class="op">=</span> <span class="op">~</span><span class="va">pop_growth</span><span class="op">)</span></code></pre></div>
 <ol start="8" style="list-style-type: decimal">
 <li>Sketch on paper ideas for a web mapping app that could be used to make transport or land-use policies more evidence based:
 <ul>
@@ -308,83 +291,76 @@
 <ol start="10" style="list-style-type: decimal">
 <li>Reproduce this <a href="https://geocompr.robinlovelace.net/adv-map.html#fig:tmshape">Figure</a> and the 1st and 6th panel of this <a href="https://geocompr.robinlovelace.net/adv-map.html#fig:break-styles">Figure</a> as closely as possible using the <strong>ggplot2</strong> package.</li>
 </ol>
-<div class="sourceCode" id="cb18"><pre class="downlit">
-<span class="co"># fig 8.1 </span>
-<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>() <span class="op">+</span> 
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html">geom_sf</a></span>(data = <span class="kw">nz</span>, color = <span class="fl">NA</span>) <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html">coord_sf</a></span>(crs = <span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_crs.html">st_crs</a></span>(<span class="kw">nz</span>), datum = <span class="fl">NA</span>) <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_void</a></span>()
-</pre></div>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># fig 8.1 </span>
+<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html">geom_sf</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">nz</span>, color <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html">coord_sf</a></span><span class="op">(</span>crs <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_crs.html">st_crs</a></span><span class="op">(</span><span class="va">nz</span><span class="op">)</span>, datum <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_void</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p><img src="solutions08_files/figure-html/unnamed-chunk-17-1.png" width="700"></p>
-<div class="sourceCode" id="cb19"><pre class="downlit">
-<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>() <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html">geom_sf</a></span>(data = <span class="kw">nz</span>, fill = <span class="fl">NA</span>) <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html">coord_sf</a></span>(crs = <span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_crs.html">st_crs</a></span>(<span class="kw">nz</span>), datum = <span class="fl">NA</span>) <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_void</a></span>()
-</pre></div>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html">geom_sf</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">nz</span>, fill <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html">coord_sf</a></span><span class="op">(</span>crs <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_crs.html">st_crs</a></span><span class="op">(</span><span class="va">nz</span><span class="op">)</span>, datum <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_void</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p><img src="solutions08_files/figure-html/unnamed-chunk-17-2.png" width="700"></p>
-<div class="sourceCode" id="cb20"><pre class="downlit">
-<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>() <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html">geom_sf</a></span>(data = <span class="kw">nz</span>) <span class="op">+</span> 
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html">coord_sf</a></span>(crs = <span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_crs.html">st_crs</a></span>(<span class="kw">nz</span>), datum = <span class="fl">NA</span>) <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_void</a></span>()
-</pre></div>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html">geom_sf</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">nz</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html">coord_sf</a></span><span class="op">(</span>crs <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_crs.html">st_crs</a></span><span class="op">(</span><span class="va">nz</span><span class="op">)</span>, datum <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_void</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p><img src="solutions08_files/figure-html/unnamed-chunk-17-3.png" width="700"></p>
-<div class="sourceCode" id="cb21"><pre class="downlit">
-<span class="co"># fig 8.6</span>
-<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>() <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html">geom_sf</a></span>(data = <span class="kw">nz</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(fill = <span class="kw">Median_income</span>)) <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html">coord_sf</a></span>(crs = <span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_crs.html">st_crs</a></span>(<span class="kw">nz</span>), datum = <span class="fl">NA</span>) <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html">scale_fill_distiller</a></span>(palette = <span class="st">"Oranges"</span>, direction = <span class="fl">1</span>) <span class="op">+</span> 
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_void</a></span>()
-</pre></div>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># fig 8.6</span>
+<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html">geom_sf</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">nz</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="va">Median_income</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html">coord_sf</a></span><span class="op">(</span>crs <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_crs.html">st_crs</a></span><span class="op">(</span><span class="va">nz</span><span class="op">)</span>, datum <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html">scale_fill_distiller</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"Oranges"</span>, direction <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_void</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p><img src="solutions08_files/figure-html/unnamed-chunk-17-4.png" width="700"></p>
-<div class="sourceCode" id="cb22"><pre class="downlit">
-<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>() <span class="op">+</span> 
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html">geom_sf</a></span>(data = <span class="kw">nz</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(fill = <span class="kw">Island</span>)) <span class="op">+</span> 
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html">coord_sf</a></span>(crs = <span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_crs.html">st_crs</a></span>(<span class="kw">nz</span>), datum = <span class="fl">NA</span>) <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html">scale_fill_brewer</a></span>(palette = <span class="st">"Set3"</span>) <span class="op">+</span> 
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_void</a></span>()
-</pre></div>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html">geom_sf</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">nz</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="va">Island</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html">coord_sf</a></span><span class="op">(</span>crs <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_crs.html">st_crs</a></span><span class="op">(</span><span class="va">nz</span><span class="op">)</span>, datum <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html">scale_fill_brewer</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"Set3"</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_void</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p><img src="solutions08_files/figure-html/unnamed-chunk-17-5.png" width="700"></p>
 <ol start="11" style="list-style-type: decimal">
 <li>Join <code>us_states</code> and <code>us_states_df</code> together and calculate a poverty rate for each state using the new dataset. Next, construct a continuous area cartogram based on total population. Finally, create and compare two maps of the poverty rate: (1) a standard choropleth map and (2) a map using the created cartogram boundaries. What is the information provided by the first and the second map? How do they differ from each other?</li>
 </ol>
-<div class="sourceCode" id="cb23"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/sjewo/cartogram">cartogram</a></span>)
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/sjewo/cartogram">cartogram</a></span><span class="op">)</span>
 <span class="co"># prepare the data</span>
-<span class="kw">us</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_transform.html">st_transform</a></span>(<span class="kw">us_states</span>, <span class="fl">2163</span>)
-<span class="kw">us</span> <span class="op">=</span> <span class="kw">us</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span>(<span class="kw">us_states_df</span>, by = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"NAME"</span> = <span class="st">"state"</span>))
+<span class="va">us</span> <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_transform.html">st_transform</a></span><span class="op">(</span><span class="va">us_states</span>, <span class="fl">2163</span><span class="op">)</span>
+<span class="va">us</span> <span class="op">=</span> <span class="va">us</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span><span class="op">(</span><span class="va">us_states_df</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"NAME"</span> <span class="op">=</span> <span class="st">"state"</span><span class="op">)</span><span class="op">)</span>
 <span class="co"># calculate a poverty rate</span>
-<span class="kw">us</span><span class="op">$</span><span class="kw">poverty_rate</span> <span class="op">=</span> <span class="kw">us</span><span class="op">$</span><span class="kw">poverty_level_15</span> <span class="op">/</span> <span class="kw">us</span><span class="op">$</span><span class="kw">total_pop_15</span>
+<span class="va">us</span><span class="op">$</span><span class="va">poverty_rate</span> <span class="op">=</span> <span class="va">us</span><span class="op">$</span><span class="va">poverty_level_15</span> <span class="op">/</span> <span class="va">us</span><span class="op">$</span><span class="va">total_pop_15</span>
 <span class="co"># create a regular map</span>
-<span class="kw">ecm1</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span>(<span class="kw">us</span>) <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_polygons</a></span>(<span class="st">"poverty_rate"</span>, title = <span class="st">"Poverty rate"</span>)
+<span class="va">ecm1</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">us</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_polygons</a></span><span class="op">(</span><span class="st">"poverty_rate"</span>, title <span class="op">=</span> <span class="st">"Poverty rate"</span><span class="op">)</span>
 <span class="co"># create a cartogram</span>
-<span class="kw">us_carto</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/cartogram/man/cartogram.html">cartogram</a></span>(<span class="kw">us</span>, <span class="st">"total_pop_15"</span>)
-<span class="kw">ecm2</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span>(<span class="kw">us_carto</span>) <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_polygons</a></span>(<span class="st">"poverty_rate"</span>, title = <span class="st">"Poverty rate"</span>)
+<span class="va">us_carto</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/cartogram/man/cartogram.html">cartogram</a></span><span class="op">(</span><span class="va">us</span>, <span class="st">"total_pop_15"</span><span class="op">)</span>
+<span class="va">ecm2</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">us_carto</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_polygons</a></span><span class="op">(</span><span class="st">"poverty_rate"</span>, title <span class="op">=</span> <span class="st">"Poverty rate"</span><span class="op">)</span>
 <span class="co"># combine two maps</span>
-<span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tmap_arrange.html">tmap_arrange</a></span>(<span class="kw">ecm1</span>, <span class="kw">ecm2</span>)
-</pre></div>
+<span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tmap_arrange.html">tmap_arrange</a></span><span class="op">(</span><span class="va">ecm1</span>, <span class="va">ecm2</span><span class="op">)</span></code></pre></div>
 <ol start="12" style="list-style-type: decimal">
 <li>Visualize population growth in Africa. Next, compare it with the maps of a hexagonal and regular grid created using the <strong>geogrid</strong> package.</li>
 </ol>
-<div class="sourceCode" id="cb24"><pre class="downlit">
-<span class="co"># devtools::install_github("jbaileyh/geogrid")</span>
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw">geogrid</span>)
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># devtools::install_github("jbaileyh/geogrid")</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/jbaileyh/geogrid">geogrid</a></span><span class="op">)</span>
 
-<span class="kw">hex_cells</span> <span class="op">=</span> <span class="fu">calculate_grid</span>(<span class="kw">africa</span>, grid_type = <span class="st">"hexagonal"</span>, seed = <span class="fl">25</span>, learning_rate = <span class="fl">0.03</span>)
-<span class="kw">africa_hex</span> <span class="op">=</span> <span class="fu">assign_polygons</span>(<span class="kw">africa</span>, <span class="kw">hex_cells</span>)
+<span class="va">hex_cells</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/geogrid/man/calculate_grid.html">calculate_grid</a></span><span class="op">(</span><span class="va">africa</span>, grid_type <span class="op">=</span> <span class="st">"hexagonal"</span>, seed <span class="op">=</span> <span class="fl">25</span>, learning_rate <span class="op">=</span> <span class="fl">0.03</span><span class="op">)</span>
+<span class="va">africa_hex</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/geogrid/man/assign_polygons.html">assign_polygons</a></span><span class="op">(</span><span class="va">africa</span>, <span class="va">hex_cells</span><span class="op">)</span>
 
-<span class="kw">reg_cells</span> <span class="op">=</span> <span class="fu">calculate_grid</span>(<span class="kw">africa</span>, grid_type = <span class="st">"regular"</span>, seed = <span class="fl">25</span>, learning_rate = <span class="fl">0.03</span>)
-<span class="kw">africa_reg</span> <span class="op">=</span> <span class="fu">assign_polygons</span>(<span class="kw">africa</span>, <span class="kw">reg_cells</span>)
+<span class="va">reg_cells</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/geogrid/man/calculate_grid.html">calculate_grid</a></span><span class="op">(</span><span class="va">africa</span>, grid_type <span class="op">=</span> <span class="st">"regular"</span>, seed <span class="op">=</span> <span class="fl">25</span>, learning_rate <span class="op">=</span> <span class="fl">0.03</span><span class="op">)</span>
+<span class="va">africa_reg</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/geogrid/man/assign_polygons.html">assign_polygons</a></span><span class="op">(</span><span class="va">africa</span>, <span class="va">reg_cells</span><span class="op">)</span>
 
-<span class="kw">tgg1</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span>(<span class="kw">africa</span>) <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_polygons</a></span>(<span class="st">"pop_growth"</span>, title = <span class="st">"Population's growth (annual %)"</span>)
-<span class="kw">tgg2</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span>(<span class="kw">africa_hex</span>) <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_polygons</a></span>(<span class="st">"pop_growth"</span>, title = <span class="st">"Population's growth (annual %)"</span>)
-<span class="kw">tgg3</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span>(<span class="kw">africa_reg</span>) <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_polygons</a></span>(<span class="st">"pop_growth"</span>, title = <span class="st">"Population's growth (annual %)"</span>)
+<span class="va">tgg1</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">africa</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_polygons</a></span><span class="op">(</span><span class="st">"pop_growth"</span>, title <span class="op">=</span> <span class="st">"Population's growth (annual %)"</span><span class="op">)</span>
+<span class="va">tgg2</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">africa_hex</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_polygons</a></span><span class="op">(</span><span class="st">"pop_growth"</span>, title <span class="op">=</span> <span class="st">"Population's growth (annual %)"</span><span class="op">)</span>
+<span class="va">tgg3</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">africa_reg</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_polygons</a></span><span class="op">(</span><span class="st">"pop_growth"</span>, title <span class="op">=</span> <span class="st">"Population's growth (annual %)"</span><span class="op">)</span>
 
-<span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tmap_arrange.html">tmap_arrange</a></span>(<span class="kw">tgg1</span>, <span class="kw">tgg2</span>, <span class="kw">tgg3</span>)
-</pre></div>
+<span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tmap_arrange.html">tmap_arrange</a></span><span class="op">(</span><span class="va">tgg1</span>, <span class="va">tgg2</span>, <span class="va">tgg3</span><span class="op">)</span></code></pre></div>
 </div>
   </div>
 

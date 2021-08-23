@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">geocompkg | metapackage for the Gecomputation with R book</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.102</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.103</span>
       </span>
     </div>
 
@@ -61,7 +61,7 @@
       <h1 data-toc-skip>Chapter 9: Bridges to GIS software</h1>
                         <h4 class="author">Robin Lovelace, Jakub Nowosad, Jannes Muenchow</h4>
             
-            <h4 class="date">2020-09-15</h4>
+            <h4 class="date">2021-08-23</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/Robinlovelace/geocompr/blob/master/vignettes/solutions09.Rmd"><code>vignettes/solutions09.Rmd</code></a></small>
       <div class="hidden name"><code>solutions09.Rmd</code></div>
@@ -74,11 +74,10 @@
 <h2 class="hasAnchor">
 <a href="#prerequisites" class="anchor"></a>Prerequisites</h2>
 <p>The solutions assume the following packages are attached (other packages will be attached when needed):</p>
-<div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://r-spatial.github.io/sf">sf</a></span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://dplyr.tidyverse.org">dplyr</a></span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://nowosad.github.io/spData">spData</a></span>)
-</pre></div>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/">sf</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://nowosad.github.io/spData/">spData</a></span><span class="op">)</span></code></pre></div>
 </div>
 <div id="chapter-9" class="section level1">
 <h1 class="hasAnchor">
@@ -86,73 +85,70 @@
 <ol style="list-style-type: decimal">
 <li>Create two overlapping polygons (<code>poly_1</code> and <code>poly_2</code>) with the help of the <strong>sf</strong>-package (see Chapter 2).</li>
 </ol>
-<div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="co"># create two polygons</span>
-<span class="kw">coords_1</span> <span class="op">=</span>  
-  <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span>(data = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">0</span>),
-         ncol = <span class="fl">2</span>, byrow = <span class="fl">TRUE</span>)
-<span class="kw">coords_2</span> <span class="op">=</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span>(data = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="op">-</span><span class="fl">0.5</span>, <span class="op">-</span><span class="fl">0.5</span>, <span class="fl">0.5</span>, <span class="op">-</span><span class="fl">0.5</span>, <span class="fl">0.5</span>, <span class="fl">0.5</span>, 
-                  <span class="op">-</span><span class="fl">0.5</span>, <span class="fl">0.5</span>, <span class="op">-</span><span class="fl">0.5</span>, <span class="op">-</span><span class="fl">0.5</span>),
-         ncol = <span class="fl">2</span>, byrow = <span class="fl">TRUE</span>)
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># create two polygons</span>
+<span class="va">coords_1</span> <span class="op">=</span>  
+  <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span>data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>,
+         ncol <span class="op">=</span> <span class="fl">2</span>, byrow <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<span class="va">coords_2</span> <span class="op">=</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span>data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">0.5</span>, <span class="op">-</span><span class="fl">0.5</span>, <span class="fl">0.5</span>, <span class="op">-</span><span class="fl">0.5</span>, <span class="fl">0.5</span>, <span class="fl">0.5</span>, 
+                  <span class="op">-</span><span class="fl">0.5</span>, <span class="fl">0.5</span>, <span class="op">-</span><span class="fl">0.5</span>, <span class="op">-</span><span class="fl">0.5</span><span class="op">)</span>,
+         ncol <span class="op">=</span> <span class="fl">2</span>, byrow <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 
 <span class="co"># create the first polygon</span>
-<span class="kw">poly_1</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/sf/man/st.html">st_polygon</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>((<span class="kw">coords_1</span>))) 
+<span class="va">poly_1</span> <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st.html">st_polygon</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="op">(</span><span class="va">coords_1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> 
 <span class="co"># convert it into a simple feature collection </span>
-<span class="kw">poly_1</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/sf/man/sfc.html">st_sfc</a></span>(<span class="kw">poly_1</span>)
-<span class="kw">poly_1</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/sf/man/sfc.html">st_sfc</a></span>(<span class="kw">poly_1</span>, crs = <span class="fl">4326</span>)
+<span class="va">poly_1</span> <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/sfc.html">st_sfc</a></span><span class="op">(</span><span class="va">poly_1</span><span class="op">)</span>
+<span class="va">poly_1</span> <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/sfc.html">st_sfc</a></span><span class="op">(</span><span class="va">poly_1</span>, crs <span class="op">=</span> <span class="fl">4326</span><span class="op">)</span>
 <span class="co"># finally, convert it into an sf-object</span>
-<span class="kw">poly_1</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/sf/man/sf.html">st_sf</a></span>(geometry = <span class="kw">poly_1</span>, data = <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(id = <span class="fl">1</span>))
+<span class="va">poly_1</span> <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/sf.html">st_sf</a></span><span class="op">(</span>geometry <span class="op">=</span> <span class="va">poly_1</span>, data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>id <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span>
 
 <span class="co"># create a second polygon</span>
-<span class="kw">poly_2</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/sf/man/st.html">st_polygon</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>((<span class="kw">coords_2</span>))) <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/sf/man/sfc.html">st_sfc</a></span>(crs = <span class="fl">4326</span>) <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/sf/man/sf.html">st_sf</a></span>(geometry = <span class="kw">.</span>, data = <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(id = <span class="fl">1</span>))
-<span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_geometry.html">st_geometry</a></span>(<span class="kw">poly_2</span>) <span class="op">=</span> <span class="st">"geometry"</span>
+<span class="va">poly_2</span> <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st.html">st_polygon</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="op">(</span><span class="va">coords_2</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/sfc.html">st_sfc</a></span><span class="op">(</span>crs <span class="op">=</span> <span class="fl">4326</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/sf.html">st_sf</a></span><span class="op">(</span>geometry <span class="op">=</span> <span class="va">.</span>, data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>id <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html">st_geometry</a></span><span class="op">(</span><span class="va">poly_2</span><span class="op">)</span> <span class="op">=</span> <span class="st">"geometry"</span>
 <span class="co"># visualize it</span>
-<span class="fu"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_geometry.html">st_geometry</a></span>(<span class="kw">poly_1</span>), xlim = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="op">-</span><span class="fl">1</span>, <span class="fl">1</span>), ylim = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="op">-</span><span class="fl">1</span>, <span class="fl">1</span>))
-<span class="fu"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_geometry.html">st_geometry</a></span>(<span class="kw">poly_2</span>), add = <span class="fl">TRUE</span>)
-</pre></div>
+<span class="fu"><a href="https://r-spatial.github.io/sf/reference/plot.html">plot</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html">st_geometry</a></span><span class="op">(</span><span class="va">poly_1</span><span class="op">)</span>, xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>, ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://r-spatial.github.io/sf/reference/plot.html">plot</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html">st_geometry</a></span><span class="op">(</span><span class="va">poly_2</span><span class="op">)</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <p><img src="solutions09_files/figure-html/unnamed-chunk-1-1.png" width="700"></p>
 <p>Alternatively:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="kw">centr1</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/sf/man/st.html">st_point</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0</span>, <span class="fl">0</span>))
-<span class="kw">centr2</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/sf/man/st.html">st_point</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>, <span class="fl">1</span>))
-<span class="kw">poly_1</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/sf/man/geos_unary.html">st_buffer</a></span>(<span class="kw">centr1</span>, <span class="fl">1</span>) <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/sf/man/sfc.html">st_sfc</a></span>(<span class="kw">.</span>, crs = <span class="fl">4326</span>) <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/sf/man/sf.html">st_sf</a></span>(geometry = <span class="kw">.</span>, data = <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(id = <span class="fl">1</span>))
-<span class="kw">poly_2</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/sf/man/geos_unary.html">st_buffer</a></span>(<span class="kw">centr2</span>, <span class="fl">1</span>) <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/sf/man/sfc.html">st_sfc</a></span>(<span class="kw">.</span>, crs = <span class="fl">4326</span>) <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/sf/man/sf.html">st_sf</a></span>(geometry = <span class="kw">.</span>, data = <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(id = <span class="fl">1</span>))
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">centr1</span> <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st.html">st_point</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span>
+<span class="va">centr2</span> <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st.html">st_point</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span>
+<span class="va">poly_1</span> <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_unary.html">st_buffer</a></span><span class="op">(</span><span class="va">centr1</span>, <span class="fl">1</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/sfc.html">st_sfc</a></span><span class="op">(</span><span class="va">.</span>, crs <span class="op">=</span> <span class="fl">4326</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/sf.html">st_sf</a></span><span class="op">(</span>geometry <span class="op">=</span> <span class="va">.</span>, data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>id <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span>
+<span class="va">poly_2</span> <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_unary.html">st_buffer</a></span><span class="op">(</span><span class="va">centr2</span>, <span class="fl">1</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/sfc.html">st_sfc</a></span><span class="op">(</span><span class="va">.</span>, crs <span class="op">=</span> <span class="fl">4326</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/sf.html">st_sf</a></span><span class="op">(</span>geometry <span class="op">=</span> <span class="va">.</span>, data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>id <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span>
 <span class="co"># visualize it</span>
-<span class="fu"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_geometry.html">st_geometry</a></span>(<span class="kw">poly_1</span>), xlim = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="op">-</span><span class="fl">1</span>, <span class="fl">2</span>), ylim = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="op">-</span><span class="fl">1</span>, <span class="fl">2</span>))
-<span class="fu"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_geometry.html">st_geometry</a></span>(<span class="kw">poly_2</span>), add = <span class="fl">TRUE</span>)
-</pre></div>
+<span class="fu"><a href="https://r-spatial.github.io/sf/reference/plot.html">plot</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html">st_geometry</a></span><span class="op">(</span><span class="va">poly_1</span><span class="op">)</span>, xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://r-spatial.github.io/sf/reference/plot.html">plot</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html">st_geometry</a></span><span class="op">(</span><span class="va">poly_2</span><span class="op">)</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <ol start="2" style="list-style-type: decimal">
-<li>Union <code>poly_1</code> and <code>poly_2</code> using <code><a href="https://rdrr.io/pkg/sf/man/geos_combine.html">st_union()</a></code> and <code>qgis:union</code>. What is the difference between the two union operations? How can we use the <strong>sf</strong> package to obtain the same result as QGIS?</li>
+<li>Union <code>poly_1</code> and <code>poly_2</code> using <code><a href="https://r-spatial.github.io/sf/reference/geos_combine.html">st_union()</a></code> and <code>qgis:union</code>. What is the difference between the two union operations? How can we use the <strong>sf</strong> package to obtain the same result as QGIS?</li>
 </ol>
-<div class="sourceCode" id="cb4"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/Nowosad/spData">spDataLarge</a></span>)
-<span class="fu">set_env</span>(dev = <span class="fl">FALSE</span>)
-<span class="kw">union_sf</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/sf/man/geos_combine.html">st_union</a></span>(<span class="kw">poly_1</span>, <span class="kw">poly_2</span>)
-<span class="kw">union_qgis</span> <span class="op">=</span> <span class="fu">run_qgis</span>(<span class="st">"qgis:union"</span>, INPUT = <span class="kw">poly_1</span>, INPUT2 = <span class="kw">poly_2</span>,
-                 OUTPUT = <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span>(), <span class="st">"union.shp"</span>),
-                 load_output = <span class="fl">TRUE</span>)
-<span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span>(mfrow = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>, <span class="fl">2</span>))
-<span class="fu"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_geometry.html">st_geometry</a></span>(<span class="kw">union_sf</span>), main = <span class="st">"st_union"</span>)
-<span class="fu"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_geometry.html">st_geometry</a></span>(<span class="kw">union_qgis</span>), col = <span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, main = <span class="st">"QGIS union"</span>)
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/Nowosad/spData">spDataLarge</a></span><span class="op">)</span>
+<span class="fu">set_env</span><span class="op">(</span>dev <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+<span class="va">union_sf</span> <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_combine.html">st_union</a></span><span class="op">(</span><span class="va">poly_1</span>, <span class="va">poly_2</span><span class="op">)</span>
+<span class="va">union_qgis</span> <span class="op">=</span> <span class="fu">run_qgis</span><span class="op">(</span><span class="st">"qgis:union"</span>, INPUT <span class="op">=</span> <span class="va">poly_1</span>, INPUT2 <span class="op">=</span> <span class="va">poly_2</span>,
+                 OUTPUT <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"union.shp"</span><span class="op">)</span>,
+                 load_output <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://r-spatial.github.io/sf/reference/plot.html">plot</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html">st_geometry</a></span><span class="op">(</span><span class="va">union_sf</span><span class="op">)</span>, main <span class="op">=</span> <span class="st">"st_union"</span><span class="op">)</span>
+<span class="fu"><a href="https://r-spatial.github.io/sf/reference/plot.html">plot</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html">st_geometry</a></span><span class="op">(</span><span class="va">union_qgis</span><span class="op">)</span>, col <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, main <span class="op">=</span> <span class="st">"QGIS union"</span><span class="op">)</span>
 <span class="co"># achieve the QGIS result using sf</span>
-<span class="kw">int</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/sf/man/geos_binary_ops.html">st_intersection</a></span>(<span class="kw">poly_1</span>, <span class="kw">poly_2</span>)
+<span class="va">int</span> <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_binary_ops.html">st_intersection</a></span><span class="op">(</span><span class="va">poly_1</span>, <span class="va">poly_2</span><span class="op">)</span>
 <span class="co"># difference_1</span>
-<span class="kw">diff_1</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/sf/man/geos_binary_ops.html">st_sym_difference</a></span>(<span class="kw">poly_1</span>, <span class="kw">poly_2</span>) <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_cast.html">st_cast</a></span>(<span class="st">"POLYGON"</span>)
+<span class="va">diff_1</span> <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_binary_ops.html">st_sym_difference</a></span><span class="op">(</span><span class="va">poly_1</span>, <span class="va">poly_2</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_cast.html">st_cast</a></span><span class="op">(</span><span class="st">"POLYGON"</span><span class="op">)</span>
 <span class="co"># the same as:</span>
 <span class="co"># diff_2 = st_difference(poly_1, poly_2)</span>
 <span class="co"># diff_3 = st_difference(poly_2, poly_1)</span>
 <span class="co"># rbind(diff_2, diff_3)</span>
-<span class="kw">union_sf_2</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span>(<span class="kw">int</span>, <span class="kw">diff_1</span>)
-<span class="fu"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_geometry.html">st_geometry</a></span>(<span class="kw">union_sf_2</span>), col = <span class="fl">1</span><span class="op">:</span><span class="fl">3</span>)
-</pre></div>
+<span class="va">union_sf_2</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span><span class="op">(</span><span class="va">int</span>, <span class="va">diff_1</span><span class="op">)</span>
+<span class="fu"><a href="https://r-spatial.github.io/sf/reference/plot.html">plot</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html">st_geometry</a></span><span class="op">(</span><span class="va">union_sf_2</span><span class="op">)</span>, col <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span></code></pre></div>
 <ol start="3" style="list-style-type: decimal">
 <li>Calculate the intersection of <code>poly_1</code> and <code>poly_2</code> using:</li>
 </ol>
@@ -162,179 +158,174 @@
 </li>
 <li><strong>sf</strong></li>
 </ul>
-<div class="sourceCode" id="cb5"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://r-spatial.github.io/sf">sf</a></span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/Nowosad/spData">spDataLarge</a></span>)
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/">sf</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/Nowosad/spData">spDataLarge</a></span><span class="op">)</span>
 
 <span class="co"># INTERSECTION USING RQGIS</span>
 <span class="co">#***************************</span>
 <span class="co"># first of all, we need to find out which function might do this for us</span>
-<span class="fu">find_algorithms</span>(<span class="st">"intersec"</span>)
-<span class="fu">open_help</span>(<span class="st">"qgis:intersection"</span>)
-<span class="fu">get_usage</span>(<span class="st">"qgis:intersection"</span>)
+<span class="fu">find_algorithms</span><span class="op">(</span><span class="st">"intersec"</span><span class="op">)</span>
+<span class="fu">open_help</span><span class="op">(</span><span class="st">"qgis:intersection"</span><span class="op">)</span>
+<span class="fu">get_usage</span><span class="op">(</span><span class="st">"qgis:intersection"</span><span class="op">)</span>
 <span class="co"># using R named arguments#</span>
-<span class="kw">int_qgis</span> <span class="op">=</span> <span class="fu">run_qgis</span>(<span class="st">"qgis:intersection"</span>, INPUT = <span class="kw">poly_1</span>, INPUT2 = <span class="kw">poly_2</span>,
-                    OUTPUT = <span class="st">"int_qgis.shp"</span>, load_output = <span class="fl">TRUE</span>)
+<span class="va">int_qgis</span> <span class="op">=</span> <span class="fu">run_qgis</span><span class="op">(</span><span class="st">"qgis:intersection"</span>, INPUT <span class="op">=</span> <span class="va">poly_1</span>, INPUT2 <span class="op">=</span> <span class="va">poly_2</span>,
+                    OUTPUT <span class="op">=</span> <span class="st">"int_qgis.shp"</span>, load_output <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="co"># visualize it</span>
-<span class="fu"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_geometry.html">st_geometry</a></span>(<span class="kw">poly_1</span>), xlim = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="op">-</span><span class="fl">1</span>, <span class="fl">1</span>), ylim = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="op">-</span><span class="fl">1</span>, <span class="fl">1</span>))
-<span class="fu"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_geometry.html">st_geometry</a></span>(<span class="kw">poly_2</span>), add = <span class="fl">TRUE</span>)
-<span class="fu"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(<span class="kw">int_qgis</span>, col = <span class="st">"lightblue"</span>, add = <span class="fl">TRUE</span>)
+<span class="fu"><a href="https://r-spatial.github.io/sf/reference/plot.html">plot</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html">st_geometry</a></span><span class="op">(</span><span class="va">poly_1</span><span class="op">)</span>, xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>, ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://r-spatial.github.io/sf/reference/plot.html">plot</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html">st_geometry</a></span><span class="op">(</span><span class="va">poly_2</span><span class="op">)</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<span class="fu"><a href="https://r-spatial.github.io/sf/reference/plot.html">plot</a></span><span class="op">(</span><span class="va">int_qgis</span>, col <span class="op">=</span> <span class="st">"lightblue"</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 
 
 <span class="co"># INTERSECTION USING RSAGA</span>
 <span class="co">#***************************</span>
 <span class="co"># The RSAGA examples only work with SAGA &lt; 2.3. We have informed the</span>
 <span class="co"># package maintainer to update SAGA</span>
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/r-spatial/RSAGA">RSAGA</a></span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/r-spatial/link2GI">link2GI</a></span>)
-<span class="fu"><a href="https://r-spatial.github.io/link2GI/reference/linkSAGA.html">linkSAGA</a></span>()
-<span class="fu"><a href="https://rdrr.io/pkg/RSAGA/man/rsaga.env.html">rsaga.env</a></span>()
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/RSAGA">RSAGA</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/link2GI/">link2GI</a></span><span class="op">)</span>
+<span class="fu"><a href="https://r-spatial.github.io/link2GI/reference/linkSAGA.html">linkSAGA</a></span><span class="op">(</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/pkg/RSAGA/man/rsaga.env.html">rsaga.env</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co"># save shapefile layers</span>
-<span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_write.html">write_sf</a></span>(<span class="kw">poly_1</span>, <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span>(), <span class="st">"poly_1.shp"</span>))
-<span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_write.html">write_sf</a></span>(<span class="kw">poly_2</span>, <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span>(), <span class="st">"poly_2.shp"</span>))
+<span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_write.html">write_sf</a></span><span class="op">(</span><span class="va">poly_1</span>, <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"poly_1.shp"</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_write.html">write_sf</a></span><span class="op">(</span><span class="va">poly_2</span>, <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"poly_2.shp"</span><span class="op">)</span><span class="op">)</span>
 <span class="co"># find out how to union shapefiles with the help of SAGA</span>
-<span class="fu"><a href="https://rdrr.io/pkg/RSAGA/man/rsaga.get.modules.html">rsaga.get.modules</a></span>(lib = <span class="st">"shapes_polygons"</span>)
-<span class="fu"><a href="https://rdrr.io/pkg/RSAGA/man/rsaga.get.usage.html">rsaga.get.usage</a></span>(lib = <span class="st">"shapes_polygons"</span>, module = <span class="st">"Intersect"</span>)
+<span class="fu"><a href="https://rdrr.io/pkg/RSAGA/man/rsaga.get.modules.html">rsaga.get.modules</a></span><span class="op">(</span>lib <span class="op">=</span> <span class="st">"shapes_polygons"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/pkg/RSAGA/man/rsaga.get.usage.html">rsaga.get.usage</a></span><span class="op">(</span>lib <span class="op">=</span> <span class="st">"shapes_polygons"</span>, module <span class="op">=</span> <span class="st">"Intersect"</span><span class="op">)</span>
 <span class="co"># create parameter-argument list for RSAGA</span>
-<span class="kw">params</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(A = <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span>(), <span class="st">"poly_1.shp"</span>),
-              B = <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span>(), <span class="st">"poly_2.shp"</span>),
-              RESULT = <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span>(), <span class="st">"int_saga.shp"</span>))
-<span class="fu"><a href="https://rdrr.io/pkg/RSAGA/man/rsaga.geoprocessor.html">rsaga.geoprocessor</a></span>(lib = <span class="st">"shapes_polygons"</span>, module = <span class="st">"Intersect"</span>, 
-                   param = <span class="kw">params</span>)
-<span class="kw">int_saga</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_read.html">st_read</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span>(), <span class="st">"int_saga.shp"</span>))
+<span class="va">params</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>A <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"poly_1.shp"</span><span class="op">)</span>,
+              B <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"poly_2.shp"</span><span class="op">)</span>,
+              RESULT <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"int_saga.shp"</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/pkg/RSAGA/man/rsaga.geoprocessor.html">rsaga.geoprocessor</a></span><span class="op">(</span>lib <span class="op">=</span> <span class="st">"shapes_polygons"</span>, module <span class="op">=</span> <span class="st">"Intersect"</span>, 
+                   param <span class="op">=</span> <span class="va">params</span><span class="op">)</span>
+<span class="va">int_saga</span> <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_read.html">st_read</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"int_saga.shp"</span><span class="op">)</span><span class="op">)</span>
 <span class="co"># visualize it</span>
-<span class="fu"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_geometry.html">st_geometry</a></span>(<span class="kw">poly_1</span>), xlim = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="op">-</span><span class="fl">1</span>, <span class="fl">1</span>), ylim = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="op">-</span><span class="fl">1</span>, <span class="fl">1</span>))
-<span class="fu"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_geometry.html">st_geometry</a></span>(<span class="kw">poly_2</span>), add = <span class="fl">TRUE</span>)
-<span class="fu"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_geometry.html">st_geometry</a></span>(<span class="kw">int_saga</span>), col = <span class="st">"lightblue"</span>, add = <span class="fl">TRUE</span>)
+<span class="fu"><a href="https://r-spatial.github.io/sf/reference/plot.html">plot</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html">st_geometry</a></span><span class="op">(</span><span class="va">poly_1</span><span class="op">)</span>, xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>, ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://r-spatial.github.io/sf/reference/plot.html">plot</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html">st_geometry</a></span><span class="op">(</span><span class="va">poly_2</span><span class="op">)</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<span class="fu"><a href="https://r-spatial.github.io/sf/reference/plot.html">plot</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html">st_geometry</a></span><span class="op">(</span><span class="va">int_saga</span><span class="op">)</span>, col <span class="op">=</span> <span class="st">"lightblue"</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 
 <span class="co"># INTERSECTION USING rgrass7</span>
 <span class="co">#***************************</span>
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/r-spatial/link2GI">link2GI</a></span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="http://grass.osgeo.org">rgrass7</a></span>)
-<span class="kw">link2GI</span>::<span class="fu"><a href="https://r-spatial.github.io/link2GI/reference/linkGRASS7.html">linkGRASS7</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span>(<span class="kw">poly_1</span>, <span class="kw">poly_2</span>), ver_select = <span class="fl">TRUE</span>)
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/link2GI/">link2GI</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://grass.osgeo.org/">rgrass7</a></span><span class="op">)</span>
+<span class="fu">link2GI</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/link2GI/reference/linkGRASS7.html">linkGRASS7</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span><span class="op">(</span><span class="va">poly_1</span>, <span class="va">poly_2</span><span class="op">)</span>, ver_select <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="co"># let's have a look at the help of v.overlay via rgrass7</span>
-<span class="fu"><a href="https://rdrr.io/pkg/rgrass7/man/execGRASS.html">execGRASS</a></span>(<span class="st">"g.manual"</span>, entry = <span class="st">"v.overlay"</span>)
+<span class="fu"><a href="https://rsbivand.github.io/rgrass7/reference/execGRASS.html">execGRASS</a></span><span class="op">(</span><span class="st">"g.manual"</span>, entry <span class="op">=</span> <span class="st">"v.overlay"</span><span class="op">)</span>
 <span class="co"># RQGIS::open_help("grass7:v.overlay")</span>
-<span class="fu"><a href="https://rdrr.io/pkg/rgrass7/man/gmeta.html">use_sf</a></span>()
-<span class="fu"><a href="https://rdrr.io/pkg/rgrass7/man/readVECT.html">writeVECT</a></span>(<span class="kw">poly_1</span>, vname = <span class="st">"poly_1"</span>)
-<span class="fu"><a href="https://rdrr.io/pkg/rgrass7/man/readVECT.html">writeVECT</a></span>(<span class="kw">poly_2</span>, vname = <span class="st">"poly_2"</span>)
-<span class="fu"><a href="https://rdrr.io/pkg/rgrass7/man/execGRASS.html">execGRASS</a></span>(<span class="st">"v.overlay"</span>, ainput = <span class="st">"poly_1"</span>, binput = <span class="st">"poly_2"</span>,
-          output = <span class="st">"int_grass"</span>, operator = <span class="st">"and"</span>, flag = <span class="st">"overwrite"</span>)
-<span class="kw">out_grass</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/rgrass7/man/readVECT.html">readVECT</a></span>(<span class="st">"int_grass"</span>)
-<span class="fu"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_geometry.html">st_geometry</a></span>(<span class="kw">poly_1</span>), xlim = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="op">-</span><span class="fl">1</span>, <span class="fl">1</span>), ylim = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="op">-</span><span class="fl">1</span>, <span class="fl">1</span>))
-<span class="fu"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_geometry.html">st_geometry</a></span>(<span class="kw">poly_2</span>), add = <span class="fl">TRUE</span>)
-<span class="fu"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(<span class="kw">out_grass</span>, add = <span class="fl">TRUE</span>, col = <span class="st">"lightblue"</span>)
+<span class="fu"><a href="https://rsbivand.github.io/rgrass7/reference/gmeta.html">use_sf</a></span><span class="op">(</span><span class="op">)</span>
+<span class="fu"><a href="https://rsbivand.github.io/rgrass7/reference/readVECT.html">writeVECT</a></span><span class="op">(</span><span class="va">poly_1</span>, vname <span class="op">=</span> <span class="st">"poly_1"</span><span class="op">)</span>
+<span class="fu"><a href="https://rsbivand.github.io/rgrass7/reference/readVECT.html">writeVECT</a></span><span class="op">(</span><span class="va">poly_2</span>, vname <span class="op">=</span> <span class="st">"poly_2"</span><span class="op">)</span>
+<span class="fu"><a href="https://rsbivand.github.io/rgrass7/reference/execGRASS.html">execGRASS</a></span><span class="op">(</span><span class="st">"v.overlay"</span>, ainput <span class="op">=</span> <span class="st">"poly_1"</span>, binput <span class="op">=</span> <span class="st">"poly_2"</span>,
+          output <span class="op">=</span> <span class="st">"int_grass"</span>, operator <span class="op">=</span> <span class="st">"and"</span>, flag <span class="op">=</span> <span class="st">"overwrite"</span><span class="op">)</span>
+<span class="va">out_grass</span> <span class="op">=</span> <span class="fu"><a href="https://rsbivand.github.io/rgrass7/reference/readVECT.html">readVECT</a></span><span class="op">(</span><span class="st">"int_grass"</span><span class="op">)</span>
+<span class="fu"><a href="https://r-spatial.github.io/sf/reference/plot.html">plot</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html">st_geometry</a></span><span class="op">(</span><span class="va">poly_1</span><span class="op">)</span>, xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>, ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://r-spatial.github.io/sf/reference/plot.html">plot</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html">st_geometry</a></span><span class="op">(</span><span class="va">poly_2</span><span class="op">)</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<span class="fu"><a href="https://r-spatial.github.io/sf/reference/plot.html">plot</a></span><span class="op">(</span><span class="va">out_grass</span>, add <span class="op">=</span> <span class="cn">TRUE</span>, col <span class="op">=</span> <span class="st">"lightblue"</span><span class="op">)</span>
 
 <span class="co"># INTERSECTION USING sf</span>
 <span class="co">#***************************</span>
 
-<span class="kw">int_sf</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/sf/man/geos_binary_ops.html">st_intersection</a></span>(<span class="kw">poly_1</span>, <span class="kw">poly_2</span>)
-<span class="fu"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_geometry.html">st_geometry</a></span>(<span class="kw">poly_1</span>), xlim = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="op">-</span><span class="fl">1</span>, <span class="fl">1</span>), ylim = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="op">-</span><span class="fl">1</span>, <span class="fl">1</span>))
-<span class="fu"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_geometry.html">st_geometry</a></span>(<span class="kw">poly_2</span>), add = <span class="fl">TRUE</span>)
-<span class="fu"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(<span class="kw">int_sf</span>, add = <span class="fl">TRUE</span>, col = <span class="st">"lightblue"</span>)
-</pre></div>
+<span class="va">int_sf</span> <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_binary_ops.html">st_intersection</a></span><span class="op">(</span><span class="va">poly_1</span>, <span class="va">poly_2</span><span class="op">)</span>
+<span class="fu"><a href="https://r-spatial.github.io/sf/reference/plot.html">plot</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html">st_geometry</a></span><span class="op">(</span><span class="va">poly_1</span><span class="op">)</span>, xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>, ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://r-spatial.github.io/sf/reference/plot.html">plot</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html">st_geometry</a></span><span class="op">(</span><span class="va">poly_2</span><span class="op">)</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<span class="fu"><a href="https://r-spatial.github.io/sf/reference/plot.html">plot</a></span><span class="op">(</span><span class="va">int_sf</span>, add <span class="op">=</span> <span class="cn">TRUE</span>, col <span class="op">=</span> <span class="st">"lightblue"</span><span class="op">)</span></code></pre></div>
 <ol start="4" style="list-style-type: decimal">
 <li>Run <code><a href="https://rdrr.io/r/utils/data.html">data(dem, package = "spDataLarge")</a></code> and <code><a href="https://rdrr.io/r/utils/data.html">data(random_points, package = "spDataLarge")</a></code>. Select randomly a point from <code>random_points</code> and find all <code>dem</code> pixels that can be seen from this point (hint: viewshed). Visualize your result. For example, plot a hillshade, and on top of it the digital elevation model, your viewshed output and the point. Additionally, give <code>mapview</code> a try.</li>
 </ol>
-<div class="sourceCode" id="cb6"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/Nowosad/spData">spDataLarge</a></span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://rspatial.org/raster">raster</a></span>)
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="kw">dem</span>, package = <span class="st">"spDataLarge"</span>)
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="kw">random_points</span>, package = <span class="st">"spDataLarge"</span>)
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/Nowosad/spData">spDataLarge</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/raster">raster</a></span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">dem</span>, package <span class="op">=</span> <span class="st">"spDataLarge"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">random_points</span>, package <span class="op">=</span> <span class="st">"spDataLarge"</span><span class="op">)</span>
 
-<span class="fu">find_algorithms</span>(<span class="st">"viewshed"</span>)
-<span class="kw">alg</span> <span class="op">=</span> <span class="st">"grass7:r.viewshed"</span>
-<span class="fu">get_usage</span>(<span class="kw">alg</span>)
-<span class="fu">open_help</span>(<span class="kw">alg</span>)
+<span class="fu">find_algorithms</span><span class="op">(</span><span class="st">"viewshed"</span><span class="op">)</span>
+<span class="va">alg</span> <span class="op">=</span> <span class="st">"grass7:r.viewshed"</span>
+<span class="fu">get_usage</span><span class="op">(</span><span class="va">alg</span><span class="op">)</span>
+<span class="fu">open_help</span><span class="op">(</span><span class="va">alg</span><span class="op">)</span>
 <span class="co"># let's find out about the default values</span>
-<span class="fu">get_args_man</span>(<span class="kw">alg</span>)
-<span class="kw">point</span> <span class="op">=</span> <span class="kw">random_points</span>[<span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span>(<span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/ncell.html">nrow</a></span>(<span class="kw">random_points</span>), <span class="fl">1</span>), ]
-<span class="kw">coord</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span>(<span class="kw">sf</span>::<span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_coordinates.html">st_coordinates</a></span>(<span class="kw">point</span>), collapse = <span class="st">","</span>)
-<span class="kw">out</span> <span class="op">=</span> <span class="fu">run_qgis</span>(<span class="kw">alg</span>, input = <span class="kw">dem</span>,
-               coordinates = <span class="kw">coord</span>,
-               output = <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span>(), <span class="st">"out.tif"</span>),
-               load_output = <span class="fl">TRUE</span>)
+<span class="fu">get_args_man</span><span class="op">(</span><span class="va">alg</span><span class="op">)</span>
+<span class="va">point</span> <span class="op">=</span> <span class="va">random_points</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/ncell.html">nrow</a></span><span class="op">(</span><span class="va">random_points</span><span class="op">)</span>, <span class="fl">1</span><span class="op">)</span>, <span class="op">]</span>
+<span class="va">coord</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_coordinates.html">st_coordinates</a></span><span class="op">(</span><span class="va">point</span><span class="op">)</span>, collapse <span class="op">=</span> <span class="st">","</span><span class="op">)</span>
+<span class="va">out</span> <span class="op">=</span> <span class="fu">run_qgis</span><span class="op">(</span><span class="va">alg</span>, input <span class="op">=</span> <span class="va">dem</span>,
+               coordinates <span class="op">=</span> <span class="va">coord</span>,
+               output <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"out.tif"</span><span class="op">)</span>,
+               load_output <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 
 <span class="co"># under Linux this was tested using QGIS 2.18.22 and GRASS GIS 7.4.1. In</span>
 <span class="co"># previous versions, however, "grass7:r.viewshed" might not work. In this case</span>
 <span class="co"># use rgrass7 directly:</span>
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="http://grass.osgeo.org">rgrass7</a></span>)
-<span class="kw">link2GI</span>::<span class="fu"><a href="https://r-spatial.github.io/link2GI/reference/linkGRASS7.html">linkGRASS7</a></span>(<span class="kw">dem</span>, ver_select = <span class="fl">TRUE</span>)
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://grass.osgeo.org/">rgrass7</a></span><span class="op">)</span>
+<span class="fu">link2GI</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/link2GI/reference/linkGRASS7.html">linkGRASS7</a></span><span class="op">(</span><span class="va">dem</span>, ver_select <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="co"># If both vector and raster are used, until stars raster support is in place,</span>
 <span class="co"># use_sp() will be needed. (https://github.com/rsbivand/rgrass7/issues/6)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/rgrass7/man/gmeta.html">use_sp</a></span>()
-<span class="fu"><a href="https://rdrr.io/pkg/rgrass7/man/readRAST.html">writeRAST</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/sf/man/coerce-methods.html">as</a></span>(<span class="kw">dem</span>, <span class="st">"SpatialGridDataFrame"</span>), <span class="st">"dem"</span>)
-<span class="fu"><a href="https://rdrr.io/pkg/rgrass7/man/readVECT.html">writeVECT</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/sf/man/coerce-methods.html">as</a></span>(<span class="kw">random_points</span>, <span class="st">"Spatial"</span>), vname = <span class="st">"points"</span>)
-<span class="fu"><a href="https://rdrr.io/pkg/rgrass7/man/execGRASS.html">execGRASS</a></span>(<span class="st">"r.viewshed"</span>, input = <span class="st">"dem"</span>, coordinates = <span class="kw">sf</span>::<span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_coordinates.html">st_coordinates</a></span>(<span class="kw">point</span>),
-          output = <span class="st">"view"</span>)
-<span class="kw">out</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/raster.html">raster</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/rgrass7/man/readRAST.html">readRAST</a></span>(<span class="st">"view"</span>))
+<span class="fu"><a href="https://rsbivand.github.io/rgrass7/reference/gmeta.html">use_sp</a></span><span class="op">(</span><span class="op">)</span>
+<span class="fu"><a href="https://rsbivand.github.io/rgrass7/reference/readRAST.html">writeRAST</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/coerce-methods.html">as</a></span><span class="op">(</span><span class="va">dem</span>, <span class="st">"SpatialGridDataFrame"</span><span class="op">)</span>, <span class="st">"dem"</span><span class="op">)</span>
+<span class="fu"><a href="https://rsbivand.github.io/rgrass7/reference/readVECT.html">writeVECT</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/coerce-methods.html">as</a></span><span class="op">(</span><span class="va">random_points</span>, <span class="st">"Spatial"</span><span class="op">)</span>, vname <span class="op">=</span> <span class="st">"points"</span><span class="op">)</span>
+<span class="fu"><a href="https://rsbivand.github.io/rgrass7/reference/execGRASS.html">execGRASS</a></span><span class="op">(</span><span class="st">"r.viewshed"</span>, input <span class="op">=</span> <span class="st">"dem"</span>, coordinates <span class="op">=</span> <span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_coordinates.html">st_coordinates</a></span><span class="op">(</span><span class="va">point</span><span class="op">)</span>,
+          output <span class="op">=</span> <span class="st">"view"</span><span class="op">)</span>
+<span class="va">out</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/raster.html">raster</a></span><span class="op">(</span><span class="fu"><a href="https://rsbivand.github.io/rgrass7/reference/readRAST.html">readRAST</a></span><span class="op">(</span><span class="st">"view"</span><span class="op">)</span><span class="op">)</span>
 
-<span class="kw">hs</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/hillShade.html">hillShade</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/raster/man/terrain.html">terrain</a></span>(<span class="kw">dem</span>), <span class="fu"><a href="https://rdrr.io/pkg/raster/man/terrain.html">terrain</a></span>(<span class="kw">dem</span>, <span class="st">"aspect"</span>), <span class="fl">40</span>, <span class="fl">270</span>)
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/plot.html">plot</a></span>(<span class="kw">hs</span>, col = <span class="fu"><a href="https://rdrr.io/r/grDevices/gray.html">gray</a></span>(<span class="fl">0</span><span class="op">:</span><span class="fl">100</span> <span class="op">/</span> <span class="fl">100</span>), legend = <span class="fl">FALSE</span>)
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/plot.html">plot</a></span>(<span class="kw">dem</span>, add = <span class="fl">TRUE</span>, alpha = <span class="fl">0.5</span>, legend = <span class="fl">FALSE</span>)
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/plot.html">plot</a></span>(<span class="kw">point</span>, add = <span class="fl">TRUE</span>, col = <span class="st">"red"</span>, pch = <span class="fl">16</span>)
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/plot.html">plot</a></span>(<span class="kw">out</span>, add = <span class="fl">TRUE</span>, col = <span class="st">"lightgray"</span>, legend = <span class="fl">FALSE</span>)
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/plot.html">plot</a></span>(<span class="kw">point</span>, add = <span class="fl">TRUE</span>, col = <span class="st">"red"</span>, pch = <span class="fl">16</span>)
+<span class="va">hs</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/hillShade.html">hillShade</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/terrain.html">terrain</a></span><span class="op">(</span><span class="va">dem</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/pkg/raster/man/terrain.html">terrain</a></span><span class="op">(</span><span class="va">dem</span>, <span class="st">"aspect"</span><span class="op">)</span>, <span class="fl">40</span>, <span class="fl">270</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/pkg/raster/man/plot.html">plot</a></span><span class="op">(</span><span class="va">hs</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/gray.html">gray</a></span><span class="op">(</span><span class="fl">0</span><span class="op">:</span><span class="fl">100</span> <span class="op">/</span> <span class="fl">100</span><span class="op">)</span>, legend <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/pkg/raster/man/plot.html">plot</a></span><span class="op">(</span><span class="va">dem</span>, add <span class="op">=</span> <span class="cn">TRUE</span>, alpha <span class="op">=</span> <span class="fl">0.5</span>, legend <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/pkg/raster/man/plot.html">plot</a></span><span class="op">(</span><span class="va">point</span>, add <span class="op">=</span> <span class="cn">TRUE</span>, col <span class="op">=</span> <span class="st">"red"</span>, pch <span class="op">=</span> <span class="fl">16</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/pkg/raster/man/plot.html">plot</a></span><span class="op">(</span><span class="va">out</span>, add <span class="op">=</span> <span class="cn">TRUE</span>, col <span class="op">=</span> <span class="st">"lightgray"</span>, legend <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/pkg/raster/man/plot.html">plot</a></span><span class="op">(</span><span class="va">point</span>, add <span class="op">=</span> <span class="cn">TRUE</span>, col <span class="op">=</span> <span class="st">"red"</span>, pch <span class="op">=</span> <span class="fl">16</span><span class="op">)</span>
 
 <span class="co"># or using mapview</span>
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/r-spatial/mapview">mapview</a></span>)
-<span class="fu"><a href="https://rdrr.io/pkg/mapview/man/mapView.html">mapview</a></span>(<span class="kw">out</span>, col = <span class="st">"white"</span>, map.type = <span class="st">"Esri.WorldImagery"</span>) <span class="op">+</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/mapview/man/mapView.html">mapview</a></span>(<span class="kw">point</span>)
-</pre></div>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/mapview">mapview</a></span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/pkg/mapview/man/mapView.html">mapview</a></span><span class="op">(</span><span class="va">out</span>, col <span class="op">=</span> <span class="st">"white"</span>, map.type <span class="op">=</span> <span class="st">"Esri.WorldImagery"</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://rdrr.io/pkg/mapview/man/mapView.html">mapview</a></span><span class="op">(</span><span class="va">point</span><span class="op">)</span></code></pre></div>
 <ol start="5" style="list-style-type: decimal">
 <li>Compute catchment area and catchment slope of <code><a href="https://rdrr.io/r/utils/data.html">data("dem", package = "spDataLarge")</a></code> using <strong>RSAGA</strong>.</li>
 </ol>
-<div class="sourceCode" id="cb7"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st"><a href="https://github.com/r-spatial/RSAGA">"RSAGA"</a></span>)
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/r-spatial/RSAGA">"RSAGA"</a></span><span class="op">)</span>
 <span class="co"># check if rsaga.env can find the corresponding SAGA installation</span>
-<span class="fu"><a href="https://rdrr.io/pkg/RSAGA/man/rsaga.env.html">rsaga.env</a></span>()
-<span class="fu"><a href="https://rdrr.io/pkg/RSAGA/man/rsaga.get.modules.html">rsaga.get.libraries</a></span>()
-<span class="fu"><a href="https://rdrr.io/pkg/RSAGA/man/rsaga.get.modules.html">rsaga.get.modules</a></span>(libs = <span class="st">"ta_hydrology"</span>)
-<span class="fu"><a href="https://rdrr.io/pkg/RSAGA/man/rsaga.get.usage.html">rsaga.get.usage</a></span>(lib = <span class="st">"ta_hydrology"</span>, module = <span class="st">"SAGA Wetness Index"</span>)
+<span class="fu"><a href="https://rdrr.io/pkg/RSAGA/man/rsaga.env.html">rsaga.env</a></span><span class="op">(</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/pkg/RSAGA/man/rsaga.get.modules.html">rsaga.get.libraries</a></span><span class="op">(</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/pkg/RSAGA/man/rsaga.get.modules.html">rsaga.get.modules</a></span><span class="op">(</span>libs <span class="op">=</span> <span class="st">"ta_hydrology"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/pkg/RSAGA/man/rsaga.get.usage.html">rsaga.get.usage</a></span><span class="op">(</span>lib <span class="op">=</span> <span class="st">"ta_hydrology"</span>, module <span class="op">=</span> <span class="st">"SAGA Wetness Index"</span><span class="op">)</span>
 <span class="co"># RSAGA only accepts files living on disk, so we have to save dem </span>
-<span class="kw">raster</span>::<span class="fu"><a href="https://rdrr.io/pkg/raster/man/writeRaster.html">writeRaster</a></span>(<span class="kw">dem</span>, filename = <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span>(), <span class="st">"dem.sdat"</span>),
-                    format = <span class="st">"SAGA"</span>)
+<span class="fu">raster</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/writeRaster.html">writeRaster</a></span><span class="op">(</span><span class="va">dem</span>, filename <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"dem.sdat"</span><span class="op">)</span>,
+                    format <span class="op">=</span> <span class="st">"SAGA"</span><span class="op">)</span>
 <span class="co"># construct a parameter-argument list</span>
-<span class="kw">params</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(DEM = <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span>(), <span class="st">"dem.sgrd"</span>),
-              AREA = <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span>(), <span class="st">"carea.sdat"</span>),
-              SLOPE = <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span>(), <span class="st">"cslope.sdata"</span>),
-              AREA_TYPE = <span class="fl">0</span>,
-              SLOPE_TYPE = <span class="fl">1</span>)
-<span class="fu"><a href="https://rdrr.io/pkg/RSAGA/man/rsaga.geoprocessor.html">rsaga.geoprocessor</a></span>(lib = <span class="st">"ta_hydrology"</span>, module = <span class="st">"SAGA Wetness Index"</span>,
-                   param = <span class="kw">params</span>)
+<span class="va">params</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>DEM <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"dem.sgrd"</span><span class="op">)</span>,
+              AREA <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"carea.sdat"</span><span class="op">)</span>,
+              SLOPE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"cslope.sdata"</span><span class="op">)</span>,
+              AREA_TYPE <span class="op">=</span> <span class="fl">0</span>,
+              SLOPE_TYPE <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/pkg/RSAGA/man/rsaga.geoprocessor.html">rsaga.geoprocessor</a></span><span class="op">(</span>lib <span class="op">=</span> <span class="st">"ta_hydrology"</span>, module <span class="op">=</span> <span class="st">"SAGA Wetness Index"</span>,
+                   param <span class="op">=</span> <span class="va">params</span><span class="op">)</span>
 <span class="co"># load the output back into R again</span>
-<span class="kw">out</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/stack.html">stack</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span>(), <span class="st">"carea.sdat"</span>), 
-            <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span>(), <span class="st">"cslope.sdat"</span>))
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/plot.html">plot</a></span>(<span class="kw">out</span>)
-</pre></div>
+<span class="va">out</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/stack.html">stack</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"carea.sdat"</span><span class="op">)</span>, 
+            <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"cslope.sdat"</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/pkg/raster/man/plot.html">plot</a></span><span class="op">(</span><span class="va">out</span><span class="op">)</span></code></pre></div>
 <ol start="6" style="list-style-type: decimal">
 <li>Use <code>gdalinfo</code> via a system call for a raster file stored on disk of your choice.</li>
 </ol>
-<div class="sourceCode" id="cb8"><pre class="downlit">
-<span class="kw">link2GI</span>::<span class="fu"><a href="https://r-spatial.github.io/link2GI/reference/linkGDAL.html">linkGDAL</a></span>()
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="st">"dem"</span>, package = <span class="st">"spDataLarge"</span>)
-<span class="kw">file</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span>(), <span class="st">"dem.tif"</span>)
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/writeRaster.html">writeRaster</a></span>(<span class="kw">dem</span>, filename = <span class="kw">file</span>, prj = <span class="fl">TRUE</span>, format = <span class="st">"GTiff"</span>)
-<span class="kw">cmd</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span>(<span class="st">"gdalinfo"</span>, <span class="kw">file</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/system.html">system</a></span>(<span class="kw">cmd</span>)
-</pre></div>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">link2GI</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/link2GI/reference/linkGDAL.html">linkGDAL</a></span><span class="op">(</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"dem"</span>, package <span class="op">=</span> <span class="st">"spDataLarge"</span><span class="op">)</span>
+<span class="va">file</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"dem.tif"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/pkg/raster/man/writeRaster.html">writeRaster</a></span><span class="op">(</span><span class="va">dem</span>, filename <span class="op">=</span> <span class="va">file</span>, prj <span class="op">=</span> <span class="cn">TRUE</span>, format <span class="op">=</span> <span class="st">"GTiff"</span><span class="op">)</span>
+<span class="va">cmd</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="st">"gdalinfo"</span>, <span class="va">file</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/system.html">system</a></span><span class="op">(</span><span class="va">cmd</span><span class="op">)</span></code></pre></div>
 <ol start="7" style="list-style-type: decimal">
 <li>Query all Californian highways from the PostgreSQL/PostGIS database living in the QGIS Cloud introduced in this chapter.</li>
 </ol>
-<div class="sourceCode" id="cb9"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/tomoakin/RPostgreSQL">RPostgreSQL</a></span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://r-spatial.github.io/sf">sf</a></span>)
-<span class="kw">conn</span> <span class="op">=</span> <span class="fu">dbConnect</span>(drv = <span class="fu"><a href="https://rdrr.io/pkg/RPostgreSQL/man/PostgreSQL.html">PostgreSQL</a></span>(), dbname = <span class="st">"rtafdf_zljbqm"</span>,
-                 host = <span class="st">"db.qgiscloud.com"</span>,
-                 port = <span class="st">"5432"</span>, user = <span class="st">"rtafdf_zljbqm"</span>, 
-                 password = <span class="st">"d3290ead"</span>)
-<span class="kw">query</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span>(
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/tomoakin/RPostgreSQL">RPostgreSQL</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/">sf</a></span><span class="op">)</span>
+<span class="va">conn</span> <span class="op">=</span> <span class="fu">dbConnect</span><span class="op">(</span>drv <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/RPostgreSQL/man/PostgreSQL.html">PostgreSQL</a></span><span class="op">(</span><span class="op">)</span>, dbname <span class="op">=</span> <span class="st">"rtafdf_zljbqm"</span>,
+                 host <span class="op">=</span> <span class="st">"db.qgiscloud.com"</span>,
+                 port <span class="op">=</span> <span class="st">"5432"</span>, user <span class="op">=</span> <span class="st">"rtafdf_zljbqm"</span>, 
+                 password <span class="op">=</span> <span class="st">"d3290ead"</span><span class="op">)</span>
+<span class="va">query</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span>
   <span class="st">"SELECT *"</span>,
   <span class="st">"FROM highways"</span>,
-  <span class="st">"WHERE state = 'CA';"</span>)
-<span class="kw">ca_highways</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_read.html">st_read</a></span>(<span class="kw">conn</span>, query = <span class="kw">query</span>, geom = <span class="st">"wkb_geometry"</span>)
-<span class="fu"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_geometry.html">st_geometry</a></span>(<span class="kw">ca_highways</span>))
-</pre></div>
+  <span class="st">"WHERE state = 'CA';"</span><span class="op">)</span>
+<span class="va">ca_highways</span> <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_read.html">st_read</a></span><span class="op">(</span><span class="va">conn</span>, query <span class="op">=</span> <span class="va">query</span>, geom <span class="op">=</span> <span class="st">"wkb_geometry"</span><span class="op">)</span>
+<span class="fu"><a href="https://r-spatial.github.io/sf/reference/plot.html">plot</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html">st_geometry</a></span><span class="op">(</span><span class="va">ca_highways</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 </div>
   </div>
 
