@@ -70,18 +70,19 @@ library(ggplot2)
 ggplot(africa) +
   geom_sf(aes(geometry = geom, fill = HDI)) 
 ```
+
 ```{r, eval=FALSE}
 library(leaflet)
 leaflet() %>% 
   addTiles() %>% 
   addPolygons(data = st_transform(africa, 4326))
 ```
+
 ```{r, eval=FALSE}
 library(cartogram)
 africa_carto = cartogram_cont(africa, "HDI", itermax = 5)
 tm_shape(africa_carto) + tm_polygons("HDI")
 ```
-
 
 2) Extend the map of Africa created with **tmap** for the previous exercise so the legend has three bins: "High" (`HDI` above 0.7), "Medium" (`HDI` between 0.55 and 0.7) and "Low" (`HDI` below 0.55).
     - Bonus: improve the map aesthetics, for example by changing the legend title, class labels and color palette.
@@ -149,6 +150,7 @@ print(im, vp = grid::viewport(0.2, 0.4, width = 0.35, height = 0.35))
 ```{r}
 eastern_africa = filter(africa, subregion == "Eastern Africa")
 ```
+
 ```{r, eval=FALSE}
 tm_shape(eastern_africa) +
   tm_polygons(col = c("HDI", "pop_growth")) +
@@ -161,6 +163,7 @@ tm_shape(eastern_africa) +
 6) Building on the previous facet map examples, create animated maps of East Africa:
     - Showing first the spatial distribution of HDI scores then population growth
     - Showing each country in order
+    
 ```{r, eval=FALSE}
 m = tm_shape(eastern_africa) +
   tm_polygons(col = c("HDI", "pop_growth")) +
@@ -190,13 +193,13 @@ tm_shape(eastern_africa) +
 tmap_mode("plot")
 ```
 
-```{r}
+```{r, eval=FALSE}
 # with mapview (auto scale + legend)
 library(mapview)
 mapview(eastern_africa, zcol = "pop_growth")
 ```
 
-```{r}
+```{r, eval=FALSE}
 # with leaflet
 library(leaflet)
 eastern_africa_wgs = st_transform(eastern_africa, 4326)
@@ -231,6 +234,7 @@ Note: the input data must be fed into the map earlier to prevent the polygons di
 
 
 10) Reproduce this [Figure](https://geocompr.robinlovelace.net/adv-map.html#fig:tmshape) and the 1st and 6th panel of this [Figure](https://geocompr.robinlovelace.net/adv-map.html#fig:break-styles) as closely as possible using the **ggplot2** package.
+
 ```{r}
 # fig 8.1 
 ggplot() + 
@@ -263,6 +267,7 @@ Next, construct a continuous area cartogram based on total population.
 Finally, create and compare two maps of the poverty rate: (1) a standard choropleth map and (2) a map using the created cartogram boundaries.
 What is the information provided by the first and the second map?
 How do they differ from each other?
+
 ```{r, eval=FALSE}
 library(cartogram)
 # prepare the data
@@ -282,6 +287,7 @@ tmap_arrange(ecm1, ecm2)
 
 12) Visualize population growth in Africa. 
 Next, compare it with the maps of a hexagonal and regular grid created using the **geogrid** package.
+
 ```{r, eval=FALSE}
 # devtools::install_github("jbaileyh/geogrid")
 library(geogrid)

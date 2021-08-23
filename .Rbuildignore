@@ -9,3 +9,4 @@
 ^\.Rproj\.user$
 promenade-all.geojson
 ^\.github$
+^codecov\.yml$
