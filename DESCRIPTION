@@ -1,11 +1,12 @@
 Package: geocompkg
-Title: Geocomputation with R metapackage with solutions and extensions
+Title: Geocomputation with R Metapackage with Solutions and Extensions
 Version: 0.0.103
 Authors@R: c(person("Robin", "Lovelace", role = c("aut")), 
     person("Jakub", "Nowosad", email = "nowosad.jakub@gmail.com",
     role = c("aut", "cre")),
     person("Jannes", "Muenchow", role = c("aut")))
 Description: Vignettes and solutions to supplement the book Geocomputation with R.
+  See them online at \url{https://geocompr.github.io/}.
 Imports:
     bookdown,
     cartogram,
