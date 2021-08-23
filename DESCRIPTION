@@ -54,6 +54,7 @@ RoxygenNote: 7.1.1
 Suggests:
     knitr,
     bench,
+    dismo
     geogrid,
     kernlab,
     latticeExtra,
@@ -65,13 +66,13 @@ Suggests:
     pool,
     pROC,
     ranger,
+    RefManageR,
     rmarkdown,
     RPostgres,
     RPostgreSQL,
     RSAGA,
     vegan,
     tree,
-    RefManageR,
     gh,
     httr,
     magick,
