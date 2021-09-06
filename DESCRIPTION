@@ -64,6 +64,7 @@ Suggests:
     mapview,
     mlr,
     odbc,
+    ows4R,
     pool,
     pROC,
     ranger,
