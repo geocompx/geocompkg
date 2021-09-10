@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">geocompkg | metapackage for the Gecomputation with R book</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.104</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.1</span>
       </span>
     </div>
 
@@ -61,7 +61,7 @@
       <h1 data-toc-skip>Chapter 12: Transportation</h1>
                         <h4 class="author">Robin Lovelace, Jakub Nowosad, Jannes Muenchow</h4>
             
-            <h4 class="date">2021-09-06</h4>
+            <h4 class="date">2021-09-10</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/Robinlovelace/geocompr/blob/master/vignettes/solutions12.Rmd"><code>vignettes/solutions12.Rmd</code></a></small>
       <div class="hidden name"><code>solutions12.Rmd</code></div>
@@ -107,7 +107,6 @@
 
 <span class="va">desire_lines</span> <span class="op">=</span> <span class="fu"><a href="https://docs.ropensci.org/stplanr/reference/od2line.html">od2line</a></span><span class="op">(</span><span class="va">od_inter</span>, <span class="va">zones_od</span><span class="op">)</span>
 <span class="co">#&gt; Creating centroids representing desire line start and end points.</span>
-
 <span class="va">desire_lines</span><span class="op">$</span><span class="va">distance</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_measures.html">st_length</a></span><span class="op">(</span><span class="va">desire_lines</span><span class="op">)</span><span class="op">)</span>
 <span class="va">desire_carshort</span> <span class="op">=</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">desire_lines</span>, <span class="va">car_driver</span> <span class="op">&gt;</span> <span class="fl">300</span> <span class="op">&amp;</span> <span class="va">distance</span> <span class="op">&lt;</span> <span class="fl">5000</span><span class="op">)</span>
 <span class="va">desire_carshort</span><span class="op">$</span><span class="va">geom_car</span> <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html">st_geometry</a></span><span class="op">(</span><span class="va">route_carshort</span><span class="op">)</span>
@@ -119,7 +118,6 @@
 <span class="va">ways_sln</span> <span class="op">=</span> <span class="fu"><a href="https://docs.ropensci.org/stplanr/reference/SpatialLinesNetwork.html">SpatialLinesNetwork</a></span><span class="op">(</span><span class="va">ways_freeway</span><span class="op">)</span>
 <span class="co">#&gt; Warning in SpatialLinesNetwork.sf(ways_freeway): Graph composed of multiple</span>
 <span class="co">#&gt; subgraphs, consider cleaning it with sln_clean_graph().</span>
-
 <span class="va">route_cycleway</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span><span class="op">(</span><span class="va">route_rail</span>, <span class="va">route_carshort</span><span class="op">)</span>
 <span class="va">route_cycleway</span><span class="op">$</span><span class="va">all</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">desire_rail</span><span class="op">$</span><span class="va">all</span>, <span class="va">desire_carshort</span><span class="op">$</span><span class="va">all</span><span class="op">)</span></code></pre></div>
 </div>
