@@ -34,7 +34,6 @@ Imports:
     rgrass7 (>= 0.2-1),
     rnaturalearth,
     rnaturalearthdata,
-    RPostgreSQL,
     s2,
     sf,
     sp,
