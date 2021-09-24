@@ -76,7 +76,9 @@ Suggests:
     covr,
     tidytext,
     nabor,
-    units
+    units,
+    bslib,
+    downlit
 VignetteBuilder: knitr
 Encoding: UTF-8
 License: CC BY-NC-ND 4.0
