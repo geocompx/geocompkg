@@ -61,7 +61,7 @@
       <h1 data-toc-skip>Chapter 3: Attribute operations</h1>
                         <h4 class="author">Robin Lovelace, Jakub Nowosad, Jannes Muenchow</h4>
             
-            <h4 class="date">2021-09-21</h4>
+            <h4 class="date">2021-09-24</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/Robinlovelace/geocompr/blob/master/vignettes/solutions03.Rmd"><code>vignettes/solutions03.Rmd</code></a></small>
       <div class="hidden name"><code>solutions03.Rmd</code></div>
@@ -470,10 +470,10 @@
            ymn <span class="op">=</span> <span class="fl">0</span>, ymx <span class="op">=</span> <span class="fl">4.5</span>, vals <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fl">81</span><span class="op">)</span><span class="op">)</span>
 <span class="co"># using cell IDs</span>
 <span class="va">r</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">9</span>, <span class="fl">81</span> <span class="op">-</span> <span class="fl">9</span>, <span class="fl">81</span><span class="op">)</span><span class="op">]</span>
-<span class="co">#&gt; [1]  1.07485234 -0.08966415 -0.33481750 -0.15936069</span>
+<span class="co">#&gt; [1]  1.36525088  1.22815541  0.05292857 -1.30795894</span>
 <span class="co"># using indexing</span>
 <span class="va">r</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/pkg/raster/man/ncell.html">nrow</a></span><span class="op">(</span><span class="va">r</span><span class="op">)</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/pkg/raster/man/ncell.html">ncol</a></span><span class="op">(</span><span class="va">r</span><span class="op">)</span><span class="op">)</span><span class="op">]</span>
-<span class="co">#&gt; [1]  1.07485234 -0.08966415  0.88766927 -0.15936069</span>
+<span class="co">#&gt; [1]  1.365251  1.228155  1.458749 -1.307959</span>
 <span class="co"># corresponds to [1, 1], [1, 9], [9, 1], [9, 9]</span></code></pre></div>
 <ol start="16" style="list-style-type: decimal">
 <li>What is the most common class of our example raster <code>grain</code> (hint: <code><a href="https://rdrr.io/pkg/raster/man/modal.html">modal()</a></code>)?</li>
