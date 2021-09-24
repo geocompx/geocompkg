@@ -92,7 +92,7 @@ The next step is to attach the tidyverse, which brings us onto the first pitfall
 Just loading the tidyverse reveals a pitfall of using spatial data with the tidyverse that affects the **raster** package in particular:
 
 ```{r}
-library(tidyverse)
+library(dplyr)
 ```
 
 The first chunk of output shows that the tidyverse is attaching its packages.

@@ -1,11 +1,12 @@
 Package: geocompkg
-Title: Geocomputation with R metapackage with solutions and extensions
-Version: 0.0.102
+Title: Geocomputation with R Metapackage with Solutions and Extensions
+Version: 2.0.1
 Authors@R: c(person("Robin", "Lovelace", role = c("aut")), 
     person("Jakub", "Nowosad", email = "nowosad.jakub@gmail.com",
     role = c("aut", "cre")),
     person("Jannes", "Muenchow", role = c("aut")))
 Description: Vignettes and solutions to supplement the book Geocomputation with R.
+  See them online at \url{https://geocompr.github.io/}.
 Imports:
     bookdown,
     cartogram,
@@ -46,7 +47,8 @@ Imports:
     tmap,
     tmaptools
 Remotes:
-    nowosad/spDataLarge
+    nowosad/spDataLarge,
+    rspatial/terra
 URL: https://github.com/geocompr/geocompkg
 BugReports: https://github.com/Robinlovelace/geocompr/issues
 LazyData: TRUE
@@ -54,6 +56,8 @@ RoxygenNote: 7.1.1
 Suggests:
     knitr,
     bench,
+    dismo,
+    geogrid,
     kernlab,
     latticeExtra,
     link2GI,
@@ -61,15 +65,17 @@ Suggests:
     mapview,
     mlr,
     odbc,
+    ows4R,
     pool,
     pROC,
     ranger,
+    RefManageR,
+    rmarkdown,
     RPostgres,
     RPostgreSQL,
     RSAGA,
     vegan,
     tree,
-    RefManageR,
     gh,
     httr,
     magick,

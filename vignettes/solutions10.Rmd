@@ -11,7 +11,7 @@ vignette: >
 
 ```{r setup, echo = FALSE}
 knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
-# source("https://github.com/Robinlovelace/geocompr/raw/master/code/chapters/10-algorithms.R")
+# source("https://github.com/Robinlovelace/geocompr/raw/main/code/chapters/10-algorithms.R")
 ```
 
 ## Prerequisites {-}
@@ -32,7 +32,7 @@ They also require a few objects and functions from Chapter 10.
         - It has comments, explaining what is going on
         - It is reproducible, as can be verified with the following command:
     ```{r}
-    u = "https://github.com/Robinlovelace/geocompr/raw/master/code/10-centroid-alg.R"
+    u = "https://github.com/Robinlovelace/geocompr/raw/main/code/10-centroid-alg.R"
     source(u)
     ```
     - Create a version of the script on your computer in an IDE such as RStudio (preferably by typing-out the script line-by-line, in your own coding style and with your own comments, rather than copy-pasting --- this will help you learn how to type scripts) and, using the example of a square polygon (e.g. created with `poly_mat = cbind(x = c(0, 0, 9, 9, 0), y = c(0, 9, 9, 0, 0))`) execute the script line-by-line.
