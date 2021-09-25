@@ -15,7 +15,7 @@ Imports:
     cartogram,
     classInt,
     codetools,
-    downlit
+    downlit,
     dplyr,
     geosphere,
     ggplot2,
