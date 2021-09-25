@@ -11,6 +11,7 @@ Imports:
     bookdown,
     cartogram,
     classInt,
+    codetools,
     dplyr,
     geosphere,
     ggplot2,
