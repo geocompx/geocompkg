@@ -470,10 +470,10 @@
            ymn <span class="op">=</span> <span class="fl">0</span>, ymx <span class="op">=</span> <span class="fl">4.5</span>, vals <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fl">81</span><span class="op">)</span><span class="op">)</span>
 <span class="co"># using cell IDs</span>
 <span class="va">r</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">9</span>, <span class="fl">81</span> <span class="op">-</span> <span class="fl">9</span>, <span class="fl">81</span><span class="op">)</span><span class="op">]</span>
-<span class="co">#&gt; [1]  1.9188499 -0.1227127 -2.2722046 -0.2295086</span>
+<span class="co">#&gt; [1]  0.4838394  1.2240311 -1.1569268 -0.2213162</span>
 <span class="co"># using indexing</span>
 <span class="va">r</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/pkg/raster/man/ncell.html">nrow</a></span><span class="op">(</span><span class="va">r</span><span class="op">)</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/pkg/raster/man/ncell.html">ncol</a></span><span class="op">(</span><span class="va">r</span><span class="op">)</span><span class="op">)</span><span class="op">]</span>
-<span class="co">#&gt; [1]  1.9188499 -0.1227127 -2.0844975 -0.2295086</span>
+<span class="co">#&gt; [1]  0.48383944  1.22403109  0.05637096 -0.22131624</span>
 <span class="co"># corresponds to [1, 1], [1, 9], [9, 1], [9, 9]</span></code></pre></div>
 <ol start="16" style="list-style-type: decimal">
 <li>What is the most common class of our example raster <code>grain</code> (hint: <code><a href="https://rdrr.io/pkg/raster/man/modal.html">modal()</a></code>)?</li>
