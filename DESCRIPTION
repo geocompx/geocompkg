@@ -7,10 +7,15 @@ Authors@R: c(person("Robin", "Lovelace", role = c("aut")),
     person("Jannes", "Muenchow", role = c("aut")))
 Description: Vignettes and solutions to supplement the book Geocomputation with R.
   See them online at \url{https://geocompr.github.io/}.
+  The packages in the Imports are required to build the book.
+  The packages in Suggests are required for extra functionality.
 Imports:
     bookdown,
+    bslib,
     cartogram,
     classInt,
+    codetools,
+    downlit,
     dplyr,
     geosphere,
     ggplot2,
@@ -19,9 +24,13 @@ Imports:
     kableExtra,
     igraph,
     leaflet,
+    link2GI,
     lwgeom,
+    mapview,
+    miniUI,
     osmdata,
     osrm,
+    ows4R,
     purrr,
     raster,
     rasterVis,
@@ -34,6 +43,9 @@ Imports:
     rgrass7 (>= 0.2-1),
     rnaturalearth,
     rnaturalearthdata,
+    reprex,
+    RPostgreSQL,
+    RSAGA,
     s2,
     sf,
     sp,
@@ -49,6 +61,7 @@ Imports:
     tmaptools
 Remotes:
     nowosad/spDataLarge,
+    nowosad/spData,
     rspatial/terra
 URL: https://github.com/geocompr/geocompkg
 BugReports: https://github.com/Robinlovelace/geocompr/issues
@@ -61,20 +74,15 @@ Suggests:
     geogrid,
     kernlab,
     latticeExtra,
-    link2GI,
     mapdeck,
-    mapview,
     mlr,
     odbc,
-    ows4R,
     pool,
     pROC,
     ranger,
     RefManageR,
     rmarkdown,
     RPostgres,
-    RPostgreSQL,
-    RSAGA,
     vegan,
     tree,
     gh,
@@ -82,8 +90,7 @@ Suggests:
     magick,
     covr,
     tidytext,
-    nabor,
-    units
+    nabor
 VignetteBuilder: knitr
 Encoding: UTF-8
 License: CC BY-NC-ND 4.0
