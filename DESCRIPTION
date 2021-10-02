@@ -1,6 +1,6 @@
 Package: geocompkg
 Title: Geocomputation with R Metapackage with Solutions and Extensions
-Version: 2.0.1
+Version: 2.0.2
 Authors@R: c(person("Robin", "Lovelace", role = c("aut")), 
     person("Jakub", "Nowosad", email = "nowosad.jakub@gmail.com",
     role = c("aut", "cre")),
@@ -42,6 +42,7 @@ Imports:
     stars,
     stplanr,
     stringr,
+    terra,
     tibble,
     tidyr,
     tmap,
