@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">geocompkg | metapackage for the Gecomputation with R book</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.3</span>
       </span>
     </div>
 
@@ -61,7 +61,7 @@
       <h1 data-toc-skip>Chapter 3: Attribute operations</h1>
                         <h4 class="author">Robin Lovelace, Jakub Nowosad, Jannes Muenchow</h4>
             
-            <h4 class="date">2021-10-02</h4>
+            <h4 class="date">2021-10-25</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/Robinlovelace/geocompr/blob/master/vignettes/solutions03.Rmd"><code>vignettes/solutions03.Rmd</code></a></small>
       <div class="hidden name"><code>solutions03.Rmd</code></div>
@@ -472,10 +472,10 @@
            ymn <span class="op">=</span> <span class="fl">0</span>, ymx <span class="op">=</span> <span class="fl">4.5</span>, vals <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fl">81</span><span class="op">)</span><span class="op">)</span>
 <span class="co"># using cell IDs</span>
 <span class="va">r</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">9</span>, <span class="fl">81</span> <span class="op">-</span> <span class="fl">9</span>, <span class="fl">81</span><span class="op">)</span><span class="op">]</span>
-<span class="co">#&gt; [1]  0.1347074 -0.4998310  1.2987355  1.3416832</span>
+<span class="co">#&gt; [1] -0.9405751 -1.4611540 -0.1397807 -0.5255633</span>
 <span class="co"># using indexing</span>
 <span class="va">r</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/pkg/raster/man/ncell.html">nrow</a></span><span class="op">(</span><span class="va">r</span><span class="op">)</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/pkg/raster/man/ncell.html">ncol</a></span><span class="op">(</span><span class="va">r</span><span class="op">)</span><span class="op">)</span><span class="op">]</span>
-<span class="co">#&gt; [1]  0.1347074 -0.4998310 -0.6090878  1.3416832</span>
+<span class="co">#&gt; [1] -0.9405751 -1.4611540  2.4533637 -0.5255633</span>
 <span class="co"># corresponds to [1, 1], [1, 9], [9, 1], [9, 9]</span></code></pre></div>
 <ol start="16" style="list-style-type: decimal">
 <li>What is the most common class of our example raster <code>grain</code> (hint: <code><a href="https://rdrr.io/pkg/raster/man/modal.html">modal()</a></code>)?</li>
@@ -489,10 +489,10 @@
 <span class="fu"><a href="https://rdrr.io/pkg/raster/man/cellStats.html">cellStats</a></span><span class="op">(</span><span class="va">grain</span>, <span class="va">modal</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://rdrr.io/pkg/raster/man/factor.html">factorValues</a></span><span class="op">(</span><span class="va">grain</span>, <span class="va">.</span><span class="op">)</span>
 <span class="co">#&gt;   VALUE</span>
-<span class="co">#&gt; 1  clay</span>
+<span class="co">#&gt; 1  sand</span>
 <span class="fu"><a href="https://rdrr.io/pkg/raster/man/factor.html">factorValues</a></span><span class="op">(</span><span class="va">grain</span>, <span class="fu"><a href="https://rdrr.io/pkg/raster/man/modal.html">modal</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/getValues.html">values</a></span><span class="op">(</span><span class="va">grain</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt;   VALUE</span>
-<span class="co">#&gt; 1  clay</span></code></pre></div>
+<span class="co">#&gt; 1  sand</span></code></pre></div>
 <ol start="17" style="list-style-type: decimal">
 <li>Plot the histogram and the boxplot of the <code><a href="https://rdrr.io/r/utils/data.html">data(dem, package = "spDataLarge")</a></code> raster.</li>
 </ol>
