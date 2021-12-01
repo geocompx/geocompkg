@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,19 +33,19 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">geocompkg | metapackage for the Gecomputation with R book</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.4</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="https://geocompr.github.io/vignettes/">Vignettes and solutions</a>
+  <a href="https://geocompr.github.io/vignettes/" class="external-link">Vignettes and solutions</a>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://geocompr.github.io/">Back to the main website</a>
+  <a href="https://geocompr.github.io/" class="external-link">Back to the main website</a>
 </li>
       </ul>
 </div>
@@ -59,49 +61,49 @@
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Chapter 2: Geographic data in R</h1>
-                        <h4 class="author">Robin Lovelace, Jakub Nowosad, Jannes Muenchow</h4>
+                        <h4 data-toc-skip class="author">Robin Lovelace, Jakub Nowosad, Jannes Muenchow</h4>
             
-            <h4 class="date">2021-10-25</h4>
+            <h4 data-toc-skip class="date">2021-12-01</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/Robinlovelace/geocompr/blob/master/vignettes/solutions02.Rmd"><code>vignettes/solutions02.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/Robinlovelace/geocompr/blob/HEAD/vignettes/solutions02.Rmd" class="external-link"><code>vignettes/solutions02.Rmd</code></a></small>
       <div class="hidden name"><code>solutions02.Rmd</code></div>
 
     </div>
 
     
     
-<div id="prerequisites" class="section level2 unnumbered">
-<h2 class="hasAnchor">
-<a href="#prerequisites" class="anchor"></a>Prerequisites</h2>
+<div class="section level2 unnumbered">
+<h2 id="prerequisites">Prerequisites<a class="anchor" aria-label="anchor" href="#prerequisites"></a>
+</h2>
 <p>The solutions assume the following packages are attached (other packages will be attached when needed):</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/">sf</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/raster">raster</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://nowosad.github.io/spData/">spData</a></span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/" class="external-link">sf</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/raster" class="external-link">raster</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://nowosad.github.io/spData/" class="external-link">spData</a></span><span class="op">)</span></code></pre></div>
 </div>
-<div id="chapter-2" class="section level1">
-<h1 class="hasAnchor">
-<a href="#chapter-2" class="anchor"></a>Chapter 2</h1>
+<div class="section level1">
+<h1 id="chapter-2">Chapter 2<a class="anchor" aria-label="anchor" href="#chapter-2"></a>
+</h1>
 <!-- ## Vector data model -->
 <ol style="list-style-type: decimal">
-<li>Use <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code> on the geometry column of the <code>world</code> data object. What does the output tell us about:
+<li>Use <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> on the geometry column of the <code>world</code> data object. What does the output tell us about:
 <ul>
 <li>Its geometry type?</li>
 <li>The number of countries?</li>
 <li>Its coordinate reference system (CRS)?</li>
 </ul>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html">st_geometry</a></span><span class="op">(</span><span class="va">world</span><span class="op">)</span><span class="op">)</span>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html" class="external-link">st_geometry</a></span><span class="op">(</span><span class="va">world</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt;  MULTIPOLYGON     epsg:4326 +proj=long... </span>
 <span class="co">#&gt;           177             0             0</span></code></pre></div>
 <ul>
 <li>The geometry type: <code>MULTIPOLYGON</code>, there are 177 countries and the coordinate reference system (CRS) is WGS84 (EPSG 4326)</li>
 </ul>
 </li>
-<li>Run the code that ‘generated’ the map of the world in this <a href="https://geocompr.robinlovelace.net/spatial-class.html#fig:contpop">Figure</a> at the end of this <a href="https://geocompr.robinlovelace.net/spatial-class.html#base-args">section</a>. Find two similarities and two differences between the image on your computer and that in the book.
+<li>Run the code that ‘generated’ the map of the world in this <a href="https://geocompr.robinlovelace.net/spatial-class.html#fig:contpop" class="external-link">Figure</a> at the end of this <a href="https://geocompr.robinlovelace.net/spatial-class.html#base-args" class="external-link">section</a>. Find two similarities and two differences between the image on your computer and that in the book.
 <ul>
-<li>What does the <code>cex</code> argument do (see <code><a href="https://r-spatial.github.io/sf/reference/plot.html">?plot</a></code>)?</li>
+<li>What does the <code>cex</code> argument do (see <code><a href="https://r-spatial.github.io/sf/reference/plot.html" class="external-link">?plot</a></code>)?</li>
 <li>Why was <code>cex</code> set to the <code>sqrt(world$pop) / 10000</code>?</li>
 <li>Bonus: experiment with different ways to visualize the global population.</li>
 </ul>
@@ -109,28 +111,28 @@
 </ol>
 <p>The version generated by the code and the version in the book are shown in the left and right figures, respectively:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">old_par</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># save graphical parameters</span>
+<code class="sourceCode R"><span class="va">old_par</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># save graphical parameters</span>
 
 <span class="co"># generate version based on code in the book</span>
-<span class="fu"><a href="https://r-spatial.github.io/sf/reference/plot.html">plot</a></span><span class="op">(</span><span class="va">world</span><span class="op">[</span><span class="st">"continent"</span><span class="op">]</span>, reset <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-<span class="va">cex</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="va">world</span><span class="op">$</span><span class="va">pop</span><span class="op">)</span> <span class="op">/</span> <span class="fl">10000</span>
-<span class="va">world_cents</span> <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_unary.html">st_centroid</a></span><span class="op">(</span><span class="va">world</span>, of_largest <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="fu"><a href="https://r-spatial.github.io/sf/reference/plot.html">plot</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html">st_geometry</a></span><span class="op">(</span><span class="va">world_cents</span><span class="op">)</span>, add <span class="op">=</span> <span class="cn">TRUE</span>, cex <span class="op">=</span> <span class="va">cex</span>, reset <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<span class="fu"><a href="https://r-spatial.github.io/sf/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">world</span><span class="op">[</span><span class="st">"continent"</span><span class="op">]</span>, reset <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+<span class="va">cex</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">world</span><span class="op">$</span><span class="va">pop</span><span class="op">)</span> <span class="op">/</span> <span class="fl">10000</span>
+<span class="va">world_cents</span> <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_unary.html" class="external-link">st_centroid</a></span><span class="op">(</span><span class="va">world</span>, of_largest <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<span class="fu"><a href="https://r-spatial.github.io/sf/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html" class="external-link">st_geometry</a></span><span class="op">(</span><span class="va">world_cents</span><span class="op">)</span>, add <span class="op">=</span> <span class="cn">TRUE</span>, cex <span class="op">=</span> <span class="va">cex</span>, reset <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 
 <span class="co"># generate version in the book from online script:</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span><span class="va">old_par</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="va">old_par</span><span class="op">)</span>
 <span class="va">s</span> <span class="op">=</span> <span class="st">"https://github.com/Robinlovelace/geocompr/raw/main/code/02-contpop.R"</span>
-<span class="kw"><a href="https://rdrr.io/r/base/source.html">source</a></span><span class="op">(</span><span class="va">s</span><span class="op">)</span></code></pre></div>
+<span class="kw"><a href="https://rdrr.io/r/base/source.html" class="external-link">source</a></span><span class="op">(</span><span class="va">s</span><span class="op">)</span></code></pre></div>
 <p><img src="solutions02_files/figure-html/unnamed-chunk-2-1.png" width="700"><img src="solutions02_files/figure-html/unnamed-chunk-2-2.png" width="700"></p>
 <p>Similarities: global extent, colorscheme, size of circles</p>
 <p>Differences: projection (Antarctica is much smaller for example), graticules, location of points in the countries.</p>
-<p>To understand these differences read-over, run, and experiment with different argument values in this script: <a href="https://github.com/Robinlovelace/geocompr/raw/main/code/02-contpop.R" class="uri">https://github.com/Robinlovelace/geocompr/raw/main/code/02-contpop.R</a></p>
-<p><code>cex</code> refers to the diameter of symbols plotted, as explained by the help page <code><a href="https://rdrr.io/r/graphics/points.html">?graphics::points</a></code>. It is an acronym for ‘Chacter symbol EXpansion’. It was set to the square route of the population divided by 10,000 because a) otherwise the symbols would not fit on the map and b) to make circle area proportional to population.</p>
+<p>To understand these differences read-over, run, and experiment with different argument values in this script: <a href="https://github.com/Robinlovelace/geocompr/raw/main/code/02-contpop.R" class="external-link uri">https://github.com/Robinlovelace/geocompr/raw/main/code/02-contpop.R</a></p>
+<p><code>cex</code> refers to the diameter of symbols plotted, as explained by the help page <code><a href="https://rdrr.io/r/graphics/points.html" class="external-link">?graphics::points</a></code>. It is an acronym for ‘Chacter symbol EXpansion’. It was set to the square route of the population divided by 10,000 because a) otherwise the symbols would not fit on the map and b) to make circle area proportional to population.</p>
 <ol start="3" style="list-style-type: decimal">
-<li>Use <code><a href="https://r-spatial.github.io/sf/reference/plot.html">plot()</a></code> to create maps of Nigeria in context (see section <a href="https://geocompr.robinlovelace.net/spatial-class.html#basic-map" class="uri">https://geocompr.robinlovelace.net/spatial-class.html#basic-map</a>).
+<li>Use <code><a href="https://r-spatial.github.io/sf/reference/plot.html" class="external-link">plot()</a></code> to create maps of Nigeria in context (see section <a href="https://geocompr.robinlovelace.net/spatial-class.html#basic-map" class="external-link uri">https://geocompr.robinlovelace.net/spatial-class.html#basic-map</a>).
 <ul>
-<li>Adjust the <code>lwd</code>, <code>col</code> and <code>expandBB</code> arguments of <code><a href="https://r-spatial.github.io/sf/reference/plot.html">plot()</a></code>.</li>
-<li>Challenge: read the documentation of <code><a href="https://rdrr.io/pkg/raster/man/text.html">text()</a></code> and annotate the map. <!-- - Bonus: make the country boundaries a dotted gray line. --> <!-- - Hint: `border` is an additional argument of `plot()` for **sf**  objects. -->
+<li>Adjust the <code>lwd</code>, <code>col</code> and <code>expandBB</code> arguments of <code><a href="https://r-spatial.github.io/sf/reference/plot.html" class="external-link">plot()</a></code>.</li>
+<li>Challenge: read the documentation of <code><a href="https://rdrr.io/pkg/raster/man/text.html" class="external-link">text()</a></code> and annotate the map. <!-- - Bonus: make the country boundaries a dotted gray line. --> <!-- - Hint: `border` is an additional argument of `plot()` for **sf**  objects. -->
 </li>
 </ul>
 </li>
@@ -138,13 +140,13 @@
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">nigeria</span> <span class="op">=</span> <span class="va">world</span><span class="op">[</span><span class="va">world</span><span class="op">$</span><span class="va">name_long</span> <span class="op">==</span> <span class="st">"Nigeria"</span>, <span class="op">]</span>
 <span class="va">africa</span> <span class="op">=</span> <span class="va">world</span><span class="op">[</span><span class="va">world</span><span class="op">$</span><span class="va">continent</span> <span class="op">==</span> <span class="st">"Africa"</span>, <span class="op">]</span>
-<span class="fu"><a href="https://r-spatial.github.io/sf/reference/plot.html">plot</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html">st_geometry</a></span><span class="op">(</span><span class="va">nigeria</span><span class="op">)</span>, col <span class="op">=</span> <span class="st">"white"</span>, lwd <span class="op">=</span> <span class="fl">3</span>, main <span class="op">=</span> <span class="st">"Nigeria in context"</span>, border <span class="op">=</span> <span class="st">"lightgrey"</span>, expandBB <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.5</span>, <span class="fl">0.2</span>, <span class="fl">0.5</span>, <span class="fl">0.2</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://r-spatial.github.io/sf/reference/plot.html">plot</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html">st_geometry</a></span><span class="op">(</span><span class="va">world</span><span class="op">)</span>, lty <span class="op">=</span> <span class="fl">3</span>, add <span class="op">=</span> <span class="cn">TRUE</span>, border <span class="op">=</span> <span class="st">"grey"</span><span class="op">)</span>
-<span class="fu"><a href="https://r-spatial.github.io/sf/reference/plot.html">plot</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html">st_geometry</a></span><span class="op">(</span><span class="va">nigeria</span><span class="op">)</span>, col <span class="op">=</span> <span class="st">"yellow"</span>, add <span class="op">=</span> <span class="cn">TRUE</span>, border <span class="op">=</span> <span class="st">"darkgrey"</span><span class="op">)</span>
-<span class="va">a</span> <span class="op">=</span> <span class="va">africa</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html">grepl</a></span><span class="op">(</span><span class="st">"Niger"</span>, <span class="va">africa</span><span class="op">$</span><span class="va">name_long</span><span class="op">)</span>, <span class="op">]</span>
-<span class="va">ncentre</span> <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_unary.html">st_centroid</a></span><span class="op">(</span><span class="va">a</span><span class="op">)</span>
-<span class="va">ncentre_num</span> <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_coordinates.html">st_coordinates</a></span><span class="op">(</span><span class="va">ncentre</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/text.html">text</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">ncentre_num</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span>, y <span class="op">=</span> <span class="va">ncentre_num</span><span class="op">[</span>, <span class="fl">2</span><span class="op">]</span>, labels <span class="op">=</span> <span class="va">a</span><span class="op">$</span><span class="va">name_long</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://r-spatial.github.io/sf/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html" class="external-link">st_geometry</a></span><span class="op">(</span><span class="va">nigeria</span><span class="op">)</span>, col <span class="op">=</span> <span class="st">"white"</span>, lwd <span class="op">=</span> <span class="fl">3</span>, main <span class="op">=</span> <span class="st">"Nigeria in context"</span>, border <span class="op">=</span> <span class="st">"lightgrey"</span>, expandBB <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.5</span>, <span class="fl">0.2</span>, <span class="fl">0.5</span>, <span class="fl">0.2</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://r-spatial.github.io/sf/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html" class="external-link">st_geometry</a></span><span class="op">(</span><span class="va">world</span><span class="op">)</span>, lty <span class="op">=</span> <span class="fl">3</span>, add <span class="op">=</span> <span class="cn">TRUE</span>, border <span class="op">=</span> <span class="st">"grey"</span><span class="op">)</span>
+<span class="fu"><a href="https://r-spatial.github.io/sf/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html" class="external-link">st_geometry</a></span><span class="op">(</span><span class="va">nigeria</span><span class="op">)</span>, col <span class="op">=</span> <span class="st">"yellow"</span>, add <span class="op">=</span> <span class="cn">TRUE</span>, border <span class="op">=</span> <span class="st">"darkgrey"</span><span class="op">)</span>
+<span class="va">a</span> <span class="op">=</span> <span class="va">africa</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"Niger"</span>, <span class="va">africa</span><span class="op">$</span><span class="va">name_long</span><span class="op">)</span>, <span class="op">]</span>
+<span class="va">ncentre</span> <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_unary.html" class="external-link">st_centroid</a></span><span class="op">(</span><span class="va">a</span><span class="op">)</span>
+<span class="va">ncentre_num</span> <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_coordinates.html" class="external-link">st_coordinates</a></span><span class="op">(</span><span class="va">ncentre</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/pkg/raster/man/text.html" class="external-link">text</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">ncentre_num</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span>, y <span class="op">=</span> <span class="va">ncentre_num</span><span class="op">[</span>, <span class="fl">2</span><span class="op">]</span>, labels <span class="op">=</span> <span class="va">a</span><span class="op">$</span><span class="va">name_long</span><span class="op">)</span></code></pre></div>
 <div class="figure">
 <img src="solutions02_files/figure-html/nigeria-1.png" alt="Map of Nigeria in context illustrating sf's plotting capabilities" width="700"><p class="caption">
 Map of Nigeria in context illustrating sf’s plotting capabilities
@@ -155,16 +157,16 @@ Map of Nigeria in context illustrating sf’s plotting capabilities
 </ol>
 <p>Assign random values between 0 and 10 to the new raster and plot it.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">2018</span><span class="op">-</span><span class="fl">09</span><span class="op">-</span><span class="fl">03</span><span class="op">)</span>
-<span class="va">my_raster</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/raster.html">raster</a></span><span class="op">(</span>ncol <span class="op">=</span> <span class="fl">10</span>, nrow <span class="op">=</span> <span class="fl">10</span>, vals <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html">runif</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">100</span>, min <span class="op">=</span> <span class="fl">0</span>, max <span class="op">=</span> <span class="fl">10</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://r-spatial.github.io/sf/reference/plot.html">plot</a></span><span class="op">(</span><span class="va">my_raster</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">2018</span><span class="op">-</span><span class="fl">09</span><span class="op">-</span><span class="fl">03</span><span class="op">)</span>
+<span class="va">my_raster</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/raster.html" class="external-link">raster</a></span><span class="op">(</span>ncol <span class="op">=</span> <span class="fl">10</span>, nrow <span class="op">=</span> <span class="fl">10</span>, vals <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">100</span>, min <span class="op">=</span> <span class="fl">0</span>, max <span class="op">=</span> <span class="fl">10</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://r-spatial.github.io/sf/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">my_raster</span><span class="op">)</span></code></pre></div>
 <p><img src="solutions02_files/figure-html/unnamed-chunk-3-1.png" width="700"></p>
 <!-- raster exercises -->
 <ol start="5" style="list-style-type: decimal">
 <li>Read the <code>raster/nlcd2011.tif</code> file from the <strong>spDataLarge</strong> package. What kind of information can you get about the properties of this file?</li>
 </ol>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">nlcd</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/raster.html">raster</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"raster/nlcd2011.tif"</span>, package <span class="op">=</span> <span class="st">"spDataLarge"</span><span class="op">)</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">nlcd</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/raster.html" class="external-link">raster</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"raster/nlcd2011.tif"</span>, package <span class="op">=</span> <span class="st">"spDataLarge"</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; Warning in showSRID(SRS_string, format = "PROJ", multiline = "NO", prefer_proj =</span>
 <span class="co">#&gt; prefer_proj): Discarded datum unknown in Proj4 definition</span>
 <span class="va">nlcd</span>
@@ -200,11 +202,13 @@ Map of Nigeria in context illustrating sf’s plotting capabilities
 
 
       <footer><div class="copyright">
-  <p>Developed by Robin Lovelace, Jakub Nowosad, Jannes Muenchow.</p>
+  <p></p>
+<p>Developed by Robin Lovelace, Jakub Nowosad, Jannes Muenchow.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.0.</p>
 </div>
 
       </footer>
@@ -212,6 +216,8 @@ Map of Nigeria in context illustrating sf’s plotting capabilities
 
   
 
+
+  
 
   </body>
 </html>
