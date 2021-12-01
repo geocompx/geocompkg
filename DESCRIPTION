@@ -1,6 +1,6 @@
 Package: geocompkg
 Title: Geocomputation with R Metapackage with Solutions and Extensions
-Version: 2.0.3
+Version: 2.0.4
 Authors@R: c(person("Robin", "Lovelace", role = c("aut")), 
     person("Jakub", "Nowosad", email = "nowosad.jakub@gmail.com",
     role = c("aut", "cre")),
@@ -63,7 +63,8 @@ Imports:
 Remotes:
     nowosad/spDataLarge,
     nowosad/spData,
-    rspatial/terra
+    rspatial/terra,
+    mtennekes/tmap
 URL: https://github.com/geocompr/geocompkg
 BugReports: https://github.com/Robinlovelace/geocompr/issues
 LazyData: TRUE
