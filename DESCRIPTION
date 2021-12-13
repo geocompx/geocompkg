@@ -62,8 +62,6 @@ Imports:
     tmaptools
 Remotes:
     nowosad/spDataLarge,
-    nowosad/spData,
-    rspatial/terra,
     mtennekes/tmap
 URL: https://github.com/geocompr/geocompkg
 BugReports: https://github.com/Robinlovelace/geocompr/issues
