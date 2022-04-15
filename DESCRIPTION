@@ -100,7 +100,8 @@ Suggests:
     ml3spatiotempcv,
     mlr3tuning,
     mlr3viz,
-    paradox
+    paradox,
+    tictoc
 VignetteBuilder: knitr
 Encoding: UTF-8
 License: CC BY-NC-ND 4.0
