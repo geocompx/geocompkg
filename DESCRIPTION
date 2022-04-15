@@ -99,7 +99,8 @@ Suggests:
     mlr3extralearners,
     ml3spatiotempcv,
     mlr3tuning,
-    mlr3viz
+    mlr3viz,
+    paradox
 VignetteBuilder: knitr
 Encoding: UTF-8
 License: CC BY-NC-ND 4.0
