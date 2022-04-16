@@ -61,6 +61,7 @@ Imports:
     tmap,
     tmaptools
 Remotes:
+    mlr-org/mlr3extralearners
     nowosad/spDataLarge,
     nowosad/spData,
     rspatial/terra,
