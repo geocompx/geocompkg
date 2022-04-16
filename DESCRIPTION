@@ -66,6 +66,7 @@ Remotes:
     nowosad/spData,
     rspatial/terra,
     mtennekes/tmap
+    paleolimbot/qgisprocess
 URL: https://github.com/geocompr/geocompkg
 BugReports: https://github.com/Robinlovelace/geocompr/issues
 LazyData: TRUE
@@ -78,7 +79,6 @@ Suggests:
     kernlab,
     latticeExtra,
     mapdeck,
-    mlr,
     odbc,
     pool,
     pROC,
@@ -95,6 +95,7 @@ Suggests:
     tidytext,
     nabor,
     future,
+    lgr,
     mlr3,
     mlr3learners,
     mlr3extralearners,
@@ -102,7 +103,9 @@ Suggests:
     mlr3tuning,
     mlr3viz,
     paradox,
-    tictoc
+    tictoc,
+    qgisprocess,
+    data.table
 VignetteBuilder: knitr
 Encoding: UTF-8
 License: CC BY-NC-ND 4.0
