@@ -61,11 +61,11 @@ Imports:
     tmap,
     tmaptools
 Remotes:
-    mlr-org/mlr3extralearners
+    mlr-org/mlr3extralearners,
     nowosad/spDataLarge,
     nowosad/spData,
     rspatial/terra,
-    mtennekes/tmap
+    mtennekes/tmap,
     paleolimbot/qgisprocess
 URL: https://github.com/geocompr/geocompkg
 BugReports: https://github.com/Robinlovelace/geocompr/issues
