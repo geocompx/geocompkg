@@ -59,7 +59,7 @@ Suggests:
     mlr3,
     mlr3learners,
     mlr3extralearners,
-    ml3spatiotempcv,
+    mlr3spatiotempcv,
     mlr3tuning,
     mlr3viz,
     miniUI,
