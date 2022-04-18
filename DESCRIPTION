@@ -7,8 +7,8 @@ Authors@R: c(person("Robin", "Lovelace", role = c("aut")),
     person("Jannes", "Muenchow", role = c("aut")))
 Description: Vignettes and solutions to supplement the book Geocomputation with R.
   See them online at \url{https://geocompr.github.io/}.
-  The packages in the Imports are required to build the book.
-  The packages in Suggests are required for extra functionality.
+  The packages in the Imports are required to build the first chapter of the book.
+  The packages in Suggests are required for Part II and III.
 Imports:
     bookdown,
     bslib,
@@ -61,10 +61,12 @@ Imports:
     tmap,
     tmaptools
 Remotes:
+    mlr-org/mlr3extralearners,
     nowosad/spDataLarge,
     nowosad/spData,
     rspatial/terra,
-    mtennekes/tmap
+    mtennekes/tmap,
+    paleolimbot/qgisprocess
 URL: https://github.com/geocompr/geocompkg
 BugReports: https://github.com/Robinlovelace/geocompr/issues
 LazyData: TRUE
@@ -77,7 +79,6 @@ Suggests:
     kernlab,
     latticeExtra,
     mapdeck,
-    mlr,
     odbc,
     pool,
     pROC,
@@ -92,7 +93,19 @@ Suggests:
     magick,
     covr,
     tidytext,
-    nabor
+    nabor,
+    future,
+    lgr,
+    mlr3,
+    mlr3learners,
+    mlr3extralearners,
+    ml3spatiotempcv,
+    mlr3tuning,
+    mlr3viz,
+    paradox,
+    tictoc,
+    qgisprocess,
+    data.table
 VignetteBuilder: knitr
 Encoding: UTF-8
 License: CC BY-NC-ND 4.0
