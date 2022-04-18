@@ -6,8 +6,7 @@
 \alias{geocompkg-package}
 \title{geocompkg: Geocomputation with R Metapackage with Solutions and Extensions}
 \description{
-Vignettes and solutions to supplement the book Geocomputation with R.
-  See them online at \url{https://geocompr.github.io/}.
+Vignettes and solutions to supplement the book Geocomputation with R. See them online at \url{https://geocompr.github.io/}. The packages in the Imports are required to build the first chapter of the book. The packages in Suggests are required for Part II and III.
 }
 \seealso{
 Useful links:

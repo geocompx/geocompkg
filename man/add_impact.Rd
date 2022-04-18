@@ -24,7 +24,7 @@ Return details of issues, with input an GitHub issue URL
 \dontrun{
 url_issue = "https://github.com/mtennekes/tmap/issues/196"
 geocompr:::add_impact(url_issue)
-u = "https://github.com/Robinlovelace/geocompr/raw/master/our-impact.csv"
+u = "https://github.com/Robinlovelace/geocompr/raw/main/our-impact.csv"
 geocompr:::add_impact(url_issue, url_old_impact = u)
 }
 }
