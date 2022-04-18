@@ -38,6 +38,7 @@ Suggests:
     geodata,
     geogrid,
     geosphere,
+    GGally,
     ggplot2,
     gh,
     historydata,
