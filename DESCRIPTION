@@ -14,13 +14,15 @@ Imports:
     sf,
     terra,
     spData,
-    spDataLarge
+    spDataLarge,
+    units
 Remotes:
     mlr-org/mlr3extralearners,
     paleolimbot/qgisprocess,
     nowosad/spDataLarge,
     mtennekes/tmap
-URL: https://github.com/geocompr/geocompkg
+URL: https://github.com/geocompr/geocompkg,
+    https://geocompr.github.io/geocompkg/
 BugReports: https://github.com/Robinlovelace/geocompr/issues
 LazyData: TRUE
 RoxygenNote: 7.1.2
