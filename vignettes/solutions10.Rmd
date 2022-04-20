@@ -32,7 +32,7 @@ They also require a few objects and functions from Chapter 10.
         - It has comments, explaining what is going on
         - It is reproducible, as can be verified with the following command:
     ```{r}
-    u = "https://github.com/Robinlovelace/geocompr/raw/main/code/10-centroid-alg.R"
+    u = "https://github.com/Robinlovelace/geocompr/raw/main/code/11-centroid-alg.R"
     source(u)
     ```
     - Create a version of the script on your computer in an IDE such as RStudio (preferably by typing-out the script line-by-line, in your own coding style and with your own comments, rather than copy-pasting --- this will help you learn how to type scripts) and, using the example of a square polygon (e.g. created with `poly_mat = cbind(x = c(0, 0, 9, 9, 0), y = c(0, 9, 9, 0, 0))`) execute the script line-by-line.
@@ -81,7 +81,7 @@ They also require a few objects and functions from Chapter 10.
     x_coords = c(10, 0, 0, 12, 20, 10)
     y_coords = c(0, 0, 10, 20, 15, 0)
     poly_mat = cbind(x_coords, y_coords)
-    source("https://git.io/10-centroid-alg.R")
+    source(u)
     ```
     - Are the results correct? Verify them by converting `poly_mat` into an `sfc` object (named `poly_sfc`) with `st_polygon()` (hint: this function takes objects of class `list()`) and then using `st_area()` and `st_centroid()`.
         - Answer: We can verify the answer by converting `poly_mat` into a simple feature collection as follows, which shows the calculations match:
@@ -165,3 +165,4 @@ poly_centroid_sf(sf::st_sf(sf::st_sfc(poly_sfc)))
 poly_centroid_sf(poly_sfc)
 poly_centroid_sf(poly_mat)
 ```
+
