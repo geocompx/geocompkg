@@ -1,34 +1,28 @@
 title: geocompkg | metapackage for the Gecomputation with R book
 
 navbar:
-  left:
-    - text: "Vignettes and solutions"
+  structure:
+    right: [twitter, github]
+    left: [back, solutions, examples]
+  components:
+    twitter:
+      icon: fa-twitter
+      href: http://twitter.com/hashtag/geocompr
+      aria-label: Twitter
+    github:
+      icon: fa-github
+      href: https://github.com/geocompr/geocompkg
+    solutions:
+      text: "Solutions"
+      href: https://geocompr.github.io/solutions/
+    examples:
+      text: "Extended examples"
       href: https://geocompr.github.io/vignettes/
-
-  right:
-    - text: "Back to the main website"
-      href: https://geocompr.github.io/
-
+    back:
+      text: "Back to main website"
+      href: https://geocompr.github.io
 
 articles:
-  - title: "Exercises and solutions"
-    desc: >
-      These vignettes provide solutions for the exercises from Geocomputation with R
-    contents:
-      - solutions01
-      - solutions02
-      - solutions03
-      - solutions04
-      - solutions05
-      - solutions06
-      - solutions07
-      - solutions08
-      - solutions09
-      - solutions10
-      - solutions11
-      - solutions12
-      - solutions13
-      - solutions14
   - title: "Extended examples"
     desc: >
       These vignettes provide extended examples for several methods and functions mentioned in Geocomputation with R
