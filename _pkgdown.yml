@@ -3,7 +3,7 @@ title: geocompkg | metapackage for the Gecomputation with R book
 navbar:
   structure:
     right: [twitter, github]
-    left: [solutions, examples]
+    left: [back, solutions, examples]
   components:
     twitter:
       icon: fa-twitter
@@ -18,6 +18,9 @@ navbar:
     examples:
       text: "Extended examples"
       href: https://geocompr.github.io/vignettes/
+    back:
+      text: "Back to main website"
+      href: https://geocompr.github.io
 
 articles:
   - title: "Extended examples"
