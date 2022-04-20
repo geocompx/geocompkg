@@ -6,6 +6,7 @@ output: github_document
 [![R build status](https://github.com/geocompr/geocompkg/workflows/pkgdown/badge.svg)](https://github.com/geocompr/geocompkg/actions)
 [![Codecov test coverage](https://codecov.io/gh/geocompr/geocompkg/branch/master/graph/badge.svg)](https://codecov.io/gh/geocompr/geocompkg?branch=master)
 [![R build status](https://github.com/geocompr/geocompkg/workflows/R-CMD-check/badge.svg)](https://github.com/geocompr/geocompkg/actions)
+[![R-CMD-check](https://github.com/geocompr/geocompkg/workflows/R-CMD-check/badge.svg)](https://github.com/geocompr/geocompkg/actions)
 <!-- badges: end -->
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
