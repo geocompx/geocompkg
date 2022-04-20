@@ -474,10 +474,10 @@
            ymn <span class="op">=</span> <span class="fl">0</span>, ymx <span class="op">=</span> <span class="fl">4.5</span>, vals <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">81</span><span class="op">)</span><span class="op">)</span>
 <span class="co"># using cell IDs</span>
 <span class="va">r</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">9</span>, <span class="fl">81</span> <span class="op">-</span> <span class="fl">9</span>, <span class="fl">81</span><span class="op">)</span><span class="op">]</span>
-<span class="co">#&gt; [1] -0.8214586  2.3129256 -1.6552131 -1.1809285</span>
+<span class="co">#&gt; [1] -2.1154868 -1.2312572 -0.4535850  0.7767603</span>
 <span class="co"># using indexing</span>
 <span class="va">r</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/pkg/raster/man/ncell.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">r</span><span class="op">)</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/pkg/raster/man/ncell.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">r</span><span class="op">)</span><span class="op">)</span><span class="op">]</span>
-<span class="co">#&gt; [1] -0.8214586  2.3129256  1.0110457 -1.1809285</span>
+<span class="co">#&gt; [1] -2.1154868 -1.2312572  2.5521454  0.7767603</span>
 <span class="co"># corresponds to [1, 1], [1, 9], [9, 1], [9, 9]</span></code></pre></div>
 <ol start="16" style="list-style-type: decimal">
 <li>What is the most common class of our example raster <code>grain</code> (hint: <code><a href="https://rdrr.io/pkg/raster/man/modal.html" class="external-link">modal()</a></code>)?</li>
@@ -491,10 +491,10 @@
 <span class="fu"><a href="https://rdrr.io/pkg/raster/man/cellStats.html" class="external-link">cellStats</a></span><span class="op">(</span><span class="va">grain</span>, <span class="va">modal</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="https://rdrr.io/pkg/raster/man/factor.html" class="external-link">factorValues</a></span><span class="op">(</span><span class="va">grain</span>, <span class="va">.</span><span class="op">)</span>
 <span class="co">#&gt;   VALUE</span>
-<span class="co">#&gt; 1  silt</span>
+<span class="co">#&gt; 1  clay</span>
 <span class="fu"><a href="https://rdrr.io/pkg/raster/man/factor.html" class="external-link">factorValues</a></span><span class="op">(</span><span class="va">grain</span>, <span class="fu"><a href="https://rdrr.io/pkg/raster/man/modal.html" class="external-link">modal</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/getValues.html" class="external-link">values</a></span><span class="op">(</span><span class="va">grain</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt;   VALUE</span>
-<span class="co">#&gt; 1  silt</span></code></pre></div>
+<span class="co">#&gt; 1  clay</span></code></pre></div>
 <ol start="17" style="list-style-type: decimal">
 <li>Plot the histogram and the boxplot of the <code>data(dem, package = "spDataLarge")</code> raster.</li>
 </ol>
