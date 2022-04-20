@@ -10,3 +10,4 @@
 promenade-all.geojson
 ^\.github$
 ^codecov\.yml$
+^pkgdown$
