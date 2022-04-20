@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">geocompkg | metapackage for the Gecomputation with R book</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.6</span>
       </span>
     </div>
 
@@ -57,16 +57,16 @@
 
       
 
-      </header><script src="solutions13_files/accessible-code-block-0.0.1/empty-anchor.js"></script><script src="solutions13_files/htmlwidgets-1.5.4/htmlwidgets.js"></script><script src="solutions13_files/jquery-1.12.4/jquery.min.js"></script><link href="solutions13_files/leaflet-1.3.1/leaflet.css" rel="stylesheet">
+      </header><script src="solutions13_files/accessible-code-block-0.0.1/empty-anchor.js"></script><script src="solutions13_files/htmlwidgets-1.5.4/htmlwidgets.js"></script><link href="solutions13_files/leaflet-1.3.1/leaflet.css" rel="stylesheet">
 <script src="solutions13_files/leaflet-1.3.1/leaflet.js"></script><link href="solutions13_files/leafletfix-1.0.0/leafletfix.css" rel="stylesheet">
 <script src="solutions13_files/proj4-2.6.2/proj4.min.js"></script><script src="solutions13_files/Proj4Leaflet-1.0.1/proj4leaflet.js"></script><link href="solutions13_files/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet">
-<script src="solutions13_files/leaflet-binding-2.0.4.1/leaflet.js"></script><div class="row">
+<script src="solutions13_files/leaflet-binding-2.1.1/leaflet.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Chapter 13: Geomarketing</h1>
                         <h4 data-toc-skip class="author">Robin Lovelace, Jakub Nowosad, Jannes Muenchow</h4>
             
-            <h4 data-toc-skip class="date">2021-12-01</h4>
+            <h4 data-toc-skip class="date">2022-04-20</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/Robinlovelace/geocompr/blob/HEAD/vignettes/solutions13.Rmd" class="external-link"><code>vignettes/solutions13.Rmd</code></a></small>
       <div class="hidden name"><code>solutions13.Rmd</code></div>
@@ -75,9 +75,9 @@
 
     
     
-<div class="section level2 unnumbered">
-<h2 id="prerequisites">Prerequisites<a class="anchor" aria-label="anchor" href="#prerequisites"></a>
-</h2>
+<div class="section level3">
+<h3 id="prerequisites">Prerequisites<a class="anchor" aria-label="anchor" href="#prerequisites"></a>
+</h3>
 <p>The solutions assume the following packages are attached (other packages will be attached when needed):</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rstudio.github.io/leaflet/" class="external-link">leaflet</a></span><span class="op">)</span>
@@ -106,9 +106,9 @@
 <span class="co">#&gt; <span style="color: #555555;">This warning is displayed once every 8 hours.</span></span>
 <span class="co">#&gt; <span style="color: #555555;">Call `lifecycle::last_lifecycle_warnings()` to see where this warning was generated.</span></span></code></pre></div>
 </div>
-<div class="section level1">
-<h1 id="chapter-13">Chapter 13<a class="anchor" aria-label="anchor" href="#chapter-13"></a>
-</h1>
+<div class="section level2">
+<h2 id="chapter-13">Chapter 13<a class="anchor" aria-label="anchor" href="#chapter-13"></a>
+</h2>
 <ol style="list-style-type: decimal">
 <li>We have used <code><a href="https://rdrr.io/pkg/raster/man/rasterFromXYZ.html" class="external-link">raster::rasterFromXYZ()</a></code> to convert a <code>input_tidy</code> into a raster brick. Try to achieve the same with the help of the <code><a href="https://rdrr.io/pkg/sp/man/gridded-methods.html" class="external-link">sp::gridded()</a></code> function.</li>
 </ol>
@@ -266,8 +266,8 @@
   <span class="fu"><a href="https://rdrr.io/pkg/leaflet/man/addRasterImage.html" class="external-link">addRasterImage</a></span><span class="op">(</span><span class="va">berlin_raster</span>, colors <span class="op">=</span> <span class="st">"darkgreen"</span>, opacity <span class="op">=</span> <span class="fl">0.8</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/pkg/leaflet/man/leaflet-imports.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="https://rdrr.io/pkg/leaflet/man/addLegend.html" class="external-link">addLegend</a></span><span class="op">(</span><span class="st">"bottomright"</span>, colors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"darkgreen"</span><span class="op">)</span>, 
             labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"potential locations"</span><span class="op">)</span>, title <span class="op">=</span> <span class="st">"Legend"</span><span class="op">)</span></code></pre></div>
-<div id="htmlwidget-3ec882604e58ce4bcc15" style="width:700px;height:432.632880098888px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-3ec882604e58ce4bcc15">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addRasterImage","args":["data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAMUlEQVRYhe3OsQ0AIADDsIpb+f8F2EBi7sBgHxAlAQAAgGtmNXOjGTvKk11fzwEA8NhKwAQskJmmKwAAAABJRU5ErkJggg==",[[62.8779592463221,-11.2137896998302],[62.4309750627993,-10.2302702325547]],0.8,null,null,null]},{"method":"addLegend","args":[{"colors":["darkgreen"],"labels":["potential locations"],"na_color":null,"na_label":"NA","opacity":0.5,"position":"bottomright","type":"unknown","title":"Legend","extra":null,"layerId":null,"className":"info legend","group":null}]}],"limits":{"lat":[62.4309750627993,62.8779592463221],"lng":[-11.2137896998302,-10.2302702325547]}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-3a3f030b2c861f0a6164" style="width:700px;height:432.632880098888px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-3a3f030b2c861f0a6164">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"https://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addRasterImage","args":["data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAMUlEQVRYhe3OsQ0AIADDsIpb+f8F2EBi7sBgHxAlAQAAgGtmNXOjGTvKk11fzwEA8NhKwAQskJmmKwAAAABJRU5ErkJggg==",[[62.8779592463221,-11.2137896998302],[62.4309750627993,-10.2302702325547]],0.8,null,null,null]},{"method":"addLegend","args":[{"colors":["darkgreen"],"labels":["potential locations"],"na_color":null,"na_label":"NA","opacity":0.5,"position":"bottomright","type":"unknown","title":"Legend","extra":null,"layerId":null,"className":"info legend","group":null}]}],"limits":{"lat":[62.4309750627993,62.8779592463221],"lng":[-11.2137896998302,-10.2302702325547]}},"evals":[],"jsHooks":[]}</script>
 </div>
   </div>
 
@@ -288,7 +288,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.0.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
 </div>
 
       </footer>

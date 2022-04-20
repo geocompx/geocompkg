@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">geocompkg | metapackage for the Gecomputation with R book</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.6</span>
       </span>
     </div>
 
@@ -63,7 +63,7 @@
       <h1 data-toc-skip>Chapter 11: Statistical learning</h1>
                         <h4 data-toc-skip class="author">Robin Lovelace, Jakub Nowosad, Jannes Muenchow</h4>
             
-            <h4 data-toc-skip class="date">2021-12-01</h4>
+            <h4 data-toc-skip class="date">2022-04-20</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/Robinlovelace/geocompr/blob/HEAD/vignettes/solutions11.Rmd" class="external-link"><code>vignettes/solutions11.Rmd</code></a></small>
       <div class="hidden name"><code>solutions11.Rmd</code></div>
@@ -72,9 +72,9 @@
 
     
     
-<div class="section level2 unnumbered">
-<h2 id="prerequisites">Prerequisites<a class="anchor" aria-label="anchor" href="#prerequisites"></a>
-</h2>
+<div class="section level3">
+<h3 id="prerequisites">Prerequisites<a class="anchor" aria-label="anchor" href="#prerequisites"></a>
+</h3>
 <p>The solutions assume the following packages are attached (other packages will be attached when needed):</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/" class="external-link">sf</a></span><span class="op">)</span>
@@ -86,9 +86,9 @@
 <span class="co"># library(mlr)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-tmap/tmap" class="external-link">tmap</a></span><span class="op">)</span></code></pre></div>
 </div>
-<div class="section level1">
-<h1 id="chapter-11">Chapter 11<a class="anchor" aria-label="anchor" href="#chapter-11"></a>
-</h1>
+<div class="section level2">
+<h2 id="chapter-11">Chapter 11<a class="anchor" aria-label="anchor" href="#chapter-11"></a>
+</h2>
 <ol style="list-style-type: decimal">
 <li>Compute the following terrain attributes from the <code>dem</code> datasets loaded with <code>data("landslides", package = "RSAGA")</code> with the help of R-GIS bridges (see this <a href="https://geocompr.robinlovelace.net/gis.html#gis" class="external-link">Chapter</a>):
 <ul>
@@ -246,12 +246,12 @@
 <span class="co">#****************************</span>
 
 <span class="co"># execute the resampling</span>
-<span class="va">sp_cv</span> <span class="op">=</span> <span class="fu">mlr</span><span class="fu">::</span><span class="fu"><a href="https://mlr.mlr-org.com/reference/resample.html" class="external-link">resample</a></span><span class="op">(</span>learner <span class="op">=</span> <span class="va">lrn</span>, task <span class="op">=</span> <span class="va">task</span>,
+<span class="va">sp_cv</span> <span class="op">=</span> <span class="fu">mlr</span><span class="fu">::</span><span class="fu">resample</span><span class="op">(</span>learner <span class="op">=</span> <span class="va">lrn</span>, task <span class="op">=</span> <span class="va">task</span>,
                       resampling <span class="op">=</span> <span class="va">resampling</span>,
-                      measures <span class="op">=</span> <span class="fu">mlr</span><span class="fu">::</span><span class="va"><a href="https://mlr.mlr-org.com/reference/measures.html" class="external-link">auc</a></span><span class="op">)</span>
-<span class="va">conv_cv</span> <span class="op">=</span> <span class="fu">mlr</span><span class="fu">::</span><span class="fu"><a href="https://mlr.mlr-org.com/reference/resample.html" class="external-link">resample</a></span><span class="op">(</span>learner <span class="op">=</span> <span class="va">lrn</span>, task <span class="op">=</span> <span class="va">task_nsp</span>,
+                      measures <span class="op">=</span> <span class="fu">mlr</span><span class="fu">::</span><span class="va">auc</span><span class="op">)</span>
+<span class="va">conv_cv</span> <span class="op">=</span> <span class="fu">mlr</span><span class="fu">::</span><span class="fu">resample</span><span class="op">(</span>learner <span class="op">=</span> <span class="va">lrn</span>, task <span class="op">=</span> <span class="va">task_nsp</span>,
                         resampling <span class="op">=</span> <span class="va">resampling_nsp</span>,
-                        measures <span class="op">=</span> <span class="fu">mlr</span><span class="fu">::</span><span class="va"><a href="https://mlr.mlr-org.com/reference/measures.html" class="external-link">auc</a></span><span class="op">)</span>
+                        measures <span class="op">=</span> <span class="fu">mlr</span><span class="fu">::</span><span class="va">auc</span><span class="op">)</span>
 <span class="co"># Visualization of non-spatial overfitting</span>
 <span class="fu"><a href="https://rdrr.io/pkg/raster/man/boxplot.html" class="external-link">boxplot</a></span><span class="op">(</span><span class="va">sp_cv</span><span class="op">$</span><span class="va">measures.test</span><span class="op">$</span><span class="va">auc</span>,
         <span class="va">conv_cv</span><span class="op">$</span><span class="va">measures.test</span><span class="op">$</span><span class="va">auc</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"lightblue2"</span>, <span class="st">"mistyrose2"</span><span class="op">)</span>,
@@ -301,12 +301,12 @@
 <span class="co">#****************************</span>
 
 <span class="co"># execute the resampling</span>
-<span class="va">sp_glm</span> <span class="op">=</span> <span class="fu">mlr</span><span class="fu">::</span><span class="fu"><a href="https://mlr.mlr-org.com/reference/resample.html" class="external-link">resample</a></span><span class="op">(</span>learner <span class="op">=</span> <span class="va">lrn_glm</span>, task <span class="op">=</span> <span class="va">task</span>,
+<span class="va">sp_glm</span> <span class="op">=</span> <span class="fu">mlr</span><span class="fu">::</span><span class="fu">resample</span><span class="op">(</span>learner <span class="op">=</span> <span class="va">lrn_glm</span>, task <span class="op">=</span> <span class="va">task</span>,
                        resampling <span class="op">=</span> <span class="va">resampling</span>,
-                       measures <span class="op">=</span> <span class="fu">mlr</span><span class="fu">::</span><span class="va"><a href="https://mlr.mlr-org.com/reference/measures.html" class="external-link">auc</a></span><span class="op">)</span>
-<span class="va">sp_qda</span> <span class="op">=</span> <span class="fu">mlr</span><span class="fu">::</span><span class="fu"><a href="https://mlr.mlr-org.com/reference/resample.html" class="external-link">resample</a></span><span class="op">(</span>learner <span class="op">=</span> <span class="va">lrn_qda</span>, task <span class="op">=</span> <span class="va">task_nsp</span>,
+                       measures <span class="op">=</span> <span class="fu">mlr</span><span class="fu">::</span><span class="va">auc</span><span class="op">)</span>
+<span class="va">sp_qda</span> <span class="op">=</span> <span class="fu">mlr</span><span class="fu">::</span><span class="fu">resample</span><span class="op">(</span>learner <span class="op">=</span> <span class="va">lrn_qda</span>, task <span class="op">=</span> <span class="va">task_nsp</span>,
                        resampling <span class="op">=</span> <span class="va">resampling_nsp</span>,
-                       measures <span class="op">=</span> <span class="fu">mlr</span><span class="fu">::</span><span class="va"><a href="https://mlr.mlr-org.com/reference/measures.html" class="external-link">auc</a></span><span class="op">)</span>
+                       measures <span class="op">=</span> <span class="fu">mlr</span><span class="fu">::</span><span class="va">auc</span><span class="op">)</span>
 <span class="co"># QDA has higher AUROC values on average which indicates moderately non-linear</span>
 <span class="co"># boundaries</span>
 <span class="fu"><a href="https://rdrr.io/pkg/raster/man/boxplot.html" class="external-link">boxplot</a></span><span class="op">(</span><span class="va">sp_glm</span><span class="op">$</span><span class="va">measures.test</span><span class="op">$</span><span class="va">auc</span>,
@@ -352,10 +352,10 @@
 <span class="co">#               cpus = parallel::detectCores() / 2)</span>
 
 <span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">28032018</span><span class="op">)</span>
-<span class="va">resa_svm_spatial</span> <span class="op">=</span> <span class="fu">mlr</span><span class="fu">::</span><span class="fu"><a href="https://mlr.mlr-org.com/reference/resample.html" class="external-link">resample</a></span><span class="op">(</span>learner <span class="op">=</span> <span class="va">lrn_ksvm</span>, 
+<span class="va">resa_svm_spatial</span> <span class="op">=</span> <span class="fu">mlr</span><span class="fu">::</span><span class="fu">resample</span><span class="op">(</span>learner <span class="op">=</span> <span class="va">lrn_ksvm</span>, 
                                  task <span class="op">=</span> <span class="va">task</span>,
                                  resampling <span class="op">=</span> <span class="va">resampling</span>,
-                                 measures <span class="op">=</span> <span class="fu">mlr</span><span class="fu">::</span><span class="va"><a href="https://mlr.mlr-org.com/reference/measures.html" class="external-link">auc</a></span>,
+                                 measures <span class="op">=</span> <span class="fu">mlr</span><span class="fu">::</span><span class="va">auc</span>,
                                  show.info <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="co"># Aggregated Result: auc.test.mean=0.7843021</span>
 <span class="co"># parallelStop()</span></code></pre></div>
@@ -379,7 +379,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.0.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
 </div>
 
       </footer>

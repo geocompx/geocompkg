@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">geocompkg | metapackage for the Gecomputation with R book</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.6</span>
       </span>
     </div>
 
@@ -63,7 +63,7 @@
       <h1 data-toc-skip>Point Pattern analysis, spatial interpolation and heatmaps</h1>
                         <h4 data-toc-skip class="author">Robin Lovelace, Jakub Nowosad, Jannes Muenchow</h4>
             
-            <h4 data-toc-skip class="date">2021-12-01</h4>
+            <h4 data-toc-skip class="date">2022-04-20</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/Robinlovelace/geocompr/blob/HEAD/vignettes/point-pattern.Rmd" class="external-link"><code>vignettes/point-pattern.Rmd</code></a></small>
       <div class="hidden name"><code>point-pattern.Rmd</code></div>
@@ -89,9 +89,9 @@
 <span class="kw">if</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">i</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span>
   <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="va">i</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">pkgs</span>, <span class="va">library</span>, character.only <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
-<div class="section level1">
-<h1 id="data">Data<a class="anchor" aria-label="anchor" href="#data"></a>
-</h1>
+<div class="section level2">
+<h2 id="data">Data<a class="anchor" aria-label="anchor" href="#data"></a>
+</h2>
 <p>This chapter uses two datasets on the spatial distribution and some attributes of cycle hire ‘docking stations’, one from OpenStreetMap and one from an on-line data feed.<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> It also uses boundary data representing the 33 boroughs of London. These datasets live in the <strong>spData</strong> package and can be attached as follows:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://nowosad.github.io/spData/" class="external-link">spData</a></span><span class="op">)</span>
@@ -100,9 +100,9 @@
 <span class="va">cycle_hire_osm</span> <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/coerce-methods.html" class="external-link">as</a></span><span class="op">(</span><span class="va">cycle_hire_osm</span>, <span class="st">"Spatial"</span><span class="op">)</span></code></pre></div>
 <p>We use the <code>Spatial</code> classes used by the <strong>sp</strong> dataset, as these are required by point pattern analysis functions used in the chapter. The majority of the chapter will use only the official <code>cycle_hire</code> dataset. Towards the end of the chapter we will compare the two point patterns to see how similar they are. But first we focus only on the former dataset. <!-- TODO: ensure we do this --></p>
 </div>
-<div class="section level1">
-<h1 id="basic-point-pattern-analysis">Basic point pattern analysis<a class="anchor" aria-label="anchor" href="#basic-point-pattern-analysis"></a>
-</h1>
+<div class="section level2">
+<h2 id="basic-point-pattern-analysis">Basic point pattern analysis<a class="anchor" aria-label="anchor" href="#basic-point-pattern-analysis"></a>
+</h2>
 <p>Before undertaking more advanced analysis, it makes sense to start simple, with basic statistics and visualizations describing point patterns. As with most analysis tasks this first stage involves visual inspection of the data. This done in the code chunk below, which generates the figure below:<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a></p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://r-spatial.github.io/sf/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">cycle_hire</span><span class="op">)</span>
@@ -111,9 +111,9 @@
 <p>It is immediately clear that the two datasets on cycle hire points are closely related (they have a high degree of spatial correlation) and have a distinctive pattern. <code>cycle_hire</code> represents official data on cycle parking, and will be the main point dataset analysed. <code>cycle_hire_osm</code> is the community contributed dataset on cycle hire locations, downloaded from OpenStreetMap. Both sets of points overlay some of London’s 33 boroughs, the central ones, and seem to follow the River Thames, especially along the north bank of the river. But how to describe that information quantitatively, and extrapolate the values from the plotted location to other areas?</p>
 <p>It is the purpose of this chapter to provide the know-how to answer such questions, that should be extensible to many applications that involve point data.</p>
 </div>
-<div class="section level1">
-<h1 id="point-density">Point density<a class="anchor" aria-label="anchor" href="#point-density"></a>
-</h1>
+<div class="section level2">
+<h2 id="point-density">Point density<a class="anchor" aria-label="anchor" href="#point-density"></a>
+</h2>
 <p>A basic statistic to compute on points within a polygon is the number of points per polygon, and the related statistic of point density. Let’s first compute that for London overall, before doing a zone-by-zone breakdown:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">cycle_hire</span><span class="op">)</span>
@@ -127,9 +127,9 @@
 <span class="fu">crs</span><span class="op">(</span><span class="va">bb_hire</span><span class="op">)</span> <span class="op">=</span> <span class="fu">crs</span><span class="op">(</span><span class="va">lnd</span><span class="op">)</span>
 <span class="va">c_area</span> <span class="op">=</span> <span class="fu">area</span><span class="op">(</span><span class="va">bb_hire</span><span class="op">)</span> <span class="op">/</span> <span class="fl">1e6</span>
 <span class="va">c_area</span></code></pre></div>
-<div class="section level2">
-<h2 id="exercises">Exercises<a class="anchor" aria-label="anchor" href="#exercises"></a>
-</h2>
+<div class="section level3">
+<h3 id="exercises">Exercises<a class="anchor" aria-label="anchor" href="#exercises"></a>
+</h3>
 <ul>
 <li>What is the average point density of cycle hire points within the scheme’s bounding box?</li>
 </ul>
@@ -139,34 +139,34 @@
 <li>The above chunk uses <strong>raster</strong> functions. How would you write the above code using <strong>sp</strong> code?</li>
 </ul>
 </div>
-<div class="section level2">
-<h2 id="challenges">Challenges<a class="anchor" aria-label="anchor" href="#challenges"></a>
-</h2>
+<div class="section level3">
+<h3 id="challenges">Challenges<a class="anchor" aria-label="anchor" href="#challenges"></a>
+</h3>
 <ul>
 <li>Reproduce the result using <strong>sp</strong> code.</li>
 <li>Reproduce the results using <strong>sf</strong> code.</li>
 </ul>
 </div>
 </div>
-<div class="section level1">
-<h1 id="points-in-polygons-and-raster-cells">Points in polygons and raster cells<a class="anchor" aria-label="anchor" href="#points-in-polygons-and-raster-cells"></a>
-</h1>
+<div class="section level2">
+<h2 id="points-in-polygons-and-raster-cells">Points in polygons and raster cells<a class="anchor" aria-label="anchor" href="#points-in-polygons-and-raster-cells"></a>
+</h2>
 <p>A useful level of analysis at which to analyse the geographic distribution of points is the zone-level. We can aggregate the points per zone and provide summary statistics. Starting with the number of points per polygon, this would calculated as follows:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">crs</span><span class="op">(</span><span class="va">lnd</span><span class="op">)</span> <span class="op">=</span> <span class="fu">crs</span><span class="op">(</span><span class="va">cycle_hire</span><span class="op">)</span>
 <span class="va">cycle_hire_ag</span> <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/aggregate.sf.html" class="external-link">aggregate</a></span><span class="op">(</span><span class="va">cycle_hire</span><span class="op">[</span><span class="st">"id"</span><span class="op">]</span>, <span class="va">lnd</span>, FUN <span class="op">=</span> <span class="st">"length"</span><span class="op">)</span></code></pre></div>
-<div class="section level2">
-<h2 id="exercises-1">Exercises<a class="anchor" aria-label="anchor" href="#exercises-1"></a>
-</h2>
+<div class="section level3">
+<h3 id="exercises-1">Exercises<a class="anchor" aria-label="anchor" href="#exercises-1"></a>
+</h3>
 <p>Based on an analysis of the <code>cycle_hire_ag</code>:</p>
 <ul>
 <li>How many zones contain no cycle hire points?</li>
 <li>What is the average number of cycle hire points per zone?</li>
 </ul>
 </div>
-<div class="section level2">
-<h2 id="challenge">Challenge<a class="anchor" aria-label="anchor" href="#challenge"></a>
-</h2>
+<div class="section level3">
+<h3 id="challenge">Challenge<a class="anchor" aria-label="anchor" href="#challenge"></a>
+</h3>
 <p>Find the average density of cycle hire points per zone in London.</p>
 <ul>
 <li>Plot the result in an attractive map (e.g. as shown below).</li>
@@ -192,9 +192,9 @@
 <p>The resulting interactive plot draws attention to the areas of high point density, such as the area surrounding Victoria station, illustrated below.</p>
 <!-- ![](https://github.com/Robinlovelace/Creating-maps-in-R/raw/master/vignettes/point-pattern_files/figure-markdown_github/victoria-plot.png) -->
 </div>
-<div class="section level2">
-<h2 id="exercises-2">Exercises<a class="anchor" aria-label="anchor" href="#exercises-2"></a>
-</h2>
+<div class="section level3">
+<h3 id="exercises-2">Exercises<a class="anchor" aria-label="anchor" href="#exercises-2"></a>
+</h3>
 <ul>
 <li>Explore the interactive map created by <strong>mapview</strong> above.</li>
 <li>Try to explain the location of the high density clusters: what are they near?</li>
@@ -202,9 +202,9 @@
 </ul>
 </div>
 </div>
-<div class="section level1">
-<h1 id="point-distance-analysis">Point distance analysis<a class="anchor" aria-label="anchor" href="#point-distance-analysis"></a>
-</h1>
+<div class="section level2">
+<h2 id="point-distance-analysis">Point distance analysis<a class="anchor" aria-label="anchor" href="#point-distance-analysis"></a>
+</h2>
 <p>Another important characteristic of point patterns is the distances between points, which can be calculated using <strong>raster</strong>’s <code><a href="https://rdrr.io/r/stats/dist.html" class="external-link">dist()</a></code> function:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">d</span> <span class="op">=</span> <span class="fu">spDists</span><span class="op">(</span><span class="va">cycle_hire</span>, longlat <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
@@ -225,9 +225,9 @@
 <span class="va">Gd</span> <span class="op">=</span> <span class="va">Gd</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">dmin</span><span class="op">)</span>
 <span class="co"># plot(distance, Gd)</span></code></pre></div>
 </div>
-<div class="section level1">
-<h1 id="spatial-interpolation">Spatial interpolation<a class="anchor" aria-label="anchor" href="#spatial-interpolation"></a>
-</h1>
+<div class="section level2">
+<h2 id="spatial-interpolation">Spatial interpolation<a class="anchor" aria-label="anchor" href="#spatial-interpolation"></a>
+</h2>
 <p>Spatial interpolation refers to methods of estimating the value of something in one place, based on measurements taken elsewhere. Building on the example of cycle hire points in London, we can ask the question: what is the expected number of bikes for a stand in location x, given knowledge of the existing data.</p>
 <p>Thus spatial interpolation requires a dependent variable, which is summarised numerically and visually below:</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
@@ -245,18 +245,18 @@
 <span class="va">r_interp1</span> <span class="op">=</span> <span class="fu">focal</span><span class="op">(</span>x <span class="op">=</span> <span class="va">rnbikes</span>, w <span class="op">=</span> <span class="va">w</span>, fun <span class="op">=</span> <span class="va">mean</span>, NAonly <span class="op">=</span> <span class="cn">TRUE</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span>, pad <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="fu"><a href="https://r-spatial.github.io/sf/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">r_interp1</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">cycle_hire</span><span class="op">)</span></code></pre></div>
-<div class="section level2">
-<h2 id="exercises-3">Exercises<a class="anchor" aria-label="anchor" href="#exercises-3"></a>
-</h2>
+<div class="section level3">
+<h3 id="exercises-3">Exercises<a class="anchor" aria-label="anchor" href="#exercises-3"></a>
+</h3>
 <ul>
 <li>Experiment with different matrix sizes of <code>w</code> in the above code block. What difference does the size make?</li>
 <li>Note that the 9x9 cell focal point leads to an ‘over smoothing’ of the results. Find a way to include only values from touching cells in the results.</li>
 </ul>
 </div>
 </div>
-<div class="section level1">
-<h1 id="voronoi-polygon-interpolation">Voronoi polygon interpolation<a class="anchor" aria-label="anchor" href="#voronoi-polygon-interpolation"></a>
-</h1>
+<div class="section level2">
+<h2 id="voronoi-polygon-interpolation">Voronoi polygon interpolation<a class="anchor" aria-label="anchor" href="#voronoi-polygon-interpolation"></a>
+</h2>
 <p>The raster cell method of spatial interpolation was fun, but not that sophisticated or spatially precise, with a resolution of around 1 km.</p>
 <p>The next simplest solution is to break the area up into pieces using the <strong>dismo</strong> package and assign the value of the entire area to the value of the point it contains:</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
@@ -266,9 +266,9 @@
 <span class="fu">tm_shape</span><span class="op">(</span><span class="va">v</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu">tm_fill</span><span class="op">(</span><span class="st">"nbikes"</span>, palette <span class="op">=</span> <span class="st">"YlOrRd"</span>, style <span class="op">=</span> <span class="st">"quantile"</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu">qtm</span><span class="op">(</span><span class="va">cycle_hire</span>, symbols.size <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span></code></pre></div>
-<div class="section level2">
-<h2 id="exercises-4">Exercises<a class="anchor" aria-label="anchor" href="#exercises-4"></a>
-</h2>
+<div class="section level3">
+<h3 id="exercises-4">Exercises<a class="anchor" aria-label="anchor" href="#exercises-4"></a>
+</h3>
 <ul>
 <li>Create a point at a random location on the map and plot it prominently on top of the previously plotted layers.</li>
 <li>What would be it’s estimated ‘nbikes’ a) from the voronoi polygon interpolation and b) from the raster interpolation.</li>
@@ -276,19 +276,19 @@
 </ul>
 </div>
 </div>
-<div class="section level1">
-<h1 id="interpolation-with-the-gstat-package">Interpolation with the gstat package<a class="anchor" aria-label="anchor" href="#interpolation-with-the-gstat-package"></a>
-</h1>
+<div class="section level2">
+<h2 id="interpolation-with-the-gstat-package">Interpolation with the gstat package<a class="anchor" aria-label="anchor" href="#interpolation-with-the-gstat-package"></a>
+</h2>
 <p><strong>gstat</strong> provides a number of functions for spatial prediction and interpolation using a range of models <span class="citation">(Pebesma and Graeler 2018)</span>. The most basic of these, and a workhorse for spatial interpolation is Inverse Distance Weighting (IDW) (results not shown):</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/gstat/" class="external-link">gstat</a></span><span class="op">)</span>
-<span class="va">gs</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/gstat/man/gstat.html" class="external-link">gstat</a></span><span class="op">(</span>formula <span class="op">=</span> <span class="va">nbikes</span><span class="op">~</span><span class="fl">1</span>, locations <span class="op">=</span> <span class="va">cycle_hire</span><span class="op">)</span>
+<span class="va">gs</span> <span class="op">=</span> <span class="fu">gstat</span><span class="op">(</span>formula <span class="op">=</span> <span class="va">nbikes</span><span class="op">~</span><span class="fl">1</span>, locations <span class="op">=</span> <span class="va">cycle_hire</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/pkg/raster/man/projection.html" class="external-link">crs</a></span><span class="op">(</span><span class="va">r</span><span class="op">)</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/projection.html" class="external-link">crs</a></span><span class="op">(</span><span class="va">lnd</span><span class="op">)</span>
 <span class="va">r_idw</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/interpolate.html" class="external-link">interpolate</a></span><span class="op">(</span><span class="va">r</span>, <span class="va">gs</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/pkg/raster/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">r_idw</span><span class="op">)</span></code></pre></div>
-<div class="section level2">
-<h2 id="exercises-5">Exercises<a class="anchor" aria-label="anchor" href="#exercises-5"></a>
-</h2>
+<div class="section level3">
+<h3 id="exercises-5">Exercises<a class="anchor" aria-label="anchor" href="#exercises-5"></a>
+</h3>
 <ul>
 <li>Look at the original data - what could explain the spatial distribution of the <code>nbikes</code> variable?</li>
 <li>Experiment with the spatial resolution - we’re using 1 km grid cells which are huge!</li>
@@ -297,9 +297,9 @@
 </ul>
 </div>
 </div>
-<div class="section level1">
-<h1 id="heatmaps-with-leaflet-extras">Heatmaps with leaflet.extras<a class="anchor" aria-label="anchor" href="#heatmaps-with-leaflet-extras"></a>
-</h1>
+<div class="section level2">
+<h2 id="heatmaps-with-leaflet-extras">Heatmaps with leaflet.extras<a class="anchor" aria-label="anchor" href="#heatmaps-with-leaflet-extras"></a>
+</h2>
 <p>If your aim is to visualise clusters of points, without worrying about interpolation, which can be computationally intensive, you can create a heatmap directly. <strong>leaflet.extras</strong> provides the function <code>addHeatmap()</code> (among many other useful functions for interactive data visualization) for this purpose, as illustrated below.</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># library(leaflet.extras)</span>
@@ -312,14 +312,14 @@
 <span class="co">#   addProviderTiles(provider = providers$OpenTopoMap) %&gt;% </span>
 <span class="co">#   addWebGLHeatmap(data = cycle_hire, size = 700, units = "m", intensity = 0.5)</span></code></pre></div>
 </div>
-<div class="section level1">
-<h1 id="further-reading-and-tutorials">Further reading and tutorials<a class="anchor" aria-label="anchor" href="#further-reading-and-tutorials"></a>
-</h1>
+<div class="section level2">
+<h2 id="further-reading-and-tutorials">Further reading and tutorials<a class="anchor" aria-label="anchor" href="#further-reading-and-tutorials"></a>
+</h2>
 <p>There is much more to learn about point pattern analysis, spatial interpolation and heatmaps. For point pattern analysis, we recommend reading-up on the <strong>spatstat</strong> package <span class="citation">(e.g. Baddeley, Rubak, and Turner 2015)</span>. For more on interpolation, there are many methods including recent machine learning approaches <span class="citation">(e.g. Hengl et al. 2018; Meyer et al. 2018)</span> (see reproducible tutorial at <a href="https://github.com/Envirometrix/BigSpatialDataR" class="external-link uri">https://github.com/Envirometrix/BigSpatialDataR</a> ). For more on visualising point datasets as heatmaps a recent paper provides insight into the use of WebGL, applied to road traffic crash data <span class="citation">(Ježek et al. 2017)</span>.</p>
 </div>
-<div class="section level1 unnumbered">
-<h1 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
-</h1>
+<div class="section level2">
+<h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
+</h2>
 <div id="refs" class="references">
 <div id="ref-baddeley_spatial_2015">
 <p>Baddeley, Adrian, Ege Rubak, and Rolf Turner. 2015. <em>Spatial Point Patterns: Methodology and Applications with R</em>. CRC Press.</p>
@@ -367,7 +367,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.0.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
 </div>
 
       </footer>
