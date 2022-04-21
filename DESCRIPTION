@@ -71,6 +71,7 @@ Suggests:
     paradox,
     pool,
     pROC,
+    progressr,
     purrr,
     qgisprocess,
     ranger,
