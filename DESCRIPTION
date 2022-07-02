@@ -16,11 +16,6 @@ Imports:
     spData,
     spDataLarge,
     units
-Remotes:
-    mlr-org/mlr3extralearners,
-    paleolimbot/qgisprocess,
-    nowosad/spDataLarge,
-    mtennekes/tmap
 URL: https://github.com/geocompr/geocompkg,
     https://geocompr.github.io/geocompkg/
 BugReports: https://github.com/Robinlovelace/geocompr/issues
@@ -101,7 +96,24 @@ Suggests:
     tmap,
     tmaptools,
     tree,
-    vegan
+    vegan,
+    gh,
+    httr,
+    magick,
+    covr,
+    tidytext,
+    nabor,
+    rstac,
+    Rsagacmd,
+    tidygeocoder,
+    gdalcubes,
+    whitebox,
+    openeo
+Remotes:
+    mlr-org/mlr3extralearners,
+    paleolimbot/qgisprocess,
+    nowosad/spDataLarge,
+    mtennekes/tmap
 VignetteBuilder: knitr
 Encoding: UTF-8
 License: CC BY-NC-ND 4.0
