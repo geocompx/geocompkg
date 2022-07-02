@@ -108,7 +108,8 @@ Suggests:
     tidygeocoder,
     gdalcubes,
     whitebox,
-    openeo
+    openeo,
+    gstat
 Remotes:
     mlr-org/mlr3extralearners,
     paleolimbot/qgisprocess,
