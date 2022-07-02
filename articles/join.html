@@ -78,7 +78,7 @@
       <h1 data-toc-skip>Spatial Joins Extended</h1>
                         <h4 data-toc-skip class="author">Robin Lovelace, Jakub Nowosad, Jannes Muenchow</h4>
             
-            <h4 data-toc-skip class="date">2022-04-21</h4>
+            <h4 data-toc-skip class="date">2022-07-02</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/Robinlovelace/geocompr/blob/HEAD/vignettes/join.Rmd" class="external-link"><code>vignettes/join.Rmd</code></a></small>
       <div class="hidden name"><code>join.Rmd</code></div>
@@ -90,54 +90,54 @@
 <p>This vignette provides some further detail on the Vector attribute joining section (see <a href="https://geocompr.robinlovelace.net/attr.html#vector-attribute-joining" class="external-link uri">https://geocompr.robinlovelace.net/attr.html#vector-attribute-joining</a> ) of <a href="https://geocompr.github.io/" class="external-link">the Geocomputation with R book</a>.</p>
 <p>This vignette requires the following packages to be installed and attached:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/" class="external-link">sf</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://nowosad.github.io/spData/" class="external-link">spData</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/" class="external-link">sf</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://nowosad.github.io/spData/" class="external-link">spData</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></code></pre></div>
 <p>We will use an <code>sf</code> object <code>north_america</code> with country codes (<code>iso_a2</code>), names and geometries, as well as a <code>data.frame</code> object <code>wb_north_america</code> containing information about urban population and unemployment for three countries. Note that <code>north_america</code> contains data about Canada, Greenland and the United States but the World Bank dataset (<code>wb_north_america</code>) contains information about Canada, Mexico and the United States:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">north_america</span> <span class="op">=</span> <span class="va">world</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">subregion</span> <span class="op">==</span> <span class="st">"Northern America"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">iso_a2</span>, <span class="va">name_long</span><span class="op">)</span>
-<span class="va">north_america</span></code></pre></div>
-<pre><code><span class="co">## Simple feature collection with 3 features and 2 fields</span>
-<span class="co">## Geometry type: MULTIPOLYGON</span>
-<span class="co">## Dimension:     XY</span>
-<span class="co">## Bounding box:  xmin: -171.7911 ymin: 18.91619 xmax: -12.20855 ymax: 83.64513</span>
-<span class="co">## Geodetic CRS:  WGS 84</span>
-<span class="co">## <span style="color: #949494;"># A tibble: 3 × 3</span></span>
-<span class="co">##   iso_a2 name_long                                                          geom</span>
-<span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                                <span style="color: #949494; font-style: italic;">&lt;MULTIPOLYGON [°]&gt;</span></span>
-<span class="co">## <span style="color: #BCBCBC;">1</span> CA     Canada        (((-132.71 54.04001, -133.18 54.16998, -133.2397 53.8510…</span>
-<span class="co">## <span style="color: #BCBCBC;">2</span> US     United States (((-171.7317 63.78252, -171.7911 63.40585, -171.5531 63.…</span>
-<span class="co">## <span style="color: #BCBCBC;">3</span> GL     Greenland     (((-46.76379 82.62796, -46.9007 82.19979, -44.523 81.660…</span></code></pre>
+<code class="sourceCode R"><span><span class="va">north_america</span> <span class="op">=</span> <span class="va">world</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">subregion</span> <span class="op">==</span> <span class="st">"Northern America"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">iso_a2</span>, <span class="va">name_long</span><span class="op">)</span></span>
+<span><span class="va">north_america</span></span></code></pre></div>
+<pre><code><span><span class="co">## Simple feature collection with 3 features and 2 fields</span></span>
+<span><span class="co">## Geometry type: MULTIPOLYGON</span></span>
+<span><span class="co">## Dimension:     XY</span></span>
+<span><span class="co">## Bounding box:  xmin: -171.7911 ymin: 18.91619 xmax: -12.20855 ymax: 83.64513</span></span>
+<span><span class="co">## Geodetic CRS:  WGS 84</span></span>
+<span><span class="co">## <span style="color: #949494;"># A tibble: 3 × 3</span></span></span>
+<span><span class="co">##   iso_a2 name_long                                                          geom</span></span>
+<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                                <span style="color: #949494; font-style: italic;">&lt;MULTIPOLYGON [°]&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> CA     Canada        (((-132.71 54.04001, -133.18 54.16998, -133.2397 53.8510…</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span> US     United States (((-171.7317 63.78252, -171.7911 63.40585, -171.5531 63.…</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">3</span> GL     Greenland     (((-46.76379 82.62796, -46.9007 82.19979, -44.523 81.660…</span></span></code></pre>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">wb_north_america</span> <span class="op">=</span> <span class="va">worldbank_df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">name</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Canada"</span>, <span class="st">"Mexico"</span>, <span class="st">"United States"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">name</span>, <span class="va">iso_a2</span>, <span class="va">urban_pop</span>, unemploy <span class="op">=</span> <span class="va">unemployment</span><span class="op">)</span>
-<span class="va">wb_north_america</span></code></pre></div>
-<pre><code><span class="co">## <span style="color: #949494;"># A tibble: 3 × 4</span></span>
-<span class="co">##   name          iso_a2 urban_pop unemploy</span>
-<span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="co">## <span style="color: #BCBCBC;">1</span> Canada        CA      29<span style="text-decoration: underline;">014</span>612     6.91</span>
-<span class="co">## <span style="color: #BCBCBC;">2</span> Mexico        MX      98<span style="text-decoration: underline;">099</span>040     4.81</span>
-<span class="co">## <span style="color: #BCBCBC;">3</span> United States US     259<span style="text-decoration: underline;">460</span>378     6.17</span></code></pre>
+<code class="sourceCode R"><span><span class="va">wb_north_america</span> <span class="op">=</span> <span class="va">worldbank_df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">name</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Canada"</span>, <span class="st">"Mexico"</span>, <span class="st">"United States"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">name</span>, <span class="va">iso_a2</span>, <span class="va">urban_pop</span>, unemploy <span class="op">=</span> <span class="va">unemployment</span><span class="op">)</span></span>
+<span><span class="va">wb_north_america</span></span></code></pre></div>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 3 × 4</span></span></span>
+<span><span class="co">##   name          iso_a2 urban_pop unemploy</span></span>
+<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> Canada        CA      29<span style="text-decoration: underline;">014</span>612     6.91</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span> Mexico        MX      98<span style="text-decoration: underline;">099</span>040     4.81</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">3</span> United States US     259<span style="text-decoration: underline;">460</span>378     6.17</span></span></code></pre>
 <p>We will use a left join to combine the two datasets. Left joins are the most commonly used operation for adding attributes to spatial data, as they return all observations from the left object (<code>north_america</code>) and the matched observations from the right object (<code>wb_north_america</code>) in new columns. Rows in the left object without matches in the right (<code>Greenland</code> in this case) result in <code>NA</code> values.</p>
 <p>To join two objects we need to specify a key. This is a variable (or a set of variables) that uniquely identifies each observation (row). The <code>by</code> argument of <strong>dplyr</strong>’s join functions lets you identify the key variable. In simple cases, a single, unique variable exist in both objects like the <code>iso_a2</code> column in our example (you may need to rename columns with identifying information for this to work):</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">left_join1</span> <span class="op">=</span> <span class="va">north_america</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">wb_north_america</span>, by <span class="op">=</span> <span class="st">"iso_a2"</span><span class="op">)</span>
-<span class="va">left_join1</span></code></pre></div>
-<pre><code><span class="co">## Simple feature collection with 3 features and 5 fields</span>
-<span class="co">## Geometry type: MULTIPOLYGON</span>
-<span class="co">## Dimension:     XY</span>
-<span class="co">## Bounding box:  xmin: -171.7911 ymin: 18.91619 xmax: -12.20855 ymax: 83.64513</span>
-<span class="co">## Geodetic CRS:  WGS 84</span>
-<span class="co">## <span style="color: #949494;"># A tibble: 3 × 6</span></span>
-<span class="co">##   iso_a2 name_long                                 geom name  urban_pop unemploy</span>
-<span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                       <span style="color: #949494; font-style: italic;">&lt;MULTIPOLYGON [°]&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="co">## <span style="color: #BCBCBC;">1</span> CA     Canada        (((-132.71 54.04001, -133.18 54… Cana…  29<span style="text-decoration: underline;">014</span>612     6.91</span>
-<span class="co">## <span style="color: #BCBCBC;">2</span> US     United States (((-171.7317 63.78252, -171.791… Unit… 259<span style="text-decoration: underline;">460</span>378     6.17</span>
-<span class="co">## <span style="color: #BCBCBC;">3</span> GL     Greenland     (((-46.76379 82.62796, -46.9007… <span style="color: #BB0000;">NA</span>           <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span></span></code></pre>
+<code class="sourceCode R"><span><span class="va">left_join1</span> <span class="op">=</span> <span class="va">north_america</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">wb_north_america</span>, by <span class="op">=</span> <span class="st">"iso_a2"</span><span class="op">)</span></span>
+<span><span class="va">left_join1</span></span></code></pre></div>
+<pre><code><span><span class="co">## Simple feature collection with 3 features and 5 fields</span></span>
+<span><span class="co">## Geometry type: MULTIPOLYGON</span></span>
+<span><span class="co">## Dimension:     XY</span></span>
+<span><span class="co">## Bounding box:  xmin: -171.7911 ymin: 18.91619 xmax: -12.20855 ymax: 83.64513</span></span>
+<span><span class="co">## Geodetic CRS:  WGS 84</span></span>
+<span><span class="co">## <span style="color: #949494;"># A tibble: 3 × 6</span></span></span>
+<span><span class="co">##   iso_a2 name_long                                 geom name  urban_pop unemploy</span></span>
+<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                       <span style="color: #949494; font-style: italic;">&lt;MULTIPOLYGON [°]&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> CA     Canada        (((-132.71 54.04001, -133.18 54… Cana…  29<span style="text-decoration: underline;">014</span>612     6.91</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span> US     United States (((-171.7317 63.78252, -171.791… Unit… 259<span style="text-decoration: underline;">460</span>378     6.17</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">3</span> GL     Greenland     (((-46.76379 82.62796, -46.9007… <span style="color: #BB0000;">NA</span>           <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span></span></span></code></pre>
 <p>This has created a spatial dataset with the new variables added. The utility of this is shown in the figure below, which shows the unemployment rate (a World Bank variable) across the countries of North America.</p>
 <div class="figure">
 <img src="join_files/figure-html/unemploy-1.png" alt="Figure 1. The unemployment rate (taken from World Bank statistics) in Canada and the United States to illustrate the utility of joining attribute data on to spatial datasets." width="480"><p class="caption">
@@ -146,65 +146,65 @@ Figure 1. The unemployment rate (taken from World Bank statistics) in Canada and
 </div>
 <p>It is also possible to join objects by different variables. Both of the datasets have variables with names of countries, but they are named differently. The <code>north_america</code> has a <code>name_long</code> column and the <code>wb_north_america</code> has a <code>name</code> column. In these cases a named vector, such as <code>c("name_long" = "name")</code>, can specify the connection:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">left_join2</span> <span class="op">=</span> <span class="va">north_america</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">wb_north_america</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"name_long"</span> <span class="op">=</span> <span class="st">"name"</span><span class="op">)</span><span class="op">)</span>
-<span class="va">left_join2</span></code></pre></div>
-<pre><code><span class="co">## Simple feature collection with 3 features and 5 fields</span>
-<span class="co">## Geometry type: MULTIPOLYGON</span>
-<span class="co">## Dimension:     XY</span>
-<span class="co">## Bounding box:  xmin: -171.7911 ymin: 18.91619 xmax: -12.20855 ymax: 83.64513</span>
-<span class="co">## Geodetic CRS:  WGS 84</span>
-<span class="co">## <span style="color: #949494;"># A tibble: 3 × 6</span></span>
-<span class="co">##   iso_a2.x name_long                            geom iso_a2.y urban_pop unemploy</span>
-<span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                  <span style="color: #949494; font-style: italic;">&lt;MULTIPOLYGON [°]&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="co">## <span style="color: #BCBCBC;">1</span> CA       Canada        (((-132.71 54.04001, -133.… CA        29<span style="text-decoration: underline;">014</span>612     6.91</span>
-<span class="co">## <span style="color: #BCBCBC;">2</span> US       United States (((-171.7317 63.78252, -17… US       259<span style="text-decoration: underline;">460</span>378     6.17</span>
-<span class="co">## <span style="color: #BCBCBC;">3</span> GL       Greenland     (((-46.76379 82.62796, -46… <span style="color: #BB0000;">NA</span>              <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span></span></code></pre>
+<code class="sourceCode R"><span><span class="va">left_join2</span> <span class="op">=</span> <span class="va">north_america</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">wb_north_america</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"name_long"</span> <span class="op">=</span> <span class="st">"name"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">left_join2</span></span></code></pre></div>
+<pre><code><span><span class="co">## Simple feature collection with 3 features and 5 fields</span></span>
+<span><span class="co">## Geometry type: MULTIPOLYGON</span></span>
+<span><span class="co">## Dimension:     XY</span></span>
+<span><span class="co">## Bounding box:  xmin: -171.7911 ymin: 18.91619 xmax: -12.20855 ymax: 83.64513</span></span>
+<span><span class="co">## Geodetic CRS:  WGS 84</span></span>
+<span><span class="co">## <span style="color: #949494;"># A tibble: 3 × 6</span></span></span>
+<span><span class="co">##   iso_a2.x name_long                            geom iso_a2.y urban_pop unemploy</span></span>
+<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                  <span style="color: #949494; font-style: italic;">&lt;MULTIPOLYGON [°]&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> CA       Canada        (((-132.71 54.04001, -133.… CA        29<span style="text-decoration: underline;">014</span>612     6.91</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span> US       United States (((-171.7317 63.78252, -17… US       259<span style="text-decoration: underline;">460</span>378     6.17</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">3</span> GL       Greenland     (((-46.76379 82.62796, -46… <span style="color: #BB0000;">NA</span>              <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span></span></span></code></pre>
 <p>Note that the result contains two duplicated variables - <code>iso_a2.x</code> and <code>iso_a2.y</code> because both <code>x</code> and <code>y</code> objects have the column <code>iso_a2</code>. This can be solved by specifying all the keys:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">left_join3</span> <span class="op">=</span> <span class="va">north_america</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">wb_north_america</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"iso_a2"</span>, <span class="st">"name_long"</span> <span class="op">=</span> <span class="st">"name"</span><span class="op">)</span><span class="op">)</span>
-<span class="va">left_join3</span></code></pre></div>
-<pre><code><span class="co">## Simple feature collection with 3 features and 4 fields</span>
-<span class="co">## Geometry type: MULTIPOLYGON</span>
-<span class="co">## Dimension:     XY</span>
-<span class="co">## Bounding box:  xmin: -171.7911 ymin: 18.91619 xmax: -12.20855 ymax: 83.64513</span>
-<span class="co">## Geodetic CRS:  WGS 84</span>
-<span class="co">## <span style="color: #949494;"># A tibble: 3 × 5</span></span>
-<span class="co">##   iso_a2 name_long                                       geom urban_pop unemploy</span>
-<span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                             <span style="color: #949494; font-style: italic;">&lt;MULTIPOLYGON [°]&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="co">## <span style="color: #BCBCBC;">1</span> CA     Canada        (((-132.71 54.04001, -133.18 54.16998…  29<span style="text-decoration: underline;">014</span>612     6.91</span>
-<span class="co">## <span style="color: #BCBCBC;">2</span> US     United States (((-171.7317 63.78252, -171.7911 63.4… 259<span style="text-decoration: underline;">460</span>378     6.17</span>
-<span class="co">## <span style="color: #BCBCBC;">3</span> GL     Greenland     (((-46.76379 82.62796, -46.9007 82.19…        <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span></span></code></pre>
+<code class="sourceCode R"><span><span class="va">left_join3</span> <span class="op">=</span> <span class="va">north_america</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">wb_north_america</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"iso_a2"</span>, <span class="st">"name_long"</span> <span class="op">=</span> <span class="st">"name"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">left_join3</span></span></code></pre></div>
+<pre><code><span><span class="co">## Simple feature collection with 3 features and 4 fields</span></span>
+<span><span class="co">## Geometry type: MULTIPOLYGON</span></span>
+<span><span class="co">## Dimension:     XY</span></span>
+<span><span class="co">## Bounding box:  xmin: -171.7911 ymin: 18.91619 xmax: -12.20855 ymax: 83.64513</span></span>
+<span><span class="co">## Geodetic CRS:  WGS 84</span></span>
+<span><span class="co">## <span style="color: #949494;"># A tibble: 3 × 5</span></span></span>
+<span><span class="co">##   iso_a2 name_long                                       geom urban_pop unemploy</span></span>
+<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                             <span style="color: #949494; font-style: italic;">&lt;MULTIPOLYGON [°]&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> CA     Canada        (((-132.71 54.04001, -133.18 54.16998…  29<span style="text-decoration: underline;">014</span>612     6.91</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span> US     United States (((-171.7317 63.78252, -171.7911 63.4… 259<span style="text-decoration: underline;">460</span>378     6.17</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">3</span> GL     Greenland     (((-46.76379 82.62796, -46.9007 82.19…        <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span></span></span></code></pre>
 <p>Joins also work when a data frame is the first argument. However, for them to work we need to drop the <code>sf</code> class.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">left_join4</span> <span class="op">=</span> <span class="va">wb_north_america</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html" class="external-link">st_drop_geometry</a></span><span class="op">(</span><span class="va">north_america</span><span class="op">)</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"iso_a2"</span><span class="op">)</span><span class="op">)</span>
-<span class="va">left_join4</span></code></pre></div>
-<pre><code><span class="co">## <span style="color: #949494;"># A tibble: 3 × 5</span></span>
-<span class="co">##   name          iso_a2 urban_pop unemploy name_long    </span>
-<span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        </span>
-<span class="co">## <span style="color: #BCBCBC;">1</span> Canada        CA      29<span style="text-decoration: underline;">014</span>612     6.91 Canada       </span>
-<span class="co">## <span style="color: #BCBCBC;">2</span> Mexico        MX      98<span style="text-decoration: underline;">099</span>040     4.81 <span style="color: #BB0000;">NA</span>           </span>
-<span class="co">## <span style="color: #BCBCBC;">3</span> United States US     259<span style="text-decoration: underline;">460</span>378     6.17 United States</span></code></pre>
+<code class="sourceCode R"><span><span class="va">left_join4</span> <span class="op">=</span> <span class="va">wb_north_america</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html" class="external-link">st_drop_geometry</a></span><span class="op">(</span><span class="va">north_america</span><span class="op">)</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"iso_a2"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">left_join4</span></span></code></pre></div>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 3 × 5</span></span></span>
+<span><span class="co">##   name          iso_a2 urban_pop unemploy name_long    </span></span>
+<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> Canada        CA      29<span style="text-decoration: underline;">014</span>612     6.91 Canada       </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span> Mexico        MX      98<span style="text-decoration: underline;">099</span>040     4.81 <span style="color: #BB0000;">NA</span>           </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">3</span> United States US     259<span style="text-decoration: underline;">460</span>378     6.17 United States</span></span></code></pre>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">left_join4</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## [1] "tbl_df"     "tbl"        "data.frame"</span></code></pre>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">left_join4</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] "tbl_df"     "tbl"        "data.frame"</span></span></code></pre>
 <p>In contrast to <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">inner_join()</a></code> keeps only observations from the left object (<code>north_america</code>) where there are matching observations in the right object (<code>wb_north_america</code>). All columns from the left and right object are still kept:</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">inner_join1</span> <span class="op">=</span> <span class="va">north_america</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">inner_join</a></span><span class="op">(</span><span class="va">wb_north_america</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"iso_a2"</span>, <span class="st">"name_long"</span> <span class="op">=</span> <span class="st">"name"</span><span class="op">)</span><span class="op">)</span>
-<span class="va">inner_join1</span></code></pre></div>
-<pre><code><span class="co">## Simple feature collection with 2 features and 4 fields</span>
-<span class="co">## Geometry type: MULTIPOLYGON</span>
-<span class="co">## Dimension:     XY</span>
-<span class="co">## Bounding box:  xmin: -171.7911 ymin: 18.91619 xmax: -52.6481 ymax: 83.23324</span>
-<span class="co">## Geodetic CRS:  WGS 84</span>
-<span class="co">## <span style="color: #949494;"># A tibble: 2 × 5</span></span>
-<span class="co">##   iso_a2 name_long                                       geom urban_pop unemploy</span>
-<span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                             <span style="color: #949494; font-style: italic;">&lt;MULTIPOLYGON [°]&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="co">## <span style="color: #BCBCBC;">1</span> CA     Canada        (((-132.71 54.04001, -133.18 54.16998…  29<span style="text-decoration: underline;">014</span>612     6.91</span>
-<span class="co">## <span style="color: #BCBCBC;">2</span> US     United States (((-171.7317 63.78252, -171.7911 63.4… 259<span style="text-decoration: underline;">460</span>378     6.17</span></code></pre>
+<code class="sourceCode R"><span><span class="va">inner_join1</span> <span class="op">=</span> <span class="va">north_america</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">inner_join</a></span><span class="op">(</span><span class="va">wb_north_america</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"iso_a2"</span>, <span class="st">"name_long"</span> <span class="op">=</span> <span class="st">"name"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">inner_join1</span></span></code></pre></div>
+<pre><code><span><span class="co">## Simple feature collection with 2 features and 4 fields</span></span>
+<span><span class="co">## Geometry type: MULTIPOLYGON</span></span>
+<span><span class="co">## Dimension:     XY</span></span>
+<span><span class="co">## Bounding box:  xmin: -171.7911 ymin: 18.91619 xmax: -52.6481 ymax: 83.23324</span></span>
+<span><span class="co">## Geodetic CRS:  WGS 84</span></span>
+<span><span class="co">## <span style="color: #949494;"># A tibble: 2 × 5</span></span></span>
+<span><span class="co">##   iso_a2 name_long                                       geom urban_pop unemploy</span></span>
+<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                             <span style="color: #949494; font-style: italic;">&lt;MULTIPOLYGON [°]&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> CA     Canada        (((-132.71 54.04001, -133.18 54.16998…  29<span style="text-decoration: underline;">014</span>612     6.91</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span> US     United States (((-171.7317 63.78252, -171.7911 63.4… 259<span style="text-decoration: underline;">460</span>378     6.17</span></span></code></pre>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -222,7 +222,7 @@ Figure 1. The unemployment rate (taken from World Bank statistics) in Canada and
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer>
