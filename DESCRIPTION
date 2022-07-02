@@ -62,7 +62,6 @@ Suggests:
     nabor,
     odbc,
     osmdata,
-    ows4R,
     paradox,
     pool,
     pROC,
