@@ -108,7 +108,10 @@ Suggests:
     gdalcubes,
     whitebox,
     openeo,
-    gstat
+    gstat,
+    exactextractr,
+    smoothr,
+    sfnetworks
 Remotes:
     mlr-org/mlr3extralearners,
     paleolimbot/qgisprocess,
