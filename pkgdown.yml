@@ -1,5 +1,5 @@
 pandoc: 2.7.3
-pkgdown: 2.0.5
+pkgdown: 2.0.6
 pkgdown_sha: ~
 articles:
   algorithm: algorithm.html
@@ -8,5 +8,5 @@ articles:
   point-pattern: point-pattern.html
   tidyverse-pitfalls: tidyverse-pitfalls.html
   us-map: us-map.html
-last_built: 2022-07-02T12:42Z
+last_built: 2022-07-16T21:41Z
 
