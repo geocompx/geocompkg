@@ -111,7 +111,8 @@ Suggests:
     gstat,
     exactextractr,
     smoothr,
-    sfnetworks
+    sfnetworks,
+    metathis
 Remotes:
     mlr-org/mlr3extralearners,
     paleolimbot/qgisprocess,
