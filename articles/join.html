@@ -78,7 +78,7 @@
       <h1 data-toc-skip>Spatial Joins Extended</h1>
                         <h4 data-toc-skip class="author">Robin Lovelace, Jakub Nowosad, Jannes Muenchow</h4>
             
-            <h4 data-toc-skip class="date">2022-07-16</h4>
+            <h4 data-toc-skip class="date">2022-08-23</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/Robinlovelace/geocompr/blob/HEAD/vignettes/join.Rmd" class="external-link"><code>vignettes/join.Rmd</code></a></small>
       <div class="hidden name"><code>join.Rmd</code></div>
@@ -133,11 +133,12 @@
 <span><span class="co">## Bounding box:  xmin: -171.7911 ymin: 18.91619 xmax: -12.20855 ymax: 83.64513</span></span>
 <span><span class="co">## Geodetic CRS:  WGS 84</span></span>
 <span><span class="co">## <span style="color: #949494;"># A tibble: 3 × 6</span></span></span>
-<span><span class="co">##   iso_a2 name_long                                 geom name  urban_pop unemploy</span></span>
-<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                       <span style="color: #949494; font-style: italic;">&lt;MULTIPOLYGON [°]&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span> CA     Canada        (((-132.71 54.04001, -133.18 54… Cana…  29<span style="text-decoration: underline;">014</span>612     6.91</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span> US     United States (((-171.7317 63.78252, -171.791… Unit… 259<span style="text-decoration: underline;">460</span>378     6.17</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">3</span> GL     Greenland     (((-46.76379 82.62796, -46.9007… <span style="color: #BB0000;">NA</span>           <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span></span></span></code></pre>
+<span><span class="co">##   iso_a2 name_long                                    geom name  urban…¹ unemp…²</span></span>
+<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                          <span style="color: #949494; font-style: italic;">&lt;MULTIPOLYGON [°]&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> CA     Canada        (((-132.71 54.04001, -133.18 54.16… Cana…  2.90<span style="color: #949494;">e</span>7    6.91</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span> US     United States (((-171.7317 63.78252, -171.7911 6… Unit…  2.59<span style="color: #949494;">e</span>8    6.17</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">3</span> GL     Greenland     (((-46.76379 82.62796, -46.9007 82… <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>   <span style="color: #949494;"> </span>    <span style="color: #BB0000;">NA</span>   </span></span>
+<span><span class="co">## <span style="color: #949494;"># … with abbreviated variable names ¹​urban_pop, ²​unemploy</span></span></span></code></pre>
 <p>This has created a spatial dataset with the new variables added. The utility of this is shown in the figure below, which shows the unemployment rate (a World Bank variable) across the countries of North America.</p>
 <div class="figure">
 <img src="join_files/figure-html/unemploy-1.png" alt="Figure 1. The unemployment rate (taken from World Bank statistics) in Canada and the United States to illustrate the utility of joining attribute data on to spatial datasets." width="480"><p class="caption">
@@ -155,11 +156,12 @@ Figure 1. The unemployment rate (taken from World Bank statistics) in Canada and
 <span><span class="co">## Bounding box:  xmin: -171.7911 ymin: 18.91619 xmax: -12.20855 ymax: 83.64513</span></span>
 <span><span class="co">## Geodetic CRS:  WGS 84</span></span>
 <span><span class="co">## <span style="color: #949494;"># A tibble: 3 × 6</span></span></span>
-<span><span class="co">##   iso_a2.x name_long                            geom iso_a2.y urban_pop unemploy</span></span>
-<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                  <span style="color: #949494; font-style: italic;">&lt;MULTIPOLYGON [°]&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span> CA       Canada        (((-132.71 54.04001, -133.… CA        29<span style="text-decoration: underline;">014</span>612     6.91</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span> US       United States (((-171.7317 63.78252, -17… US       259<span style="text-decoration: underline;">460</span>378     6.17</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">3</span> GL       Greenland     (((-46.76379 82.62796, -46… <span style="color: #BB0000;">NA</span>              <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span></span></span></code></pre>
+<span><span class="co">##   iso_a2.x name_long                                geom iso_a…¹ urban…² unemp…³</span></span>
+<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                      <span style="color: #949494; font-style: italic;">&lt;MULTIPOLYGON [°]&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> CA       Canada        (((-132.71 54.04001, -133.18 5… CA       2.90<span style="color: #949494;">e</span>7    6.91</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span> US       United States (((-171.7317 63.78252, -171.79… US       2.59<span style="color: #949494;">e</span>8    6.17</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">3</span> GL       Greenland     (((-46.76379 82.62796, -46.900… <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>   <span style="color: #949494;"> </span>    <span style="color: #BB0000;">NA</span>   </span></span>
+<span><span class="co">## <span style="color: #949494;"># … with abbreviated variable names ¹​iso_a2.y, ²​urban_pop, ³​unemploy</span></span></span></code></pre>
 <p>Note that the result contains two duplicated variables - <code>iso_a2.x</code> and <code>iso_a2.y</code> because both <code>x</code> and <code>y</code> objects have the column <code>iso_a2</code>. This can be solved by specifying all the keys:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">left_join3</span> <span class="op">=</span> <span class="va">north_america</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
@@ -171,11 +173,12 @@ Figure 1. The unemployment rate (taken from World Bank statistics) in Canada and
 <span><span class="co">## Bounding box:  xmin: -171.7911 ymin: 18.91619 xmax: -12.20855 ymax: 83.64513</span></span>
 <span><span class="co">## Geodetic CRS:  WGS 84</span></span>
 <span><span class="co">## <span style="color: #949494;"># A tibble: 3 × 5</span></span></span>
-<span><span class="co">##   iso_a2 name_long                                       geom urban_pop unemploy</span></span>
-<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                             <span style="color: #949494; font-style: italic;">&lt;MULTIPOLYGON [°]&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span> CA     Canada        (((-132.71 54.04001, -133.18 54.16998…  29<span style="text-decoration: underline;">014</span>612     6.91</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span> US     United States (((-171.7317 63.78252, -171.7911 63.4… 259<span style="text-decoration: underline;">460</span>378     6.17</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">3</span> GL     Greenland     (((-46.76379 82.62796, -46.9007 82.19…        <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span></span></span></code></pre>
+<span><span class="co">##   iso_a2 name_long                                          geom urban…¹ unemp…²</span></span>
+<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                <span style="color: #949494; font-style: italic;">&lt;MULTIPOLYGON [°]&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> CA     Canada        (((-132.71 54.04001, -133.18 54.16998, -…  2.90<span style="color: #949494;">e</span>7    6.91</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span> US     United States (((-171.7317 63.78252, -171.7911 63.4058…  2.59<span style="color: #949494;">e</span>8    6.17</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">3</span> GL     Greenland     (((-46.76379 82.62796, -46.9007 82.19979… <span style="color: #BB0000;">NA</span>   <span style="color: #949494;"> </span>    <span style="color: #BB0000;">NA</span>   </span></span>
+<span><span class="co">## <span style="color: #949494;"># … with abbreviated variable names ¹​urban_pop, ²​unemploy</span></span></span></code></pre>
 <p>Joins also work when a data frame is the first argument. However, for them to work we need to drop the <code>sf</code> class.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">left_join4</span> <span class="op">=</span> <span class="va">wb_north_america</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -201,10 +204,11 @@ Figure 1. The unemployment rate (taken from World Bank statistics) in Canada and
 <span><span class="co">## Bounding box:  xmin: -171.7911 ymin: 18.91619 xmax: -52.6481 ymax: 83.23324</span></span>
 <span><span class="co">## Geodetic CRS:  WGS 84</span></span>
 <span><span class="co">## <span style="color: #949494;"># A tibble: 2 × 5</span></span></span>
-<span><span class="co">##   iso_a2 name_long                                       geom urban_pop unemploy</span></span>
-<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                             <span style="color: #949494; font-style: italic;">&lt;MULTIPOLYGON [°]&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span> CA     Canada        (((-132.71 54.04001, -133.18 54.16998…  29<span style="text-decoration: underline;">014</span>612     6.91</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span> US     United States (((-171.7317 63.78252, -171.7911 63.4… 259<span style="text-decoration: underline;">460</span>378     6.17</span></span></code></pre>
+<span><span class="co">##   iso_a2 name_long                                          geom urban…¹ unemp…²</span></span>
+<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                <span style="color: #949494; font-style: italic;">&lt;MULTIPOLYGON [°]&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> CA     Canada        (((-132.71 54.04001, -133.18 54.16998, -…  2.90<span style="color: #949494;">e</span>7    6.91</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span> US     United States (((-171.7317 63.78252, -171.7911 63.4058…  2.59<span style="color: #949494;">e</span>8    6.17</span></span>
+<span><span class="co">## <span style="color: #949494;"># … with abbreviated variable names ¹​urban_pop, ²​unemploy</span></span></span></code></pre>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
