@@ -15,7 +15,8 @@ Imports:
     terra,
     spData,
     spDataLarge,
-    units
+    units,
+    methods
 URL: https://github.com/geocompr/geocompkg,
     https://geocompr.github.io/geocompkg/
 BugReports: https://github.com/Robinlovelace/geocompr/issues
