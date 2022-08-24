@@ -12,6 +12,7 @@ Vignettes and solutions to supplement the book Geocomputation with R. See them o
 Useful links:
 \itemize{
   \item \url{https://github.com/geocompr/geocompkg}
+  \item \url{https://geocompr.github.io/geocompkg/}
   \item Report bugs at \url{https://github.com/Robinlovelace/geocompr/issues}
 }
 

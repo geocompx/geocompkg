@@ -1,6 +1,6 @@
 Package: geocompkg
 Title: Geocomputation with R Metapackage with Solutions and Extensions
-Version: 2.0.6
+Version: 2.0.7
 Authors@R: c(person("Robin", "Lovelace", role = c("aut")), 
     person("Jakub", "Nowosad", email = "nowosad.jakub@gmail.com",
     role = c("aut", "cre")),
@@ -20,7 +20,7 @@ URL: https://github.com/geocompr/geocompkg,
     https://geocompr.github.io/geocompkg/
 BugReports: https://github.com/Robinlovelace/geocompr/issues
 LazyData: TRUE
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.1
 Suggests:
     bench,
     bookdown,
@@ -96,12 +96,7 @@ Suggests:
     tmaptools,
     tree,
     vegan,
-    gh,
-    httr,
-    magick,
     covr,
-    tidytext,
-    nabor,
     rstac,
     Rsagacmd,
     tidygeocoder,
