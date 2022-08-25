@@ -15,3 +15,4 @@ promenade-all.geojson
 ^courses$
 ^extdata$
 ^slides$
+^data-raw$
