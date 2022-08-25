@@ -1,12 +1,11 @@
 Package: geocompkg
-Title: Geocomputation with R Metapackage with Solutions and Extensions
+Title: Geocomputation with R Metapackage
 Version: 2.0.7
 Authors@R: c(person("Robin", "Lovelace", role = c("aut")), 
     person("Jakub", "Nowosad", email = "nowosad.jakub@gmail.com",
     role = c("aut", "cre")),
     person("Jannes", "Muenchow", role = c("aut")))
-Description: Vignettes and solutions to supplement the book Geocomputation with R.
-    See them online at \url{https://geocompr.github.io/}.
+Description: Supplement to the book Geocomputation with R (\url{https://geocompr.github.io/}).
     The packages in the Imports are required to build the first chapter of the book.
     The packages in Suggests are required for Part II and III.
 Imports:
@@ -20,7 +19,6 @@ Imports:
 URL: https://github.com/geocompr/geocompkg,
     https://geocompr.github.io/geocompkg/
 BugReports: https://github.com/Robinlovelace/geocompr/issues
-LazyData: TRUE
 RoxygenNote: 7.2.1
 Suggests:
     bench,
@@ -32,13 +30,16 @@ Suggests:
     data.table,
     dismo,
     downlit,
+    exactextractr,
     future,
+    gdalcubes,
     geodata,
     geogrid,
     geosphere,
     GGally,
     ggplot2,
     gh,
+    gstat,
     historydata,
     htmlwidgets,
     httr,
@@ -62,6 +63,7 @@ Suggests:
     miniUI,
     nabor,
     odbc,
+    openeo,
     osmdata,
     paradox,
     pool,
@@ -84,13 +86,18 @@ Suggests:
     rnaturalearthdata,
     RPostgres,
     RPostgreSQL,
+    Rsagacmd,
+    rstac,
     s2,
+    sfnetworks,
+    smoothr,
     sp,
     stars,
     stplanr,
     stringr,
     tibble,
     tictoc,
+    tidygeocoder,
     tidytext,
     tidyr,
     tmap,
@@ -98,16 +105,6 @@ Suggests:
     tree,
     vegan,
     covr,
-    rstac,
-    Rsagacmd,
-    tidygeocoder,
-    gdalcubes,
-    whitebox,
-    openeo,
-    gstat,
-    exactextractr,
-    smoothr,
-    sfnetworks,
     metathis
 Remotes:
     mlr-org/mlr3extralearners,
