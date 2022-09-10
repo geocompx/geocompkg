@@ -78,7 +78,7 @@
       <h1 data-toc-skip>Spatial Joins Extended</h1>
                         <h4 data-toc-skip class="author">Robin Lovelace, Jakub Nowosad, Jannes Muenchow</h4>
             
-            <h4 data-toc-skip class="date">2022-08-25</h4>
+            <h4 data-toc-skip class="date">2022-09-10</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/Robinlovelace/geocompr/blob/HEAD/vignettes/join.Rmd" class="external-link"><code>vignettes/join.Rmd</code></a></small>
       <div class="hidden name"><code>join.Rmd</code></div>
@@ -91,7 +91,7 @@
 <p>This vignette requires the following packages to be installed and attached:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/" class="external-link">sf</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://nowosad.github.io/spData/" class="external-link">spData</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://jakubnowosad.com/spData/" class="external-link">spData</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></code></pre></div>
 <p>We will use an <code>sf</code> object <code>north_america</code> with country codes (<code>iso_a2</code>), names and geometries, as well as a <code>data.frame</code> object <code>wb_north_america</code> containing information about urban population and unemployment for three countries. Note that <code>north_america</code> contains data about Canada, Greenland and the United States but the World Bank dataset (<code>wb_north_america</code>) contains information about Canada, Mexico and the United States:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">

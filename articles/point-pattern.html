@@ -78,7 +78,7 @@
       <h1 data-toc-skip>Point Pattern analysis, spatial interpolation and heatmaps</h1>
                         <h4 data-toc-skip class="author">Robin Lovelace, Jakub Nowosad, Jannes Muenchow</h4>
             
-            <h4 data-toc-skip class="date">2022-08-25</h4>
+            <h4 data-toc-skip class="date">2022-09-10</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/Robinlovelace/geocompr/blob/HEAD/vignettes/point-pattern.Rmd" class="external-link"><code>vignettes/point-pattern.Rmd</code></a></small>
       <div class="hidden name"><code>point-pattern.Rmd</code></div>
@@ -109,7 +109,7 @@
 </h2>
 <p>This chapter uses two datasets on the spatial distribution and some attributes of cycle hire ‘docking stations’, one from OpenStreetMap and one from an on-line data feed.<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> It also uses boundary data representing the 33 boroughs of London. These datasets live in the <strong>spData</strong> package and can be attached as follows:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://nowosad.github.io/spData/" class="external-link">spData</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://jakubnowosad.com/spData/" class="external-link">spData</a></span><span class="op">)</span></span>
 <span><span class="va">lnd</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/methods/as.html" class="external-link">as</a></span><span class="op">(</span><span class="va">lnd</span>, <span class="st">"Spatial"</span><span class="op">)</span></span>
 <span><span class="va">cycle_hire</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/methods/as.html" class="external-link">as</a></span><span class="op">(</span><span class="va">cycle_hire</span>, <span class="st">"Spatial"</span><span class="op">)</span></span>
 <span><span class="va">cycle_hire_osm</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/methods/as.html" class="external-link">as</a></span><span class="op">(</span><span class="va">cycle_hire_osm</span>, <span class="st">"Spatial"</span><span class="op">)</span></span></code></pre></div>
@@ -359,7 +359,7 @@
 <div class="footnotes">
 <hr>
 <ol>
-<li id="fn1"><p> Docking stations enable sustainable and fast mobility for people in central London. They are automated bicycle parking facilities which allow people can borrow and return bicycles for a small fee. The sturdy 3-speed bicycles they contain have become known as ‘Boris bikes’ and, among some Londoners, ‘Sadiq cycles’, after the past and present London Mayors Boris Johnson and Sadiq Khan, although their official name is ‘Santander cycles’. See <code><a href="https://nowosad.github.io/spData/reference/cycle_hire.html" class="external-link">?cycle_hire</a></code> for further information about these datasets.<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
+<li id="fn1"><p> Docking stations enable sustainable and fast mobility for people in central London. They are automated bicycle parking facilities which allow people can borrow and return bicycles for a small fee. The sturdy 3-speed bicycles they contain have become known as ‘Boris bikes’ and, among some Londoners, ‘Sadiq cycles’, after the past and present London Mayors Boris Johnson and Sadiq Khan, although their official name is ‘Santander cycles’. See <code><a href="https://jakubnowosad.com/spData/reference/cycle_hire.html" class="external-link">?cycle_hire</a></code> for further information about these datasets.<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
 <li id="fn2"><p> Note the similarities and differences between <strong>sp</strong> and <strong>sf</strong> plotting code and results. Both extend the <code><a href="https://rdrr.io/r/base/plot.html" class="external-link">plot()</a></code> command to create a simple static map, meaning that arguments used in base graphics such as <code>col</code> work. However, <strong>sp</strong>’s plot method does not create facets for multiple variables by default and therefore you do not have to specify columns to create a single map. <strong>sp</strong> plots omit a colourscheme by default.<a href="#fnref2" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>

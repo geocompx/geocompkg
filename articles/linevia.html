@@ -78,7 +78,7 @@
       <h1 data-toc-skip>Desire Lines Extended</h1>
                         <h4 data-toc-skip class="author">Robin Lovelace, Jakub Nowosad, Jannes Muenchow</h4>
             
-            <h4 data-toc-skip class="date">2022-08-25</h4>
+            <h4 data-toc-skip class="date">2022-09-10</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/Robinlovelace/geocompr/blob/HEAD/vignettes/linevia.Rmd" class="external-link"><code>vignettes/linevia.Rmd</code></a></small>
       <div class="hidden name"><code>linevia.Rmd</code></div>
@@ -108,10 +108,10 @@
 <p>This results not in matrices of coordinates, but row indices that can subsequently be used to subset the <code>mat_rail</code>. It is worth taking a look at the results to ensure that the process has worked properly, and to explain what has happened:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">knn_orig</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] 25  3  2</span></span></code></pre>
+<pre><code><span><span class="co">## [1] 33 11 39</span></span></code></pre>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">knn_dest</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] 27 27 27</span></span></code></pre>
+<pre><code><span><span class="co">## [1] 7 7 7</span></span></code></pre>
 <p>The output demonstrates that each object contains three whole numbers (the number of rows in <code>desire_rail</code>) representing the rail station closest to the origin and destination of each desire line. Note that while each ‘origin station’ is different, the destination (station <code>30</code>) is the same for all desire lines. This is to be expected because rail travel in cities tends to converge on a single large station (in this case Bristol Temple Meads). The indices can now be used to create matrices representing the rail station of origin and destination:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mat_rail_o</span> <span class="op">=</span> <span class="va">mat_rail</span><span class="op">[</span><span class="va">knn_orig</span>, <span class="op">]</span></span>
