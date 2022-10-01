@@ -45,6 +45,7 @@ Suggests:
     kernlab,
     knitr,
     igraph,
+    languageserver,
     leaflet,
     lgr,
     link2GI,
