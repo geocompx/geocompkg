@@ -10,10 +10,10 @@ generate_citations = function() {
   pkgs = strsplit(pkgs, ",")[[1]]
   pkgs = gsub(" ", "", pkgs)
   pkgs = gsub("\\(.*)", "", pkgs) # Remove versions from packages
-  to_install = !pkgs %in% rownames(installed.packages())
+  to_install = !pkgs %in% rownames(utils::installed.packages())
 
   if(sum(to_install) > 0){
-    install.packages(pkgs[to_install])
+    utils::install.packages(pkgs[to_install])
   }
 
   i = 1
@@ -26,11 +26,11 @@ generate_citations = function() {
     title = title[grep("Title: ", title)]
     pkgs_df$Title[i] = gsub("Title: ", "", title)
     pkgs_df$cite[i] = paste0("[@R-", pkgs[i], "]")
-    pkgs_df$version[i] = as.character(packageVersion(pkgs[i]))
+    pkgs_df$version[i] = as.character(utils::packageVersion(pkgs[i]))
   }
   pkgs_df[,2] = paste(pkgs_df[,2], pkgs_df[,3])
   pkgs_df = pkgs_df[,-3]
-  write.csv(pkgs_df, "extdata/package_list.csv", row.names = FALSE)
+  utils::write.csv(pkgs_df, "extdata/package_list.csv", row.names = FALSE)
   knitr::write_bib(pkgs, file="packages.bib")
 }
 

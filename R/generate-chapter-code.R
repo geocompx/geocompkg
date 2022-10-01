@@ -14,8 +14,7 @@ generate_book_stats = function(dir = ".") {
         rmd_files = list.files(path = dir, pattern = ".Rmd")
         chapters = lapply(rmd_files, readLines)
         chapters = lapply(chapters, function(x) tibble::tibble(line = 1:length(x), text = x))
-        chapters[[1]] %>%
-                tidytext::unnest_tokens(words, text)
+        tidytext::unnest_tokens(chapters[[1]], words, text)
         n_words = sapply(chapters, function(x) nrow(tidytext::unnest_tokens(x, words, text)))
         chapter = 1:length(n_words)
         date = Sys.Date()

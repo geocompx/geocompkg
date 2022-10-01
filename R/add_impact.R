@@ -49,7 +49,7 @@ add_impact = function(url_issue, vars = c("created_at", "type", "title", "commen
     })
     readr::write_csv(our_impact_new, "our-impact.csv")
     message(paste0("Wrote new impact to our-impact.csv:"))
-    message(write.csv(res_df))
+    message(utils::write.csv(res_df))
   } else {
     res_df
   }

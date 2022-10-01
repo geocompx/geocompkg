@@ -11,3 +11,8 @@ promenade-all.geojson
 ^\.github$
 ^codecov\.yml$
 ^pkgdown$
+^additional-files$
+^courses$
+^extdata$
+^slides$
+^data-raw$

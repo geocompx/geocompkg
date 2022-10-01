@@ -7,7 +7,7 @@
 # f = "/tmp/urban-animated-print.png"
 save_print_quality = function(m = NULL, f, width = 2000, height = 2000) {
   if(!is.null(m)) {
-    if(is(object = m, class2 = "tmap")) {
+    if(methods::is(object = m, class2 = "tmap")) {
       tmap::tmap_save(tm = m, filename = f, width = width, height = height)
     }
   }
