@@ -110,6 +110,7 @@ Suggests:
     metathis
 Remotes:
     mlr-org/mlr3extralearners,
+    mlr-org/mlr3spatiotempcv,
     mlr-org/mlr3proba,
     paleolimbot/qgisprocess,
     nowosad/spDataLarge,
