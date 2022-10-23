@@ -114,7 +114,8 @@ Remotes:
     mlr-org/mlr3proba,
     paleolimbot/qgisprocess,
     nowosad/spDataLarge,
-    mtennekes/tmap
+    mtennekes/tmap,
+    luukvdmeer/sfnetworks
 VignetteBuilder: knitr
 Encoding: UTF-8
 License: CC BY-NC-ND 4.0
