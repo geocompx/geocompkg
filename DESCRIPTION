@@ -55,6 +55,7 @@ Suggests:
     magick,
     mapdeck,
     mapview,
+    metathis,
     mlr3,
     mlr3extralearners,
     mlr3learners,
