@@ -1,6 +1,6 @@
 Package: geocompkg
 Title: Geocomputation with R Metapackage
-Version: 2.0.8
+Version: 2.1.0
 Authors@R: c(person("Robin", "Lovelace", role = c("aut")), 
     person("Jakub", "Nowosad", email = "nowosad.jakub@gmail.com",
     role = c("aut", "cre")),
@@ -79,9 +79,7 @@ Suggests:
     readr,
     RefManageR,
     reprex,
-    rgdal,
-    rgeos,
-    rgrass7 (>= 0.2-1),
+    rgrass,
     rmapshaper,
     rmarkdown,
     rnaturalearth,
@@ -114,8 +112,7 @@ Remotes:
     mlr-org/mlr3proba,
     paleolimbot/qgisprocess,
     nowosad/spDataLarge,
-    mtennekes/tmap,
-    luukvdmeer/sfnetworks
+    mtennekes/tmap
 VignetteBuilder: knitr
 Encoding: UTF-8
 License: CC BY-NC-ND 4.0
