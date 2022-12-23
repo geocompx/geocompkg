@@ -79,7 +79,6 @@ Suggests:
     readr,
     RefManageR,
     reprex,
-    revgeo,
     rgdal,
     rgeos,
     rgrass7 (>= 0.2-1),
