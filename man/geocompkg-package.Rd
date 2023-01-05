@@ -12,7 +12,7 @@ Supplement to the book Geocomputation with R (\url{https://geocompr.github.io/})
 Useful links:
 \itemize{
   \item \url{https://github.com/geocompx/geocompkg}
-  \item \url{https://geocompr.github.io/geocompkg/}
+  \item \url{https://geocompx.github.io/geocompkg/}
   \item Report bugs at \url{https://github.com/geocompx/geocompr/issues}
 }
 

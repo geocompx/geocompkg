@@ -17,9 +17,9 @@ Imports:
     units,
     methods
 URL: https://github.com/geocompx/geocompkg,
-    https://geocompr.github.io/geocompkg/
+    https://geocompx.github.io/geocompkg/
 BugReports: https://github.com/geocompx/geocompr/issues
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.3
 Suggests:
     bench,
     bookdown,
