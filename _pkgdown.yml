@@ -7,31 +7,14 @@ navbar:
   components:
     twitter:
       icon: fa-twitter
-      href: http://twitter.com/hashtag/geocompr
+      href: http://twitter.com/hashtag/geocompx
       aria-label: Twitter
     github:
       icon: fa-github
-      href: https://github.com/geocompr/geocompkg
+      href: https://github.com/geocompx/geocompkg
     solutions:
       text: "Solutions"
-      href: https://geocompr.github.io/solutions/
-    examples:
-      text: "Extended examples"
-      href: https://geocompr.github.io/vignettes/
+      href: https://r.geocompx.org/solutions
     back:
       text: "Back to main website"
-      href: https://geocompr.github.io
-
-articles:
-  - title: "Extended examples"
-    desc: >
-      These vignettes provide extended examples for several methods and functions mentioned in Geocomputation with R
-    contents:
-      - join
-      - us-map
-      - algorithm
-      - point-pattern
-      - linevia
-      - tidyverse-pitfalls
-
-
+      href: https://geocompx.org
