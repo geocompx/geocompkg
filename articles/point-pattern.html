@@ -80,9 +80,9 @@ and heatmaps</h1>
                         <h4 data-toc-skip class="author">Robin Lovelace,
 Jakub Nowosad, Jannes Muenchow</h4>
             
-            <h4 data-toc-skip class="date">2022-12-23</h4>
+            <h4 data-toc-skip class="date">2023-01-05</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/Robinlovelace/geocompr/blob/HEAD/vignettes/point-pattern.Rmd" class="external-link"><code>vignettes/point-pattern.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/geocompx/geocompr/blob/HEAD/vignettes/point-pattern.Rmd" class="external-link"><code>vignettes/point-pattern.Rmd</code></a></small>
       <div class="hidden name"><code>point-pattern.Rmd</code></div>
 
     </div>
@@ -93,11 +93,11 @@ Jakub Nowosad, Jannes Muenchow</h4>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">knitr</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/knitr/man/opts_chunk.html" class="external-link">opts_chunk</a></span><span class="op">$</span><span class="fu">set</span><span class="op">(</span>eval <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <p>This vignette builds on the Raster-vector interactions section of
-Geocomputation with R (see <a href="https://geocompr.robinlovelace.net/geometric-operations.html#raster-vector" class="external-link">geocompr.robinlovelace.net/geometric-operations.html#raster-vector</a>).
+Geocomputation with R (see <a href="https://r.geocompx.org/geometric-operations.html#raster-vector" class="external-link">r.geocompx.org/geometric-operations.html#raster-vector</a>).
 It shows the the basics of point pattern analysis in R and how to make
 (raster) ‘heatmaps’ from (vector) point data. It is influenced by the
 chapter on Spatial Point Pattern Analysis <span class="citation">(Bivand, Pebesma, and Gómez-Rubio 2013)</span> and an
-<a href="http://rspatial.org/analysis/rst/8-pointpat.html" class="external-link">online
+<a href="https://rspatial.org/analysis/rst/8-pointpat.html" class="external-link">online
 tutorial</a> on Point Pattern Analyis by Robert Hijmans.</p>
 <p>We will use the <strong>sp</strong> package for this rather than the
 newer <strong>sf</strong> package, as point pattern analysis is more
@@ -413,7 +413,7 @@ Weighting (IDW) (results not shown):</p>
 distribution of the <code>nbikes</code> variable?</li>
 <li>Experiment with the spatial resolution - we’re using 1 km grid cells
 which are huge!</li>
-<li>Try using other methods described in Robert Hijman’s <a href="http://rspatial.org/analysis/rst/4-interpolation.html" class="external-link">tutorial</a>
+<li>Try using other methods described in Robert Hijman’s <a href="https://rspatial.org/analysis/rst/4-interpolation.html" class="external-link">tutorial</a>
 on spatial interpolation.</li>
 <li>Try cross-validating the results. Which performs best?</li>
 </ul>
