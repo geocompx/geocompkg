@@ -4,7 +4,7 @@
 [![R build
 status](https://github.com/geocompx/geocompkg/workflows/pkgdown/badge.svg)](https://github.com/geocompx/geocompkg/actions)
 [![Codecov test
-coverage](https://codecov.io/gh/geocompx/geocompkg/branch/master/graph/badge.svg)](https://codecov.io/gh/geocompx/geocompkg?branch=master)
+coverage](https://codecov.io/gh/geocompx/geocompkg/branch/master/graph/badge.svg)](https://app.codecov.io/gh/geocompx/geocompkg?branch=master)
 [![R build
 status](https://github.com/geocompx/geocompkg/workflows/R-CMD-check/badge.svg)](https://github.com/geocompx/geocompkg/actions)
 [![R-CMD-check](https://github.com/geocompx/geocompkg/workflows/R-CMD-check/badge.svg)](https://github.com/geocompx/geocompkg/actions)

@@ -16,9 +16,9 @@ Imports:
     spDataLarge,
     units,
     methods
-URL: https://github.com/geocompr/geocompkg,
+URL: https://github.com/geocompx/geocompkg,
     https://geocompr.github.io/geocompkg/
-BugReports: https://github.com/Robinlovelace/geocompr/issues
+BugReports: https://github.com/geocompx/geocompr/issues
 RoxygenNote: 7.2.1
 Suggests:
     bench,

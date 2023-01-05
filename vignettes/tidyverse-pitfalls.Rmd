@@ -259,7 +259,7 @@ Raster data is not yet closely connected to the **tidyverse**, however:
 
 - Some functions from the **raster** package work well in `pipes`
 - You can convert vector data to the `Spatial*` form using `as(my_vector, "Spatial")`before working on raster-vector interactions
-- There are some initial efforts to bring raster data closer to the **tidyverse**, such as [tabularaster](https://github.com/hypertidy/tabularaster), [sfraster](https://github.com/mdsumner/sfraster), or [fasterize](https://github.com/ecohealthalliance/fasterize), and [stars](https://github.com/r-spatial/stars) - package focused on multidimensional, large datasets
+- There are some initial efforts to bring raster data closer to the **tidyverse**, such as [tabularaster](https://github.com/hypertidy/tabularaster), [sfraster](https://github.com/dis-organization/sfraster), or [fasterize](https://github.com/ecohealthalliance/fasterize), and [stars](https://github.com/r-spatial/stars) - package focused on multidimensional, large datasets
 
 <!-- ## Practical exercises -->
 

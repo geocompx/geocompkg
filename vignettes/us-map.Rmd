@@ -13,7 +13,7 @@ vignette: >
 knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
 ```
 
-This vignette provides a detailed description of inset map generation, building on the content in Section [Inset maps](http://geocompr.robinlovelace.net/adv-map.html#inset-maps) of [the Geocomputation with R book](https://geocompr.github.io/).
+This vignette provides a detailed description of inset map generation, building on the content in Section [Inset maps](https://geocompr.robinlovelace.net/adv-map.html) of [the Geocomputation with R book](https://geocompr.github.io/).
 
 ## Prerequisites {-}
 
