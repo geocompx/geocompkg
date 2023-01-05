@@ -18,9 +18,9 @@ bibliography:
 knitr::opts_chunk$set(eval = FALSE)
 ```
 
-This vignette builds on the Raster-vector interactions section of Geocomputation with R (see [r.geocompx.org/geometric-operations.html#raster-vector](https://r.geocompx.org/geometric-operations.html#raster-vector)).
+This vignette builds on the Raster-vector interactions chapter of Geocomputation with R (see [r.geocompx.org/raster-vector.html](https://r.geocompx.org/raster-vector.html)).
 It shows the the basics of point pattern analysis in R and how to make (raster) 'heatmaps' from (vector) point data.
-It is influenced by the chapter on Spatial Point Pattern Analysis [@bivand_applied_2013] and an [online tutorial](https://rspatial.org/analysis/rst/8-pointpat.html) on Point Pattern Analyis by Robert Hijmans.
+It is influenced by the chapter on Spatial Point Pattern Analysis [@bivand_applied_2013] and an [online tutorial](https://rspatial.org/analysis/8-pointpat.html) on Point Pattern Analysis by Robert Hijmans.
 
 We will use the **sp** package for this rather than the newer **sf** package, as point pattern analysis is more established for the former `Spatial` class system than the latter's `sf` classes. We will also use **raster** as it has concise and well-designed functions for spatial data:
 
@@ -322,7 +322,7 @@ plot(r_idw)
 
 - Look at the original data - what could explain the spatial distribution of the `nbikes` variable?
 - Experiment with the spatial resolution - we're using 1 km grid cells which are huge!
-- Try using other methods described in Robert Hijman's [tutorial](https://rspatial.org/analysis/rst/4-interpolation.html) on spatial interpolation.
+- Try using other methods described in Robert Hijman's [tutorial](https://rspatial.org/analysis/4-interpolation.html) on spatial interpolation.
 - Try cross-validating the results. Which performs best?
 
 # Heatmaps with leaflet.extras
