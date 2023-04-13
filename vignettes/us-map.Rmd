@@ -13,7 +13,7 @@ vignette: >
 knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
 ```
 
-This vignette provides a detailed description of inset map generation, building on the content in Section [Inset maps](https://geocompr.robinlovelace.net/adv-map.html) of [the Geocomputation with R book](https://geocompr.github.io/).
+This vignette provides a detailed description of inset map generation, building on the content in Section [Inset maps](https://r.geocompx.org/adv-map.html#inset-maps) of [the Geocomputation with R book](https://r.geocompx.org/).
 
 ## Prerequisites {-}
 
@@ -34,7 +34,7 @@ For this case, we decided to use equal area projections for the maps of the cont
 While the dataset of Hawaii and Alaska already have this type of projections, we still need to reproject the `us_states` object to US National Atlas Equal Area:
 
 ```{r}
-us_states2163 = st_transform(us_states, 2163)
+us_states2163 = st_transform(us_states, "EPSG:2163")
 ```
 
 ## Ratio calculation
