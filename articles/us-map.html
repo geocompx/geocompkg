@@ -76,7 +76,7 @@
                         <h4 data-toc-skip class="author">Robin Lovelace,
 Jakub Nowosad, Jannes Muenchow</h4>
             
-            <h4 data-toc-skip class="date">2023-01-05</h4>
+            <h4 data-toc-skip class="date">2023-04-13</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/geocompx/geocompr/blob/HEAD/vignettes/us-map.Rmd" class="external-link"><code>vignettes/us-map.Rmd</code></a></small>
       <div class="hidden name"><code>us-map.Rmd</code></div>
@@ -86,8 +86,8 @@ Jakub Nowosad, Jannes Muenchow</h4>
     
     
 <p>This vignette provides a detailed description of inset map
-generation, building on the content in Section <a href="https://geocompr.robinlovelace.net/adv-map.html" class="external-link">Inset maps</a> of
-<a href="https://geocompr.github.io/" class="external-link">the Geocomputation with R
+generation, building on the content in Section <a href="https://r.geocompx.org/adv-map.html#inset-maps" class="external-link">Inset maps</a> of
+<a href="https://r.geocompx.org/" class="external-link">the Geocomputation with R
 book</a>.</p>
 <div class="section level2 unnumbered">
 <h2 class="unnumbered" id="prerequisites">Prerequisites<a class="anchor" aria-label="anchor" href="#prerequisites"></a>
@@ -110,7 +110,7 @@ Alaska. While the dataset of Hawaii and Alaska already have this type of
 projections, we still need to reproject the <code>us_states</code>
 object to US National Atlas Equal Area:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">us_states2163</span> <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_transform.html" class="external-link">st_transform</a></span><span class="op">(</span><span class="va">us_states</span>, <span class="fl">2163</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">us_states2163</span> <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_transform.html" class="external-link">st_transform</a></span><span class="op">(</span><span class="va">us_states</span>, <span class="st">"EPSG:2163"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="ratio-calculation">Ratio calculation<a class="anchor" aria-label="anchor" href="#ratio-calculation"></a>
