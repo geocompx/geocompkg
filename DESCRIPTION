@@ -108,6 +108,7 @@ Suggests:
     metathis
 Remotes:
     mlr-org/mlr3extralearners,
+    mlr-org/mlr3proba,
     r-spatial/qgisprocess,
     nowosad/spDataLarge
 VignetteBuilder: knitr
