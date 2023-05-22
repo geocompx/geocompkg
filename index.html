@@ -79,17 +79,20 @@
 <div class="section level1">
 <div class="page-header"><h1 id="geocompkg">geocompkg<a class="anchor" aria-label="anchor" href="#geocompkg"></a>
 </h1></div>
-<p>This is a ‘metapackage’ support the book <a href="https://r.geocompx.org/" class="external-link">Gecomputation with R</a>. Installing installing it will give you the dependencies needed to run the code in the book. The repository also contains up-to-date solutions additional materials to supplement the book. See <a href="https://github.com/geocompx/geocompkg/tree/master/vignettes" class="external-link">the vignettes folder</a> for the source code.</p>
+<p>This is a ‘metapackage’ support the book <a href="https://r.geocompx.org/" class="external-link">Gecomputation with R</a>. Installing installing it will give you the dependencies needed to run the code in the book. The repository also contains additional materials to supplement the book. See <a href="https://github.com/geocompx/geocompkg/tree/master/vignettes" class="external-link">the vignettes folder</a> for the source code.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
 <p>You can install the packages needed to reproduce the code in Geocompuation with R by installing the <a href="https://github.com/geocompx/geocompkg" class="external-link">geocompkg</a> package as follows:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"geocompx/geocompkg"</span><span class="op">)</span></span></code></pre></div>
-<p>If you have any issues, check-out <a href="https://r.geocompx.org/spatial-class.html" class="external-link">Chapter 2</a> of the book. You may need to install <strong>spDataLarge</strong> from drat:</p>
+<p>If you have any issues, check-out <a href="https://r.geocompx.org/spatial-class.html" class="external-link">Chapter 2</a> of the book. Alternatively, you may istall this package using the R-universe repository:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"spDataLarge"</span>, repos <span class="op">=</span> <span class="st">"https://nowosad.github.io/drat/"</span>,</span>
-<span>                 type <span class="op">=</span> <span class="st">"source"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>repos <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>  geocompx <span class="op">=</span> <span class="st">'https://geocompx.r-universe.dev'</span>,</span>
+<span>  cran <span class="op">=</span> <span class="st">'https://cloud.r-project.org'</span></span>
+<span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"geocompkg"</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
 
