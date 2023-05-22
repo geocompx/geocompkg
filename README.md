@@ -32,9 +32,7 @@ Geocompuation with R by installing the
 devtools::install_github("geocompx/geocompkg")
 ```
 
-If you have any issues, check-out [Chapter
-2](https://r.geocompx.org/spatial-class.html) of the book.
-Alternatively, you may istall this package using the R-universe
+Alternatively, you may install this package using the R-universe
 repository:
 
 ``` r
@@ -44,3 +42,6 @@ options(repos = c(
 ))
 install.packages("geocompkg")
 ```
+
+If you have any issues, check-out [Chapter
+2](https://r.geocompx.org/spatial-class.html) of the book.
