@@ -1,6 +1,6 @@
 Package: geocompkg
 Title: Geocomputation with R Metapackage
-Version: 2.1.0
+Version: 2.1.1
 Authors@R: c(person("Robin", "Lovelace", role = c("aut")), 
     person("Jakub", "Nowosad", email = "nowosad.jakub@gmail.com",
     role = c("aut", "cre")),
@@ -16,7 +16,8 @@ Imports:
     spDataLarge,
     units,
     methods
-URL: https://github.com/geocompx/geocompkg,
+URL: 
+    https://github.com/geocompx/geocompkg,
     https://geocompx.github.io/geocompkg/
 BugReports: https://github.com/geocompx/geocompr/issues
 RoxygenNote: 7.2.3
