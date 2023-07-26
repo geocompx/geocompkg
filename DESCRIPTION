@@ -1,6 +1,6 @@
 Package: geocompkg
 Title: Geocomputation with R Metapackage
-Version: 2.1.1
+Version: 2.1.2
 Authors@R: c(person("Robin", "Lovelace", role = c("aut")), 
     person("Jakub", "Nowosad", email = "nowosad.jakub@gmail.com",
     role = c("aut", "cre")),
@@ -39,6 +39,7 @@ Suggests:
     geosphere,
     GGally,
     ggplot2,
+    ggspatial,
     gh,
     gstat,
     historydata,
