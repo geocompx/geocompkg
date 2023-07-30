@@ -1,6 +1,6 @@
 Package: geocompkg
 Title: Geocomputation with R Metapackage
-Version: 2.1.3
+Version: 2.1.4
 Authors@R: c(person("Robin", "Lovelace", role = c("aut")), 
     person("Jakub", "Nowosad", email = "nowosad.jakub@gmail.com",
     role = c("aut", "cre")),
@@ -56,6 +56,7 @@ Suggests:
     lwgeom,
     magick,
     mapdeck,
+    mapsf,
     mapview,
     metathis,
     mlr3,
