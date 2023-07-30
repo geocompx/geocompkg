@@ -50,6 +50,7 @@ Suggests:
     knitr,
     igraph,
     languageserver,
+    leaflegend,
     leaflet,
     lgr,
     link2GI,
