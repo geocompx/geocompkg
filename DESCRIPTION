@@ -1,11 +1,11 @@
 Package: geocompkg
 Title: Geocomputation with R Metapackage
-Version: 2.1.2
+Version: 2.1.3
 Authors@R: c(person("Robin", "Lovelace", role = c("aut")), 
     person("Jakub", "Nowosad", email = "nowosad.jakub@gmail.com",
     role = c("aut", "cre")),
     person("Jannes", "Muenchow", role = c("aut")))
-Description: Supplement to the book Geocomputation with R (\url{https://geocompr.github.io/}).
+Description: Supplement to the book Geocomputation with R (\url{https://geocompx.com/r}).
     The packages in the Imports are required to build the first chapter of the book.
     The packages in Suggests are required for Part II and III.
 Imports:
@@ -71,6 +71,7 @@ Suggests:
     openeo,
     osmdata,
     paradox,
+    plotly,
     pool,
     pROC,
     progressr,
