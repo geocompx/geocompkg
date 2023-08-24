@@ -1,6 +1,6 @@
 Package: geocompkg
 Title: Geocomputation with R Metapackage
-Version: 2.1.4
+Version: 2.2.0
 Authors@R: c(person("Robin", "Lovelace", role = c("aut")), 
     person("Jakub", "Nowosad", email = "nowosad.jakub@gmail.com",
     role = c("aut", "cre")),
@@ -114,7 +114,6 @@ Suggests:
 Remotes:
     mlr-org/mlr3extralearners,
     mlr-org/mlr3proba,
-    r-spatial/qgisprocess,
     nowosad/spDataLarge
 VignetteBuilder: knitr
 Encoding: UTF-8

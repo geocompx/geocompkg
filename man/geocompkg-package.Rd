@@ -6,7 +6,7 @@
 \alias{geocompkg-package}
 \title{geocompkg: Geocomputation with R Metapackage}
 \description{
-Supplement to the book Geocomputation with R (\url{https://geocompr.github.io/}). The packages in the Imports are required to build the first chapter of the book. The packages in Suggests are required for Part II and III.
+Supplement to the book Geocomputation with R (\url{https://geocompx.com/r}). The packages in the Imports are required to build the first chapter of the book. The packages in Suggests are required for Part II and III.
 }
 \seealso{
 Useful links:
