@@ -106,8 +106,7 @@ Suggests:
     tmaptools,
     tree,
     vegan,
-    covr,
-    metathis
+    covr
 Remotes:
     mlr-org/mlr3extralearners,
     mlr-org/mlr3proba,
