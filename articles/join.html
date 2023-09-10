@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">geocompkg | metapackage for the Gecomputation with R book</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.2.1</span>
       </span>
     </div>
 
@@ -76,7 +76,7 @@
                         <h4 data-toc-skip class="author">Robin Lovelace,
 Jakub Nowosad, Jannes Muenchow</h4>
             
-            <h4 data-toc-skip class="date">2023-08-24</h4>
+            <h4 data-toc-skip class="date">2023-09-10</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/geocompx/geocompr/blob/HEAD/vignettes/join.Rmd" class="external-link"><code>vignettes/join.Rmd</code></a></small>
       <div class="hidden name"><code>join.Rmd</code></div>
@@ -163,6 +163,8 @@ for this to work):</p>
 utility of this is shown in the figure below, which shows the
 unemployment rate (a World Bank variable) across the countries of North
 America.</p>
+<pre><code><span><span class="co">## Breaking News: tmap 3.x is retiring. Please test v4, e.g. with</span></span>
+<span><span class="co">## remotes::install_github('r-tmap/tmap')</span></span></code></pre>
 <div class="figure">
 <img src="join_files/figure-html/unemploy-1.png" alt="Figure 1. The unemployment rate (taken from World Bank statistics) in Canada and the United States to illustrate the utility of joining attribute data on to spatial datasets." width="480"><p class="caption">
 Figure 1. The unemployment rate (taken from World Bank statistics) in
@@ -176,7 +178,7 @@ differently. The <code>north_america</code> has a <code>name_long</code>
 column and the <code>wb_north_america</code> has a <code>name</code>
 column. In these cases a named vector, such as
 <code>c("name_long" = "name")</code>, can specify the connection:</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">left_join2</span> <span class="op">=</span> <span class="va">north_america</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">wb_north_america</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"name_long"</span> <span class="op">=</span> <span class="st">"name"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">left_join2</span></span></code></pre></div>
@@ -195,7 +197,7 @@ column. In these cases a named vector, such as
 <code>iso_a2.x</code> and <code>iso_a2.y</code> because both
 <code>x</code> and <code>y</code> objects have the column
 <code>iso_a2</code>. This can be solved by specifying all the keys:</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">left_join3</span> <span class="op">=</span> <span class="va">north_america</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">wb_north_america</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"iso_a2"</span>, <span class="st">"name_long"</span> <span class="op">=</span> <span class="st">"name"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">left_join3</span></span></code></pre></div>
@@ -212,7 +214,7 @@ column. In these cases a named vector, such as
 <span><span class="co">## <span style="color: #BCBCBC;">3</span> GL     Greenland     (((-46.76379 82.62796, -46.9007 82.19…        <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span></span></span></code></pre>
 <p>Joins also work when a data frame is the first argument. However, for
 them to work we need to drop the <code>sf</code> class.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">left_join4</span> <span class="op">=</span> <span class="va">wb_north_america</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html" class="external-link">st_drop_geometry</a></span><span class="op">(</span><span class="va">north_america</span><span class="op">)</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"iso_a2"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">left_join4</span></span></code></pre></div>
@@ -222,7 +224,7 @@ them to work we need to drop the <code>sf</code> class.</p>
 <span><span class="co">## <span style="color: #BCBCBC;">1</span> Canada        CA      29<span style="text-decoration: underline;">014</span>612     6.91 Canada       </span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">2</span> Mexico        MX      98<span style="text-decoration: underline;">099</span>040     4.81 <span style="color: #BB0000;">NA</span>           </span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">3</span> United States US     259<span style="text-decoration: underline;">460</span>378     6.17 United States</span></span></code></pre>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">left_join4</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] "tbl_df"     "tbl"        "data.frame"</span></span></code></pre>
 <p>In contrast to <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">inner_join()</a></code>
@@ -230,7 +232,7 @@ keeps only observations from the left object
 (<code>north_america</code>) where there are matching observations in
 the right object (<code>wb_north_america</code>). All columns from the
 left and right object are still kept:</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">inner_join1</span> <span class="op">=</span> <span class="va">north_america</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">inner_join</a></span><span class="op">(</span><span class="va">wb_north_america</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"iso_a2"</span>, <span class="st">"name_long"</span> <span class="op">=</span> <span class="st">"name"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">inner_join1</span></span></code></pre></div>
