@@ -1,6 +1,6 @@
 Package: geocompkg
 Title: Geocomputation with R Metapackage
-Version: 2.2.0
+Version: 2.2.1
 Authors@R: c(person("Robin", "Lovelace", role = c("aut")), 
     person("Jakub", "Nowosad", email = "nowosad.jakub@gmail.com",
     role = c("aut", "cre")),
@@ -55,7 +55,6 @@ Suggests:
     lgr,
     link2GI,
     lwgeom,
-    magick,
     mapdeck,
     mapsf,
     mapview,
@@ -82,7 +81,6 @@ Suggests:
     ranger,
     rcartocolor,
     readr,
-    RefManageR,
     reprex,
     rgrass,
     rmapshaper,
@@ -96,7 +94,6 @@ Suggests:
     s2,
     sfnetworks,
     smoothr,
-    sp,
     stars,
     stplanr,
     stringr,
@@ -109,12 +106,12 @@ Suggests:
     tmaptools,
     tree,
     vegan,
-    covr,
-    metathis
+    covr
 Remotes:
     mlr-org/mlr3extralearners,
     mlr-org/mlr3proba,
-    nowosad/spDataLarge
+    nowosad/spDataLarge,
+    r-tmap/tmap
 VignetteBuilder: knitr
 Encoding: UTF-8
 License: CC BY-NC-ND 4.0
