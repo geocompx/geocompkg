@@ -34,7 +34,7 @@ Suggests:
     exactextractr,
     future,
     gdalcubes,
-    geodata,
+    #geodata,
     geogrid,
     geosphere,
     GGally,
