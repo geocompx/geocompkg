@@ -1,45 +1,17 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>/404.html</loc>
-  </url>
-  <url>
-    <loc>/LICENSE.html</loc>
-  </url>
-  <url>
-    <loc>/articles/algorithm.html</loc>
-  </url>
-  <url>
-    <loc>/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>/articles/join.html</loc>
-  </url>
-  <url>
-    <loc>/articles/linevia.html</loc>
-  </url>
-  <url>
-    <loc>/articles/point-pattern.html</loc>
-  </url>
-  <url>
-    <loc>/articles/tidyverse-pitfalls.html</loc>
-  </url>
-  <url>
-    <loc>/articles/us-map.html</loc>
-  </url>
-  <url>
-    <loc>/authors.html</loc>
-  </url>
-  <url>
-    <loc>/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/add_impact.html</loc>
-  </url>
-  <url>
-    <loc>/reference/geocompkg-package.html</loc>
-  </url>
-  <url>
-    <loc>/reference/index.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>/404.html</loc></url>
+<url><loc>/LICENSE.html</loc></url>
+<url><loc>/articles/algorithm.html</loc></url>
+<url><loc>/articles/index.html</loc></url>
+<url><loc>/articles/join.html</loc></url>
+<url><loc>/articles/linevia.html</loc></url>
+<url><loc>/articles/point-pattern.html</loc></url>
+<url><loc>/articles/tidyverse-pitfalls.html</loc></url>
+<url><loc>/articles/us-map.html</loc></url>
+<url><loc>/authors.html</loc></url>
+<url><loc>/index.html</loc></url>
+<url><loc>/reference/add_impact.html</loc></url>
+<url><loc>/reference/geocompkg-package.html</loc></url>
+<url><loc>/reference/index.html</loc></url>
 </urlset>
+
