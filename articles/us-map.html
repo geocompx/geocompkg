@@ -75,7 +75,7 @@
                         <h4 data-toc-skip class="author">Robin Lovelace,
 Jakub Nowosad, Jannes Muenchow</h4>
             
-            <h4 data-toc-skip class="date">2024-08-02</h4>
+            <h4 data-toc-skip class="date">2024-09-22</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/geocompx/geocompr/blob/master/vignettes/us-map.Rmd" class="external-link"><code>vignettes/us-map.Rmd</code></a></small>
       <div class="hidden name"><code>us-map.Rmd</code></div>
@@ -142,13 +142,15 @@ and backgrounds or to add titles to our insets:</p>
 <span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_polygons.html" class="external-link">tm_polygons</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_layout.html" class="external-link">tm_layout</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Hawaii"</span>, frame <span class="op">=</span> <span class="cn">FALSE</span>, bg.color <span class="op">=</span> <span class="cn">NA</span>, </span>
 <span>            title.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"left"</span>, <span class="st">"BOTTOM"</span><span class="op">)</span><span class="op">)</span> </span>
-<span><span class="co">#&gt; [v3-&gt;v4] tm_layout(): use 'tm_title()' instead of the 'title' argument of 'tm_layout'</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #00BB00;">[v3-&gt;v4]</span> `tm_layout()`: use 'tm_title()' instead of the</span></span>
+<span><span class="co">#&gt; `tm_layout(title = )`</span></span></code></pre></div>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">alaska_map</span> <span class="op">=</span> <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_shape.html" class="external-link">tm_shape</a></span><span class="op">(</span><span class="va">alaska</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_polygons.html" class="external-link">tm_polygons</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_layout.html" class="external-link">tm_layout</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Alaska"</span>, frame <span class="op">=</span> <span class="cn">FALSE</span>, bg.color <span class="op">=</span> <span class="cn">NA</span>, </span>
 <span>            title.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"left"</span>, <span class="st">"TOP"</span><span class="op">)</span><span class="op">)</span> </span>
-<span><span class="co">#&gt; [v3-&gt;v4] tm_layout(): use 'tm_title()' instead of the 'title' argument of 'tm_layout'</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #00BB00;">[v3-&gt;v4]</span> `tm_layout()`: use 'tm_title()' instead of the</span></span>
+<span><span class="co">#&gt; `tm_layout(title = )`</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="map-arrangement">Map arrangement<a class="anchor" aria-label="anchor" href="#map-arrangement"></a>
@@ -200,7 +202,7 @@ states or largely reduce the size of Hawaii and Alaska.</p>
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
 </div>
 
       </footer>
