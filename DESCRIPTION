@@ -15,7 +15,8 @@ Imports:
     spData,
     spDataLarge,
     units,
-    methods
+    methods,
+    languageserver
 URL: 
     https://github.com/geocompx/geocompkg,
     https://geocompx.github.io/geocompkg/
@@ -49,7 +50,6 @@ Suggests:
     kernlab,
     knitr,
     igraph,
-    languageserver,
     leaflegend,
     leaflet,
     lgr,
