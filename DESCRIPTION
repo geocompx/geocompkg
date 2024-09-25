@@ -109,7 +109,7 @@ Suggests:
     vegan,
     covr
 Remotes:
-    mlr-org/mlr3extralearners,
+    mlr-org/mlr3extralearners@v0.9.0,
     mlr-org/mlr3proba,
     nowosad/spDataLarge,
     r-tmap/tmap
