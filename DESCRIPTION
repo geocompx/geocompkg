@@ -111,8 +111,7 @@ Suggests:
 Remotes:
     mlr-org/mlr3extralearners,
     mlr-org/mlr3proba,
-    nowosad/spDataLarge,
-    r-tmap/tmap
+    nowosad/spDataLarge
 VignetteBuilder: knitr
 Encoding: UTF-8
 License: CC BY-NC-ND 4.0
