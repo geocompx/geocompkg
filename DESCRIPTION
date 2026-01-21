@@ -107,6 +107,7 @@ Suggests:
     tmaptools,
     tree,
     vegan,
+    z22,
     covr
 Remotes:
     mlr-org/mlr3extralearners,
