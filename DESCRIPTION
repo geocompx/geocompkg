@@ -112,6 +112,7 @@ Suggests:
 Remotes:
     mlr-org/mlr3extralearners,
     mlr-org/mlr3proba,
+    jslth/z22,
     nowosad/spDataLarge
 VignetteBuilder: knitr
 Encoding: UTF-8
